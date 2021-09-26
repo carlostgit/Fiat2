@@ -44,19 +44,19 @@ func _ready():
 	
 #	Satisfaction
 	var sat_calc_candy:SatisfactionCurve = SatisfactionCurve.new(1,2)
-	print(sat_calc_candy.calculate_satifaction(28))
+#	print(sat_calc_candy.calculate_satifaction(28))
 	
 	var sat_calc_chocolate:SatisfactionCurve = SatisfactionCurve.new(0.3,3)
-	print(sat_calc_chocolate.calculate_satifaction(28))
+#	print(sat_calc_chocolate.calculate_satifaction(28))
 
 	var sat_calc_acumulation_base_candy:SatisfactionCurve = SatisfactionCurve.new(0.1,1)
-	print(sat_calc_acumulation_base_candy.calculate_satifaction(28))
+#	print(sat_calc_acumulation_base_candy.calculate_satifaction(28))
 	
 	var sat_calc_acumulation_base_chocolate:SatisfactionCurve = SatisfactionCurve.new(0.1,1)
-	print(sat_calc_acumulation_base_chocolate.calculate_satifaction(28))
+#	print(sat_calc_acumulation_base_chocolate.calculate_satifaction(28))
 
 	var sat_calc_acumulation_base_money:SatisfactionCurve = SatisfactionCurve.new(0.1,1)
-	print(sat_calc_acumulation_base_money.calculate_satifaction(28))
+#	print(sat_calc_acumulation_base_money.calculate_satifaction(28))
 	
 #
 	
