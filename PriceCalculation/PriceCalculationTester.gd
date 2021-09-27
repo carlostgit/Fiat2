@@ -94,17 +94,17 @@ func _ready():
 	var func_calc_satisf = funcref(self,"test_satisfaction")
 #	var func_args_array = ["candy",satisfaction_calculator]
 	var func_args_array = ["candy_consumption",satisfaction_calculator]
-	plotter.add_func_ref(func_calc_satisf, func_args_array, "test_candy_consumption_sat" )
+	plotter.add_func_ref(func_calc_satisf, func_args_array, "test_candy_consumption_sat",Color(1,0,0) )
 	
 	var func_calc_satisf_2 = funcref(self,"test_satisfaction")
 #	var func_args_array = ["candy",satisfaction_calculator]
 	var func_args_array_2 = ["candy",satisfaction_calculator]
-	plotter.add_func_ref(func_calc_satisf_2, func_args_array_2, "test_candy_sat" )
+	plotter.add_func_ref(func_calc_satisf_2, func_args_array_2, "test_candy_sat", Color(1,0,1) )
 	
-#	var test:float = test_satisfaction(100.0, "candy_consumption", satisfaction_calculator)
-	var test:float = test_satisfaction(5,"candy_consumption",satisfaction_calculator)
-	print("print_test")
-	print(test)
+##	var test:float = test_satisfaction(100.0, "candy_consumption", satisfaction_calculator)
+#	var test:float = test_satisfaction(5,"candy_consumption",satisfaction_calculator)
+#	print("print_test")
+#	print(test)
 	
 #	Tests de nuevas funciones de Plotter
 	for i in range(100):
@@ -116,7 +116,7 @@ func _ready():
 	for k in range(100):
 		point_group_array.append(Vector2(k,k))
 		
-	plotter.add_point_group(23,point_group_array)
+	plotter.add_point_group(23,point_group_array, Color (1,0,0))
 		
 #	TODO
 #	Modificar parametros en funcion de calidad del producto como ahorro

@@ -28,11 +28,9 @@ var _font = load("res://Plotter/new_dynamicfont.tres")
 #Cosas a dibujar
 #Funciones:
 var _func_array:Array = []
-#var _label_array = []
 var _func_label_dict:Dictionary = {}
-
-#Añadir posibles argumentos a las funciones
 var _func_args_dict:Dictionary = {}
+var _func_color_dict:Dictionary = {}
 #
 
 #Puntos sueltos
@@ -40,8 +38,8 @@ var _points_to_draw:Array = []
 
 #Grupos de puntos
 var _groupid_points:Dictionary = {}
-
-
+var _groupid_color:Dictionary = {}
+#
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
@@ -60,14 +58,21 @@ func clear():
 	_points_to_draw.clear()
 	_groupid_points.clear()
 	
+	_func_color_dict.clear()
+	_groupid_color.clear()
+
+	
 func clear_group_of_points(groupid_arg:int):
 	_groupid_points.erase(groupid_arg)
+	_groupid_color.erase(groupid_arg)
 
-func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "")->void:
+func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "", color_arg:Color = Color(0,1,1))->void:
 	_func_array.append(func_ref_arg)
 	_func_label_dict[func_ref_arg]=label_arg
 	
 	_func_args_dict[func_ref_arg]=func_args_arg
+	
+	_func_color_dict[func_ref_arg]=color_arg
 
 func default_test_function(x_arg:float) -> float:
 	var y:float = x_arg*x_arg
@@ -168,8 +173,9 @@ func _draw():
 	for func_to_draw in _func_array:
 		var label:String = self._func_label_dict[func_to_draw]
 		var func_args = self._func_args_dict[func_to_draw]
+		var color:Color = self._func_color_dict[func_to_draw]
 		if func_to_draw.is_valid():
-			draw(func_to_draw,label,func_args)
+			draw(func_to_draw,label,func_args,color)
 		else:
 			index_of_not_valid_func=count
 			not_valid_func = func_to_draw
@@ -271,10 +277,11 @@ func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color 
 func add_point(point_arg:Vector2):
 	_points_to_draw.append(point_arg)
 
-func add_point_group(group_id:int, points_arg:Array):
+func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1,1)):
 #	_points_to_draw.append(point_arg)
 	
 	_groupid_points[group_id] = points_arg
+	_groupid_color[group_id] = color_arg
 	
 func draw_points(color_arg:Color = Color(0,1,0)):
 	
@@ -288,9 +295,13 @@ func draw_points(color_arg:Color = Color(0,1,0)):
 		var x1:float = _x_zoom*x
 		var x_canvas:float = _left_margin+x1
 		
-		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas+10,y_canvas),color_arg)
+		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas+10,y_canvas+10),color_arg)
+		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas-10,y_canvas-10),color_arg)
+		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas-10,y_canvas+10),color_arg)
+		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas+10,y_canvas-10),color_arg)
+
 			
-func draw_point_groups(color_arg:Color = Color(0,1,0)):
+func draw_point_groups():
 	
 	for id in _groupid_points.keys():
 		var points:Array = _groupid_points[id]
@@ -321,24 +332,9 @@ func draw_point_groups(color_arg:Color = Color(0,1,0)):
 			
 			var x2:float = _x_zoom*x
 			var x_canvas:float = _left_margin+x2
-			
-			_canvas_item.draw_line(Vector2(x_canvas_prev,y_canvas_prev),Vector2(x_canvas,y_canvas),color_arg)
+		
+			var color:Color = _groupid_color[id]				
+			_canvas_item.draw_line(Vector2(x_canvas_prev,y_canvas_prev),Vector2(x_canvas,y_canvas),color)
 			
 			previous_point = point
 			
-	
-	for point in _points_to_draw:
-		var x:float = point.x
-		var y:float = point.y
-		
-		var y1:float = _y_zoom*y
-		var y_canvas:float = _height+_top_margin-y1
-		
-		var x1:float = _x_zoom*x
-		var x_canvas:float = _left_margin+x1
-		
-#		Dibujo una pequeña x
-		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas+10,y_canvas+10),color_arg)
-		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas-10,y_canvas-10),color_arg)
-		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas-10,y_canvas+10),color_arg)
-		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas+10,y_canvas-10),color_arg)
