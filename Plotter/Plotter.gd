@@ -49,6 +49,9 @@ func _ready():
 #	_func_array.append(test_funcref)
 #	#_label_array.append("test")
 #	_func_label_dict[test_funcref]="test"
+	updated_size()
+	
+
 	pass
 	
 func clear():
@@ -108,6 +111,7 @@ func updated_size()->void:
 
 
 func _init(x_max_arg:float=5, y_max_arg:float=10, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=40, points_calculated_arg=100):
+	self.connect("item_rect_changed",self,"updated_size")
 	init(x_max_arg, y_max_arg, left_margin_arg, right_margin_arg, top_margin_arg, bottom_margin_arg, points_calculated_arg)
 
 func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=40, points_calculated_arg=100):
@@ -187,9 +191,6 @@ func _draw():
 
 func draw_background():
 	
-		
-	
-	
 	var rect_width:float = self.get_rect().size.x
 	var rect_height:float = self.get_rect().size.y
 	
@@ -211,17 +212,26 @@ func draw_background():
 	#
 	
 	#Línea y
-	_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin),Vector2(_width+_left_margin,_height+_top_margin), Color(1,1,1))
+	_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin),Vector2(_left_margin,_top_margin), Color(1,1,1))
 
 	#Dibujo la linea del y=1
 #	_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin-1*_y_zoom),Vector2(_width+_left_margin,_height+_top_margin-1*_y_zoom), Color(1,1,1)) #Value of 1 line
 
-	#Línea x
-	_canvas_item.draw_line(Vector2(_total_num_of_calculated_points*_width_per_calculated_point+_left_margin,_height+_top_margin),Vector2(_total_num_of_calculated_points*_width_per_calculated_point+_left_margin,_top_margin), Color(1,1,1)) #Cuantity of 100 line
+	#Dibujo de líneas horizontales
+	for line_y in self._max_y:
+		if (line_y>0 and line_y < self._max_y):
+			_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin-line_y*_y_zoom),Vector2(_width+_left_margin,_height+_top_margin-line_y*_y_zoom), Color(1,1,1)) #Value of 1 line
 
 	#10 líneas verticales
-	for line in range(1,10):
-		_canvas_item.draw_line(Vector2((line*_total_num_of_calculated_points/10)*_width_per_calculated_point+_left_margin,_height+_top_margin),Vector2((line*_total_num_of_calculated_points/10)*_width_per_calculated_point+_left_margin,_top_margin), Color(1,1,1)) #Cuantity of 50 line
+#	for line in range(1,10):
+#		_canvas_item.draw_line(Vector2((line*_total_num_of_calculated_points/10)*_width_per_calculated_point+_left_margin,_height+_top_margin),Vector2((line*_total_num_of_calculated_points/10)*_width_per_calculated_point+_left_margin,_top_margin), Color(1,1,1)) #Cuantity of 50 line
+	
+	for line_x in self._max_x:
+		if (line_x>0 and line_x<self._max_x):
+			_canvas_item.draw_line(Vector2(line_x*_x_zoom+_left_margin,_height+_top_margin),Vector2(line_x*_x_zoom+_left_margin,_top_margin), Color(1,1,1)) 
+
+	#Línea x
+	_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin),Vector2(_left_margin+_width,_height+_top_margin), Color(1,1,1)) #Cuantity of 100 line
 
 	var font_size_y:float = _font.get_string_size("0").y
 	
@@ -269,7 +279,12 @@ func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color 
 		last_y = _height+_top_margin-y2
 		
 	
-	_canvas_item.draw_string(_font,Vector2(last_x, last_y),label_arg,color_arg)
+	var label_pos:Vector2 = Vector2(last_x,last_y)	
+	var font_size_y:float = _font.get_string_size("0").y
+	if (last_y<font_size_y):
+		label_pos.y=font_size_y;
+#
+	_canvas_item.draw_string(_font,label_pos,label_arg,color_arg)
 #	_canvas_item.draw_line(Vector2(last_x, last_y),Vector2(last_x+10, last_y+10),color_arg)
 
 

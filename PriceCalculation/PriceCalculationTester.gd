@@ -22,7 +22,8 @@ func _ready():
 	var y_max:float = 15
 	var plotter:Plotter = Plotter.new(x_max,y_max)
 	plotter.set_size(Vector2(400,400))
-	plotter.updated_size()
+	plotter.set_size(Vector2(400,500))
+#	plotter.updated_size()
 
 	self.call_deferred("add_child",plotter)
 	
@@ -96,10 +97,9 @@ func _ready():
 	var func_args_array = ["candy_consumption",satisfaction_calculator]
 	plotter.add_func_ref(func_calc_satisf, func_args_array, "test_candy_consumption_sat",Color(1,0,0) )
 	
-	var func_calc_satisf_2 = funcref(self,"test_satisfaction")
-#	var func_args_array = ["candy",satisfaction_calculator]
-	var func_args_array_2 = ["candy",satisfaction_calculator]
-	plotter.add_func_ref(func_calc_satisf_2, func_args_array_2, "test_candy_sat", Color(1,0,1) )
+#	var func_calc_satisf_2 = funcref(self,"test_satisfaction")
+#	var func_args_array_2 = ["candy",satisfaction_calculator]
+#	plotter.add_func_ref(func_calc_satisf_2, func_args_array_2, "test_candy_sat", Color(1,0,1) )
 	
 ##	var test:float = test_satisfaction(100.0, "candy_consumption", satisfaction_calculator)
 #	var test:float = test_satisfaction(5,"candy_consumption",satisfaction_calculator)
