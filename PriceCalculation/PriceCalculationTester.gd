@@ -88,6 +88,12 @@ func _ready():
 	satisfaction_calculator.set_option_product_dict(option_product_dict)
 	
 	
+	#TODO
+	var options_result = satisfaction_calculator.get_options()
+	print (options_result)
+	var products_result = satisfaction_calculator.get_products()
+	print (products_result)
+	
 #	var func_calc_satisf_candy = funcref(satisfaction_calculator,"calculate_satifaction_of_candy")
 #	plotter.add_func_ref(func_calc_satisf_candy,"test_satisf_candy")
 	
@@ -149,8 +155,8 @@ func _ready():
 	
 	pass # Replace with function body.
 
-func test_satisfaction(amount_arg:float, product_arg:String, sat_calc_arg:SatisfactionCalculator)->float:
-	return sat_calc_arg.calculate_satifaction_of_product(product_arg,amount_arg)
+func test_satisfaction(amount_arg:float, option_arg:String, sat_calc_arg:SatisfactionCalculator)->float:
+	return sat_calc_arg.calculate_satifaction_of_option(option_arg,amount_arg)
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
