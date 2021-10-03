@@ -370,3 +370,12 @@ func set_option_product_dict(option_product_dict_arg:Dictionary):
 #	var preference_at_0:float = (-2*coefficient_q+coefficient_sqrt)/(2*coefficient_qq)
 #
 #	return preference_at_0
+
+func get_option_satisf_curve_dict()->Dictionary:
+	return _option_satisf_curve_dict
+
+func get_combo_satisf_curve_dict()->Dictionary:
+	return _combo_satisf_curve_dict
+
+func get_combos()->Dictionary:
+	return self._combos
