@@ -17,7 +17,7 @@ const PriceCalculationInterface = preload("res://PriceCalculation/PriceCalculati
 func _ready():	
 	
 	var x_max:float = 150
-	var y_max:float = 105
+	var y_max:float = 40
 	var plotter:Plotter = Plotter.new(x_max,y_max)
 	plotter.set_size(Vector2(400,400))
 	plotter.set_size(Vector2(400,500))
@@ -61,8 +61,8 @@ func _ready():
 	var param_preference_at_0_for_sweets = 1.0
 	var maximum_satisf_for_sweets = 10.0
 	var satisfaction_curve_for_sweets:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_sweets, maximum_satisf_for_sweets)
-	satisfaction_calculator.set_combo("sweets_consumption",["candy_consumption","chocolate_consumption"])
-	satisfaction_calculator.set_satisfaction_curve_for_combo("sweets_consumption",satisfaction_curve_for_sweets)
+	satisfaction_calculator.set_complementary_combo("sweets_consumption",["candy_consumption","chocolate_consumption"])
+	satisfaction_calculator.set_satisfaction_curve_for_complementary_combo("sweets_consumption",satisfaction_curve_for_sweets)
 	
 	var param_preference_at_0_for_candy_sav = 1.0
 	var maximum_satisf_for_candy_sav = 10.0
@@ -85,7 +85,7 @@ func _ready():
 	print (options_result)
 	var products_result = satisfaction_calculator.get_products()
 	print (products_result)
-	var combos_result = satisfaction_calculator.get_combos()
+	var combos_result = satisfaction_calculator.get_complementary_combos()
 	print (combos_result)
 	
 #	
@@ -157,7 +157,7 @@ func _ready():
 		for option in options:
 			option_points_dict[option] = []
 		
-		for i in range(100):
+		for i in range(150):
 #			var input_dict:Dictionary = {"candy":i}
 #			var options_output:Dictionary = trade_calculator.calculate_trade_for_combidict(input_dict)
 			var options_output:Dictionary = trade_calculator.calculate_best_combidict(i)
