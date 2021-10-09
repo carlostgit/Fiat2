@@ -39,6 +39,8 @@ var _points_to_draw:Array = []
 #Grupos de puntos
 var _groupid_points:Dictionary = {}
 var _groupid_color:Dictionary = {}
+var _groupid_label:Dictionary = {}
+
 #
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -50,10 +52,10 @@ func _ready():
 #	#_label_array.append("test")
 #	_func_label_dict[test_funcref]="test"
 	updated_size()
-	
 
 	pass
-	
+
+
 func clear():
 	_func_array.clear()
 	_func_label_dict.clear()
@@ -63,11 +65,14 @@ func clear():
 	
 	_func_color_dict.clear()
 	_groupid_color.clear()
+	_groupid_label.clear()
 
 	
 func clear_group_of_points(groupid_arg:int):
 	_groupid_points.erase(groupid_arg)
 	_groupid_color.erase(groupid_arg)
+	_groupid_label.erase(groupid_arg)
+
 
 func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "", color_arg:Color = Color(0,1,1))->void:
 	_func_array.append(func_ref_arg)
@@ -77,13 +82,11 @@ func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "
 	
 	_func_color_dict[func_ref_arg]=color_arg
 
+
 func default_test_function(x_arg:float) -> float:
 	var y:float = x_arg*x_arg
 	return y
-#
-#
-#func _init(y_bottom_arg:float, x_left_arg:float, x_zoom_arg:float,y_zoom_arg:float,max_quantity_arg:float,num_of_calculated_points_arg:int, canvas_item_arg:CanvasItem):
-#	init(y_bottom_arg,x_left_arg,x_zoom_arg,y_zoom_arg,max_quantity_arg,num_of_calculated_points_arg,canvas_item_arg)
+
 
 func updated_size()->void:
 	_canvas_item = self
@@ -106,13 +109,12 @@ func updated_size()->void:
 	_y_zoom = _height/y_max
 	
 	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
-	
-	
 
 
 func _init(x_max_arg:float=5, y_max_arg:float=10, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=40, points_calculated_arg=100):
 	self.connect("item_rect_changed",self,"updated_size")
 	init(x_max_arg, y_max_arg, left_margin_arg, right_margin_arg, top_margin_arg, bottom_margin_arg, points_calculated_arg)
+
 
 func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=40, points_calculated_arg=100):
 
@@ -143,24 +145,6 @@ func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_marg
 	
 	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
 
-#	var test_funcref = funcref( self, "default_test_function")
-#	_func_array.append(test_funcref)
-#	_label_array.append("test")
-		
-
-#func init_old(y_bottom_arg:float, x_left_arg:float, x_zoom_arg:float,y_zoom_arg:float,max_quantity_arg:float,num_of_calculated_points_arg:int, canvas_item_arg:CanvasItem):
-#	_height=y_bottom_arg-_top_margin
-#	_left_margin=x_left_arg
-#
-#	_width_per_calculated_point=x_zoom_arg
-#	_y_zoom=y_zoom_arg
-#
-#	_max_x = max_quantity_arg
-#
-#	_total_num_of_calculated_points = num_of_calculated_points_arg
-#	_canvas_item = canvas_item_arg
-#
-#	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
 
 func _draw():
 	draw_background()
@@ -188,6 +172,7 @@ func _draw():
 	if index_of_not_valid_func >=0:
 		_func_label_dict.erase(not_valid_func)
 		_func_array.remove(index_of_not_valid_func)
+
 
 func draw_background():
 	
@@ -218,17 +203,34 @@ func draw_background():
 #	_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin-1*_y_zoom),Vector2(_width+_left_margin,_height+_top_margin-1*_y_zoom), Color(1,1,1)) #Value of 1 line
 
 	#Dibujo de líneas horizontales
-	for line_y in self._max_y:
-		if (line_y>0 and line_y < self._max_y):
-			_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin-line_y*_y_zoom),Vector2(_width+_left_margin,_height+_top_margin-line_y*_y_zoom), Color(1,1,1)) #Value of 1 line
+#	Primero calculo cuántas líneas quiero dibujar. No quiero dibujar más de 100 líneas
+	
+	var num_hor_lines_to_draw:float = self._max_y
+	var ten_times_reductions_in_hor_lines:int = 0
+	while num_hor_lines_to_draw>100:
+		num_hor_lines_to_draw = num_hor_lines_to_draw/(10)
+		ten_times_reductions_in_hor_lines += 1
+	
+	for value_y_of_line in range(0, self._max_y, pow(10,ten_times_reductions_in_hor_lines)):
+		if (value_y_of_line>0 and value_y_of_line < self._max_y):
+			_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin-value_y_of_line*_y_zoom),Vector2(_width+_left_margin,_height+_top_margin-value_y_of_line*_y_zoom), Color(1,1,1,0.5)) #Value of 1 line
 
 	#10 líneas verticales
 #	for line in range(1,10):
 #		_canvas_item.draw_line(Vector2((line*_total_num_of_calculated_points/10)*_width_per_calculated_point+_left_margin,_height+_top_margin),Vector2((line*_total_num_of_calculated_points/10)*_width_per_calculated_point+_left_margin,_top_margin), Color(1,1,1)) #Cuantity of 50 line
 	
-	for line_x in self._max_x:
-		if (line_x>0 and line_x<self._max_x):
-			_canvas_item.draw_line(Vector2(line_x*_x_zoom+_left_margin,_height+_top_margin),Vector2(line_x*_x_zoom+_left_margin,_top_margin), Color(1,1,1)) 
+	#Dibujo de líneas verticales
+#	Primero calculo cuántas líneas quiero dibujar. No quiero dibujar más de 100 líneas
+	var num_vert_lines_to_draw = self._max_x
+	var ten_times_reductions_in_vert_lines:int = 0
+	while num_vert_lines_to_draw>100:
+		num_vert_lines_to_draw = num_vert_lines_to_draw/(10)
+		ten_times_reductions_in_vert_lines += 1
+	
+#	for line_x in self._max_x:
+	for value_x_of_line in range(0, self._max_x ,pow(10,ten_times_reductions_in_vert_lines)):		
+		if (value_x_of_line>0 and value_x_of_line<self._max_x):
+			_canvas_item.draw_line(Vector2(value_x_of_line*_x_zoom+_left_margin,_height+_top_margin),Vector2(value_x_of_line*_x_zoom+_left_margin,_top_margin), Color(1,1,1,0.5)) 
 
 	#Línea x
 	_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin),Vector2(_left_margin+_width,_height+_top_margin), Color(1,1,1)) #Cuantity of 100 line
@@ -285,19 +287,19 @@ func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color 
 		label_pos.y=font_size_y;
 #
 	_canvas_item.draw_string(_font,label_pos,label_arg,color_arg)
-#	_canvas_item.draw_line(Vector2(last_x, last_y),Vector2(last_x+10, last_y+10),color_arg)
-
 
 
 func add_point(point_arg:Vector2):
 	_points_to_draw.append(point_arg)
 
-func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1,1)):
-#	_points_to_draw.append(point_arg)
+
+func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1,1), label_arg = ""):
 	
 	_groupid_points[group_id] = points_arg
 	_groupid_color[group_id] = color_arg
-	
+	_groupid_label[group_id] = label_arg
+
+
 func draw_points(color_arg:Color = Color(0,1,0)):
 	
 	for point in _points_to_draw:
@@ -315,14 +317,16 @@ func draw_points(color_arg:Color = Color(0,1,0)):
 		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas-10,y_canvas+10),color_arg)
 		_canvas_item.draw_line(Vector2(x_canvas,y_canvas),Vector2(x_canvas+10,y_canvas-10),color_arg)
 
-			
+
 func draw_point_groups():
 	
 	for id in _groupid_points.keys():
 		var points:Array = _groupid_points[id]
+		var color:Color = _groupid_color[id]
 		if points.empty():
 			continue
 		
+		var last_point_position:Vector2 = Vector2()
 		var previous_point:Vector2 = points.front()
 		var count:int = 0
 		for point in points:
@@ -348,8 +352,18 @@ func draw_point_groups():
 			var x2:float = _x_zoom*x
 			var x_canvas:float = _left_margin+x2
 		
-			var color:Color = _groupid_color[id]				
 			_canvas_item.draw_line(Vector2(x_canvas_prev,y_canvas_prev),Vector2(x_canvas,y_canvas),color)
 			
-			previous_point = point
+			last_point_position = Vector2(x_canvas,y_canvas)
 			
+			previous_point = point
+		
+		var label_point_position:Vector2 = last_point_position
+		var label:String = self._groupid_label[id]
+		
+		var font_size_y:float = _font.get_string_size("0").y
+		if (label_point_position.y<font_size_y):
+			label_point_position.y=font_size_y;
+#
+		_canvas_item.draw_string(_font,label_point_position,label,color)
+		

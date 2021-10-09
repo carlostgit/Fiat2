@@ -16,8 +16,8 @@ const PriceCalculationInterface = preload("res://PriceCalculation/PriceCalculati
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	
-	var x_max:float = 10
-	var y_max:float = 15
+	var x_max:float = 150
+	var y_max:float = 105
 	var plotter:Plotter = Plotter.new(x_max,y_max)
 	plotter.set_size(Vector2(400,400))
 	plotter.set_size(Vector2(400,500))
@@ -89,40 +89,100 @@ func _ready():
 	print (combos_result)
 	
 #	
-#	TODO: Preparar en Plotter un método add_func_ref_with_args para poder hacer lo siguiente
-	var func_calc_satisf = funcref(self,"test_satisfaction")
-#	var func_args_array = ["candy",satisfaction_calculator]
-	var func_args_array = ["candy_consumption",satisfaction_calculator]
-	plotter.add_func_ref(func_calc_satisf, func_args_array, "test_candy_consumption_sat",Color(1,0,0) )
-	
-#	Tests de nuevas funciones de Plotter
-	for i in range(100):
-		plotter.add_point(Vector2(i,i))
-		plotter.add_point(Vector2(i,i))	
+##	TODO: Preparar en Plotter un método add_func_ref_with_args para poder hacer lo siguiente
+#	var func_calc_satisf = funcref(self,"test_satisfaction")
+##	var func_args_array = ["candy",satisfaction_calculator]
+#	var func_args_array = ["candy_consumption",satisfaction_calculator]
+#	plotter.add_func_ref(func_calc_satisf, func_args_array, "test_candy_consumption_sat",Color(1,0,0) )
 #
-	var point_group_id:int = 23
-	var point_group_array:Array = []
-	for k in range(100):
-		point_group_array.append(Vector2(k,k))
+##	Tests de nuevas funciones de Plotter
+#	for i in range(100):
+#		plotter.add_point(Vector2(i,i))
+#		plotter.add_point(Vector2(i,i))	
+##
+#	var point_group_id:int = 23
+#	var point_group_array:Array = []
+#	for k in range(10):
+#		point_group_array.append(Vector2(k,k))
+#
+#	plotter.add_point_group(23,point_group_array, Color (1,0.5,0.5), "group")
+	
+	
+#	var option_satisf_curve_dict:Dictionary = satisfaction_calculator.get_option_satisf_curve_dict()
+#	var combo_satisf_curve_dict:Dictionary = satisfaction_calculator.get_combo_satisf_curve_dict()
+#
+#	for option in option_satisf_curve_dict:
+#		var func_calc_satisf2 = funcref(self,"test_satisfaction")
+#	#	var func_args_array = ["candy",satisfaction_calculator]
+#		var func_args_array2 = [option,satisfaction_calculator]
+#		plotter.add_func_ref(func_calc_satisf2, func_args_array2, option,Color(1,0,0) )
+#
+#	for combo in combo_satisf_curve_dict:
+#		var func_calc_satisf2 = funcref(self,"test_combo_satisfaction")
+#	#	var func_args_array = ["candy",satisfaction_calculator]
+#		var func_args_array2 = [combo,satisfaction_calculator]
+#		plotter.add_func_ref(func_calc_satisf2, func_args_array2, combo,Color(0,1,0) )
+	
+#	if true:
+#		print("Printing trade for:")
+#		var amounts_dict = {"chocolate": 3.0, "candy":3.0}
+#		print(amounts_dict)
+#		var trade:Dictionary = trade_calculator.calculate_trade_for_combidict(amounts_dict)
+#		print("trade:")
+#		print(trade)
+#		print("trade productdict:")
+#		var trade_product_dict = satisfaction_calculator.calculate_productdict_from_optiondict(trade)
+#		print(trade_product_dict)
+	
+#	if true:
+#		var product_points_dict:Dictionary = {"chocolate":[],"candy":[]}
+#
+#		for i in range(10):
+#			var input_dict:Dictionary = {"candy":i}
+#			var options_output:Dictionary = trade_calculator.calculate_trade_for_combidict(input_dict)
+#			var trade_product_dict = satisfaction_calculator.calculate_productdict_from_optiondict(options_output)
+#			for product in trade_product_dict:
+#				var vect2:Vector2 = Vector2(i,trade_product_dict[product])
+#				product_points_dict[product].append(vect2)
+#
+#		var count = 0
+#		for product in product_points_dict:
+#			plotter.add_point_group(count,product_points_dict[product], Color (1,0.3,0.3), product)
+#			count += 1
+
+
+	if true:
+		var options:Array = satisfaction_calculator.get_options()
+		var option_points_dict:Dictionary = {}
+		for option in options:
+			option_points_dict[option] = []
 		
-	plotter.add_point_group(23,point_group_array, Color (1,0,0))
-	
-	
-	var option_satisf_curve_dict:Dictionary = satisfaction_calculator.get_option_satisf_curve_dict()
-	var combo_satisf_curve_dict:Dictionary = satisfaction_calculator.get_combo_satisf_curve_dict()
-
-	for option in option_satisf_curve_dict:
-		var func_calc_satisf2 = funcref(self,"test_satisfaction")
-	#	var func_args_array = ["candy",satisfaction_calculator]
-		var func_args_array2 = [option,satisfaction_calculator]
-		plotter.add_func_ref(func_calc_satisf2, func_args_array2, option,Color(1,0,0) )
-
-	for combo in combo_satisf_curve_dict:
-		var func_calc_satisf2 = funcref(self,"test_combo_satisfaction")
-	#	var func_args_array = ["candy",satisfaction_calculator]
-		var func_args_array2 = [combo,satisfaction_calculator]
-		plotter.add_func_ref(func_calc_satisf2, func_args_array2, combo,Color(0,1,0) )
-	
+		for i in range(100):
+#			var input_dict:Dictionary = {"candy":i}
+#			var options_output:Dictionary = trade_calculator.calculate_trade_for_combidict(input_dict)
+			var options_output:Dictionary = trade_calculator.calculate_best_combidict(i)
+#			var trade_product_dict = satisfaction_calculator.calculate_productdict_from_optiondict(options_output)
+			for option in options_output:
+				var vect2:Vector2 = Vector2(i,options_output[option])
+				option_points_dict[option].append(vect2)
+		
+		var count = 0
+		var color_r:float = 0.7
+		var color_g:float = 0.1
+		var color_b:float = 0.3
+		for option in option_points_dict:
+			color_r += 0.3
+			while color_r>1:
+				color_r -= 1
+			color_g += 0.4
+			while color_g>1:
+				color_g -= 1
+			color_b += 0.6
+			while color_b>1:
+				color_b -= 1
+			
+			plotter.add_point_group(count,option_points_dict[option], Color (color_r,color_g,color_b,0.9), option)
+			count += 1
 	
 		
 #	TODO

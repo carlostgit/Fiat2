@@ -31,6 +31,8 @@ var _option_product_dict:Dictionary = { "candy_savings": "candy",
 									"candy_consumption": "candy",
 									"chocolate_savings": "chocolate",
 									"chocolate_consumption": "chocolate",}
+									
+									
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -212,20 +214,26 @@ func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 	
 	var satisf_of_opt_individually = 0.0
 	for option in self._options:
-		var amount_of_option = combidict_arg[option]
-		satisf_of_opt_individually += self.calculate_satifaction_of_option(option,amount_of_option)
-#		var satisf_curve:SatisfactionCurve = _product_satisf_curve_dict[product]
-#		satisf_of_prod_individually += satisf_curve.calculate_satifaction(amount_of_product)
+		if combidict_arg.has(option):
+			var amount_of_option = combidict_arg[option]
+			satisf_of_opt_individually += self.calculate_satifaction_of_option(option,amount_of_option)
+	#		var satisf_curve:SatisfactionCurve = _product_satisf_curve_dict[product]
+	#		satisf_of_prod_individually += satisf_curve.calculate_satifaction(amount_of_product)
 
 	var satisf_of_combi = 0.0
 	for combi_name in self._combos.keys():
 		var amount_of_combi = 0
 		var count = 0
 		for option in _combos[combi_name]:
-			var amount_of_option = combidict_arg[option]
+			var amount_of_option = 0.0
+			if combidict_arg.has(option):
+				amount_of_option = combidict_arg[option]
 			if amount_of_option < amount_of_combi or 0 == count:
 				amount_of_combi = amount_of_option
+			if amount_of_option == 0:
+				break
 			count += 1
+		
 		satisf_of_combi += self.calculate_satifaction_of_opt_combo(combi_name,amount_of_combi)
 
 	satisfaction_return = satisf_of_opt_individually+satisf_of_combi		
@@ -320,12 +328,17 @@ func calculate_satifaction_of_opt_combo(combo_arg:String, quantity_arg:float) ->
 	if false==self._combos.has(combo_arg):
 		return 0.0
 	
+	if false==self._combo_satisf_curve_dict.has(combo_arg):
+		return 0.0
+	
+	
 	var ret_satisf = 0.0
 #	var pref_at_0 = self._param_combo_preference_at_0[combi_arg]
 #	var max_satisf = self._param_combo_maximum_quantity_satisf[combi_arg]
 #
 #	ret_satisf = max_satisf*get_diminishing_returns_factor(quantity_arg*pref_at_0/max_satisf)
-#
+#	
+	
 	var combo_satisf_curve:SatisfactionCurve = self._combo_satisf_curve_dict[combo_arg]
 	ret_satisf = combo_satisf_curve.calculate_satifaction(quantity_arg)
 	
@@ -379,3 +392,23 @@ func get_combo_satisf_curve_dict()->Dictionary:
 
 func get_combos()->Dictionary:
 	return self._combos
+	
+func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictionary:
+	var product_dict:Dictionary = {}
+	for option in option_dict_arg:
+		if _option_product_dict.has(option):
+			var product = _option_product_dict[option]
+			if (product_dict.has(product)):
+				product_dict[product] += option_dict_arg[option]
+			else:
+				product_dict[product] = option_dict_arg[option]
+		
+		else:
+	#	No sé si está bien que pueda haber products entre las options
+			if _products.has(option):
+				if (product_dict.has(option)):
+					product_dict[option] += option_dict_arg[option]
+				else:
+					product_dict[option] = option_dict_arg[option]
+		
+	return product_dict
