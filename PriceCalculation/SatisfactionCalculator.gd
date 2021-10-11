@@ -12,6 +12,13 @@ extends Control
 
 var _complementary_combos:Dictionary = {"sweets":["chocolate","candy"]}
 
+#Añadir _supplementary_combos
+#Cambiar _complementary_combos de tal manera que se pueda ponderar cada opción
+#Por ejemplo, que por cada unidad de sweet_savings tenga que haber 1 unidad de candy, y solo 0.5 unidades de chocolate
+var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
+															"chocolate_savings":1.0
+														}
+										}
 
 #var _products = ["chocolate","candy"]
 var _products = Globals._products
@@ -22,6 +29,7 @@ const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 
 var _option_satisf_curve_dict:Dictionary = {}
 var _complementary_combo_satisf_curve_dict:Dictionary = {}
+var _supplementary_combo_satisf_curve_dict:Dictionary = {}
 
 var _options:Array = ["candy_savings","chocolate_savings",
 						"candy_consumption","chocolate_consumption"]
@@ -97,6 +105,7 @@ func _init():
 func reset()->void:
 	_option_satisf_curve_dict.clear()
 	_complementary_combo_satisf_curve_dict.clear()
+	_supplementary_combo_satisf_curve_dict.clear()
 
 func set_preference_for_chocolate():
 	reset()
@@ -115,9 +124,14 @@ func get_option_max_satisfaction(option_arg:String):
 		return _option_satisf_curve_dict[option_arg].get_maximum_satisf()	
 	return 0
 	
-func get_combo_max_satisfaction(combo_arg:String):
+func get_complementary_combo_max_satisfaction(combo_arg:String):
 	if _complementary_combo_satisf_curve_dict.has(combo_arg):
 		return _complementary_combo_satisf_curve_dict[combo_arg].get_maximum_satisf()	
+	return 0
+
+func get_supplementary_combo_max_satisfaction(combo_arg:String):
+	if _supplementary_combo_satisf_curve_dict.has(combo_arg):
+		return _supplementary_combo_satisf_curve_dict[combo_arg].get_maximum_satisf()	
 	return 0
 	
 func get_option_preference_at_0(option_arg:String):
@@ -125,9 +139,14 @@ func get_option_preference_at_0(option_arg:String):
 		return _option_satisf_curve_dict[option_arg].get_preference_at_0()
 	return 0
 	
-func get_combo_preference_at_0(combo_arg:String):
+func get_complementary_combo_preference_at_0(combo_arg:String):
 	if _complementary_combo_satisf_curve_dict.has(combo_arg):
 		return _complementary_combo_satisf_curve_dict[combo_arg].get_preference_at_0()	
+	return 0
+
+func get_supplementary_combo_preference_at_0(combo_arg:String):
+	if _supplementary_combo_satisf_curve_dict.has(combo_arg):
+		return _supplementary_combo_satisf_curve_dict[combo_arg].get_preference_at_0()	
 	return 0
 
 func increase_max_satisfaction_of_option(option_arg:String):
@@ -136,55 +155,74 @@ func increase_max_satisfaction_of_option(option_arg:String):
 		current_max_satisf += 1
 		_option_satisf_curve_dict[option_arg].set_maximum_satisf(current_max_satisf)
 
-func increase_max_satisfaction_of_combo(combo_arg:String):
+func increase_max_satisfaction_of_complementary_combo(combo_arg:String):
 	if _complementary_combo_satisf_curve_dict.has(combo_arg):
 		var current_max_satisf = _complementary_combo_satisf_curve_dict[combo_arg].get_maximum_satisf()	
 		current_max_satisf += 1
 		_complementary_combo_satisf_curve_dict[combo_arg].set_maximum_satisf(current_max_satisf)
+
+func increase_max_satisfaction_of_supplementary_combo(combo_arg:String):
+	if _supplementary_combo_satisf_curve_dict.has(combo_arg):
+		var current_max_satisf = _supplementary_combo_satisf_curve_dict[combo_arg].get_maximum_satisf()	
+		current_max_satisf += 1
+		_supplementary_combo_satisf_curve_dict[combo_arg].set_maximum_satisf(current_max_satisf)
 
 
 func set_max_satisfaction_of_option(option_arg:String,max_satisf_arg:float):
 	if _option_satisf_curve_dict.has(option_arg):
 		_option_satisf_curve_dict[option_arg].set_maximum_satisf(max_satisf_arg)
 
-func set_max_satisfaction_of_combo(combo_arg:String,max_satisf_arg:float):
+func set_max_satisfaction_of_complementary_combo(combo_arg:String,max_satisf_arg:float):
 	if _complementary_combo_satisf_curve_dict.has(combo_arg):
 		_complementary_combo_satisf_curve_dict[combo_arg].set_maximum_satisf(max_satisf_arg)
 
+func set_max_satisfaction_of_supplementary_combo(combo_arg:String,max_satisf_arg:float):
+	if _supplementary_combo_satisf_curve_dict.has(combo_arg):
+		_supplementary_combo_satisf_curve_dict[combo_arg].set_maximum_satisf(max_satisf_arg)
 
 
 func init_default_satisfaction():
 	var satis_curve_chocolate:SatisfactionCurve = SatisfactionCurve.new(2.16,10)
 	var satis_curve_candy:SatisfactionCurve = SatisfactionCurve.new(2.2,14)
 	var satis_curve_sweets:SatisfactionCurve = SatisfactionCurve.new(1.8, 1)
+	var satis_curve_savings:SatisfactionCurve = SatisfactionCurve.new(1.2, 1)
 	
 	_option_satisf_curve_dict["chocolate_consumption"]=satis_curve_chocolate
 	_option_satisf_curve_dict["candy_consumption"]=satis_curve_candy
 	_complementary_combo_satisf_curve_dict["sweets_consumption"]=satis_curve_sweets
+	_supplementary_combo_satisf_curve_dict["savings"]=satis_curve_savings
 
 func init_candy_satisfaction():
 	var satis_curve_chocolate:SatisfactionCurve = SatisfactionCurve.new(2,5)
 	var satis_curve_candy:SatisfactionCurve = SatisfactionCurve.new(2,30)
 	var satis_curve_sweets:SatisfactionCurve = SatisfactionCurve.new(2, 3)
+	var satis_curve_savings:SatisfactionCurve = SatisfactionCurve.new(1.2, 1)
 	
 	_option_satisf_curve_dict["chocolate_consumption"]=satis_curve_chocolate
 	_option_satisf_curve_dict["candy_consumption"]=satis_curve_candy
 	_complementary_combo_satisf_curve_dict["sweets_consumption"]=satis_curve_sweets
+	_supplementary_combo_satisf_curve_dict["savings"]=satis_curve_savings
 
 func init_chocolate_satisfaction():
 	var satis_curve_chocolate:SatisfactionCurve = SatisfactionCurve.new(2,30)
 	var satis_curve_candy:SatisfactionCurve = SatisfactionCurve.new(2,5)
 	var satis_curve_sweets:SatisfactionCurve = SatisfactionCurve.new(2, 3)
+	var satis_curve_savings:SatisfactionCurve = SatisfactionCurve.new(1.2, 1)
 	
 	_option_satisf_curve_dict["chocolate_consumption"]=satis_curve_chocolate
 	_option_satisf_curve_dict["candy_consumption"]=satis_curve_candy
 	_complementary_combo_satisf_curve_dict["sweets_consumption"]=satis_curve_sweets
+	_supplementary_combo_satisf_curve_dict["savings"]=satis_curve_savings
 
 func get_satisfaction_curves_of_options():
 	return _option_satisf_curve_dict
 
 func get_satisfaction_curves_of_complementary_combos():
 	return _complementary_combo_satisf_curve_dict
+
+func get_satisfaction_curves_of_supplementary_combos():
+	return _supplementary_combo_satisf_curve_dict
+
 
 func set_satisfaction_curve(option_arg:String, satisfaction_curve_arg:SatisfactionCurve):
 	_option_satisf_curve_dict[option_arg]=satisfaction_curve_arg
@@ -195,9 +233,19 @@ func set_complementary_combo(combo_arg:String,options_arg:Array):
 		assert(option in _options)
 	_complementary_combos[combo_arg]=options_arg
 
+func set_supplementary_combo(combo_arg:String,options_arg:Array):
+	for option in options_arg:
+		assert(option in _options)
+	_supplementary_combos[combo_arg]=options_arg
+
+
 func set_satisfaction_curve_for_complementary_combo(combo_arg:String, satisfaction_curve_arg:SatisfactionCurve):
 	assert(combo_arg in _complementary_combos)
 	_complementary_combo_satisf_curve_dict[combo_arg]=satisfaction_curve_arg
+
+func set_satisfaction_curve_for_supplementary_combo(combo_arg:String, satisfaction_curve_arg:SatisfactionCurve):
+	assert(combo_arg in _supplementary_combos)
+	_supplementary_combo_satisf_curve_dict[combo_arg]=satisfaction_curve_arg
 
 	
 #func calculate_satisf_of_combination(combination_arg:Combination):
@@ -235,7 +283,28 @@ func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 		
 		satisf_of_combi += self.calculate_satifaction_of_opt_complementary_combo(combi_name,amount_of_combi)
 
+#	Satisfacción de los supplementary combos
+#var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
+#															"chocolate_savings":1.0
+#														}
+#										}
+	for supp_combo_name in self._supplementary_combos.keys():
+		var amount_of_supp_combo = 0.0
+		var supplementary_combo_dict:Dictionary = self._supplementary_combos[supp_combo_name]
+		for option in supplementary_combo_dict.keys():
+			var weighting_of_option:float = supplementary_combo_dict[option]
+			var amount_of_option:float = 0.0
+			if combidict_arg.has(option):
+				amount_of_option = combidict_arg[option]
+			var weigted_amount_of_option:float = weighting_of_option*amount_of_option
+			amount_of_supp_combo += weigted_amount_of_option
+	
+		satisf_of_combi += self.calculate_satifaction_of_opt_supplementary_combo(supp_combo_name,amount_of_supp_combo)
+
+
 	satisfaction_return = satisf_of_opt_individually+satisf_of_combi		
+	
+#	Añadir satisfacción de combos suplementarios
 		
 #	print("indiv: "+str(satisf_of_prod_individually))
 #	print("combi: "+str(satisf_of_combi))
@@ -343,6 +412,28 @@ func calculate_satifaction_of_opt_complementary_combo(combo_arg:String, quantity
 	
 	return ret_satisf
 	
+func calculate_satifaction_of_opt_supplementary_combo(combo_arg:String, quantity_arg:float) -> float:
+	
+	if false==self._supplementary_combos.has(combo_arg):
+		return 0.0
+	
+	if false==self._supplementary_combo_satisf_curve_dict.has(combo_arg):
+		return 0.0
+	
+	
+	var ret_satisf = 0.0
+#	var pref_at_0 = self._param_combo_preference_at_0[combi_arg]
+#	var max_satisf = self._param_combo_maximum_quantity_satisf[combi_arg]
+#
+#	ret_satisf = max_satisf*get_diminishing_returns_factor(quantity_arg*pref_at_0/max_satisf)
+#	
+	
+	var combo_satisf_curve:SatisfactionCurve = self._supplementary_combo_satisf_curve_dict[combo_arg]
+	ret_satisf = combo_satisf_curve.calculate_satifaction(quantity_arg)
+	
+	return ret_satisf
+
+	
 func get_options():
 	return self._options
 	
@@ -389,8 +480,14 @@ func get_option_satisf_curve_dict()->Dictionary:
 func get_complementary_combo_satisf_curve_dict()->Dictionary:
 	return _complementary_combo_satisf_curve_dict
 
+func get_supplementary_combo_satisf_curve_dict()->Dictionary:
+	return _supplementary_combo_satisf_curve_dict
+
 func get_complementary_combos()->Dictionary:
 	return self._complementary_combos
+
+func get_supplementary_combos()->Dictionary:
+	return self._supplementary_combos
 	
 func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictionary:
 	var product_dict:Dictionary = {}
