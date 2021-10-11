@@ -16,8 +16,8 @@ const PriceCalculationInterface = preload("res://PriceCalculation/PriceCalculati
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	
-	var x_max:float = 150
-	var y_max:float = 40
+	var x_max:float = 10
+	var y_max:float = 10
 	var plotter:Plotter = Plotter.new(x_max,y_max)
 	plotter.set_size(Vector2(400,400))
 	plotter.set_size(Vector2(400,500))
@@ -151,7 +151,7 @@ func _ready():
 #			count += 1
 
 
-	if true:
+	if false:
 		var options:Array = satisfaction_calculator.get_options()
 		var option_points_dict:Dictionary = {}
 		for option in options:
@@ -183,7 +183,25 @@ func _ready():
 			
 			plotter.add_point_group(count,option_points_dict[option], Color (color_r,color_g,color_b,0.9), option)
 			count += 1
+
 	
+	if true:
+#		var num_candy=5
+		var num_chocolate=5
+		var array_candy:Array = []
+		var array_chocolate:Array = []
+		var array_satisf_supplem:Array = []
+		for x in range (0,10):
+#			var num_chocolate:int = x
+			var num_candy:int = x*10
+			var combidict:Dictionary = {"candy_savings":num_candy,"chocolate_savings":num_chocolate}
+			var satisf_supplem:float = satisfaction_calculator.calculate_satisf_of_combidict_from_supplementary_combos(combidict)
+			array_candy.append(Vector2(x,num_candy))
+			array_chocolate.append(Vector2(x,num_chocolate))
+			array_satisf_supplem.append(Vector2(x,satisf_supplem))
+		plotter.add_point_group(1,array_candy,Color(1,0,0,0.9), "num candy")
+		plotter.add_point_group(2,array_chocolate,Color(0,1,0,0.9), "num chocolate")
+		plotter.add_point_group(3,array_satisf_supplem,Color(0,0,1,0.9), "suppl satisf")
 		
 #	TODO
 #	Modificar parametros en funcion de calidad del producto como ahorro

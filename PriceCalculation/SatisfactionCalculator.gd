@@ -255,18 +255,19 @@ func set_satisfaction_curve_for_supplementary_combo(combo_arg:String, satisfacti
 #	else:
 #		assert(false)
 
-
-func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
-	var satisfaction_return = 0.0
+func calculate_satisf_of_combidict_from_individual_options(combidict_arg:Dictionary) -> float:
 	
 	var satisf_of_opt_individually = 0.0
 	for option in self._options:
 		if combidict_arg.has(option):
 			var amount_of_option = combidict_arg[option]
 			satisf_of_opt_individually += self.calculate_satifaction_of_option(option,amount_of_option)
-	#		var satisf_curve:SatisfactionCurve = _product_satisf_curve_dict[product]
-	#		satisf_of_prod_individually += satisf_curve.calculate_satifaction(amount_of_product)
 
+	return satisf_of_opt_individually
+
+
+func calculate_satisf_of_combidict_from_complementary_combos(combidict_arg:Dictionary) -> float:
+	
 	var satisf_of_combi = 0.0
 	for combi_name in self._complementary_combos.keys():
 		var amount_of_combi = 0
@@ -283,11 +284,16 @@ func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 		
 		satisf_of_combi += self.calculate_satifaction_of_opt_complementary_combo(combi_name,amount_of_combi)
 
+	return satisf_of_combi
+
+
+func calculate_satisf_of_combidict_from_supplementary_combos(combidict_arg:Dictionary) -> float:
 #	Satisfacción de los supplementary combos
 #var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
 #															"chocolate_savings":1.0
 #														}
 #										}
+	var satisf_of_combi:float = 0.0
 	for supp_combo_name in self._supplementary_combos.keys():
 		var amount_of_supp_combo = 0.0
 		var supplementary_combo_dict:Dictionary = self._supplementary_combos[supp_combo_name]
@@ -301,14 +307,23 @@ func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 	
 		satisf_of_combi += self.calculate_satifaction_of_opt_supplementary_combo(supp_combo_name,amount_of_supp_combo)
 
+	return satisf_of_combi
 
-	satisfaction_return = satisf_of_opt_individually+satisf_of_combi		
+
+func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 	
-#	Añadir satisfacción de combos suplementarios
+	var satisf_of_opt_individually = 0.0
+	satisf_of_opt_individually = calculate_satisf_of_combidict_from_individual_options(combidict_arg)
+
+	var satisf_of_complementary_combi = 0.0
+	satisf_of_complementary_combi = calculate_satisf_of_combidict_from_complementary_combos(combidict_arg)
+
+	var satisf_of_supplementary_combi = 0.0
+	satisf_of_supplementary_combi = calculate_satisf_of_combidict_from_supplementary_combos(combidict_arg)
+
+	var satisfaction_return = 0.0
+	satisfaction_return = satisf_of_opt_individually+satisf_of_complementary_combi+satisf_of_supplementary_combi
 		
-#	print("indiv: "+str(satisf_of_prod_individually))
-#	print("combi: "+str(satisf_of_combi))
-	
 	return satisfaction_return
 
 #func calculate_satisfaction_of_combination(combination:Dictionary) -> float:
