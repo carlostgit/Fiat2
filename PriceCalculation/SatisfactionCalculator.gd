@@ -39,7 +39,7 @@ var _option_product_dict:Dictionary = { "candy_savings": "candy",
 									"chocolate_savings": "chocolate",
 									"chocolate_consumption": "chocolate",}
 									
-									
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -523,3 +523,78 @@ func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictiona
 					product_dict[option] = option_dict_arg[option]
 		
 	return product_dict
+
+
+func print_info():
+	print("Supplementary combos:")
+	print(self._supplementary_combos)
+	print("Complementary combos:")
+	print(self._complementary_combos)
+	print("Options:")
+	print(self._options)
+	print("Products:")
+	print(self._products)
+	print("Option->Product map:")
+	for option in self._option_satisf_curve_dict.keys():
+		var satis_curve:SatisfactionCurve  = _option_satisf_curve_dict[option]
+		var max_satisf:float = satis_curve.get_maximum_satisf()
+		var pref_at_0:float = satis_curve.get_preference_at_0()
+		print("Option: " + option)
+		print("Max satisf: " +str(max_satisf))
+		print("Pref at 0: " + str(pref_at_0))
+	for option in self._complementary_combo_satisf_curve_dict.keys():
+		var satis_curve:SatisfactionCurve  = _complementary_combo_satisf_curve_dict[option]
+		var max_satisf:float = satis_curve.get_maximum_satisf()
+		var pref_at_0:float = satis_curve.get_preference_at_0()
+		print("Compl Option: " + option)
+		print("Max satisf: " +str(max_satisf))
+		print("Pref at 0: " + str(pref_at_0))
+	for option in self._supplementary_combo_satisf_curve_dict.keys():
+		var satis_curve:SatisfactionCurve  = _supplementary_combo_satisf_curve_dict[option]
+		var max_satisf:float = satis_curve.get_maximum_satisf()
+		var pref_at_0:float = satis_curve.get_preference_at_0()
+		print("Suppl Option: " + option)
+		print("Max satisf: " +str(max_satisf))
+		print("Pref at 0: " + str(pref_at_0))
+
+func check_integrity():
+
+	print("Have all options a product?:")
+	var num_errors_all_options_with_product:int = 0
+	for option in _options:
+		if false ==_option_product_dict.has(option):
+			print("ERROR: missing option "+option+" in _option_product_dict")
+			num_errors_all_options_with_product +=1
+	
+	if 0==num_errors_all_options_with_product:
+		print("OK: All options with product")
+	
+	print("Are options in satisf curves in options array?:")
+	var num_errors_saisf_curve_options_in_options_array:int = 0
+	for option in _option_satisf_curve_dict:
+		if false == _options.has(option):
+			num_errors_saisf_curve_options_in_options_array +=1
+			print("ERROR: missing option "+option+" from _option_satisf_curve_dict in _options")
+#	for option in _complementary_combo_satisf_curve_dict:
+#		if false == _options.has(option):
+			num_errors_saisf_curve_options_in_options_array +=1
+#			print("ERROR: missing option "+option+" from _complementary_combo_satisf_curve_dict in _options")
+#	for option in _supplementary_combo_satisf_curve_dict:
+#		if false == _options.has(option):
+			num_errors_saisf_curve_options_in_options_array +=1
+#			print("ERROR: missing option "+option+" from _supplementary_combo_satisf_curve_dict in _options")
+
+	if 0==num_errors_saisf_curve_options_in_options_array:
+		print("OK: All saisf curve options in options array")
+
+	print("Are options without satisf curve?:")
+	var num_errors_options_without_satisf_curve:int = 0
+	for option in _options:
+		if (false == _option_satisf_curve_dict.has(option) and 
+			false == _complementary_combo_satisf_curve_dict.has(option) and
+			false == _supplementary_combo_satisf_curve_dict.has(option)):
+				print("WARNING: missing satisf curve for option "+option)
+
+	if 0==num_errors_options_without_satisf_curve:
+		print("OK: All options with satisf curve")
+	

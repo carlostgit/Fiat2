@@ -10,20 +10,30 @@ const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
 
 const Plotter = preload("res://Plotter/Plotter.gd")
+#const PriceCalculationTesterSceneRes = preload("res:://PriceCalculation/PriceCalculationTesterScene.tscn")
+
+const PriceCalculationTesterSceneRes = preload("res://PriceCalculation/PriceCalculationTesterScene.tscn")
 
 const PriceCalculationInterface = preload("res://PriceCalculation/PriceCalculationInterface.gd")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():	
 	
+#	Escena PriceCalculationTesterScene
+	var price_calculation_tester_scene = PriceCalculationTesterSceneRes.instance()
+	self.call_deferred("add_child",price_calculation_tester_scene)
+#	
+
+#	Plotter
 	var x_max:float = 10
 	var y_max:float = 10
 	var plotter:Plotter = Plotter.new(x_max,y_max)
-	plotter.set_size(Vector2(400,400))
-	plotter.set_size(Vector2(400,500))
+	plotter.set_size(Vector2(200,400))
+#	plotter.set_size(Vector2(400,500))
 
 	self.call_deferred("add_child",plotter)
-	
+#
+
 	var test_funcref = funcref( plotter, "default_test_function")
 	plotter.add_func_ref(test_funcref,[],"test")
 #
@@ -81,13 +91,19 @@ func _ready():
 	
 	
 	#TODO
-	var options_result = satisfaction_calculator.get_options()
-	print (options_result)
-	var products_result = satisfaction_calculator.get_products()
-	print (products_result)
-	var combos_result = satisfaction_calculator.get_complementary_combos()
-	print (combos_result)
+#	var options_result = satisfaction_calculator.get_options()
+#	print (options_result)
+#	var products_result = satisfaction_calculator.get_products()
+#	print (products_result)
+#	var combos_result = satisfaction_calculator.get_complementary_combos()
+#	print (combos_result)
 	
+#	TODO: comprobar y corregir los errores que saca check_integrity()
+	satisfaction_calculator.check_integrity()
+	
+	price_calculation_tester_scene.set_satisfaction_calculator_ref(satisfaction_calculator)
+
+#TODO: Seguir con lo de PriceCalculationTester.tscn	
 #	
 ##	TODO: Preparar en Plotter un método add_func_ref_with_args para poder hacer lo siguiente
 #	var func_calc_satisf = funcref(self,"test_satisfaction")
@@ -191,18 +207,27 @@ func _ready():
 		var array_candy:Array = []
 		var array_chocolate:Array = []
 		var array_satisf_supplem:Array = []
+		var array_satisf_complem:Array = []
 		for x in range (0,10):
 #			var num_chocolate:int = x
-			var num_candy:int = x*10
-			var combidict:Dictionary = {"candy_savings":num_candy,"chocolate_savings":num_chocolate}
+			var num_candy:int = x
+#			var combidict:Dictionary = {"candy_savings":num_candy,"chocolate_savings":num_chocolate}
+			var combidict:Dictionary = {"candy_consumption":num_candy,"chocolate_consumption":num_chocolate,
+										"candy_savings":num_candy,"chocolate_savings":num_chocolate			
+										}
 			var satisf_supplem:float = satisfaction_calculator.calculate_satisf_of_combidict_from_supplementary_combos(combidict)
+			var satisf_complem:float = satisfaction_calculator.calculate_satisf_of_combidict_from_complementary_combos(combidict)
 			array_candy.append(Vector2(x,num_candy))
 			array_chocolate.append(Vector2(x,num_chocolate))
 			array_satisf_supplem.append(Vector2(x,satisf_supplem))
+			array_satisf_complem.append(Vector2(x,satisf_complem))
+			
 		plotter.add_point_group(1,array_candy,Color(1,0,0,0.9), "num candy")
 		plotter.add_point_group(2,array_chocolate,Color(0,1,0,0.9), "num chocolate")
 		plotter.add_point_group(3,array_satisf_supplem,Color(0,0,1,0.9), "suppl satisf")
+		plotter.add_point_group(4,array_satisf_complem,Color(1,1,0,0.9), "complem satisf")
 		
+#	satisfaction_calculator.print_info()	
 #	TODO
 #	Modificar parametros en funcion de calidad del producto como ahorro
 

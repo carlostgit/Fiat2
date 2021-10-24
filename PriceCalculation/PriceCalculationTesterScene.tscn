@@ -1,0 +1,142 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
+
+[node name="Control" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 2.0
+margin_bottom = 3.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsItemList" type="ItemList" parent="."]
+margin_left = 297.0
+margin_top = 10.0
+margin_right = 480.0
+margin_bottom = 78.0
+
+[node name="CompCombosItemList" type="ItemList" parent="."]
+margin_left = 296.0
+margin_top = 88.0
+margin_right = 480.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SupCombosItemList" type="ItemList" parent="."]
+margin_left = 296.0
+margin_top = 136.0
+margin_right = 480.0
+margin_bottom = 176.0
+
+[node name="SatisfCurvesForOptions" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.196078 )
+margin_left = 288.0
+margin_top = 192.0
+margin_right = 576.0
+margin_bottom = 264.0
+
+[node name="SatisfCurvesItemList" type="ItemList" parent="SatisfCurvesForOptions"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 192.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxSatisfSpinBox" type="SpinBox" parent="SatisfCurvesForOptions"]
+margin_left = 200.0
+margin_top = 8.0
+margin_right = 274.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SatisfAt0SpinBox" type="SpinBox" parent="SatisfCurvesForOptions"]
+margin_left = 200.0
+margin_top = 40.0
+margin_right = 274.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SatisfCurvesForCompCombos" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.196078 )
+margin_left = 288.0
+margin_top = 272.0
+margin_right = 576.0
+margin_bottom = 344.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SatisfCurvesForCompCombosItemList" type="ItemList" parent="SatisfCurvesForCompCombos"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 192.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxSatisfSpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
+margin_left = 200.0
+margin_top = 8.0
+margin_right = 274.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SatisfAt0SpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
+margin_left = 200.0
+margin_top = 40.0
+margin_right = 274.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SatisfCurvesForSupCombos" type="Panel" parent="."]
+self_modulate = Color( 1, 1, 1, 0.196078 )
+margin_left = 288.0
+margin_top = 352.0
+margin_right = 576.0
+margin_bottom = 424.0
+
+[node name="SatisfCurvesForSupCombosItemList" type="ItemList" parent="SatisfCurvesForSupCombos"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 192.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MaxSatisfSpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
+margin_left = 200.0
+margin_top = 8.0
+margin_right = 274.0
+margin_bottom = 32.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SatisfAt0SpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
+margin_left = 200.0
+margin_top = 40.0
+margin_right = 274.0
+margin_bottom = 64.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="item_selected" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_selected"]
+[connection signal="item_selected" from="SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList" to="." method="_on_SatisfCurvesForCompCombosItemList_item_selected"]
+[connection signal="item_selected" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_selected"]

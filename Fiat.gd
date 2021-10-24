@@ -8,7 +8,9 @@ extends Node2D
 #Testeo de scripts
 #const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 
+
 const PriceCalculationTester = preload("res://PriceCalculation/PriceCalculationTester.gd")
+
 
 #Fin de testeo de scripts
 
