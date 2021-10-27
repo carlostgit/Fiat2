@@ -25,17 +25,17 @@ func _ready():
 #	
 
 #	Plotter
-	var x_max:float = 10
-	var y_max:float = 10
-	var plotter:Plotter = Plotter.new(x_max,y_max)
-	plotter.set_size(Vector2(200,400))
-#	plotter.set_size(Vector2(400,500))
+#	var x_max:float = 10
+#	var y_max:float = 10
+#	var plotter:Plotter = Plotter.new(x_max,y_max)
+#	plotter.set_size(Vector2(200,400))
 
-	self.call_deferred("add_child",plotter)
+
+#	self.call_deferred("add_child",plotter)
 #
 
-	var test_funcref = funcref( plotter, "default_test_function")
-	plotter.add_func_ref(test_funcref,[],"test")
+#	var test_funcref = funcref( plotter, "default_test_function")
+#	plotter.add_func_ref(test_funcref,[],"test")
 #
 #	TODO (pseudocódigo)
 	var price_calc_interf:PriceCalculationInterface = PriceCalculationInterface.new()
@@ -167,65 +167,65 @@ func _ready():
 #			count += 1
 
 
-	if false:
-		var options:Array = satisfaction_calculator.get_options()
-		var option_points_dict:Dictionary = {}
-		for option in options:
-			option_points_dict[option] = []
-		
-		for i in range(150):
-#			var input_dict:Dictionary = {"candy":i}
-#			var options_output:Dictionary = trade_calculator.calculate_trade_for_combidict(input_dict)
-			var options_output:Dictionary = trade_calculator.calculate_best_combidict(i)
-#			var trade_product_dict = satisfaction_calculator.calculate_productdict_from_optiondict(options_output)
-			for option in options_output:
-				var vect2:Vector2 = Vector2(i,options_output[option])
-				option_points_dict[option].append(vect2)
-		
-		var count = 0
-		var color_r:float = 0.7
-		var color_g:float = 0.1
-		var color_b:float = 0.3
-		for option in option_points_dict:
-			color_r += 0.3
-			while color_r>1:
-				color_r -= 1
-			color_g += 0.4
-			while color_g>1:
-				color_g -= 1
-			color_b += 0.6
-			while color_b>1:
-				color_b -= 1
-			
-			plotter.add_point_group(count,option_points_dict[option], Color (color_r,color_g,color_b,0.9), option)
-			count += 1
+#	if false:
+#		var options:Array = satisfaction_calculator.get_options()
+#		var option_points_dict:Dictionary = {}
+#		for option in options:
+#			option_points_dict[option] = []
+#
+#		for i in range(150):
+##			var input_dict:Dictionary = {"candy":i}
+##			var options_output:Dictionary = trade_calculator.calculate_trade_for_combidict(input_dict)
+#			var options_output:Dictionary = trade_calculator.calculate_best_combidict(i)
+##			var trade_product_dict = satisfaction_calculator.calculate_productdict_from_optiondict(options_output)
+#			for option in options_output:
+#				var vect2:Vector2 = Vector2(i,options_output[option])
+#				option_points_dict[option].append(vect2)
+#
+#		var count = 0
+#		var color_r:float = 0.7
+#		var color_g:float = 0.1
+#		var color_b:float = 0.3
+#		for option in option_points_dict:
+#			color_r += 0.3
+#			while color_r>1:
+#				color_r -= 1
+#			color_g += 0.4
+#			while color_g>1:
+#				color_g -= 1
+#			color_b += 0.6
+#			while color_b>1:
+#				color_b -= 1
+#
+#			plotter.add_point_group(count,option_points_dict[option], Color (color_r,color_g,color_b,0.9), option)
+#			count += 1
 
 	
-	if true:
-#		var num_candy=5
-		var num_chocolate=5
-		var array_candy:Array = []
-		var array_chocolate:Array = []
-		var array_satisf_supplem:Array = []
-		var array_satisf_complem:Array = []
-		for x in range (0,10):
-#			var num_chocolate:int = x
-			var num_candy:int = x
-#			var combidict:Dictionary = {"candy_savings":num_candy,"chocolate_savings":num_chocolate}
-			var combidict:Dictionary = {"candy_consumption":num_candy,"chocolate_consumption":num_chocolate,
-										"candy_savings":num_candy,"chocolate_savings":num_chocolate			
-										}
-			var satisf_supplem:float = satisfaction_calculator.calculate_satisf_of_combidict_from_supplementary_combos(combidict)
-			var satisf_complem:float = satisfaction_calculator.calculate_satisf_of_combidict_from_complementary_combos(combidict)
-			array_candy.append(Vector2(x,num_candy))
-			array_chocolate.append(Vector2(x,num_chocolate))
-			array_satisf_supplem.append(Vector2(x,satisf_supplem))
-			array_satisf_complem.append(Vector2(x,satisf_complem))
-			
-		plotter.add_point_group(1,array_candy,Color(1,0,0,0.9), "num candy")
-		plotter.add_point_group(2,array_chocolate,Color(0,1,0,0.9), "num chocolate")
-		plotter.add_point_group(3,array_satisf_supplem,Color(0,0,1,0.9), "suppl satisf")
-		plotter.add_point_group(4,array_satisf_complem,Color(1,1,0,0.9), "complem satisf")
+#	if true:
+##		var num_candy=5
+#		var num_chocolate=5
+#		var array_candy:Array = []
+#		var array_chocolate:Array = []
+#		var array_satisf_supplem:Array = []
+#		var array_satisf_complem:Array = []
+#		for x in range (0,10):
+##			var num_chocolate:int = x
+#			var num_candy:int = x
+##			var combidict:Dictionary = {"candy_savings":num_candy,"chocolate_savings":num_chocolate}
+#			var combidict:Dictionary = {"candy_consumption":num_candy,"chocolate_consumption":num_chocolate,
+#										"candy_savings":num_candy,"chocolate_savings":num_chocolate			
+#										}
+#			var satisf_supplem:float = satisfaction_calculator.calculate_satisf_of_combidict_from_supplementary_combos(combidict)
+#			var satisf_complem:float = satisfaction_calculator.calculate_satisf_of_combidict_from_complementary_combos(combidict)
+#			array_candy.append(Vector2(x,num_candy))
+#			array_chocolate.append(Vector2(x,num_chocolate))
+#			array_satisf_supplem.append(Vector2(x,satisf_supplem))
+#			array_satisf_complem.append(Vector2(x,satisf_complem))
+#
+#		plotter.add_point_group(1,array_candy,Color(1,0,0,0.9), "num candy")
+#		plotter.add_point_group(2,array_chocolate,Color(0,1,0,0.9), "num chocolate")
+#		plotter.add_point_group(3,array_satisf_supplem,Color(0,0,1,0.9), "suppl satisf")
+#		plotter.add_point_group(4,array_satisf_complem,Color(1,1,0,0.9), "complem satisf")
 		
 #	satisfaction_calculator.print_info()	
 #	TODO

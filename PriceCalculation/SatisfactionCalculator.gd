@@ -149,6 +149,21 @@ func get_supplementary_combo_preference_at_0(combo_arg:String):
 		return _supplementary_combo_satisf_curve_dict[combo_arg].get_preference_at_0()	
 	return 0
 
+func get_satisfaction_curve_of_option(option_arg:String):
+	if _option_satisf_curve_dict.has(option_arg):
+		return _option_satisf_curve_dict[option_arg]
+	return null
+
+func get_satisfaction_curve_of_comp_combo(option_arg:String):
+	if _complementary_combo_satisf_curve_dict.has(option_arg):
+		return _complementary_combo_satisf_curve_dict[option_arg]
+	return null
+
+func get_satisfaction_curve_of_sup_combo(option_arg:String):
+	if _supplementary_combo_satisf_curve_dict.has(option_arg):
+		return _supplementary_combo_satisf_curve_dict[option_arg]
+	return null
+
 func increase_max_satisfaction_of_option(option_arg:String):
 	if _option_satisf_curve_dict.has(option_arg):
 		var current_max_satisf = _option_satisf_curve_dict[option_arg].get_maximum_satisf()	

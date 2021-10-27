@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
+[ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=2]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -137,6 +138,11 @@ margin_bottom = 64.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Plotter" parent="." instance=ExtResource( 2 )]
+[connection signal="item_activated" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_selected"]
+[connection signal="item_activated" from="SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList" to="." method="_on_SatisfCurvesForCompCombosItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList" to="." method="_on_SatisfCurvesForCompCombosItemList_item_selected"]
+[connection signal="item_activated" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_selected"]

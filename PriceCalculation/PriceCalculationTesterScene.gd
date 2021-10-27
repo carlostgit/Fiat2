@@ -69,27 +69,67 @@ func add_satisf_curve_for_comp_combo(satif_curve_arg:String):
 func add_satisf_curve_for_sup_combo(satif_curve_arg:String):
 	$SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.add_item(satif_curve_arg)	
 
+func draw_satisfaction_curve(satisf_curve_arg):
+	$Plotter.clear()
+	if satisf_curve_arg:
+		var test_funcref = funcref( satisf_curve_arg, "calculate_satifaction")
+		$Plotter.add_func_ref(test_funcref,[],"satisf")
 
 func _on_SatisfCurvesItemList_item_selected(index):
-	if (_satisfaction_calculator):
-		var option:String = $SatisfCurvesForOptions/SatisfCurvesItemList.get_item_text(index)
-		var max_satisf = _satisfaction_calculator.get_option_max_satisfaction(option)
-		$SatisfCurvesForOptions/MaxSatisfSpinBox.set_value(max_satisf)
-		var pref_at_0 = _satisfaction_calculator.get_option_preference_at_0(option)
-		$SatisfCurvesForOptions/SatisfAt0SpinBox.set_value(pref_at_0)
+	var option:String = $SatisfCurvesForOptions/SatisfCurvesItemList.get_item_text(index)
+	show_data_of_option(option)
 
 func _on_SatisfCurvesForCompCombosItemList_item_selected(index):
-	if (_satisfaction_calculator):
-		var option:String = $SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.get_item_text(index)
-		var max_satisf = _satisfaction_calculator.get_complementary_combo_max_satisfaction(option)		
-		$SatisfCurvesForCompCombos/MaxSatisfSpinBox.set_value(max_satisf)
-		var pref_at_0 = _satisfaction_calculator.get_complementary_combo_preference_at_0(option)
-		$SatisfCurvesForCompCombos/SatisfAt0SpinBox.set_value(pref_at_0)
+	var option:String = $SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.get_item_text(index)
+	show_data_of_comp_combo(option)
 
 func _on_SatisfCurvesForSupCombosItemList_item_selected(index):
+	var option:String = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_item_text(index)
+	show_data_of_sup_combo(option)
+
+func _on_SatisfCurvesItemList_item_activated(index):
+	var option:String = $SatisfCurvesForOptions/SatisfCurvesItemList.get_item_text(index)
+	show_data_of_option(option)
+
+func _on_SatisfCurvesForCompCombosItemList_item_activated(index):
+	var option:String = $SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.get_item_text(index)
+	show_data_of_comp_combo(option)
+
+func _on_SatisfCurvesForSupCombosItemList_item_activated(index):
+	var option:String = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_item_text(index)
+	show_data_of_sup_combo(option)
+
+func show_data_of_option(option_arg:String):	
 	if (_satisfaction_calculator):
-		var option:String = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_item_text(index)
-		var max_satisf = _satisfaction_calculator.get_supplementary_combo_max_satisfaction(option)		
+		var max_satisf = _satisfaction_calculator.get_option_max_satisfaction(option_arg)
+		$SatisfCurvesForOptions/MaxSatisfSpinBox.set_value(max_satisf)
+		var pref_at_0 = _satisfaction_calculator.get_option_preference_at_0(option_arg)
+		$SatisfCurvesForOptions/SatisfAt0SpinBox.set_value(pref_at_0)
+		
+		var satisf_curve = _satisfaction_calculator.get_satisfaction_curve_of_option(option_arg)		
+		draw_satisfaction_curve(satisf_curve)
+
+func show_data_of_comp_combo(comp_combo_arg:String):	
+	if (_satisfaction_calculator):
+		var max_satisf = _satisfaction_calculator.get_complementary_combo_max_satisfaction(comp_combo_arg)		
+		$SatisfCurvesForCompCombos/MaxSatisfSpinBox.set_value(max_satisf)
+		var pref_at_0 = _satisfaction_calculator.get_complementary_combo_preference_at_0(comp_combo_arg)
+		$SatisfCurvesForCompCombos/SatisfAt0SpinBox.set_value(pref_at_0)
+
+		var satisf_curve = _satisfaction_calculator.get_satisfaction_curve_of_comp_combo(comp_combo_arg)		
+		draw_satisfaction_curve(satisf_curve)
+
+func show_data_of_sup_combo(sup_combo_arg:String):	
+	if (_satisfaction_calculator):
+		var max_satisf = _satisfaction_calculator.get_supplementary_combo_max_satisfaction(sup_combo_arg)
 		$SatisfCurvesForSupCombos/MaxSatisfSpinBox.set_value(max_satisf)
-		var pref_at_0 = _satisfaction_calculator.get_supplementary_combo_preference_at_0(option)
+		var pref_at_0 = _satisfaction_calculator.get_supplementary_combo_preference_at_0(sup_combo_arg)
 		$SatisfCurvesForSupCombos/SatisfAt0SpinBox.set_value(pref_at_0)
+		
+		var satisf_curve = _satisfaction_calculator.get_satisfaction_curve_of_sup_combo(sup_combo_arg)		
+		draw_satisfaction_curve(satisf_curve)
+
+
+
+
+

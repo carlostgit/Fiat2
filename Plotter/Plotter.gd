@@ -67,12 +67,14 @@ func clear():
 	_groupid_color.clear()
 	_groupid_label.clear()
 
+	update()
 	
 func clear_group_of_points(groupid_arg:int):
 	_groupid_points.erase(groupid_arg)
 	_groupid_color.erase(groupid_arg)
 	_groupid_label.erase(groupid_arg)
-
+	
+	update()
 
 func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "", color_arg:Color = Color(0,1,1))->void:
 	_func_array.append(func_ref_arg)
@@ -82,6 +84,7 @@ func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "
 	
 	_func_color_dict[func_ref_arg]=color_arg
 
+	update()	
 
 func default_test_function(x_arg:float) -> float:
 	var y:float = x_arg*x_arg
@@ -110,6 +113,7 @@ func updated_size()->void:
 	
 	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
 
+	update()
 
 func _init(x_max_arg:float=5, y_max_arg:float=10, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=40, points_calculated_arg=100):
 	self.connect("item_rect_changed",self,"updated_size")
@@ -291,7 +295,8 @@ func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color 
 
 func add_point(point_arg:Vector2):
 	_points_to_draw.append(point_arg)
-
+	
+	update()
 
 func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1,1), label_arg = ""):
 	
@@ -299,6 +304,7 @@ func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1
 	_groupid_color[group_id] = color_arg
 	_groupid_label[group_id] = label_arg
 
+	update()
 
 func draw_points(color_arg:Color = Color(0,1,0)):
 	
