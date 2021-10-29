@@ -59,7 +59,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SatisfAt0SpinBox" type="SpinBox" parent="SatisfCurvesForOptions"]
+[node name="PrefAt0SpinBox" type="SpinBox" parent="SatisfCurvesForOptions"]
 margin_left = 200.0
 margin_top = 40.0
 margin_right = 274.0
@@ -96,7 +96,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SatisfAt0SpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
+[node name="PrefAt0SpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
 margin_left = 200.0
 margin_top = 40.0
 margin_right = 274.0
@@ -130,7 +130,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SatisfAt0SpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
+[node name="PrefAt0SpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
 margin_left = 200.0
 margin_top = 40.0
 margin_right = 274.0
@@ -142,6 +142,8 @@ __meta__ = {
 [node name="Plotter" parent="." instance=ExtResource( 2 )]
 [connection signal="item_activated" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_selected"]
+[connection signal="value_changed" from="SatisfCurvesForOptions/MaxSatisfSpinBox" to="." method="_on_MaxSatisfSpinBox_value_changed"]
+[connection signal="value_changed" from="SatisfCurvesForOptions/PrefAt0SpinBox" to="." method="_on_PrefAt0SpinBox_value_changed"]
 [connection signal="item_activated" from="SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList" to="." method="_on_SatisfCurvesForCompCombosItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList" to="." method="_on_SatisfCurvesForCompCombosItemList_item_selected"]
 [connection signal="item_activated" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_activated"]

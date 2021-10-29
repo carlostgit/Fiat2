@@ -99,13 +99,42 @@ func calculate_satifaction_of_sweets_consumption(quantity_arg:float) -> float:
 #func _process(delta):
 #	pass
 
-func _init():
+func _init(satisfaction_calculator_arg:Control = null):
 	init_default_satisfaction()
-	
+	if (satisfaction_calculator_arg):
+		copy(satisfaction_calculator_arg)
+
+		
+func copy(satisfaction_calculator_arg:Control):
+#	El método duplicate() de Object no hace bien la copia de mis variables miembro Dictionary
+	_complementary_combos = (satisfaction_calculator_arg.get_complementary_combos()).duplicate()
+	_supplementary_combos = (satisfaction_calculator_arg.get_supplementary_combos()).duplicate()
+	_products = (satisfaction_calculator_arg.get_products()).duplicate()
+	_option_satisf_curve_dict = (satisfaction_calculator_arg.get_satisfaction_curves_of_options()).duplicate()
+	_complementary_combo_satisf_curve_dict = (satisfaction_calculator_arg.get_satisfaction_curves_of_complementary_combos()).duplicate()
+	_supplementary_combo_satisf_curve_dict = (satisfaction_calculator_arg.get_satisfaction_curves_of_supplementary_combos()).duplicate()
+	_options = (satisfaction_calculator_arg.get_options()).duplicate()
+	_option_product_dict = (satisfaction_calculator_arg.get_option_product_dict()).duplicate()
+
+
 func reset()->void:
 	_option_satisf_curve_dict.clear()
 	_complementary_combo_satisf_curve_dict.clear()
 	_supplementary_combo_satisf_curve_dict.clear()
+
+#func copy()->Control:
+#
+#	var satisfaction_calculator_copy = (self.get_script()).new()
+#	satisfaction_calculator_copy.set_complementary = _complementary_combos.duplicate()
+##	_supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
+##	_products = Globals._products
+##
+##	_option_satisf_curve_dict:Dictionary = {}
+##	_complementary_combo_satisf_curve_dict:Dictionary = {}
+##	_supplementary_combo_satisf_curve_dict:Dictionary = {}
+##	_options:Array = ["candy_savings","chocolate_savings",
+##	_option_product_dict:Dictionary = { "candy_savings": "candy",
+#	return satisfaction_calculator_copy
 
 func set_preference_for_chocolate():
 	reset()
@@ -479,6 +508,9 @@ func set_options(options_arg:Array):
 func set_option_product_dict(option_product_dict_arg:Dictionary):
 
 	self._option_product_dict = option_product_dict_arg
+	
+func get_option_product_dict():
+	return self._option_product_dict
 
 #func get_diminishing_returns_factor(quantity_arg:float) -> float:
 #	#Voy a llamar al termino "1-(1/(0.25*x+1)^2)" Diminishing Returns Factor
