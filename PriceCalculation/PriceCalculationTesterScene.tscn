@@ -87,7 +87,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MaxSatisfSpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
+[node name="MaxSatisfForCompCombosSpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
 margin_left = 200.0
 margin_top = 8.0
 margin_right = 274.0
@@ -96,7 +96,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PrefAt0SpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
+[node name="PrefAt0ForCompCombosSpinBox" type="SpinBox" parent="SatisfCurvesForCompCombos"]
 margin_left = 200.0
 margin_top = 40.0
 margin_right = 274.0
@@ -121,7 +121,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MaxSatisfSpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
+[node name="MaxSatisfForSupCombosSpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
 margin_left = 200.0
 margin_top = 8.0
 margin_right = 274.0
@@ -130,7 +130,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PrefAt0SpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
+[node name="PrefAt0ForSupCombosSpinBox" type="SpinBox" parent="SatisfCurvesForSupCombos"]
 margin_left = 200.0
 margin_top = 40.0
 margin_right = 274.0
@@ -146,5 +146,9 @@ __meta__ = {
 [connection signal="value_changed" from="SatisfCurvesForOptions/PrefAt0SpinBox" to="." method="_on_PrefAt0SpinBox_value_changed"]
 [connection signal="item_activated" from="SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList" to="." method="_on_SatisfCurvesForCompCombosItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList" to="." method="_on_SatisfCurvesForCompCombosItemList_item_selected"]
+[connection signal="value_changed" from="SatisfCurvesForCompCombos/MaxSatisfForCompCombosSpinBox" to="." method="_on_MaxSatisfForCompCombosSpinBox_value_changed"]
+[connection signal="value_changed" from="SatisfCurvesForCompCombos/PrefAt0ForCompCombosSpinBox" to="." method="_on_PrefAt0ForCompCombosSpinBox_value_changed"]
 [connection signal="item_activated" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_selected"]
+[connection signal="value_changed" from="SatisfCurvesForSupCombos/MaxSatisfForSupCombosSpinBox" to="." method="_on_MaxSatisfForSupCombosSpinBox_value_changed"]
+[connection signal="value_changed" from="SatisfCurvesForSupCombos/PrefAt0ForSupCombosSpinBox" to="." method="_on_PrefAt0ForSupCombosSpinBox_value_changed"]

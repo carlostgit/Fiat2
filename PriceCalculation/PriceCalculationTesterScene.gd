@@ -79,6 +79,7 @@ func draw_satisfaction_curve(satisf_curve_arg, curve_name_arg:String = "satisf")
 		var test_funcref = funcref( satisf_curve_arg, "calculate_satifaction")
 		$Plotter.add_func_ref(test_funcref,[],curve_name_arg)
 
+
 func _on_SatisfCurvesItemList_item_selected(index):
 	var option:String = $SatisfCurvesForOptions/SatisfCurvesItemList.get_item_text(index)
 	show_data_of_option(option)
@@ -103,6 +104,7 @@ func _on_SatisfCurvesForSupCombosItemList_item_activated(index):
 	var option:String = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_item_text(index)
 	show_data_of_sup_combo(option)
 
+
 func show_data_of_option(option_arg:String):	
 	if (_satisfaction_calculator_copy):
 		var max_satisf = _satisfaction_calculator_copy.get_option_max_satisfaction(option_arg)
@@ -113,12 +115,13 @@ func show_data_of_option(option_arg:String):
 		var satisf_curve = _satisfaction_calculator_copy.get_satisfaction_curve_of_option(option_arg)		
 		draw_satisfaction_curve(satisf_curve,"satisf. "+option_arg)
 
+
 func show_data_of_comp_combo(comp_combo_arg:String):	
 	if (_satisfaction_calculator_copy):
 		var max_satisf = _satisfaction_calculator_copy.get_complementary_combo_max_satisfaction(comp_combo_arg)		
-		$SatisfCurvesForCompCombos/MaxSatisfSpinBox.set_value(max_satisf)
+		$SatisfCurvesForCompCombos/MaxSatisfForCompCombosSpinBox.set_value(max_satisf)
 		var pref_at_0 = _satisfaction_calculator_copy.get_complementary_combo_preference_at_0(comp_combo_arg)
-		$SatisfCurvesForCompCombos/PrefAt0SpinBox.set_value(pref_at_0)
+		$SatisfCurvesForCompCombos/PrefAt0ForCompCombosSpinBox.set_value(pref_at_0)
 
 		var satisf_curve = _satisfaction_calculator_copy.get_satisfaction_curve_of_comp_combo(comp_combo_arg)		
 		draw_satisfaction_curve(satisf_curve, "satisf. "+comp_combo_arg)
@@ -126,16 +129,12 @@ func show_data_of_comp_combo(comp_combo_arg:String):
 func show_data_of_sup_combo(sup_combo_arg:String):	
 	if (_satisfaction_calculator_copy):
 		var max_satisf = _satisfaction_calculator_copy.get_supplementary_combo_max_satisfaction(sup_combo_arg)
-		$SatisfCurvesForSupCombos/MaxSatisfSpinBox.set_value(max_satisf)
+		$SatisfCurvesForSupCombos/MaxSatisfForSupCombosSpinBox.set_value(max_satisf)
 		var pref_at_0 = _satisfaction_calculator_copy.get_supplementary_combo_preference_at_0(sup_combo_arg)
-		$SatisfCurvesForSupCombos/PrefAt0SpinBox.set_value(pref_at_0)
+		$SatisfCurvesForSupCombos/PrefAt0ForSupCombosSpinBox.set_value(pref_at_0)
 		
 		var satisf_curve = _satisfaction_calculator_copy.get_satisfaction_curve_of_sup_combo(sup_combo_arg)		
 		draw_satisfaction_curve(satisf_curve, "satisf. "+sup_combo_arg)
-		
-
-
-
 
 func _on_MaxSatisfSpinBox_value_changed(value):
 	if value >= 0:
@@ -150,9 +149,6 @@ func _on_MaxSatisfSpinBox_value_changed(value):
 				satisf_curve.set_maximum_satisf(value)
 				$Plotter.update()	
 
-
-
-
 func _on_PrefAt0SpinBox_value_changed(value):
 	if value >= 0:
 		var max_satisf = value
@@ -161,6 +157,62 @@ func _on_PrefAt0SpinBox_value_changed(value):
 			var first_select_index = selected_items[0]
 			var option = $SatisfCurvesForOptions/SatisfCurvesItemList.get_item_text(first_select_index)
 			var option_satisf_curve_dict = _satisfaction_calculator_copy.get_option_satisf_curve_dict()
+			if (option_satisf_curve_dict.has(option)):
+				var satisf_curve = option_satisf_curve_dict.get(option)				
+				satisf_curve.set_preference_at_0(value)
+				$Plotter.update()	
+
+func _on_MaxSatisfForCompCombosSpinBox_value_changed(value):
+	if value >= 0:
+		var max_satisf = value
+		var selected_items = $SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.get_selected_items()
+		if (selected_items.size()):
+			var first_select_index = selected_items[0]
+			var option = $SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.get_item_text(first_select_index)
+			var option_satisf_curve_dict = _satisfaction_calculator_copy.get_complementary_combo_satisf_curve_dict()
+			if (option_satisf_curve_dict.has(option)):
+				var satisf_curve = option_satisf_curve_dict.get(option)
+				satisf_curve.set_maximum_satisf(value)
+				$Plotter.update()	
+
+
+func _on_PrefAt0ForCompCombosSpinBox_value_changed(value):
+	if value >= 0:
+		var max_satisf = value
+		var selected_items = $SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.get_selected_items()
+		if (selected_items.size()):
+			var first_select_index = selected_items[0]
+			var option = $SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.get_item_text(first_select_index)
+			var option_satisf_curve_dict = _satisfaction_calculator_copy.get_complementary_combo_satisf_curve_dict()
+			if (option_satisf_curve_dict.has(option)):
+				var satisf_curve = option_satisf_curve_dict.get(option)				
+				satisf_curve.set_preference_at_0(value)
+				$Plotter.update()	
+
+
+
+func _on_MaxSatisfForSupCombosSpinBox_value_changed(value):
+	if value >= 0:
+		var max_satisf = value
+		var selected_items = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_selected_items()
+		if (selected_items.size()):
+			var first_select_index = selected_items[0]
+			var option = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_item_text(first_select_index)
+			var option_satisf_curve_dict = _satisfaction_calculator_copy.get_supplementary_combo_satisf_curve_dict()
+			if (option_satisf_curve_dict.has(option)):
+				var satisf_curve = option_satisf_curve_dict.get(option)
+				satisf_curve.set_maximum_satisf(value)
+				$Plotter.update()	
+
+
+func _on_PrefAt0ForSupCombosSpinBox_value_changed(value):
+	if value >= 0:
+		var max_satisf = value
+		var selected_items = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_selected_items()
+		if (selected_items.size()):
+			var first_select_index = selected_items[0]
+			var option = $SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.get_item_text(first_select_index)
+			var option_satisf_curve_dict = _satisfaction_calculator_copy.get_supplementary_combo_satisf_curve_dict()
 			if (option_satisf_curve_dict.has(option)):
 				var satisf_curve = option_satisf_curve_dict.get(option)				
 				satisf_curve.set_preference_at_0(value)
