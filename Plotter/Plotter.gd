@@ -55,6 +55,31 @@ func _ready():
 
 	pass
 
+func recalculate_member_variables():
+
+	_canvas_item = self
+	var param_min_width = 10
+	_width = self.get_rect().size.x - _left_margin - _right_margin
+	
+	if _width < param_min_width:
+		_width = param_min_width
+	
+	_width_per_calculated_point = _width/float(_total_num_of_calculated_points)
+	
+	_x_zoom = self._width/self._max_x
+	
+	var y_max:float = _max_y
+	_height = self.get_rect().size.y - _top_margin - _bottom_margin
+	var param_min_height = 10
+	if _height < param_min_height:
+		_height = param_min_height
+
+	_y_zoom = _height/y_max
+	
+	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
+
+	update()
+
 
 func clear():
 	_func_array.clear()
@@ -68,6 +93,7 @@ func clear():
 	_groupid_label.clear()
 
 	update()
+
 	
 func clear_group_of_points(groupid_arg:int):
 	_groupid_points.erase(groupid_arg)
@@ -92,35 +118,15 @@ func default_test_function(x_arg:float) -> float:
 
 
 func updated_size()->void:
-	_canvas_item = self
-	var param_min_width = 10
-	_width = self.get_rect().size.x - _left_margin - _right_margin
-	
-	if _width < param_min_width:
-		_width = param_min_width
-	
-	_width_per_calculated_point = _width/float(_total_num_of_calculated_points)
-	
-	_x_zoom = self._width/self._max_x
-	
-	var y_max:float = _max_y
-	_height = self.get_rect().size.y - _top_margin - _bottom_margin
-	var param_min_height = 10
-	if _height < param_min_height:
-		_height = param_min_height
-
-	_y_zoom = _height/y_max
-	
-	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
-
+	recalculate_member_variables()
 	update()
 
-func _init(x_max_arg:float=5, y_max_arg:float=10, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=40, points_calculated_arg=100):
+func _init(x_max_arg:float=5, y_max_arg:float=10, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=80, points_calculated_arg=100):
 	self.connect("item_rect_changed",self,"updated_size")
 	init(x_max_arg, y_max_arg, left_margin_arg, right_margin_arg, top_margin_arg, bottom_margin_arg, points_calculated_arg)
 
 
-func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=40, points_calculated_arg=100):
+func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=80, points_calculated_arg=100):
 
 	_max_x = x_max_arg 
 	_max_y = y_max_arg
@@ -373,3 +379,11 @@ func draw_point_groups():
 #
 		_canvas_item.draw_string(_font,label_point_position,label,color)
 		
+
+func set_max_x_axis_value(max_value:float):
+	_max_x = max_value
+	updated_size()
+
+func set_max_y_axis_value(max_value:float):
+	_max_y = max_value
+	updated_size()

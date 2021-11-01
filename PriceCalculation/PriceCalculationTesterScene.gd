@@ -74,10 +74,12 @@ func add_satisf_curve_for_sup_combo(satif_curve_arg:String):
 	$SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.add_item(satif_curve_arg)	
 
 func draw_satisfaction_curve(satisf_curve_arg, curve_name_arg:String = "satisf"):
-	$Plotter.clear()
+#	$Plotter.clear()
 	if satisf_curve_arg:
 		var test_funcref = funcref( satisf_curve_arg, "calculate_satifaction")
-		$Plotter.add_func_ref(test_funcref,[],curve_name_arg)
+#		$Plotter.add_func_ref(test_funcref,[],curve_name_arg)
+		$Plotter/GraphsControl.add_graph(test_funcref,curve_name_arg)
+		
 
 
 func _on_SatisfCurvesItemList_item_selected(index):
@@ -217,3 +219,12 @@ func _on_PrefAt0ForSupCombosSpinBox_value_changed(value):
 				var satisf_curve = option_satisf_curve_dict.get(option)				
 				satisf_curve.set_preference_at_0(value)
 				$Plotter.update()	
+
+
+func _on_XMaxSpinBox_value_changed(value):
+	$Plotter.set_max_x_axis_value(value)
+
+
+
+func _on_YMaxSpinBox_value_changed(value):
+	$Plotter.set_max_y_axis_value(value)

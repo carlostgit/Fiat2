@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
 [ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=2]
+[ext_resource path="res://PriceCalculation/GraphsControl.gd" type="Script" id=3]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -140,6 +141,41 @@ __meta__ = {
 }
 
 [node name="Plotter" parent="." instance=ExtResource( 2 )]
+
+[node name="XMaxSpinBox" type="SpinBox" parent="Plotter"]
+margin_left = 200.0
+margin_top = 288.0
+margin_right = 274.0
+margin_bottom = 312.0
+min_value = 5.0
+max_value = 200.0
+value = 5.0
+
+[node name="YMaxSpinBox" type="SpinBox" parent="Plotter"]
+margin_right = 74.0
+margin_bottom = 24.0
+min_value = 10.0
+max_value = 200.0
+value = 10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GraphsControl" type="Control" parent="Plotter"]
+margin_top = 272.0
+margin_right = 136.0
+margin_bottom = 312.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ClearButton" type="Button" parent="Plotter/GraphsControl"]
+margin_left = 72.0
+margin_top = 8.0
+margin_right = 116.0
+margin_bottom = 28.0
+text = "Clear"
 [connection signal="item_activated" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_selected"]
 [connection signal="value_changed" from="SatisfCurvesForOptions/MaxSatisfSpinBox" to="." method="_on_MaxSatisfSpinBox_value_changed"]
@@ -152,3 +188,6 @@ __meta__ = {
 [connection signal="item_selected" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_selected"]
 [connection signal="value_changed" from="SatisfCurvesForSupCombos/MaxSatisfForSupCombosSpinBox" to="." method="_on_MaxSatisfForSupCombosSpinBox_value_changed"]
 [connection signal="value_changed" from="SatisfCurvesForSupCombos/PrefAt0ForSupCombosSpinBox" to="." method="_on_PrefAt0ForSupCombosSpinBox_value_changed"]
+[connection signal="value_changed" from="Plotter/XMaxSpinBox" to="." method="_on_XMaxSpinBox_value_changed"]
+[connection signal="value_changed" from="Plotter/YMaxSpinBox" to="." method="_on_YMaxSpinBox_value_changed"]
+[connection signal="pressed" from="Plotter/GraphsControl/ClearButton" to="Plotter/GraphsControl" method="_on_ClearButton_pressed"]
