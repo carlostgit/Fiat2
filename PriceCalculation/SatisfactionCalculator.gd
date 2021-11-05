@@ -551,6 +551,26 @@ func get_complementary_combos()->Dictionary:
 func get_supplementary_combos()->Dictionary:
 	return self._supplementary_combos
 	
+func get_options_from_complementary_combo(comp_combo_arg:String)->Array:
+	var options:Array = []
+	if self._complementary_combos.has(comp_combo_arg):
+		options = self._complementary_combos[comp_combo_arg]
+	return options
+
+func get_options_from_supplementary_combo(sup_combo_arg:String)->Array:
+	var options:Array = []
+	if self._supplementary_combos.has(sup_combo_arg):
+		options = self._supplementary_combos[sup_combo_arg].keys()
+	return options
+
+func get_weighted_options_from_supplementary_combo(sup_combo_arg:String)->Dictionary:
+	var options_weight:Dictionary = {}
+	if self._supplementary_combos.has(sup_combo_arg):
+		options_weight = self._supplementary_combos[sup_combo_arg]
+	return options_weight
+
+
+	
 func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictionary:
 	var product_dict:Dictionary = {}
 	for option in option_dict_arg:

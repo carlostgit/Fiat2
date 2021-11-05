@@ -29,11 +29,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="OptionsOfCompComboItemList" type="ItemList" parent="."]
+margin_left = 488.0
+margin_top = 88.0
+margin_right = 680.0
+margin_bottom = 128.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="SupCombosItemList" type="ItemList" parent="."]
 margin_left = 296.0
 margin_top = 136.0
 margin_right = 480.0
 margin_bottom = 176.0
+
+[node name="OptionsOfSupComboItemList" type="ItemList" parent="."]
+margin_left = 488.0
+margin_top = 136.0
+margin_right = 680.0
+margin_bottom = 176.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WeightOfOptionOfSupComboSpinBox" type="SpinBox" parent="."]
+margin_left = 696.0
+margin_top = 144.0
+margin_right = 770.0
+margin_bottom = 168.0
+step = 0.01
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SatisfCurvesForOptions" type="Panel" parent="."]
 self_modulate = Color( 1, 1, 1, 0.196078 )
@@ -141,6 +169,7 @@ __meta__ = {
 }
 
 [node name="Plotter" parent="." instance=ExtResource( 2 )]
+margin_bottom = 368.0
 
 [node name="XMaxSpinBox" type="SpinBox" parent="Plotter"]
 margin_left = 200.0
@@ -162,20 +191,28 @@ __meta__ = {
 }
 
 [node name="GraphsControl" type="Control" parent="Plotter"]
-margin_top = 272.0
-margin_right = 136.0
-margin_bottom = 312.0
+margin_top = 312.0
+margin_right = 264.0
+margin_bottom = 368.0
 script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ClearButton" type="Button" parent="Plotter/GraphsControl"]
-margin_left = 72.0
-margin_top = 8.0
-margin_right = 116.0
-margin_bottom = 28.0
+margin_left = 216.0
+margin_top = 32.0
+margin_right = 260.0
+margin_bottom = 52.0
 text = "Clear"
+
+[node name="GraphsItemList" type="ItemList" parent="Plotter/GraphsControl"]
+margin_top = 16.0
+margin_right = 216.0
+margin_bottom = 56.0
+[connection signal="item_selected" from="CompCombosItemList" to="." method="_on_CompCombosItemList_item_selected"]
+[connection signal="item_selected" from="SupCombosItemList" to="." method="_on_SupCombosItemList_item_selected"]
+[connection signal="item_selected" from="OptionsOfSupComboItemList" to="." method="_on_OptionsOfSupComboItemList_item_selected"]
 [connection signal="item_activated" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_selected"]
 [connection signal="value_changed" from="SatisfCurvesForOptions/MaxSatisfSpinBox" to="." method="_on_MaxSatisfSpinBox_value_changed"]
@@ -191,3 +228,4 @@ text = "Clear"
 [connection signal="value_changed" from="Plotter/XMaxSpinBox" to="." method="_on_XMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="Plotter/YMaxSpinBox" to="." method="_on_YMaxSpinBox_value_changed"]
 [connection signal="pressed" from="Plotter/GraphsControl/ClearButton" to="Plotter/GraphsControl" method="_on_ClearButton_pressed"]
+[connection signal="item_selected" from="Plotter/GraphsControl/GraphsItemList" to="Plotter/GraphsControl" method="_on_GraphsItemList_item_selected"]

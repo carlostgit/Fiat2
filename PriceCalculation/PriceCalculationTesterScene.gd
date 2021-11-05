@@ -224,7 +224,32 @@ func _on_PrefAt0ForSupCombosSpinBox_value_changed(value):
 func _on_XMaxSpinBox_value_changed(value):
 	$Plotter.set_max_x_axis_value(value)
 
-
-
 func _on_YMaxSpinBox_value_changed(value):
 	$Plotter.set_max_y_axis_value(value)
+
+func _on_CompCombosItemList_item_selected(index):
+	var comp_combo:String = $CompCombosItemList.get_item_text(index)
+	var options:Array = _satisfaction_calculator_copy.get_options_from_complementary_combo(comp_combo)
+	$OptionsOfCompComboItemList.clear()
+	for option in options:
+		$OptionsOfCompComboItemList.add_item(option)
+	
+func _on_SupCombosItemList_item_selected(index):
+	var sup_combo:String = $SupCombosItemList.get_item_text(index)
+	var options:Array = _satisfaction_calculator_copy.get_options_from_supplementary_combo(sup_combo)
+	$OptionsOfSupComboItemList.clear()
+	for option in options:
+		$OptionsOfSupComboItemList.add_item(option)		
+#		get_weighted_options_from_supplementary_combo
+
+func _on_OptionsOfSupComboItemList_item_selected(index):
+	var option:String = $OptionsOfSupComboItemList.get_item_text(index)
+	var selected_combos_indexes:PoolIntArray = $SupCombosItemList.get_selected_items()
+	if false==selected_combos_indexes.empty():
+		var selected_combo_index:int = selected_combos_indexes[0]
+		var comp_combo:String = $SupCombosItemList.get_item_text(selected_combo_index)
+		var weighted_options:Dictionary = _satisfaction_calculator_copy.get_weighted_options_from_supplementary_combo(comp_combo)
+		if weighted_options.has(option):
+			var weight:float = weighted_options[option]
+			$WeightOfOptionOfSupComboSpinBox.set_value(weight)
+	

@@ -387,3 +387,8 @@ func set_max_x_axis_value(max_value:float):
 func set_max_y_axis_value(max_value:float):
 	_max_y = max_value
 	updated_size()
+
+func set_func_color(func_ref_arg:FuncRef, color_arg:FuncRef):
+	if self._func_color_dict.has(func_ref_arg):
+		self._func_color_dict[func_ref_arg] = color_arg
+		
