@@ -242,7 +242,7 @@ func _on_SupCombosItemList_item_selected(index):
 		$OptionsOfSupComboItemList.add_item(option)		
 #		get_weighted_options_from_supplementary_combo
 
-func _on_OptionsOfSupComboItemList_item_selected(index):
+func _on_OptionsOfSupComboItemList_item_selected(index):	
 	var option:String = $OptionsOfSupComboItemList.get_item_text(index)
 	var selected_combos_indexes:PoolIntArray = $SupCombosItemList.get_selected_items()
 	if false==selected_combos_indexes.empty():
@@ -253,3 +253,78 @@ func _on_OptionsOfSupComboItemList_item_selected(index):
 			var weight:float = weighted_options[option]
 			$WeightOfOptionOfSupComboSpinBox.set_value(weight)
 	
+
+
+func _on_OptionsItemList_nothing_selected():
+	$DeleteOption.set_disabled(true) 
+	
+
+
+func _on_OptionsItemList_item_selected(index):
+	$DeleteOption.set_disabled(false)
+
+
+func _on_DeleteOption_pressed():
+	var select:Array = $OptionsItemList.get_selected_items()
+	if false == select.empty():
+		$OptionsItemList.remove_item(select[0])
+	
+func _on_AddOption_pressed():
+	$NewOptionAcceptDialog.show_modal(true)
+#	$NewOptionWindowDialog.popup()
+#	pass # Replace with function body.
+
+#func _on_NewOptionWindowDialog_ok_pressed(text):
+#	for i in range(0,$OptionsItemList.get_item_count()):
+#		if text==$OptionsItemList.get_item_text(i):
+#			return
+#
+#	$OptionsItemList.add_item(text)
+#	pass # Replace with function body.
+
+
+
+
+func _on_NewOptionAcceptDialog_ok_pressed(text):
+	for i in range(0,$OptionsItemList.get_item_count()):
+		if text==$OptionsItemList.get_item_text(i):
+			return
+	$OptionsItemList.add_item(text)
+
+
+
+func _on_DeleteCompCombo_pressed():
+	var select:Array = $CompCombosItemList.get_selected_items()
+	if false == select.empty():
+		$CompCombosItemList.remove_item(select[0])
+	
+
+
+func _on_AddCompCombo_pressed():
+	$NewCompComboAcceptDialog.show_modal(true)
+#	pass # Replace with function body.
+
+
+func _on_NewCompComboAcceptDialog_ok_pressed(text):
+	for i in range(0,$CompCombosItemList.get_item_count()):
+		if text==$CompCombosItemList.get_item_text(i):
+			return
+	$CompCombosItemList.add_item(text)
+
+
+
+func _on_DeleteOptionOfCompCombo_pressed():
+	var select:Array = $OptionsOfCompComboItemList.get_selected_items()
+	if false == select.empty():
+		$OptionsOfCompComboItemList.remove_item(select[0])
+
+
+func _on_AddOptionOfCompCombo_pressed():
+	$NewOptionOfCompComboAcceptDialog.show_modal(true)
+
+
+func _on_NewOptionOfCompComboAcceptDialog_ok_pressed(text):
+	for i in range(0,$OptionsOfCompComboItemList.get_item_count()):
+		if text==$OptionsOfCompComboItemList.get_item_text(i):
+			return
+	$OptionsOfCompComboItemList.add_item(text)
