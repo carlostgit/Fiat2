@@ -26,23 +26,31 @@ func _ready():
 func update_satisfaction_calculator_data():
 	var satisf_calc:SatisfactionCalculator = _satisfaction_calculator_copy
 	
+	$OptionsItemList.clear()
 	for option in satisf_calc.get_options():
-		add_option(option)
+		$OptionsItemList.add_item(option)
 	
+	$CompCombosItemList.clear()
 	for comp_combo in satisf_calc.get_complementary_combos():
-		add_comp_combo(comp_combo)
-	
+		$CompCombosItemList.add_item(comp_combo)
+		
+	$SupCombosItemList.clear()
 	for sup_combo in satisf_calc.get_supplementary_combos():
-		add_sup_combo(sup_combo)
+		$SupCombosItemList.add_item(sup_combo)
 	
+	$SatisfCurvesForOptions/SatisfCurvesItemList.clear()	
 	for satisf_curve in satisf_calc.get_satisfaction_curves_of_options():
-		add_satisf_curve(satisf_curve)
+		$SatisfCurvesForOptions/SatisfCurvesItemList.add_item(satisf_curve)	
 
+	$SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.clear()
 	for satisf_curve in satisf_calc.get_satisfaction_curves_of_complementary_combos():
-		add_satisf_curve_for_comp_combo(satisf_curve)
+		$SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.add_item(satisf_curve)	
 	
+	$SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.clear()
 	for satisf_curve in satisf_calc.get_satisfaction_curves_of_supplementary_combos():
-		add_satisf_curve_for_sup_combo(satisf_curve)
+		$SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.add_item(satisf_curve)
+
+
 	
 #	TODO seguir por aquí
 
@@ -55,23 +63,23 @@ func set_satisfaction_calculator_ref(satisf_calculator_arg):
 	update_satisfaction_calculator_data()
 
 
-func add_option(option_arg:String):
-	$OptionsItemList.add_item(option_arg)
-
-func add_comp_combo(comp_combo_arg:String):
-	$CompCombosItemList.add_item(comp_combo_arg)
-	
-func add_sup_combo(sup_combo_arg:String):
-	$SupCombosItemList.add_item(sup_combo_arg)
-	
-func add_satisf_curve(satif_curve_arg:String):
-	$SatisfCurvesForOptions/SatisfCurvesItemList.add_item(satif_curve_arg)	
-
-func add_satisf_curve_for_comp_combo(satif_curve_arg:String):
-	$SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.add_item(satif_curve_arg)	
-
-func add_satisf_curve_for_sup_combo(satif_curve_arg:String):
-	$SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.add_item(satif_curve_arg)	
+#func add_option(option_arg:String):
+#	$OptionsItemList.add_item(option_arg)
+#
+#func add_comp_combo(comp_combo_arg:String):
+#	$CompCombosItemList.add_item(comp_combo_arg)
+#
+#func add_sup_combo(sup_combo_arg:String):
+#	$SupCombosItemList.add_item(sup_combo_arg)
+#
+#func add_satisf_curve(satif_curve_arg:String):
+#	$SatisfCurvesForOptions/SatisfCurvesItemList.add_item(satif_curve_arg)	
+#
+#func add_satisf_curve_for_comp_combo(satif_curve_arg:String):
+#	$SatisfCurvesForCompCombos/SatisfCurvesForCompCombosItemList.add_item(satif_curve_arg)	
+#
+#func add_satisf_curve_for_sup_combo(satif_curve_arg:String):
+#	$SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList.add_item(satif_curve_arg)	
 
 func draw_satisfaction_curve(satisf_curve_arg, curve_name_arg:String = "satisf"):
 #	$Plotter.clear()
@@ -267,7 +275,10 @@ func _on_OptionsItemList_item_selected(index):
 func _on_DeleteOption_pressed():
 	var select:Array = $OptionsItemList.get_selected_items()
 	if false == select.empty():
-		$OptionsItemList.remove_item(select[0])
+#		$OptionsItemList.remove_item(select[0])
+		var item_to_erase:String = $OptionsItemList.get_item_text(select[0])
+		_satisfaction_calculator_copy.erase_option(item_to_erase)
+		update_satisfaction_calculator_data()
 	
 func _on_AddOption_pressed():
 	$NewOptionAcceptDialog.show_modal(true)
@@ -289,7 +300,10 @@ func _on_NewOptionAcceptDialog_ok_pressed(text):
 	for i in range(0,$OptionsItemList.get_item_count()):
 		if text==$OptionsItemList.get_item_text(i):
 			return
-	$OptionsItemList.add_item(text)
+	_satisfaction_calculator_copy.add_option(text)
+	update_satisfaction_calculator_data()
+#	$OptionsItemList.add_item(text)
+
 
 
 
@@ -328,3 +342,17 @@ func _on_NewOptionOfCompComboAcceptDialog_ok_pressed(text):
 		if text==$OptionsOfCompComboItemList.get_item_text(i):
 			return
 	$OptionsOfCompComboItemList.add_item(text)
+
+
+#TODO: Hacer que al añadir y borrar opciones, se actualice _satisfaction_calculator_copy
+#
+#func save_satisfaction_calculator_data():
+#
+##	Options:
+#	var options_array:Array = []
+#
+#	for i in range(0,$OptionsItemList.get_item_count()):
+#		options_array.append($OptionsItemList.get_item_text(i))
+#
+#	_satisfaction_calculator_copy.set_options(options_array)
+#En construcción	

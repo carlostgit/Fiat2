@@ -505,6 +505,12 @@ func get_product_from_option(product_arg:String):
 func set_options(options_arg:Array):
 	self._options=options_arg
 
+func add_option(option_arg:String):
+	self._options.append(option_arg)
+
+func erase_option(option_arg:String):
+	self._options.erase(option_arg)
+
 func set_option_product_dict(option_product_dict_arg:Dictionary):
 
 	self._option_product_dict = option_product_dict_arg
