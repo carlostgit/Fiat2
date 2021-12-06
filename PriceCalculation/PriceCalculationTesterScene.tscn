@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
 [ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://PriceCalculation/NewOptionAcceptDialog.gd" type="Script" id=4]
 [ext_resource path="res://PriceCalculation/NewCompComboAcceptDialog.gd" type="Script" id=5]
 [ext_resource path="res://PriceCalculation/NewOptionOfCompComboAcceptDialog.gd" type="Script" id=6]
+[ext_resource path="res://PriceCalculation/NewSupComboAcceptDialog.gd" type="Script" id=7]
+[ext_resource path="res://PriceCalculation/NewOptionOfSupComboAcceptDialog.gd" type="Script" id=8]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -62,11 +64,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="DeleteSupCombo" type="Button" parent="."]
+margin_left = 280.0
+margin_top = 144.0
+margin_right = 312.0
+margin_bottom = 168.0
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AddCompCombo" type="Button" parent="."]
 margin_left = 280.0
 margin_top = 112.0
 margin_right = 312.0
 margin_bottom = 136.0
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddSupCombo" type="Button" parent="."]
+margin_left = 280.0
+margin_top = 168.0
+margin_right = 317.0
+margin_bottom = 192.0
 text = "Add"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -91,11 +113,31 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="DeleteOptionOfSupCombo" type="Button" parent="."]
+margin_left = 528.0
+margin_top = 144.0
+margin_right = 560.0
+margin_bottom = 168.0
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="AddOptionOfCompCombo" type="Button" parent="."]
 margin_left = 528.0
 margin_top = 112.0
 margin_right = 565.0
 margin_bottom = 136.0
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddOptionOfSupCombo" type="Button" parent="."]
+margin_left = 528.0
+margin_top = 168.0
+margin_right = 565.0
+margin_bottom = 192.0
 text = "Add"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -275,7 +317,6 @@ margin_right = 216.0
 margin_bottom = 56.0
 
 [node name="NewOptionAcceptDialog" type="AcceptDialog" parent="."]
-visible = true
 margin_left = 144.0
 margin_top = 24.0
 margin_right = 280.0
@@ -310,6 +351,24 @@ margin_top = 8.0
 margin_right = 221.0
 margin_bottom = 44.0
 
+[node name="NewSupComboAcceptDialog" type="AcceptDialog" parent="."]
+visible = true
+margin_left = 56.0
+margin_top = 152.0
+margin_right = 285.0
+margin_bottom = 232.0
+window_title = "New supplementary combo"
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewSupComboLineEdit" type="LineEdit" parent="NewSupComboAcceptDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 221.0
+margin_bottom = 44.0
+
 [node name="NewOptionOfCompComboAcceptDialog" type="AcceptDialog" parent="."]
 visible = true
 margin_left = 248.0
@@ -327,17 +386,40 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 266.0
 margin_bottom = 44.0
+
+[node name="NewOptionOfSupComboAcceptDialog" type="AcceptDialog" parent="."]
+visible = true
+margin_left = 248.0
+margin_top = 152.0
+margin_right = 522.0
+margin_bottom = 232.0
+window_title = "New supplementary combo option"
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewOptionOfSupComboLineEdit" type="LineEdit" parent="NewOptionOfSupComboAcceptDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 266.0
+margin_bottom = 44.0
 [connection signal="item_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_item_selected"]
 [connection signal="nothing_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_nothing_selected"]
 [connection signal="pressed" from="DeleteOption" to="." method="_on_DeleteOption_pressed"]
 [connection signal="pressed" from="AddOption" to="." method="_on_AddOption_pressed"]
 [connection signal="item_selected" from="CompCombosItemList" to="." method="_on_CompCombosItemList_item_selected"]
 [connection signal="pressed" from="DeleteCompCombo" to="." method="_on_DeleteCompCombo_pressed"]
+[connection signal="pressed" from="DeleteSupCombo" to="." method="_on_DeleteSupCombo_pressed"]
 [connection signal="pressed" from="AddCompCombo" to="." method="_on_AddCompCombo_pressed"]
+[connection signal="pressed" from="AddSupCombo" to="." method="_on_AddSupCombo_pressed"]
 [connection signal="pressed" from="DeleteOptionOfCompCombo" to="." method="_on_DeleteOptionOfCompCombo_pressed"]
+[connection signal="pressed" from="DeleteOptionOfSupCombo" to="." method="_on_DeleteOptionOfSupCombo_pressed"]
 [connection signal="pressed" from="AddOptionOfCompCombo" to="." method="_on_AddOptionOfCompCombo_pressed"]
+[connection signal="pressed" from="AddOptionOfSupCombo" to="." method="_on_AddOptionOfSupCombo_pressed"]
 [connection signal="item_selected" from="SupCombosItemList" to="." method="_on_SupCombosItemList_item_selected"]
 [connection signal="item_selected" from="OptionsOfSupComboItemList" to="." method="_on_OptionsOfSupComboItemList_item_selected"]
+[connection signal="value_changed" from="WeightOfOptionOfSupComboSpinBox" to="." method="_on_WeightOfOptionOfSupComboSpinBox_value_changed"]
 [connection signal="item_activated" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_activated"]
 [connection signal="item_selected" from="SatisfCurvesForOptions/SatisfCurvesItemList" to="." method="_on_SatisfCurvesItemList_item_selected"]
 [connection signal="value_changed" from="SatisfCurvesForOptions/MaxSatisfSpinBox" to="." method="_on_MaxSatisfSpinBox_value_changed"]
@@ -360,6 +442,12 @@ margin_bottom = 44.0
 [connection signal="confirmed" from="NewCompComboAcceptDialog" to="NewCompComboAcceptDialog" method="_on_NewCompComboAcceptDialog_confirmed"]
 [connection signal="ok_pressed" from="NewCompComboAcceptDialog" to="." method="_on_NewCompComboAcceptDialog_ok_pressed"]
 [connection signal="visibility_changed" from="NewCompComboAcceptDialog" to="NewCompComboAcceptDialog" method="_on_NewCompComboAcceptDialog_visibility_changed"]
+[connection signal="confirmed" from="NewSupComboAcceptDialog" to="NewSupComboAcceptDialog" method="_on_NewSupComboAcceptDialog_confirmed"]
+[connection signal="ok_pressed" from="NewSupComboAcceptDialog" to="." method="_on_NewSupComboAcceptDialog_ok_pressed"]
+[connection signal="visibility_changed" from="NewSupComboAcceptDialog" to="NewSupComboAcceptDialog" method="_on_NewSupComboAcceptDialog_visibility_changed"]
 [connection signal="confirmed" from="NewOptionOfCompComboAcceptDialog" to="NewOptionOfCompComboAcceptDialog" method="_on_NewOptionOfCompComboAcceptDialog_confirmed"]
 [connection signal="ok_pressed" from="NewOptionOfCompComboAcceptDialog" to="." method="_on_NewOptionOfCompComboAcceptDialog_ok_pressed"]
 [connection signal="visibility_changed" from="NewOptionOfCompComboAcceptDialog" to="NewOptionOfCompComboAcceptDialog" method="_on_NewOptionOfCompComboAcceptDialog_visibility_changed"]
+[connection signal="confirmed" from="NewOptionOfSupComboAcceptDialog" to="NewOptionOfSupComboAcceptDialog" method="_on_NewOptionOfSupComboAcceptDialog_confirmed"]
+[connection signal="ok_pressed" from="NewOptionOfSupComboAcceptDialog" to="." method="_on_NewOptionOfSupComboAcceptDialog_ok_pressed"]
+[connection signal="visibility_changed" from="NewOptionOfSupComboAcceptDialog" to="NewOptionOfSupComboAcceptDialog" method="_on_NewOptionOfSupComboAcceptDialog_visibility_changed"]

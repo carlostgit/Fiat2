@@ -277,10 +277,30 @@ func set_complementary_combo(combo_arg:String,options_arg:Array):
 		assert(option in _options)
 	_complementary_combos[combo_arg]=options_arg
 
-func set_supplementary_combo(combo_arg:String,options_arg:Array):
+func erase_complementary_combo(combo_arg:String):
+	_complementary_combos.erase(combo_arg)
+
+func erase_option_in_comp_combo(combo_arg:String,option_arg:String):
+	if _complementary_combos.has(combo_arg):
+		_complementary_combos[combo_arg].erase(option_arg)
+
+func add_option_in_comp_combo(combo_arg:String,option_arg:String):
+	if _complementary_combos.has(combo_arg):
+		if (option_arg in _options):			
+			_complementary_combos[combo_arg].append(option_arg)
+
+
+func set_supplementary_combo(combo_arg:String,options_arg:Dictionary):
 	for option in options_arg:
 		assert(option in _options)
 	_supplementary_combos[combo_arg]=options_arg
+
+func erase_supplementary_combo(combo_arg:String):
+	_supplementary_combos.erase(combo_arg)
+
+func erase_option_in_sup_combo(combo_arg:String,option_arg:String):
+	if _supplementary_combos.has(combo_arg):
+		_supplementary_combos[combo_arg].erase(option_arg)
 
 
 func set_satisfaction_curve_for_complementary_combo(combo_arg:String, satisfaction_curve_arg:SatisfactionCurve):
@@ -575,8 +595,30 @@ func get_weighted_options_from_supplementary_combo(sup_combo_arg:String)->Dictio
 		options_weight = self._supplementary_combos[sup_combo_arg]
 	return options_weight
 
-
+func add_option_in_sup_combo(combo_arg:String,option_arg:String):
+	add_option_with_weight_in_sup_combo(combo_arg,option_arg,1.0)
 	
+func add_option_with_weight_in_sup_combo(combo_arg:String,option_arg:String,weight_of_option_arg:float):
+	if _supplementary_combos.has(combo_arg):
+		if (option_arg in _options):
+			var param_weigh_of_new_option:float = weight_of_option_arg
+			if false == _supplementary_combos[combo_arg].has(option_arg):
+				_supplementary_combos[combo_arg][option_arg] = param_weigh_of_new_option
+				
+func set_weight_of_option_in_sup_combo(combo_arg:String,option_arg:String,weight_of_option_arg:float):
+	if _supplementary_combos.has(combo_arg):
+		var param_weigh_of_new_option:float = weight_of_option_arg
+		if _supplementary_combos[combo_arg].has(option_arg):
+			_supplementary_combos[combo_arg][option_arg] = param_weigh_of_new_option
+
+func get_weight_of_option_in_sup_combo(combo_arg:String,option_arg:String)->float:
+	if _supplementary_combos.has(combo_arg):
+#			var param_weigh_of_new_option:float = weight_of_option_arg
+			if _supplementary_combos[combo_arg].has(option_arg):
+				return _supplementary_combos[combo_arg][option_arg]
+	return 0.0
+
+
 func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictionary:
 	var product_dict:Dictionary = {}
 	for option in option_dict_arg:

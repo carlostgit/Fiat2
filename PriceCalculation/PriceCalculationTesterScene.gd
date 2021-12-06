@@ -1,3 +1,4 @@
+
 extends Control
 
 
@@ -282,19 +283,6 @@ func _on_DeleteOption_pressed():
 	
 func _on_AddOption_pressed():
 	$NewOptionAcceptDialog.show_modal(true)
-#	$NewOptionWindowDialog.popup()
-#	pass # Replace with function body.
-
-#func _on_NewOptionWindowDialog_ok_pressed(text):
-#	for i in range(0,$OptionsItemList.get_item_count()):
-#		if text==$OptionsItemList.get_item_text(i):
-#			return
-#
-#	$OptionsItemList.add_item(text)
-#	pass # Replace with function body.
-
-
-
 
 func _on_NewOptionAcceptDialog_ok_pressed(text):
 	for i in range(0,$OptionsItemList.get_item_count()):
@@ -302,17 +290,16 @@ func _on_NewOptionAcceptDialog_ok_pressed(text):
 			return
 	_satisfaction_calculator_copy.add_option(text)
 	update_satisfaction_calculator_data()
-#	$OptionsItemList.add_item(text)
-
-
 
 
 func _on_DeleteCompCombo_pressed():
 	var select:Array = $CompCombosItemList.get_selected_items()
 	if false == select.empty():
-		$CompCombosItemList.remove_item(select[0])
-	
-
+		var item_to_erase:String = $CompCombosItemList.get_item_text(select[0])
+		_satisfaction_calculator_copy.erase_complementary_combo(item_to_erase)
+		update_satisfaction_calculator_data()
+		$OptionsOfCompComboItemList.clear()
+		
 
 func _on_AddCompCombo_pressed():
 	$NewCompComboAcceptDialog.show_modal(true)
@@ -323,14 +310,27 @@ func _on_NewCompComboAcceptDialog_ok_pressed(text):
 	for i in range(0,$CompCombosItemList.get_item_count()):
 		if text==$CompCombosItemList.get_item_text(i):
 			return
-	$CompCombosItemList.add_item(text)
+#	$CompCombosItemList.add_item(text)
+	_satisfaction_calculator_copy.set_complementary_combo(text,[])
+	update_satisfaction_calculator_data()
 
 
 
 func _on_DeleteOptionOfCompCombo_pressed():
 	var select:Array = $OptionsOfCompComboItemList.get_selected_items()
-	if false == select.empty():
-		$OptionsOfCompComboItemList.remove_item(select[0])
+	var select_combo:Array = $CompCombosItemList.get_selected_items()
+	if false == select.empty() and false == select_combo.empty():
+#		$OptionsOfCompComboItemList.remove_item(select[0])
+		var item_to_erase:String = $OptionsOfCompComboItemList.get_item_text(select[0])
+		var combo_of_items_to_erase:String = $CompCombosItemList.get_item_text(select_combo[0])
+		_satisfaction_calculator_copy.erase_option_in_comp_combo(combo_of_items_to_erase,item_to_erase)
+		update_satisfaction_calculator_data()
+		$CompCombosItemList.select(select_combo[0])
+		var options:Array = _satisfaction_calculator_copy.get_options_from_complementary_combo(combo_of_items_to_erase)
+		$OptionsOfCompComboItemList.clear()
+		for option in options:
+			$OptionsOfCompComboItemList.add_item(option)
+	
 
 
 func _on_AddOptionOfCompCombo_pressed():
@@ -342,17 +342,91 @@ func _on_NewOptionOfCompComboAcceptDialog_ok_pressed(text):
 		if text==$OptionsOfCompComboItemList.get_item_text(i):
 			return
 	$OptionsOfCompComboItemList.add_item(text)
+	
+	var select_combo:Array = $CompCombosItemList.get_selected_items()
+	if false == select_combo.empty():
+		var combo_of_options_to_add:String = $CompCombosItemList.get_item_text(select_combo[0])
+		_satisfaction_calculator_copy.add_option_in_comp_combo(combo_of_options_to_add,text)
+
+		update_satisfaction_calculator_data()
+		$CompCombosItemList.select(select_combo[0])
+		var options:Array = _satisfaction_calculator_copy.get_options_from_complementary_combo(combo_of_options_to_add)
+		$OptionsOfCompComboItemList.clear()
+		for option in options:
+			$OptionsOfCompComboItemList.add_item(option)
+		
 
 
-#TODO: Hacer que al añadir y borrar opciones, se actualice _satisfaction_calculator_copy
-#
-#func save_satisfaction_calculator_data():
-#
-##	Options:
-#	var options_array:Array = []
-#
-#	for i in range(0,$OptionsItemList.get_item_count()):
-#		options_array.append($OptionsItemList.get_item_text(i))
-#
-#	_satisfaction_calculator_copy.set_options(options_array)
-#En construcción	
+
+func _on_DeleteSupCombo_pressed():
+	var select:Array = $SupCombosItemList.get_selected_items()
+	if false == select.empty():
+		var item_to_erase:String = $SupCombosItemList.get_item_text(select[0])
+		_satisfaction_calculator_copy.erase_supplementary_combo(item_to_erase)
+		update_satisfaction_calculator_data()
+		$OptionsOfSupComboItemList.clear()
+
+
+func _on_NewSupComboAcceptDialog_ok_pressed(text):
+	for i in range(0,$SupCombosItemList.get_item_count()):
+		if text==$SupCombosItemList.get_item_text(i):
+			return
+#	$CompCombosItemList.add_item(text)
+	_satisfaction_calculator_copy.set_supplementary_combo(text,{})
+	update_satisfaction_calculator_data()
+
+
+func _on_AddSupCombo_pressed():
+	$NewSupComboAcceptDialog.show_modal(true)
+
+
+func _on_DeleteOptionOfSupCombo_pressed():
+	var select:Array = $OptionsOfSupComboItemList.get_selected_items()
+	var select_combo:Array = $SupCombosItemList.get_selected_items()
+	if false == select.empty() and false == select_combo.empty():
+#		$OptionsOfCompComboItemList.remove_item(select[0])
+		var item_to_erase:String = $OptionsOfSupComboItemList.get_item_text(select[0])
+		var combo_of_items_to_erase:String = $SupCombosItemList.get_item_text(select_combo[0])
+		_satisfaction_calculator_copy.erase_option_in_sup_combo(combo_of_items_to_erase,item_to_erase)
+		update_satisfaction_calculator_data()
+		$SupCombosItemList.select(select_combo[0])
+		var options:Array = _satisfaction_calculator_copy.get_options_from_supplementary_combo(combo_of_items_to_erase)
+		$OptionsOfSupComboItemList.clear()
+		for option in options:
+			$OptionsOfSupComboItemList.add_item(option)
+
+
+func _on_AddOptionOfSupCombo_pressed():
+	$NewOptionOfSupComboAcceptDialog.show_modal(true)
+
+
+func _on_NewOptionOfSupComboAcceptDialog_ok_pressed(text):
+	for i in range(0,$OptionsOfSupComboItemList.get_item_count()):
+		if text==$OptionsOfSupComboItemList.get_item_text(i):
+			return
+	$OptionsOfSupComboItemList.add_item(text)
+	
+	var select_combo:Array = $SupCombosItemList.get_selected_items()
+	if false == select_combo.empty():
+		var combo_of_options_to_add:String = $SupCombosItemList.get_item_text(select_combo[0])
+		_satisfaction_calculator_copy.add_option_in_sup_combo(combo_of_options_to_add,text)
+
+		update_satisfaction_calculator_data()
+		$SupCombosItemList.select(select_combo[0])
+		var options:Array = _satisfaction_calculator_copy.get_options_from_supplementary_combo(combo_of_options_to_add)
+		$OptionsOfSupComboItemList.clear()
+		for option in options:
+			$OptionsOfSupComboItemList.add_item(option)
+
+
+func _on_WeightOfOptionOfSupComboSpinBox_value_changed(value):
+	var select_combo:Array = $SupCombosItemList.get_selected_items()
+	var select_option:Array = $OptionsOfSupComboItemList.get_selected_items()
+	if false == select_combo.empty() and false == select_option.empty():
+		var combo_text:String = $SupCombosItemList.get_item_text(select_combo[0])
+		var option_text:String = $OptionsOfSupComboItemList.get_item_text(select_option[0])
+		_satisfaction_calculator_copy.set_weight_of_option_in_sup_combo(combo_text,option_text,value)
+		update_satisfaction_calculator_data()
+		$SupCombosItemList.select(select_combo[0])
+		$OptionsOfSupComboItemList.select(select_option[0])
+#		var value_debug:float = _satisfaction_calculator_copy.get_weight_of_option_in_sup_combo(combo_text,option_text)
