@@ -404,6 +404,13 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 266.0
 margin_bottom = 44.0
+
+[node name="SaveButton" type="Button" parent="."]
+margin_left = 648.0
+margin_top = 296.0
+margin_right = 712.0
+margin_bottom = 320.0
+text = "Save"
 [connection signal="item_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_item_selected"]
 [connection signal="nothing_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_nothing_selected"]
 [connection signal="pressed" from="DeleteOption" to="." method="_on_DeleteOption_pressed"]
@@ -451,3 +458,4 @@ margin_bottom = 44.0
 [connection signal="confirmed" from="NewOptionOfSupComboAcceptDialog" to="NewOptionOfSupComboAcceptDialog" method="_on_NewOptionOfSupComboAcceptDialog_confirmed"]
 [connection signal="ok_pressed" from="NewOptionOfSupComboAcceptDialog" to="." method="_on_NewOptionOfSupComboAcceptDialog_ok_pressed"]
 [connection signal="visibility_changed" from="NewOptionOfSupComboAcceptDialog" to="NewOptionOfSupComboAcceptDialog" method="_on_NewOptionOfSupComboAcceptDialog_visibility_changed"]
+[connection signal="pressed" from="SaveButton" to="." method="_on_SaveButton_pressed"]

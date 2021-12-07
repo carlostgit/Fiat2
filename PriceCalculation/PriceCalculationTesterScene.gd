@@ -430,3 +430,44 @@ func _on_WeightOfOptionOfSupComboSpinBox_value_changed(value):
 		$SupCombosItemList.select(select_combo[0])
 		$OptionsOfSupComboItemList.select(select_option[0])
 #		var value_debug:float = _satisfaction_calculator_copy.get_weight_of_option_in_sup_combo(combo_text,option_text)
+
+
+func _on_SaveButton_pressed():
+	var saved_dict = self._satisfaction_calculator_copy.save()
+	
+	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
+	satisfaction_calculator_new.from_dict(saved_dict)
+	
+	var saved_dict_new = satisfaction_calculator_new.save()
+
+#	print("Original:")
+#	print(saved_dict)
+#	print("Nuevo:")
+#	print(saved_dict_new)
+
+	var save_game = File.new()
+	save_game.open("user://savegame.save", File.WRITE)
+	var json:String = to_json(saved_dict_new)
+#	print("JSON")
+#	print(json)
+	save_game.store_line(json)
+	save_game.close()
+	
+	var save_game_new = File.new()
+	if not save_game_new.file_exists("user://savegame.save"):
+		return
+	save_game_new.open("user://savegame.save", File.READ)
+	var loaded_string:String = ""
+#	while save_game_new.get_position() < save_game_new.get_len():
+#		# Get the saved dictionary from the next line in the save file
+#		loaded_string += save_game_new.get_line()
+#
+	loaded_string = save_game_new.get_as_text()
+
+	var loaded_dict:Dictionary = parse_json(loaded_string)
+	print("loaded_dict:")
+	print(loaded_dict)
+	save_game_new.close()
+	
+#	pass # Replace with function body.
+

@@ -713,3 +713,83 @@ func check_integrity():
 	if 0==num_errors_options_without_satisf_curve:
 		print("OK: All options with satisf curve")
 	
+
+
+func save()->Dictionary:
+	
+	var save_dict:Dictionary = {}
+	
+	save_dict["_options"] = _options
+	save_dict["_option_product_dict"] = _option_product_dict
+	save_dict["_complementary_combos"] = _complementary_combos
+	save_dict["_supplementary_combos"] = _supplementary_combos
+
+	var otion_satisf_curv:Dictionary={}
+	for option in _option_satisf_curve_dict.keys():
+		var sat_curv_dict:Dictionary = _option_satisf_curve_dict[option].to_dict()
+		otion_satisf_curv[option] = sat_curv_dict
+	save_dict["_option_satisf_curve_dict"] = otion_satisf_curv
+
+	var comp_combo_satisf_curv:Dictionary={}
+	for option in _complementary_combo_satisf_curve_dict.keys():
+		var sat_curv_dict:Dictionary = _complementary_combo_satisf_curve_dict[option].to_dict()
+		comp_combo_satisf_curv[option] = sat_curv_dict
+	save_dict["_complementary_combo_satisf_curve_dict"] = comp_combo_satisf_curv
+
+	var sup_combo_satisf_curv:Dictionary={}
+	for option in _supplementary_combo_satisf_curve_dict.keys():
+		var sat_curv_dict:Dictionary = _supplementary_combo_satisf_curve_dict[option].to_dict()
+		sup_combo_satisf_curv[option] = sat_curv_dict
+	save_dict["_supplementary_combo_satisf_curve_dict"] = sup_combo_satisf_curv
+	
+#	print(to_json(save_dict))
+	
+	return save_dict
+
+func from_dict(saved_dict:Dictionary):
+	for dic_key in saved_dict:
+
+		
+		if dic_key == "_options":
+			_options.clear()
+			_options = saved_dict[dic_key]
+
+		if dic_key == "_option_product_dict":
+			_option_product_dict.clear()
+			_option_product_dict = saved_dict[dic_key]
+
+		if dic_key == "_complementary_combos":
+			_complementary_combos.clear()
+			_complementary_combos = saved_dict[dic_key]
+
+		if dic_key == "_supplementary_combos":
+			_supplementary_combos.clear()
+			_supplementary_combos = saved_dict[dic_key]
+
+		if dic_key == "_option_satisf_curve_dict":
+			_option_satisf_curve_dict.clear()
+			var option_satisf:Dictionary = saved_dict[dic_key]
+			for option in option_satisf.keys():
+				var satisf_curve:SatisfactionCurve = SatisfactionCurve.new()
+				satisf_curve.from_dict(option_satisf[option])
+				_option_satisf_curve_dict[option] = satisf_curve
+
+		
+		if dic_key == "_complementary_combo_satisf_curve_dict":
+			_complementary_combo_satisf_curve_dict.clear()
+			var option_satisf:Dictionary = saved_dict[dic_key]
+			for option in option_satisf.keys():
+				var satisf_curve:SatisfactionCurve = SatisfactionCurve.new()
+				satisf_curve.from_dict(option_satisf[option])
+				_complementary_combo_satisf_curve_dict[option] = satisf_curve
+
+		if dic_key == "_supplementary_combo_satisf_curve_dict":
+			_supplementary_combo_satisf_curve_dict.clear()
+			var option_satisf:Dictionary = saved_dict[dic_key]
+			for option in option_satisf.keys():
+				var satisf_curve:SatisfactionCurve = SatisfactionCurve.new()
+				satisf_curve.from_dict(option_satisf[option])
+				_supplementary_combo_satisf_curve_dict[option] = satisf_curve
+
+
+
