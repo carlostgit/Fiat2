@@ -469,5 +469,32 @@ func _on_SaveButton_pressed():
 	print(loaded_dict)
 	save_game_new.close()
 	
+#	TODO hacer el load y save
 #	pass # Replace with function body.
 
+
+
+func _on_LoadButton_pressed():
+	$LoadFileDialog.set_current_dir("user://")
+	$LoadFileDialog.set_current_path("user://")
+	
+#	$LoadFileDialog.show_modal(true)
+	$LoadFileDialog.popup()
+#	pass # Replace with function body.
+
+
+func _on_LoadFileDialog_file_selected(path):
+	var save_game_new = File.new()
+	if not save_game_new.file_exists(path):
+		return
+	save_game_new.open(path, File.READ)
+	var loaded_string:String = save_game_new.get_as_text()
+
+	var loaded_dict:Dictionary = parse_json(loaded_string)
+	print("loaded_dict:")
+	print(loaded_dict)
+	save_game_new.close()
+	
+	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
+	satisfaction_calculator_new.from_dict(loaded_dict)
+	
