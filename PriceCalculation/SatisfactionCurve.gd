@@ -95,8 +95,8 @@ func set_maximum_satisf(maximum_satisf_arg:float):
 
 func to_dict()->Dictionary:
 	var dict:Dictionary = {}
-	dict["_param_preference_at_0"] = 2.16
-	dict["_maximum_satisf"] = 10.0
+	dict["_param_preference_at_0"] = _param_preference_at_0
+	dict["_maximum_satisf"] = _maximum_satisf
 	return dict
 
 func from_dict(dict_arg:Dictionary):

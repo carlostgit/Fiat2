@@ -158,7 +158,10 @@ func _on_MaxSatisfSpinBox_value_changed(value):
 			if (option_satisf_curve_dict.has(option)):
 				var satisf_curve = option_satisf_curve_dict.get(option)
 				satisf_curve.set_maximum_satisf(value)
-				$Plotter.update()	
+				$Plotter.update()
+				_satisfaction_calculator_copy.set_satisfaction_curve(option,satisf_curve)
+#				print(_satisfaction_calculator_copy.get_option_max_satisfaction(option))
+
 
 func _on_PrefAt0SpinBox_value_changed(value):
 	if value >= 0:
@@ -171,7 +174,8 @@ func _on_PrefAt0SpinBox_value_changed(value):
 			if (option_satisf_curve_dict.has(option)):
 				var satisf_curve = option_satisf_curve_dict.get(option)				
 				satisf_curve.set_preference_at_0(value)
-				$Plotter.update()	
+				$Plotter.update()
+				_satisfaction_calculator_copy.set_satisfaction_curve(option,satisf_curve)
 
 func _on_MaxSatisfForCompCombosSpinBox_value_changed(value):
 	if value >= 0:
@@ -184,7 +188,8 @@ func _on_MaxSatisfForCompCombosSpinBox_value_changed(value):
 			if (option_satisf_curve_dict.has(option)):
 				var satisf_curve = option_satisf_curve_dict.get(option)
 				satisf_curve.set_maximum_satisf(value)
-				$Plotter.update()	
+				$Plotter.update()
+				_satisfaction_calculator_copy.set_satisfaction_curve_for_complementary_combo(option,satisf_curve)
 
 
 func _on_PrefAt0ForCompCombosSpinBox_value_changed(value):
@@ -199,7 +204,7 @@ func _on_PrefAt0ForCompCombosSpinBox_value_changed(value):
 				var satisf_curve = option_satisf_curve_dict.get(option)				
 				satisf_curve.set_preference_at_0(value)
 				$Plotter.update()	
-
+				_satisfaction_calculator_copy.set_satisfaction_curve_for_complementary_combo(option,satisf_curve)
 
 
 func _on_MaxSatisfForSupCombosSpinBox_value_changed(value):
@@ -214,7 +219,7 @@ func _on_MaxSatisfForSupCombosSpinBox_value_changed(value):
 				var satisf_curve = option_satisf_curve_dict.get(option)
 				satisf_curve.set_maximum_satisf(value)
 				$Plotter.update()	
-
+				_satisfaction_calculator_copy.set_satisfaction_curve_for_supplementary_combo(option,satisf_curve)
 
 func _on_PrefAt0ForSupCombosSpinBox_value_changed(value):
 	if value >= 0:
@@ -228,6 +233,7 @@ func _on_PrefAt0ForSupCombosSpinBox_value_changed(value):
 				var satisf_curve = option_satisf_curve_dict.get(option)				
 				satisf_curve.set_preference_at_0(value)
 				$Plotter.update()	
+				_satisfaction_calculator_copy.set_satisfaction_curve_for_supplementary_combo(option,satisf_curve)
 
 
 func _on_XMaxSpinBox_value_changed(value):
@@ -434,14 +440,17 @@ func _on_WeightOfOptionOfSupComboSpinBox_value_changed(value):
 
 func _on_SaveButton_pressed():
 	var saved_dict = self._satisfaction_calculator_copy.save()
+
+	print("chocolate_consumption:")
+	print(_satisfaction_calculator_copy.get_option_max_satisfaction("chocolate_consumption"))
 	
 	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
 	satisfaction_calculator_new.from_dict(saved_dict)
 	
 	var saved_dict_new = satisfaction_calculator_new.save()
 
-#	print("Original:")
-#	print(saved_dict)
+	print("Original:")
+	print(saved_dict)
 #	print("Nuevo:")
 #	print(saved_dict_new)
 
@@ -498,3 +507,7 @@ func _on_LoadFileDialog_file_selected(path):
 	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
 	satisfaction_calculator_new.from_dict(loaded_dict)
 	
+#TODO. Comprobar que se carga bien. Y luego sustituir lo que hay por lo cargado y refrescar controles
+
+	self._satisfaction_calculator_copy = satisfaction_calculator_new
+	self.update_satisfaction_calculator_data()
