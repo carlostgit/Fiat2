@@ -10,6 +10,7 @@ const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalcu
 var _satisfaction_calculator_ref:SatisfactionCalculator = null
 var _satisfaction_calculator_copy:SatisfactionCalculator = null
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -34,10 +35,15 @@ func update_satisfaction_calculator_data():
 	$CompCombosItemList.clear()
 	for comp_combo in satisf_calc.get_complementary_combos():
 		$CompCombosItemList.add_item(comp_combo)
+
+	$OptionsOfCompComboItemList.hide()
 		
 	$SupCombosItemList.clear()
 	for sup_combo in satisf_calc.get_supplementary_combos():
 		$SupCombosItemList.add_item(sup_combo)
+	
+	$OptionsOfSupComboItemList.hide()
+	$WeightOfOptionOfSupComboSpinBox.hide()
 	
 	$SatisfCurvesForOptions/SatisfCurvesItemList.clear()	
 	for satisf_curve in satisf_calc.get_satisfaction_curves_of_options():
@@ -248,6 +254,11 @@ func _on_CompCombosItemList_item_selected(index):
 	$OptionsOfCompComboItemList.clear()
 	for option in options:
 		$OptionsOfCompComboItemList.add_item(option)
+		
+	if index>= 0:
+		$OptionsOfCompComboItemList.show()
+	else:
+		$OptionsOfCompComboItemList.hide()
 	
 func _on_SupCombosItemList_item_selected(index):
 	var sup_combo:String = $SupCombosItemList.get_item_text(index)
@@ -256,6 +267,12 @@ func _on_SupCombosItemList_item_selected(index):
 	for option in options:
 		$OptionsOfSupComboItemList.add_item(option)		
 #		get_weighted_options_from_supplementary_combo
+
+	if index>= 0:
+		$OptionsOfSupComboItemList.show()
+	else:
+		$OptionsOfSupComboItemList.hide()
+		
 
 func _on_OptionsOfSupComboItemList_item_selected(index):	
 	var option:String = $OptionsOfSupComboItemList.get_item_text(index)
@@ -268,6 +285,8 @@ func _on_OptionsOfSupComboItemList_item_selected(index):
 			var weight:float = weighted_options[option]
 			$WeightOfOptionOfSupComboSpinBox.set_value(weight)
 	
+	if index>= 0:
+		$WeightOfOptionOfSupComboSpinBox.show()
 
 
 func _on_OptionsItemList_nothing_selected():
@@ -432,64 +451,56 @@ func _on_WeightOfOptionOfSupComboSpinBox_value_changed(value):
 		var combo_text:String = $SupCombosItemList.get_item_text(select_combo[0])
 		var option_text:String = $OptionsOfSupComboItemList.get_item_text(select_option[0])
 		_satisfaction_calculator_copy.set_weight_of_option_in_sup_combo(combo_text,option_text,value)
-		update_satisfaction_calculator_data()
-		$SupCombosItemList.select(select_combo[0])
-		$OptionsOfSupComboItemList.select(select_option[0])
+#		update_satisfaction_calculator_data()
+#		$SupCombosItemList.select(select_combo[0])
+#		$OptionsOfSupComboItemList.select(select_option[0])
 #		var value_debug:float = _satisfaction_calculator_copy.get_weight_of_option_in_sup_combo(combo_text,option_text)
 
 
 func _on_SaveButton_pressed():
+	save("user://satisf_calc_param_default.save")
+#	var saved_dict = self._satisfaction_calculator_copy.save()
+	
+#	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
+#	satisfaction_calculator_new.from_dict(saved_dict)
+#
+#	var saved_dict_new = satisfaction_calculator_new.save()
+
+#	var save_game = File.new()
+#	save_game.open("user://savegame.save", File.WRITE)
+##	var json:String = to_json(saved_dict_new)
+#	var json:String = to_json(saved_dict)
+#	save_game.store_line(json)
+#	save_game.close()
+
+	
+	
+#	var save_game_new = File.new()
+#	if not save_game_new.file_exists("user://savegame.save"):
+#		return
+#	save_game_new.open("user://savegame.save", File.READ)
+#	var loaded_string:String = ""
+##
+#	loaded_string = save_game_new.get_as_text()
+#
+#	var loaded_dict:Dictionary = parse_json(loaded_string)
+#	print("loaded_dict:")
+#	print(loaded_dict)
+#	save_game_new.close()
+
+func save(file_path_arg:String):
 	var saved_dict = self._satisfaction_calculator_copy.save()
-
-	print("chocolate_consumption:")
-	print(_satisfaction_calculator_copy.get_option_max_satisfaction("chocolate_consumption"))
-	
-	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
-	satisfaction_calculator_new.from_dict(saved_dict)
-	
-	var saved_dict_new = satisfaction_calculator_new.save()
-
-	print("Original:")
-	print(saved_dict)
-#	print("Nuevo:")
-#	print(saved_dict_new)
-
 	var save_game = File.new()
-	save_game.open("user://savegame.save", File.WRITE)
-	var json:String = to_json(saved_dict_new)
-#	print("JSON")
-#	print(json)
+#	var file_path = "user://"+file_name_arg
+	save_game.open(file_path_arg, File.WRITE)
+#	var json:String = to_json(saved_dict_new)
+	var json:String = to_json(saved_dict)
 	save_game.store_line(json)
 	save_game.close()
 	
-	var save_game_new = File.new()
-	if not save_game_new.file_exists("user://savegame.save"):
-		return
-	save_game_new.open("user://savegame.save", File.READ)
-	var loaded_string:String = ""
-#	while save_game_new.get_position() < save_game_new.get_len():
-#		# Get the saved dictionary from the next line in the save file
-#		loaded_string += save_game_new.get_line()
-#
-	loaded_string = save_game_new.get_as_text()
-
-	var loaded_dict:Dictionary = parse_json(loaded_string)
-	print("loaded_dict:")
-	print(loaded_dict)
-	save_game_new.close()
-	
-#	TODO hacer el load y save
-#	pass # Replace with function body.
-
-
 
 func _on_LoadButton_pressed():
-	$LoadFileDialog.set_current_dir("user://")
-	$LoadFileDialog.set_current_path("user://")
-	
-#	$LoadFileDialog.show_modal(true)
 	$LoadFileDialog.popup()
-#	pass # Replace with function body.
 
 
 func _on_LoadFileDialog_file_selected(path):
@@ -498,12 +509,11 @@ func _on_LoadFileDialog_file_selected(path):
 		return
 	save_game_new.open(path, File.READ)
 	var loaded_string:String = save_game_new.get_as_text()
-
 	var loaded_dict:Dictionary = parse_json(loaded_string)
-	print("loaded_dict:")
-	print(loaded_dict)
+#	print("loaded_dict:")
+#	print(loaded_dict)
 	save_game_new.close()
-	
+
 	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
 	satisfaction_calculator_new.from_dict(loaded_dict)
 	
@@ -511,3 +521,14 @@ func _on_LoadFileDialog_file_selected(path):
 
 	self._satisfaction_calculator_copy = satisfaction_calculator_new
 	self.update_satisfaction_calculator_data()
+
+
+func _on_SaveAsButton_pressed():
+	$SaveAsFileDialog.popup()
+	
+
+
+func _on_SaveAsFileDialog_file_selected(path):
+	save(path)
+	
+	

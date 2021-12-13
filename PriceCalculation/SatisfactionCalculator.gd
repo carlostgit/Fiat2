@@ -749,7 +749,6 @@ func save()->Dictionary:
 func from_dict(saved_dict:Dictionary):
 	for dic_key in saved_dict:
 
-		
 		if dic_key == "_options":
 			_options.clear()
 			_options = saved_dict[dic_key]
@@ -774,7 +773,6 @@ func from_dict(saved_dict:Dictionary):
 				satisf_curve.from_dict(option_satisf[option])
 				_option_satisf_curve_dict[option] = satisf_curve
 
-		
 		if dic_key == "_complementary_combo_satisf_curve_dict":
 			_complementary_combo_satisf_curve_dict.clear()
 			var option_satisf:Dictionary = saved_dict[dic_key]
