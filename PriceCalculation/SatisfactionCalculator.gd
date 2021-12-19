@@ -713,10 +713,7 @@ func check_integrity():
 	if 0==num_errors_options_without_satisf_curve:
 		print("OK: All options with satisf curve")
 	
-
-
-func save()->Dictionary:
-	
+func to_dict()->Dictionary:
 	var save_dict:Dictionary = {}
 	
 	save_dict["_options"] = _options
@@ -745,6 +742,10 @@ func save()->Dictionary:
 #	print(to_json(save_dict))
 	
 	return save_dict
+
+
+func save()->Dictionary:	
+	return to_dict()
 
 func from_dict(saved_dict:Dictionary):
 	for dic_key in saved_dict:

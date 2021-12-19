@@ -2,6 +2,16 @@
 extends Control
 
 
+const SatisfactionModelEditorRes = preload("res://PriceCalculation/SatisfactionModelEditor.tscn")
+
+const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
+const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
+
+
+var name_satisf_calc_dic:Dictionary = {}	
+
+
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -9,18 +19,152 @@ extends Control
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-#	Pruebas
-#	$OptionsItemList.add_item("Prueba 1")
-#	$OptionsItemList.add_item("Prueba 2")
-##	
-	
-	pass # Replace with function body.
+	var satisfaction_calculator:SatisfactionCalculator = create_default_satisfaction_model()
+	name_satisf_calc_dic["prueba satisfaction model"] = satisfaction_calculator
+	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
+	update_item_list()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
-func set_satisfaction_calculator_ref(satisf_calculator_arg):
-	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_calculator_arg)
+	
+func update_item_list():
+
+	$SatisfactionModelItemList.clear()
+	for name in name_satisf_calc_dic.keys():
+		$SatisfactionModelItemList.add_item(name)
+
+	
+	
+	
+func create_default_satisfaction_model() -> Node:
+	
+	var satisfaction_calculator:SatisfactionCalculator = SatisfactionCalculator.new()
+
+	var options_array:Array = ["candy_savings","chocolate_savings",
+						"candy_consumption","chocolate_consumption"]
+
+	satisfaction_calculator.set_options(options_array)
+	
+	var option_product_dict:Dictionary = { "candy_savings": "candy",
+									"candy_consumption": "candy",
+									"chocolate_savings": "chocolate",
+									"chocolate_consumption": "chocolate",}
+
+	
+	var param_preference_at_0_for_candy_consu = 1.0
+	var maximum_satisf_for_candy_consu = 10.0
+	var satisfaction_curve_for_candy_consu:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_candy_consu, maximum_satisf_for_candy_consu)
+	satisfaction_calculator.set_satisfaction_curve("candy_consumption",satisfaction_curve_for_candy_consu)
+
+	var param_preference_at_0_for_chocolate_consu = 1.0
+	var maximum_satisf_for_chocolate_consu = 10.0
+	var satisfaction_curve_for_chocolate_consu:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_chocolate_consu, maximum_satisf_for_chocolate_consu)
+	satisfaction_calculator.set_satisfaction_curve("chocolate_consumption",satisfaction_curve_for_chocolate_consu)
+	
+	var param_preference_at_0_for_sweets = 1.0
+	var maximum_satisf_for_sweets = 10.0
+	var satisfaction_curve_for_sweets:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_sweets, maximum_satisf_for_sweets)
+	satisfaction_calculator.set_complementary_combo("sweets_consumption",["candy_consumption","chocolate_consumption"])
+	satisfaction_calculator.set_satisfaction_curve_for_complementary_combo("sweets_consumption",satisfaction_curve_for_sweets)
+	
+	var param_preference_at_0_for_candy_sav = 1.0
+	var maximum_satisf_for_candy_sav = 10.0
+	var satisfaction_curve_for_candy_sav:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_candy_sav, maximum_satisf_for_candy_sav)
+	satisfaction_calculator.set_satisfaction_curve("candy_savings",satisfaction_curve_for_candy_sav)
+
+	var param_preference_at_0_for_chocolate_sav = 1.0
+	var maximum_satisf_for_chocolate_sav = 10.0
+	var satisfaction_curve_for_chocolate_sav:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_chocolate_sav, maximum_satisf_for_chocolate_sav)
+	satisfaction_calculator.set_satisfaction_curve("chocolate_savings",satisfaction_curve_for_chocolate_sav)	
+	
+	satisfaction_calculator.set_option_product_dict(option_product_dict)
+	
+	return satisfaction_calculator
+
+
+func _on_AddAcceptDialog_ok_pressed(text):
+	for i in range(0,$SatisfactionModelItemList.get_item_count()):
+		if text==$SatisfactionModelItemList.get_item_text(i):
+			return
+	name_satisf_calc_dic[text] = create_default_satisfaction_model()
+	update_item_list()	
+
+
+func _on_AddButton_pressed():
+	$AddAcceptDialog.popup()
+#	$AddAcceptDialog.show_modal(true)
 	
 
+
+func _on_EditButton_pressed():
+#	var satisfactionModelEditor:SatisfactionModelEditorRes = SatisfactionModelEditorRes.instance()
+
+	var selected_items = $SatisfactionModelItemList.get_selected_items()
+	if (selected_items.size()):
+		
+		var old_satisf
+		var old_name=""
+		$SatisfactionModelEditor.get_satisfaction_calculator_ref(old_satisf,old_name)
+		name_satisf_calc_dic[old_name]=old_satisf
+		
+		var first_select_index = selected_items[0]
+		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
+		var satisf_calc:SatisfactionCalculator = name_satisf_calc_dic[name]
+		$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_calc,name)
+		$SatisfactionModelEditor.show()
+	
+	
+
+
+func _on_RemoveButton_pressed():
+	var selected_items = $SatisfactionModelItemList.get_selected_items()
+	if (selected_items.size()):
+		var first_select_index = selected_items[0]
+		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
+		name_satisf_calc_dic.erase(name)
+		self.update_item_list()
+
+func _on_SaveAsButton_pressed():
+	$SaveAsFileDialog.popup()
+
+
+func _on_SaveAsFileDialog_file_selected(path):
+	
+	var name_satisf_mod_save_dict:Dictionary = {}
+	for name_of_model in name_satisf_calc_dic.keys():
+		var satisf_mod = name_satisf_calc_dic[name_of_model]
+		var stisf_mod_dict:Dictionary = satisf_mod.to_dict()
+		name_satisf_mod_save_dict[name_of_model] = stisf_mod_dict
+		
+	var save_game = File.new()
+#	var file_path = "user://"+file_name_arg
+	save_game.open(path, File.WRITE)
+#	var json:String = to_json(saved_dict_new)
+	var json:String = to_json(name_satisf_mod_save_dict)
+	save_game.store_line(json)
+	save_game.close()
+
+
+func _on_LoadFileDialog_file_selected(path):
+	var save_game_new = File.new()
+	if not save_game_new.file_exists(path):
+		return
+	
+	save_game_new.open(path, File.READ)
+	var loaded_string:String = save_game_new.get_as_text()
+	var loaded_dict:Dictionary = parse_json(loaded_string)
+	save_game_new.close()
+
+	for name_model in loaded_dict.keys():
+		var satisf_mod_dict:Dictionary = loaded_dict[name_model]
+		var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
+		satisfaction_calculator_new.from_dict(satisf_mod_dict)	
+		name_satisf_calc_dic[name_model] = satisfaction_calculator_new
+	
+	update_item_list()
+
+
+func _on_LoadButton_pressed():
+	$LoadFileDialog.popup()

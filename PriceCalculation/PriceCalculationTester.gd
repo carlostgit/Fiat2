@@ -101,7 +101,7 @@ func _ready():
 #	TODO: comprobar y corregir los errores que saca check_integrity()
 	satisfaction_calculator.check_integrity()
 	
-	price_calculation_tester_scene.set_satisfaction_calculator_ref(satisfaction_calculator)
+#	price_calculation_tester_scene.set_satisfaction_calculator_ref(satisfaction_calculator)
 
 #TODO: Seguir con lo de PriceCalculationTester.tscn	
 #	
