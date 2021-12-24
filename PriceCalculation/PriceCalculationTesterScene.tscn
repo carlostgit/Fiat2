@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
 [ext_resource path="res://PriceCalculation/SatisfactionModelEditor.tscn" type="PackedScene" id=2]
 [ext_resource path="res://PriceCalculation/AddAcceptDialog.gd" type="Script" id=3]
+[ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=4]
+[ext_resource path="res://PriceCalculation/TradeTesterScene.gd" type="Script" id=5]
+[ext_resource path="res://PriceCalculation/PricesEditor.gd" type="Script" id=6]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -100,6 +103,101 @@ access = 1
 filters = PoolStringArray( "*.col" )
 current_dir = "user://"
 current_path = "user://"
+
+[node name="TradeTesterScene" type="Control" parent="."]
+margin_top = 448.0
+margin_right = 40.0
+margin_bottom = 488.0
+script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PriceLabel" type="Label" parent="TradeTesterScene"]
+margin_left = 576.0
+margin_right = 616.0
+margin_bottom = 16.0
+text = "0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CurrencyLabel" type="Label" parent="TradeTesterScene"]
+margin_left = 576.0
+margin_top = 32.0
+margin_right = 680.0
+margin_bottom = 48.0
+text = "currency"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProductsItemList" type="ItemList" parent="TradeTesterScene"]
+margin_left = 424.0
+margin_right = 552.0
+margin_bottom = 136.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsItemList" type="ItemList" parent="TradeTesterScene"]
+margin_left = 288.0
+margin_right = 416.0
+margin_bottom = 136.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Plotter" parent="TradeTesterScene" instance=ExtResource( 4 )]
+
+[node name="XMaxSpinBox" type="SpinBox" parent="TradeTesterScene/Plotter"]
+margin_left = 200.0
+margin_top = 280.0
+margin_right = 274.0
+margin_bottom = 304.0
+min_value = 5.0
+value = 5.0
+
+[node name="YMaxSpinBox" type="SpinBox" parent="TradeTesterScene/Plotter"]
+margin_right = 74.0
+margin_bottom = 24.0
+min_value = 5.0
+value = 5.0
+
+[node name="PricesEditor" type="Control" parent="."]
+margin_left = 8.0
+margin_top = 168.0
+margin_right = 304.0
+margin_bottom = 296.0
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProductItemList" type="ItemList" parent="PricesEditor"]
+margin_left = -8.0
+margin_right = 128.0
+margin_bottom = 104.0
+
+[node name="PriceSpinBox" type="SpinBox" parent="PricesEditor"]
+margin_left = 152.0
+margin_top = 16.0
+margin_right = 226.0
+margin_bottom = 40.0
+
+[node name="SetCurrencyButton" type="Button" parent="PricesEditor"]
+margin_left = 152.0
+margin_top = 48.0
+margin_right = 261.0
+margin_bottom = 68.0
+text = "Set as currency"
+
+[node name="CurrencyLabel" type="Label" parent="PricesEditor"]
+margin_left = 152.0
+margin_top = 80.0
+margin_right = 192.0
+margin_bottom = 94.0
+text = "currency"
 [connection signal="pressed" from="AddButton" to="." method="_on_AddButton_pressed"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="RemoveButton" to="." method="_on_RemoveButton_pressed"]
@@ -110,3 +208,6 @@ current_path = "user://"
 [connection signal="pressed" from="LoadButton" to="." method="_on_LoadButton_pressed"]
 [connection signal="file_selected" from="SaveAsFileDialog" to="." method="_on_SaveAsFileDialog_file_selected"]
 [connection signal="file_selected" from="LoadFileDialog" to="." method="_on_LoadFileDialog_file_selected"]
+[connection signal="item_selected" from="TradeTesterScene/OptionsItemList" to="TradeTesterScene" method="_on_OptionsItemList_item_selected"]
+[connection signal="value_changed" from="TradeTesterScene/Plotter/XMaxSpinBox" to="TradeTesterScene" method="_on_XMaxSpinBox_value_changed"]
+[connection signal="value_changed" from="TradeTesterScene/Plotter/YMaxSpinBox" to="TradeTesterScene" method="_on_YMaxSpinBox_value_changed"]

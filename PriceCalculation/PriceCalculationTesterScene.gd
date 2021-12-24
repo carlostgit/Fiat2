@@ -22,6 +22,7 @@ func _ready():
 	var satisfaction_calculator:SatisfactionCalculator = create_default_satisfaction_model()
 	name_satisf_calc_dic["prueba satisfaction model"] = satisfaction_calculator
 	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
+	$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
 	update_item_list()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -288,6 +288,9 @@ margin_bottom = 312.0
 min_value = 5.0
 max_value = 200.0
 value = 5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="YMaxSpinBox" type="SpinBox" parent="Plotter"]
 margin_right = 74.0
