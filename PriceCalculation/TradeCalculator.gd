@@ -67,9 +67,91 @@ func calculate_trade_for_combidict(combidict_arg:Dictionary)->Dictionary:
 
 	return combination_diff
 
+func calculate_best_combidict_for_each_budget(max_budget_arg:float,step_length_arg:float=1.0)->Dictionary:
+	#	Debería hacer una versión de este método, que solo recorriese una lista de combinaciones precalculadas
+	
+#	Prueba
+	var combination_for_each_step:Dictionary = {}
+#	
+
+#	var best_combination:Dictionary = {}
+	var step_length:float = step_length_arg
+	
+#	var products:Array = Prices.get_products()
+	var options:Array = _satisfaction_calculator.get_options()
+	var combination:Dictionary = {}
+	for option in options:
+		combination[option] = 0
+	
+	var left_money:float = max_budget_arg
+	
+#	var best_next_combination:Dictionary = combination.duplicate()
+	var count = 0
+	var best_previous_satisfaction = 0.0
+	while true:
+#		print ("left money: "+ str(left_money))	
+		var end_calculating = false
+		var best_product_combination:Dictionary = {}
+		var best_product_satisfaction = 0.0
+		var best_product_price = 0.0
+		var best_increment_of_satisfaction_for_price:float = 0.0
+#		print("count :"+str(count))
+		var product_found = false
+		for option in options:
+			var trying_combination:Dictionary = combination.duplicate()
+			trying_combination[option] += step_length
+			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
+			
+			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+			
+			var product:String = _satisfaction_calculator.get_product_from_option(option)
+			
+			var price = Prices.get_price_of_product(product)*step_length
+			
+#			print("product: "+ product)
+#			print("satisf: "+ str(satisfaction_of_trying_combination))
+			
+			if price<=left_money and increment_of_satisfaction > 0.0:
+				product_found = true
+				
+#				var satisfacton_of_trying_combination_for_price = satisfaction_of_trying_combination/price
+				var increment_of_satisfaction_for_price:float = increment_of_satisfaction/price
+#				print("satisf/price: "+ str(satisfacton_of_trying_combination_for_price))
+#				print("satisf/price: "+ str(increment_of_satisfaction_for_price))
+#				print("product: "+ product)
+#				print(trying_combination)
+#				print ("increment of satisf for price: " + str(increment_of_satisfaction_for_price))
+				
+				if increment_of_satisfaction_for_price > best_increment_of_satisfaction_for_price:
+					best_product_satisfaction = satisfaction_of_trying_combination
+					best_product_combination = trying_combination
+					best_product_price = price
+					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price
+		
+		
+		if false==product_found:
+			
+			break
+		
+		left_money -= best_product_price
+		combination = best_product_combination
+		best_previous_satisfaction = best_product_satisfaction
+		
+#		Prueba:
+		combination_for_each_step[max_budget_arg-left_money]=best_product_combination
+#		
+
+		count += 1
+
+	return combination_for_each_step
+	
 func calculate_best_combidict(money_arg:float)->Dictionary:
 #	Debería hacer una versión de este método, que solo recorriese una lista de combinaciones precalculadas
 	
+#	Prueba
+#	var combination_for_each_step:Dictionary = combination_for_each_step_arg
+#	
+
 #	var best_combination:Dictionary = {}
 	var step_length:float = 1.0
 	
@@ -132,6 +214,11 @@ func calculate_best_combidict(money_arg:float)->Dictionary:
 		left_money -= best_product_price
 		combination = best_product_combination
 		best_previous_satisfaction = best_product_satisfaction
+		
+#		Prueba:
+#		combination_for_each_step[money_arg-left_money]=best_product_combination
+#		
+
 		count += 1
 			
 	if left_money > 0:

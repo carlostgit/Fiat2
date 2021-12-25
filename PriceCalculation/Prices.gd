@@ -34,6 +34,11 @@ func _ready():
 func set_amount_of_product(product_arg:String, price_arg:float)->void:
 	if _products.has(product_arg):
 		_amounts_dict[product_arg]=price_arg
+		
+func set_price_of_product(product_arg:String, price_arg:float)->void:
+	var amount_of_currency:float = _amounts_dict[_currency]
+	if _products.has(product_arg):
+		_amounts_dict[product_arg]=amount_of_currency*price_arg		
 
 func get_price_of_product(product_arg:String)->float:
 	var amount_of_currency:float = _amounts_dict[_currency]
