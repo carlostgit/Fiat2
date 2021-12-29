@@ -30,8 +30,11 @@ func _on_ProductItemList_item_selected(index):
 	$PriceSpinBox.disconnect("value_changed",self,"_on_PriceSpinBox_value_changed")
 	$PriceSpinBox.set_value(price)
 	$PriceSpinBox.connect("value_changed",self,"_on_PriceSpinBox_value_changed")
-
-
+	if product==Prices.get_currency():
+		$PriceSpinBox.set_editable(false)
+	else:
+		$PriceSpinBox.set_editable(true)
+		
 func _on_SetCurrencyButton_pressed():
 	var selected_items:Array = $ProductItemList.get_selected_items()
 	if selected_items.size() > 0:

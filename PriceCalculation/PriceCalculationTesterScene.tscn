@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
 [ext_resource path="res://PriceCalculation/SatisfactionModelEditor.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=4]
 [ext_resource path="res://PriceCalculation/TradeTesterScene.gd" type="Script" id=5]
 [ext_resource path="res://PriceCalculation/PricesEditor.gd" type="Script" id=6]
+[ext_resource path="res://PriceCalculation/MarketTesterScene.gd" type="Script" id=7]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -174,12 +175,44 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="TradeTesterScene"]
+[node name="UpdateItemsButton" type="Button" parent="TradeTesterScene"]
 margin_left = 576.0
 margin_top = 80.0
 margin_right = 676.0
 margin_bottom = 100.0
 text = "Update Items"
+
+[node name="DrawAllButton" type="Button" parent="TradeTesterScene"]
+margin_left = 344.0
+margin_top = 232.0
+margin_right = 409.0
+margin_bottom = 252.0
+text = "Draw All"
+
+[node name="DrawSelected" type="Button" parent="TradeTesterScene"]
+margin_left = 344.0
+margin_top = 280.0
+margin_right = 356.0
+margin_bottom = 300.0
+text = "Draw Selected"
+
+[node name="MaxToDrawSpinBox" type="SpinBox" parent="TradeTesterScene"]
+margin_left = 464.0
+margin_top = 232.0
+margin_right = 538.0
+margin_bottom = 256.0
+min_value = 5.0
+value = 5.0
+
+[node name="StepOfGraphSpinBox" type="SpinBox" parent="TradeTesterScene"]
+margin_left = 464.0
+margin_top = 264.0
+margin_right = 538.0
+margin_bottom = 288.0
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 0.5
 
 [node name="PricesEditor" type="Control" parent="."]
 margin_left = 8.0
@@ -201,6 +234,7 @@ margin_left = 152.0
 margin_top = 16.0
 margin_right = 226.0
 margin_bottom = 40.0
+step = 0.1
 
 [node name="SetCurrencyButton" type="Button" parent="PricesEditor"]
 margin_left = 152.0
@@ -215,6 +249,109 @@ margin_top = 80.0
 margin_right = 192.0
 margin_bottom = 94.0
 text = "currency"
+
+[node name="MarketTesterScene" type="Control" parent="."]
+margin_left = 704.0
+margin_top = 448.0
+margin_right = 744.0
+margin_bottom = 488.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PersonsItemList" type="ItemList" parent="MarketTesterScene"]
+margin_left = 88.0
+margin_right = 216.0
+margin_bottom = 104.0
+
+[node name="AddButton" type="Button" parent="MarketTesterScene"]
+margin_right = 12.0
+margin_bottom = 20.0
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OwnedProductsItemList" type="ItemList" parent="MarketTesterScene"]
+margin_left = 232.0
+margin_right = 344.0
+margin_bottom = 104.0
+
+[node name="AmountOwnedSpinBox" type="SpinBox" parent="MarketTesterScene"]
+margin_left = 360.0
+margin_right = 434.0
+margin_bottom = 24.0
+
+[node name="TradeLabel" type="Label" parent="MarketTesterScene"]
+margin_left = 360.0
+margin_top = 48.0
+margin_right = 458.0
+margin_bottom = 62.0
+text = "Traded Amount"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AmountSumOfTradeLabel" type="Label" parent="MarketTesterScene"]
+margin_left = 368.0
+margin_top = 176.0
+margin_right = 514.0
+margin_bottom = 190.0
+text = "Sum of Traded Amount"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SumOfTradeItemList" type="ItemList" parent="MarketTesterScene"]
+margin_left = 232.0
+margin_top = 168.0
+margin_right = 344.0
+margin_bottom = 280.0
+
+[node name="CalculateTradeButton" type="Button" parent="MarketTesterScene"]
+margin_left = 88.0
+margin_top = 136.0
+margin_right = 197.0
+margin_bottom = 156.0
+text = "Calculate Trade"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SumTradeButton" type="Button" parent="MarketTesterScene"]
+margin_left = 88.0
+margin_top = 168.0
+margin_right = 167.0
+margin_bottom = 188.0
+text = "Sum Trade"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RemoveButton" type="Button" parent="MarketTesterScene"]
+margin_left = 16.0
+margin_top = 32.0
+margin_right = 36.0
+margin_bottom = 52.0
+text = "X"
+
+[node name="ValueOfOwnedLabel" type="Label" parent="MarketTesterScene"]
+margin_left = 360.0
+margin_top = 72.0
+margin_right = 464.0
+margin_bottom = 96.0
+text = "Value of owned"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalculateValueButton" type="Button" parent="MarketTesterScene"]
+margin_left = 88.0
+margin_top = 208.0
+margin_right = 196.0
+margin_bottom = 228.0
+text = "Calculate value"
 [connection signal="pressed" from="AddButton" to="." method="_on_AddButton_pressed"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="RemoveButton" to="." method="_on_RemoveButton_pressed"]
@@ -229,7 +366,15 @@ text = "currency"
 [connection signal="value_changed" from="TradeTesterScene/Plotter/XMaxSpinBox" to="TradeTesterScene" method="_on_XMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="TradeTesterScene/Plotter/YMaxSpinBox" to="TradeTesterScene" method="_on_YMaxSpinBox_value_changed"]
 [connection signal="pressed" from="TradeTesterScene/RecalculateButton" to="TradeTesterScene" method="_on_RecalculateButton_pressed"]
-[connection signal="pressed" from="TradeTesterScene/Button" to="TradeTesterScene" method="_on_Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
+[connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
+[connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]
 [connection signal="item_selected" from="PricesEditor/ProductItemList" to="PricesEditor" method="_on_ProductItemList_item_selected"]
 [connection signal="value_changed" from="PricesEditor/PriceSpinBox" to="PricesEditor" method="_on_PriceSpinBox_value_changed"]
 [connection signal="pressed" from="PricesEditor/SetCurrencyButton" to="PricesEditor" method="_on_SetCurrencyButton_pressed"]
+[connection signal="item_selected" from="MarketTesterScene/PersonsItemList" to="MarketTesterScene" method="_on_PersonsItemList_item_selected"]
+[connection signal="item_selected" from="MarketTesterScene/OwnedProductsItemList" to="MarketTesterScene" method="_on_OwnedProductsItemList_item_selected"]
+[connection signal="value_changed" from="MarketTesterScene/AmountOwnedSpinBox" to="MarketTesterScene" method="_on_AmountOwnedSpinBox_value_changed"]
+[connection signal="pressed" from="MarketTesterScene/CalculateTradeButton" to="MarketTesterScene" method="_on_CalculateTradeButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/SumTradeButton" to="MarketTesterScene" method="_on_SumTradeButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/CalculateValueButton" to="MarketTesterScene" method="_on_CalculateValueButton_pressed"]

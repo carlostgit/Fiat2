@@ -28,6 +28,16 @@ static func sum_combidict(dict_1:Dictionary,dict_2:Dictionary)->Dictionary:
 	
 	return answer
 
+static func calculate_combination_difference(combination_1_arg:Dictionary, combination_2_arg:Dictionary)->Dictionary:
+	#1-2
+	var return_dict:Dictionary = combination_1_arg.duplicate()
+	for product_2 in combination_2_arg.keys():
+		if return_dict.has(product_2):
+			return_dict[product_2] = return_dict[product_2] - combination_2_arg[product_2]
+		else:
+			return_dict[product_2] =  - combination_2_arg[product_2]
+
+	return return_dict
 
 static func compare_dictionaries(dict_1:Dictionary,dict_2:Dictionary)-> bool:
 	#Este método casero es necesario, porque en la versión de gdscript actual

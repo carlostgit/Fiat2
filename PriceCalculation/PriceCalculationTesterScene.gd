@@ -23,6 +23,7 @@ func _ready():
 	name_satisf_calc_dic["prueba satisfaction model"] = satisfaction_calculator
 	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
+	$MarketTesterScene.init_default_example(satisfaction_calculator)
 	update_item_list()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -169,3 +170,4 @@ func _on_LoadFileDialog_file_selected(path):
 
 func _on_LoadButton_pressed():
 	$LoadFileDialog.popup()
+

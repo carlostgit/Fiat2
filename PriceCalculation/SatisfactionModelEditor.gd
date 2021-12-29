@@ -12,6 +12,8 @@ var _satisfaction_calculator_ref:SatisfactionCalculator = null
 
 var name_of_model:String = ""
 
+export(Texture) var _product_texture = preload("res://PriceCalculation/link.png")
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -29,6 +31,11 @@ func update_satisfaction_calculator_data():
 	$OptionsItemList.clear()
 	for option in satisf_calc.get_options():
 		$OptionsItemList.add_item(option)
+	
+	$ProductsItemList.clear()
+	for product in satisf_calc.get_products():
+		$ProductsItemList.add_item(product)
+	
 	
 	$CompCombosItemList.clear()
 	for comp_combo in satisf_calc.get_complementary_combos():
@@ -293,7 +300,25 @@ func _on_OptionsItemList_nothing_selected():
 	$DeleteOption.set_disabled(true) 
 	
 func _on_OptionsItemList_item_selected(index):
+#	Desactivo el botón de borrar
 	$DeleteOption.set_disabled(false)
+	
+#	Muestro el produto asociado a la opción
+	show_product_linked_to_option(index)
+
+#	Muestro el produto asociado a la opción	
+func show_product_linked_to_option(option_index:int):
+	var option:String = $OptionsItemList.get_item_text(option_index)	
+	var option_product_dict:Dictionary = _satisfaction_calculator_ref.get_option_product_dict()
+	if option_product_dict.has(option):
+		var product:String = option_product_dict[option]
+		for i in $ProductsItemList.get_item_count():
+			if product == $ProductsItemList.get_item_text(i):
+#				$ProductsItemList.select(i)
+#				$ProductsItemList.set_item_custom_bg_color(i,Color(1,0,0))
+				$ProductsItemList.set_item_icon(i,_product_texture)
+			else:
+				$ProductsItemList.set_item_icon(i,null)
 
 func _on_DeleteOption_pressed():
 	var select:Array = $OptionsItemList.get_selected_items()
@@ -494,3 +519,40 @@ func _on_SaveAsFileDialog_file_selected(path):
 	
 
 
+
+
+func _on_LinkButton_pressed():
+	var selected_items = $OptionsItemList.get_selected_items()
+	if (selected_items.size()):
+		var first_select_index = selected_items[0]
+		var option = $OptionsItemList.get_item_text(first_select_index)
+	
+		var selected_products = $ProductsItemList.get_selected_items()
+		if (selected_products.size()):
+			var first_product_select_index = selected_products[0]
+			var product = $ProductsItemList.get_item_text(first_product_select_index)
+		
+			_satisfaction_calculator_ref.set_product_for_option(product,option)
+			show_product_linked_to_option(first_select_index)
+
+
+func _on_AddProductButton_pressed():
+	$NewProductAcceptDialog.show_modal(true)
+
+
+func _on_DeleteProductButton_pressed():
+	var selected_items = $ProductsItemList.get_selected_items()
+	if (selected_items.size()):
+		var first_select_index = selected_items[0]
+		var product = $ProductsItemList.get_item_text(first_select_index)
+		_satisfaction_calculator_ref.remove_product(product)
+		update_satisfaction_calculator_data()
+
+
+
+func _on_NewProductAcceptDialog_ok_pressed(text):
+	for i in range(0,$ProductsItemList.get_item_count()):
+		if text==$ProductsItemList.get_item_text(i):
+			return
+	_satisfaction_calculator_ref.add_product(text)
+	update_satisfaction_calculator_data()

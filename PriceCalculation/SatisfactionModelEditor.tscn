@@ -1,7 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://PriceCalculation/GraphsControl.gd" type="Script" id=1]
-[ext_resource path="res://PriceCalculation/NewOptionAcceptDialog.gd" type="Script" id=3]
+[ext_resource path="res://PriceCalculation/NewProductAcceptDialog.gd" type="Script" id=2]
+[ext_resource path="res://PriceCalculation/Prices.gd" type="Script" id=3]
 [ext_resource path="res://PriceCalculation/NewCompComboAcceptDialog.gd" type="Script" id=4]
 [ext_resource path="res://PriceCalculation/NewSupComboAcceptDialog.gd" type="Script" id=5]
 [ext_resource path="res://PriceCalculation/SatisfactionModelEditor.gd" type="Script" id=6]
@@ -40,6 +41,42 @@ __meta__ = {
 margin_left = 280.0
 margin_top = 40.0
 margin_right = 320.0
+margin_bottom = 72.0
+text = "Add"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ProductsItemList" type="ItemList" parent="."]
+margin_left = 600.0
+margin_top = 8.0
+margin_right = 792.0
+margin_bottom = 72.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeleteProductButton" type="Button" parent="."]
+margin_left = 552.0
+margin_top = 8.0
+margin_right = 584.0
+margin_bottom = 32.0
+text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LinkButton" type="Button" parent="."]
+margin_left = 520.0
+margin_top = 32.0
+margin_right = 592.0
+margin_bottom = 52.0
+text = "<- Link ->"
+
+[node name="AddProductButton" type="Button" parent="."]
+margin_left = 552.0
+margin_top = 48.0
+margin_right = 589.0
 margin_bottom = 72.0
 text = "Add"
 __meta__ = {
@@ -340,6 +377,23 @@ margin_top = 8.0
 margin_right = 128.0
 margin_bottom = 44.0
 
+[node name="NewProductAcceptDialog" type="AcceptDialog" parent="."]
+margin_left = 408.0
+margin_top = 16.0
+margin_right = 544.0
+margin_bottom = 96.0
+window_title = "New product"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewProductLineEdit" type="LineEdit" parent="NewProductAcceptDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 128.0
+margin_bottom = 44.0
+
 [node name="NewCompComboAcceptDialog" type="AcceptDialog" parent="."]
 margin_left = 56.0
 margin_top = 136.0
@@ -462,15 +516,18 @@ __meta__ = {
 }
 
 [node name="NameOfModelLabel" type="Label" parent="."]
-margin_left = 552.0
+margin_left = 832.0
 margin_top = 24.0
-margin_right = 592.0
+margin_right = 930.0
 margin_bottom = 38.0
 text = "Name of Model"
 [connection signal="item_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_item_selected"]
 [connection signal="nothing_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_nothing_selected"]
 [connection signal="pressed" from="DeleteOption" to="." method="_on_DeleteOption_pressed"]
 [connection signal="pressed" from="AddOption" to="." method="_on_AddOption_pressed"]
+[connection signal="pressed" from="DeleteProductButton" to="." method="_on_DeleteProductButton_pressed"]
+[connection signal="pressed" from="LinkButton" to="." method="_on_LinkButton_pressed"]
+[connection signal="pressed" from="AddProductButton" to="." method="_on_AddProductButton_pressed"]
 [connection signal="item_selected" from="CompCombosItemList" to="." method="_on_CompCombosItemList_item_selected"]
 [connection signal="pressed" from="DeleteCompCombo" to="." method="_on_DeleteCompCombo_pressed"]
 [connection signal="pressed" from="DeleteSupCombo" to="." method="_on_DeleteSupCombo_pressed"]
@@ -500,8 +557,10 @@ text = "Name of Model"
 [connection signal="pressed" from="Plotter/GraphsControl/ClearButton" to="Plotter/GraphsControl" method="_on_ClearButton_pressed"]
 [connection signal="item_selected" from="Plotter/GraphsControl/GraphsItemList" to="Plotter/GraphsControl" method="_on_GraphsItemList_item_selected"]
 [connection signal="confirmed" from="NewOptionAcceptDialog" to="NewOptionAcceptDialog" method="_on_NewOptionAcceptDialog_confirmed"]
-[connection signal="ok_pressed" from="NewOptionAcceptDialog" to="." method="_on_NewOptionAcceptDialog_ok_pressed"]
 [connection signal="visibility_changed" from="NewOptionAcceptDialog" to="NewOptionAcceptDialog" method="_on_NewOptionWindowDialog_visibility_changed"]
+[connection signal="confirmed" from="NewProductAcceptDialog" to="NewProductAcceptDialog" method="_on_NewProductAcceptDialog_confirmed"]
+[connection signal="ok_pressed" from="NewProductAcceptDialog" to="." method="_on_NewProductAcceptDialog_ok_pressed"]
+[connection signal="visibility_changed" from="NewProductAcceptDialog" to="NewProductAcceptDialog" method="_on_NewProductAcceptDialog_visibility_changed"]
 [connection signal="confirmed" from="NewCompComboAcceptDialog" to="NewCompComboAcceptDialog" method="_on_NewCompComboAcceptDialog_confirmed"]
 [connection signal="ok_pressed" from="NewCompComboAcceptDialog" to="." method="_on_NewCompComboAcceptDialog_ok_pressed"]
 [connection signal="visibility_changed" from="NewCompComboAcceptDialog" to="NewCompComboAcceptDialog" method="_on_NewCompComboAcceptDialog_visibility_changed"]

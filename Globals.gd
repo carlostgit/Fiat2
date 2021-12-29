@@ -18,6 +18,15 @@ func _ready():
 
 func set_products(products_array_arg:Array):
 	_products = products_array_arg
+
+func add_product(product_arg:String):
+	if false==_products.has(product_arg):
+		_products.append(product_arg)
+		
+func remove_product(product_arg:String):
+	var prod_index:int = _products.find(product_arg)
+	if prod_index>=0:
+		_products.remove(prod_index)
 	
 func get_price_without_taxes()->float:
 	return (1-_tax_rate)*_product_price

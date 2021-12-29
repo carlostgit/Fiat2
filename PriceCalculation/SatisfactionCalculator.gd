@@ -519,6 +519,12 @@ func get_options():
 func get_products():
 	return self._products
 	
+func add_product(product_arg:String):
+	Globals.add_product(product_arg)
+		
+func remove_product(product_arg:String):
+	Globals.remove_product(product_arg)
+	
 func get_product_from_option(product_arg:String):
 	return _option_product_dict[product_arg]
 	
@@ -534,7 +540,12 @@ func erase_option(option_arg:String):
 func set_option_product_dict(option_product_dict_arg:Dictionary):
 
 	self._option_product_dict = option_product_dict_arg
-	
+
+func set_product_for_option(product_arg:String,option_arg:String):
+	if _option_product_dict.has(option_arg):
+		if self._products.has(product_arg):
+			_option_product_dict[option_arg] = product_arg
+
 func get_option_product_dict():
 	return self._option_product_dict
 
@@ -638,6 +649,19 @@ func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictiona
 					product_dict[option] = option_dict_arg[option]
 		
 	return product_dict
+
+
+func get_product_combidict_from_option_combidict(option_combidict:Dictionary)->Dictionary:
+	var product_combidict:Dictionary = {}
+	for option in option_combidict.keys():
+		var product:String = self.get_product_from_option(option)
+		var amount:float = option_combidict[option]
+		if product_combidict.has(product):
+			product_combidict[product] += amount
+		else:
+			product_combidict[product] = amount
+	
+	return product_combidict
 
 
 func print_info():

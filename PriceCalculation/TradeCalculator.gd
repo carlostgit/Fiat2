@@ -165,6 +165,7 @@ func calculate_best_combidict(money_arg:float)->Dictionary:
 	
 #	var best_next_combination:Dictionary = combination.duplicate()
 	var count = 0
+	var max_count = 10000 #En caso de error
 	var best_previous_satisfaction = 0.0
 	while true:
 #		print ("left money: "+ str(left_money))	
@@ -220,6 +221,8 @@ func calculate_best_combidict(money_arg:float)->Dictionary:
 #		
 
 		count += 1
+		if count>max_count:
+			 break
 			
 	if left_money > 0:
 #		Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
