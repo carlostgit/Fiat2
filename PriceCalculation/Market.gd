@@ -22,6 +22,8 @@ var _person_trade_combination_dict:Dictionary = {}
 var _sum_of_trade:Dictionary = {}
 var _person_value_of_owned:Dictionary = {}
 # Called when the node enters the scene tree for the first time.
+
+
 func _ready():
 	pass # Replace with function body.
 
@@ -144,3 +146,58 @@ func get_value_of_owned(person_arg:String):
 		return _person_value_of_owned[person_arg]
 	else:
 		return 0.0
+
+func calculate_new_prices():
+	var exit:bool = false
+	while false==exit:
+		var price_changed:bool = change_prices_step()
+		if false == price_changed:
+			exit=true
+		
+func change_prices_step()->bool:
+	var price_changed:bool = false
+	calculate_trades()
+	calculate_sum_of_trade()
+	var new_prices_increment:Dictionary = calculate_new_prices_increment()
+	print("new_prices_increment")
+	print(new_prices_increment)
+#	todo: Actualizar precios en Prices
+	for product in Prices.get_products():
+		if product != Prices.get_currency():
+			if new_prices_increment.has(product):
+				var increment:float = new_prices_increment[product]
+				if increment!=0:					
+					var current_price:float = Prices.get_price_of_product(product)
+					Prices.set_price_of_product(product, current_price+increment)
+					price_changed = true
+	return price_changed
+
+func calculate_new_prices_increment():
+	var new_prices_increment:Dictionary = _sum_of_trade.duplicate()
+	var amount_of_currency_excess = 0.0
+	for product in _sum_of_trade.keys():
+		if product == Prices.get_currency():
+			amount_of_currency_excess = _sum_of_trade[product]
+		
+	var excess_relative_to_currency:Dictionary = {}
+	for product in _sum_of_trade.keys():
+		var amount = _sum_of_trade[product]
+		excess_relative_to_currency[product] = amount - amount_of_currency_excess
+	
+	
+	var max_amount_of_product_excess=0.0
+	for product in excess_relative_to_currency.keys():
+		var amount = abs(excess_relative_to_currency[product])
+		if amount > max_amount_of_product_excess:
+			max_amount_of_product_excess = amount
+		
+	var param_min_product_excess_to_change_price = 0.1
+	var param_price_change_step = 0.1
+	if (max_amount_of_product_excess > param_min_product_excess_to_change_price):
+		for product in excess_relative_to_currency.keys():
+			var amount = excess_relative_to_currency[product]
+			new_prices_increment[product] = param_price_change_step*amount/max_amount_of_product_excess
+		
+	return new_prices_increment
+	
+		

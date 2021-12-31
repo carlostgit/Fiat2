@@ -142,3 +142,13 @@ func _on_SumTradeButton_pressed():
 #	if sum_product_combidict.has(product):
 #		var amount:float = sum_product_combidict[product]
 #		$AmountSumOfTradeLabel.set_text(str(amount))
+
+
+func _on_NextStepButton_pressed():
+	_market.change_prices_step()
+	
+
+
+func _on_CalculateNewPricesButton_pressed():
+	_market.calculate_new_prices()
+	

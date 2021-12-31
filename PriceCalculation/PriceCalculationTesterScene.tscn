@@ -352,6 +352,20 @@ margin_top = 208.0
 margin_right = 196.0
 margin_bottom = 228.0
 text = "Calculate value"
+
+[node name="NextStepButton" type="Button" parent="MarketTesterScene"]
+margin_left = 96.0
+margin_top = 240.0
+margin_right = 170.0
+margin_bottom = 260.0
+text = "Next Step"
+
+[node name="CalculateNewPricesButton" type="Button" parent="MarketTesterScene"]
+margin_left = 64.0
+margin_top = 272.0
+margin_right = 224.0
+margin_bottom = 296.0
+text = "Calculate new prices"
 [connection signal="pressed" from="AddButton" to="." method="_on_AddButton_pressed"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="RemoveButton" to="." method="_on_RemoveButton_pressed"]
@@ -378,3 +392,5 @@ text = "Calculate value"
 [connection signal="pressed" from="MarketTesterScene/CalculateTradeButton" to="MarketTesterScene" method="_on_CalculateTradeButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/SumTradeButton" to="MarketTesterScene" method="_on_SumTradeButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateValueButton" to="MarketTesterScene" method="_on_CalculateValueButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/NextStepButton" to="MarketTesterScene" method="_on_NextStepButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/CalculateNewPricesButton" to="MarketTesterScene" method="_on_CalculateNewPricesButton_pressed"]
