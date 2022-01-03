@@ -19,8 +19,9 @@ var name_satisf_calc_dic:Dictionary = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	var satisfaction_calculator:SatisfactionCalculator = create_default_satisfaction_model()
-	name_satisf_calc_dic["prueba satisfaction model"] = satisfaction_calculator
+	var name_of_satisf = "prueba satisfaction model"
+	var satisfaction_calculator:SatisfactionCalculator = create_default_satisfaction_model(name_of_satisf)
+	name_satisf_calc_dic[name_of_satisf] = satisfaction_calculator
 	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$MarketTesterScene.init_default_example(satisfaction_calculator)
@@ -40,9 +41,11 @@ func update_item_list():
 	
 	
 	
-func create_default_satisfaction_model() -> Node:
+func create_default_satisfaction_model(name_arg:String="default_satisf_calc") -> Node:
 	
 	var satisfaction_calculator:SatisfactionCalculator = SatisfactionCalculator.new()
+
+	satisfaction_calculator.set_name(name_arg)
 
 	var options_array:Array = ["candy_savings","chocolate_savings",
 						"candy_consumption","chocolate_consumption"]
@@ -90,7 +93,7 @@ func _on_AddAcceptDialog_ok_pressed(text):
 	for i in range(0,$SatisfactionModelItemList.get_item_count()):
 		if text==$SatisfactionModelItemList.get_item_text(i):
 			return
-	name_satisf_calc_dic[text] = create_default_satisfaction_model()
+	name_satisf_calc_dic[text] = create_default_satisfaction_model(text)
 	update_item_list()	
 
 
@@ -107,14 +110,14 @@ func _on_EditButton_pressed():
 	if (selected_items.size()):
 		
 		var old_satisf
-		var old_name=""
-		$SatisfactionModelEditor.get_satisfaction_calculator_ref(old_satisf,old_name)
-		name_satisf_calc_dic[old_name]=old_satisf
+#		var old_name=""
+		old_satisf = $SatisfactionModelEditor.get_satisfaction_calculator_ref()
+		name_satisf_calc_dic[old_satisf.get_name()]=old_satisf
 		
 		var first_select_index = selected_items[0]
 		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
 		var satisf_calc:SatisfactionCalculator = name_satisf_calc_dic[name]
-		$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_calc,name)
+		$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_calc)
 		$SatisfactionModelEditor.show()
 	
 	

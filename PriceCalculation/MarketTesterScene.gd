@@ -9,6 +9,8 @@ const Market = preload("res://PriceCalculation/Market.gd")
 
 var _market:Node = null
 
+var _default_satisf_calc = null
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -30,6 +32,7 @@ func update_person_list():
 
 func init_default_example(satisf_calc_arg:Node):
 	_market.init_default_example(satisf_calc_arg)
+	_default_satisf_calc = satisf_calc_arg
 	update_person_list()
 
 
@@ -152,3 +155,29 @@ func _on_NextStepButton_pressed():
 func _on_CalculateNewPricesButton_pressed():
 	_market.calculate_new_prices()
 	
+
+
+func _on_RemoveButton_pressed():
+	var person_product_dict:Dictionary = {}
+	var selected_persons:Array = $PersonsItemList.get_selected_items()
+	if selected_persons.size()>0:
+		var selected_person_index:int = selected_persons.front()
+		var person:String = $PersonsItemList.get_item_text(selected_person_index)
+		_market.remove_person(person)
+		update_person_list()
+	
+
+
+func _on_AddButton_pressed():
+	$AddPersonAcceptDialog.popup()
+	print("$AddPersonAcceptDialog.get_position()")
+	print($AddPersonAcceptDialog.get_position())
+	$AddPersonAcceptDialog.set_position(self.get_position())
+
+
+func _on_AddPersonAcceptDialog_ok_pressed(text):
+	for i in range(0,$PersonsItemList.get_item_count()):
+		if text==$PersonsItemList.get_item_text(i):
+			return
+	_market.add_person(text,_default_satisf_calc)
+	self.update_person_list()

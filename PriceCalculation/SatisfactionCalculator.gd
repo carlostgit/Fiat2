@@ -40,6 +40,7 @@ var _option_product_dict:Dictionary = { "candy_savings": "candy",
 									"chocolate_consumption": "chocolate",}
 									
 
+var _name:String = "satisf_calc_default_name"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -115,8 +116,14 @@ func copy(satisfaction_calculator_arg:Control):
 	_supplementary_combo_satisf_curve_dict = (satisfaction_calculator_arg.get_satisfaction_curves_of_supplementary_combos()).duplicate()
 	_options = (satisfaction_calculator_arg.get_options()).duplicate()
 	_option_product_dict = (satisfaction_calculator_arg.get_option_product_dict()).duplicate()
+	_name = str(satisfaction_calculator_arg.get_name())
 
-
+func get_name()->String:
+	return _name
+	
+func set_name(name_arg:String):
+	_name = name_arg
+	
 func reset()->void:
 	_option_satisf_curve_dict.clear()
 	_complementary_combo_satisf_curve_dict.clear()
@@ -763,6 +770,7 @@ func to_dict()->Dictionary:
 		sup_combo_satisf_curv[option] = sat_curv_dict
 	save_dict["_supplementary_combo_satisf_curve_dict"] = sup_combo_satisf_curv
 	
+	save_dict["_name"] = _name
 #	print(to_json(save_dict))
 	
 	return save_dict
@@ -814,5 +822,6 @@ func from_dict(saved_dict:Dictionary):
 				satisf_curve.from_dict(option_satisf[option])
 				_supplementary_combo_satisf_curve_dict[option] = satisf_curve
 
-
+		if dic_key == "_name":
+			self._name = saved_dict[dic_key]
 

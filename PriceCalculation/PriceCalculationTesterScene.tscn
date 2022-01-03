@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
 [ext_resource path="res://PriceCalculation/SatisfactionModelEditor.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://PriceCalculation/TradeTesterScene.gd" type="Script" id=5]
 [ext_resource path="res://PriceCalculation/PricesEditor.gd" type="Script" id=6]
 [ext_resource path="res://PriceCalculation/MarketTesterScene.gd" type="Script" id=7]
+[ext_resource path="res://PriceCalculation/AddPersonAcceptDialog.gd" type="Script" id=8]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -25,6 +26,9 @@ margin_right = 320.0
 [node name="SatisfactionModelItemList" type="ItemList" parent="."]
 margin_right = 192.0
 margin_bottom = 88.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AddButton" type="Button" parent="."]
 margin_left = 208.0
@@ -261,8 +265,8 @@ __meta__ = {
 }
 
 [node name="PersonsItemList" type="ItemList" parent="MarketTesterScene"]
-margin_left = 88.0
-margin_right = 216.0
+margin_left = 48.0
+margin_right = 176.0
 margin_bottom = 104.0
 
 [node name="AddButton" type="Button" parent="MarketTesterScene"]
@@ -272,6 +276,24 @@ text = "Add"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AddPersonAcceptDialog" type="AcceptDialog" parent="MarketTesterScene"]
+margin_left = 48.0
+margin_top = 16.0
+margin_right = 352.0
+margin_bottom = 128.0
+popup_exclusive = true
+window_title = "Add Person"
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AddLineEdit" type="LineEdit" parent="MarketTesterScene/AddPersonAcceptDialog"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 296.0
+margin_bottom = 76.0
 
 [node name="OwnedProductsItemList" type="ItemList" parent="MarketTesterScene"]
 margin_left = 232.0
@@ -285,9 +307,19 @@ margin_bottom = 24.0
 
 [node name="TradeLabel" type="Label" parent="MarketTesterScene"]
 margin_left = 360.0
-margin_top = 48.0
+margin_top = 24.0
 margin_right = 458.0
-margin_bottom = 62.0
+margin_bottom = 64.0
+text = "Traded Amount"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MarketTesterScene"]
+margin_left = 400.0
+margin_top = 40.0
+margin_right = 498.0
+margin_bottom = 54.0
 text = "Traded Amount"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -311,19 +343,19 @@ margin_bottom = 280.0
 
 [node name="CalculateTradeButton" type="Button" parent="MarketTesterScene"]
 margin_left = 88.0
-margin_top = 136.0
+margin_top = 192.0
 margin_right = 197.0
-margin_bottom = 156.0
+margin_bottom = 212.0
 text = "Calculate Trade"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SumTradeButton" type="Button" parent="MarketTesterScene"]
-margin_left = 88.0
-margin_top = 168.0
-margin_right = 167.0
-margin_bottom = 188.0
+margin_left = 96.0
+margin_top = 216.0
+margin_right = 175.0
+margin_bottom = 236.0
 text = "Sum Trade"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -335,22 +367,35 @@ margin_top = 32.0
 margin_right = 36.0
 margin_bottom = 52.0
 text = "X"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ValueOfOwnedLabel" type="Label" parent="MarketTesterScene"]
-margin_left = 360.0
-margin_top = 72.0
-margin_right = 464.0
-margin_bottom = 96.0
+margin_left = 24.0
+margin_top = 104.0
+margin_right = 128.0
+margin_bottom = 120.0
+text = "Value of owned"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="MarketTesterScene"]
+margin_left = 40.0
+margin_top = 120.0
+margin_right = 144.0
+margin_bottom = 134.0
 text = "Value of owned"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CalculateValueButton" type="Button" parent="MarketTesterScene"]
-margin_left = 88.0
-margin_top = 208.0
-margin_right = 196.0
-margin_bottom = 228.0
+margin_left = 48.0
+margin_top = 136.0
+margin_right = 156.0
+margin_bottom = 156.0
 text = "Calculate value"
 
 [node name="NextStepButton" type="Button" parent="MarketTesterScene"]
@@ -387,10 +432,15 @@ text = "Calculate new prices"
 [connection signal="value_changed" from="PricesEditor/PriceSpinBox" to="PricesEditor" method="_on_PriceSpinBox_value_changed"]
 [connection signal="pressed" from="PricesEditor/SetCurrencyButton" to="PricesEditor" method="_on_SetCurrencyButton_pressed"]
 [connection signal="item_selected" from="MarketTesterScene/PersonsItemList" to="MarketTesterScene" method="_on_PersonsItemList_item_selected"]
+[connection signal="pressed" from="MarketTesterScene/AddButton" to="MarketTesterScene" method="_on_AddButton_pressed"]
+[connection signal="about_to_show" from="MarketTesterScene/AddPersonAcceptDialog" to="MarketTesterScene/AddPersonAcceptDialog" method="_on_AddPersonAcceptDialog_about_to_show"]
+[connection signal="confirmed" from="MarketTesterScene/AddPersonAcceptDialog" to="MarketTesterScene/AddPersonAcceptDialog" method="_on_AddPersonAcceptDialog_confirmed"]
+[connection signal="ok_pressed" from="MarketTesterScene/AddPersonAcceptDialog" to="MarketTesterScene" method="_on_AddPersonAcceptDialog_ok_pressed"]
 [connection signal="item_selected" from="MarketTesterScene/OwnedProductsItemList" to="MarketTesterScene" method="_on_OwnedProductsItemList_item_selected"]
 [connection signal="value_changed" from="MarketTesterScene/AmountOwnedSpinBox" to="MarketTesterScene" method="_on_AmountOwnedSpinBox_value_changed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateTradeButton" to="MarketTesterScene" method="_on_CalculateTradeButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/SumTradeButton" to="MarketTesterScene" method="_on_SumTradeButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/RemoveButton" to="MarketTesterScene" method="_on_RemoveButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateValueButton" to="MarketTesterScene" method="_on_CalculateValueButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/NextStepButton" to="MarketTesterScene" method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateNewPricesButton" to="MarketTesterScene" method="_on_CalculateNewPricesButton_pressed"]

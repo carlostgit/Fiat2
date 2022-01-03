@@ -56,6 +56,9 @@ func add_person(person_arg:String, trade_calc_arg:Node):
 			empty_owned_products_combidict[product] = 0.0			
 		self._person_owned_dict[person_arg] = empty_owned_products_combidict
 
+func remove_person(person_arg:String):
+	if _persons.has(person_arg):
+		_persons.erase(person_arg)
 		
 func calculate_best_combinations():
 	for person in _persons:

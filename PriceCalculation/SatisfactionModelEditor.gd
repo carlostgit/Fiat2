@@ -78,18 +78,18 @@ func update_satisfaction_calculator_data():
 	$SatisfCurvesForSupCombos/PrefAt0ForSupCombosSpinBox.hide()
 	
 
-func set_satisfaction_calculator_ref(satisf_calculator_arg, name_arg:String=""):
+func set_satisfaction_calculator_ref(satisf_calculator_arg):
 	_satisfaction_calculator_ref = satisf_calculator_arg
-	self.name_of_model = name_arg
+	self.name_of_model = satisf_calculator_arg.get_name()
 	
 #	He creado un _init en SatisfactionCalculator, que hace de constructor de copia
 #	_satisfaction_calculator_copy = SatisfactionCalculator.new(satisf_calculator_arg)
 
 	update_satisfaction_calculator_data()
 	
-func get_satisfaction_calculator_ref(satisf_calculator_output, name_output:String):
-	satisf_calculator_output = _satisfaction_calculator_ref
-	name_output = self.name_of_model
+func get_satisfaction_calculator_ref():
+	return _satisfaction_calculator_ref
+#	name_output = self.name_of_model
 
 func draw_satisfaction_curve(satisf_curve_arg, curve_name_arg:String = "satisf"):
 #	$Plotter.clear()
