@@ -50,3 +50,9 @@ func _on_PriceSpinBox_value_changed(value):
 		var product:String = $ProductItemList.get_item_text(index)
 		Prices.set_price_of_product(product,value)
 	
+
+
+func _on_PricesEditor_gui_input(event):
+	if event as InputEventScreenDrag:
+		var input_event_screen_drag:InputEventScreenDrag = event as InputEventScreenDrag
+		self.set_position(self.get_position()+input_event_screen_drag.relative)

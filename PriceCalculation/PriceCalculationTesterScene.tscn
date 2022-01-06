@@ -20,8 +20,9 @@ __meta__ = {
 }
 
 [node name="SatisfactionModelEditor" parent="." instance=ExtResource( 2 )]
+modulate = Color( 0.839216, 0.839216, 1, 1 )
 margin_left = 280.0
-margin_right = 320.0
+margin_right = 1192.0
 
 [node name="SatisfactionModelItemList" type="ItemList" parent="."]
 margin_right = 192.0
@@ -93,6 +94,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ShowMarketTesterButton" type="Button" parent="."]
+margin_left = 32.0
+margin_top = 200.0
+margin_right = 169.0
+margin_bottom = 220.0
+text = "Show Market Tester"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HideMarketTesterButton" type="Button" parent="."]
+margin_left = 32.0
+margin_top = 224.0
+margin_right = 169.0
+margin_bottom = 244.0
+text = "Hide Market Tester"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="RemoveButton" type="Button" parent="."]
 margin_left = 208.0
 margin_top = 24.0
@@ -159,14 +180,12 @@ filters = PoolStringArray( "*.col" )
 current_dir = "user://"
 current_path = "user://"
 
-[node name="TradeTesterScene" type="Control" parent="."]
+[node name="TradeTesterScene" type="Panel" parent="."]
+modulate = Color( 0.803922, 1, 0.811765, 1 )
 margin_top = 448.0
-margin_right = 40.0
-margin_bottom = 488.0
+margin_right = 680.0
+margin_bottom = 776.0
 script = ExtResource( 5 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SatisfModelNameLabel" type="Label" parent="TradeTesterScene"]
 margin_left = 296.0
@@ -278,7 +297,8 @@ max_value = 10.0
 step = 0.1
 value = 0.5
 
-[node name="PricesEditor" type="Control" parent="."]
+[node name="PricesEditor" type="Panel" parent="."]
+modulate = Color( 1, 1, 0.847059, 1 )
 margin_top = 304.0
 margin_right = 264.0
 margin_bottom = 432.0
@@ -312,11 +332,11 @@ margin_right = 192.0
 margin_bottom = 94.0
 text = "currency"
 
-[node name="MarketTesterScene" type="Control" parent="."]
+[node name="MarketTesterScene" type="Panel" parent="."]
 margin_left = 704.0
 margin_top = 448.0
-margin_right = 744.0
-margin_bottom = 488.0
+margin_right = 1200.0
+margin_bottom = 800.0
 script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -357,6 +377,9 @@ margin_bottom = 76.0
 margin_left = 232.0
 margin_right = 344.0
 margin_bottom = 104.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="AmountOwnedSpinBox" type="SpinBox" parent="MarketTesterScene"]
 margin_left = 360.0
@@ -476,6 +499,13 @@ margin_top = 160.0
 margin_right = 175.0
 margin_bottom = 174.0
 text = "Satisfaction Model Name"
+
+[node name="MousePositionLabel" type="Label" parent="MarketTesterScene"]
+margin_left = 8.0
+margin_top = 208.0
+margin_right = 48.0
+margin_bottom = 222.0
+text = "Mouse pos"
 [connection signal="pressed" from="AddButton" to="." method="_on_AddButton_pressed"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="HideButton" to="." method="_on_HideButton_pressed"]
@@ -483,6 +513,8 @@ text = "Satisfaction Model Name"
 [connection signal="pressed" from="HideTradeTesterButton" to="." method="_on_HideTradeTesterButton_pressed"]
 [connection signal="pressed" from="ShowPricesEditorButton" to="." method="_on_ShowPricesEditorButton_pressed"]
 [connection signal="pressed" from="HidePricesEditorButton" to="." method="_on_HidePricesEditorButton_pressed"]
+[connection signal="pressed" from="ShowMarketTesterButton" to="." method="_on_ShowMarketTesterButton_pressed"]
+[connection signal="pressed" from="HideMarketTesterButton" to="." method="_on_HideMarketTesterButton_pressed"]
 [connection signal="pressed" from="RemoveButton" to="." method="_on_RemoveButton_pressed"]
 [connection signal="about_to_show" from="AddAcceptDialog" to="AddAcceptDialog" method="_on_AddAcceptDialog_about_to_show"]
 [connection signal="confirmed" from="AddAcceptDialog" to="AddAcceptDialog" method="_on_AddAcceptDialog_confirmed"]
@@ -491,6 +523,7 @@ text = "Satisfaction Model Name"
 [connection signal="pressed" from="LoadButton" to="." method="_on_LoadButton_pressed"]
 [connection signal="file_selected" from="SaveAsFileDialog" to="." method="_on_SaveAsFileDialog_file_selected"]
 [connection signal="file_selected" from="LoadFileDialog" to="." method="_on_LoadFileDialog_file_selected"]
+[connection signal="gui_input" from="TradeTesterScene" to="TradeTesterScene" method="_on_TradeTesterScene_gui_input"]
 [connection signal="item_selected" from="TradeTesterScene/OptionsItemList" to="TradeTesterScene" method="_on_OptionsItemList_item_selected"]
 [connection signal="value_changed" from="TradeTesterScene/Plotter/XMaxSpinBox" to="TradeTesterScene" method="_on_XMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="TradeTesterScene/Plotter/YMaxSpinBox" to="TradeTesterScene" method="_on_YMaxSpinBox_value_changed"]
@@ -498,9 +531,11 @@ text = "Satisfaction Model Name"
 [connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]
+[connection signal="gui_input" from="PricesEditor" to="PricesEditor" method="_on_PricesEditor_gui_input"]
 [connection signal="item_selected" from="PricesEditor/ProductItemList" to="PricesEditor" method="_on_ProductItemList_item_selected"]
 [connection signal="value_changed" from="PricesEditor/PriceSpinBox" to="PricesEditor" method="_on_PriceSpinBox_value_changed"]
 [connection signal="pressed" from="PricesEditor/SetCurrencyButton" to="PricesEditor" method="_on_SetCurrencyButton_pressed"]
+[connection signal="gui_input" from="MarketTesterScene" to="MarketTesterScene" method="_on_MarketTesterScene_gui_input"]
 [connection signal="item_selected" from="MarketTesterScene/PersonsItemList" to="MarketTesterScene" method="_on_PersonsItemList_item_selected"]
 [connection signal="pressed" from="MarketTesterScene/AddButton" to="MarketTesterScene" method="_on_AddButton_pressed"]
 [connection signal="about_to_show" from="MarketTesterScene/AddPersonAcceptDialog" to="MarketTesterScene/AddPersonAcceptDialog" method="_on_AddPersonAcceptDialog_about_to_show"]

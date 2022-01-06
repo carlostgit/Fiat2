@@ -189,3 +189,12 @@ func _on_AddPersonAcceptDialog_ok_pressed(text):
 			return
 	_market.add_person(text,_satisfaction_calculator_ref)
 	self.update_person_list()
+
+
+func _on_MarketTesterScene_gui_input(event):
+	if event as InputEventScreenDrag:
+		var input_event_screen_drag:InputEventScreenDrag = event as InputEventScreenDrag
+		$MousePositionLabel.set_text(str(self.get_position()))
+		self.set_position(self.get_position()+input_event_screen_drag.relative)
+
+

@@ -3,7 +3,6 @@ extends Control
 
 
 const SatisfactionModelEditorRes = preload("res://PriceCalculation/SatisfactionModelEditor.tscn")
-
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 
@@ -39,8 +38,6 @@ func update_item_list():
 	for name in name_satisf_calc_dic.keys():
 		$SatisfactionModelItemList.add_item(name)
 
-	
-	
 	
 func create_default_satisfaction_model(name_arg:String="default_satisf_calc") -> Node:
 	
@@ -119,9 +116,8 @@ func _on_EditButton_pressed():
 		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
 		var satisf_calc:SatisfactionCalculator = name_satisf_calc_dic[name]
 		$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_calc)
-		$SatisfactionModelEditor.show()
-	
-	
+		
+	$SatisfactionModelEditor.show()
 
 
 func _on_RemoveButton_pressed():
@@ -175,32 +171,33 @@ func _on_LoadFileDialog_file_selected(path):
 func _on_LoadButton_pressed():
 	$LoadFileDialog.popup()
 
-
-
 func _on_HideButton_pressed():
 	$SatisfactionModelEditor.hide()
 	
 
-
 func _on_TradeTesterButton_pressed():
 	var selected_items = $SatisfactionModelItemList.get_selected_items()
 	if (selected_items.size()):
-		
 		var first_select_index = selected_items[0]
 		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
 		var satisf_calc:SatisfactionCalculator = name_satisf_calc_dic[name]
 		$TradeTesterScene.set_satisfaction_calculator_ref(satisf_calc)
-		$TradeTesterScene.show()
-
+	
+	$TradeTesterScene.show()
+		
 
 func _on_HideTradeTesterButton_pressed():
 	$TradeTesterScene.hide()
 
-
 func _on_ShowPricesEditorButton_pressed():
 	$PricesEditor.show()
 
-
-
 func _on_HidePricesEditorButton_pressed():
 	$PricesEditor.hide()
+
+func _on_ShowMarketTesterButton_pressed():
+	$MarketTesterScene.show()
+
+func _on_HideMarketTesterButton_pressed():
+	$MarketTesterScene.hide()
+

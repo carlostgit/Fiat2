@@ -10,13 +10,10 @@
 [ext_resource path="res://PriceCalculation/NewOptionOfSupComboAcceptDialog.gd" type="Script" id=8]
 [ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=9]
 
-[node name="SatisfactionModelEditor" type="Control"]
-margin_right = 40.0
-margin_bottom = 40.0
+[node name="SatisfactionModelEditor" type="Panel"]
+margin_right = 920.0
+margin_bottom = 440.0
 script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="OptionsItemList" type="ItemList" parent="."]
 margin_left = 328.0
@@ -376,6 +373,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 128.0
 margin_bottom = 44.0
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="NewProductAcceptDialog" type="AcceptDialog" parent="."]
 margin_left = 408.0
@@ -393,6 +392,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 128.0
 margin_bottom = 44.0
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="NewCompComboAcceptDialog" type="AcceptDialog" parent="."]
 margin_left = 56.0
@@ -410,6 +411,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 221.0
 margin_bottom = 44.0
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="NewSupComboAcceptDialog" type="AcceptDialog" parent="."]
 margin_left = 56.0
@@ -427,6 +430,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 221.0
 margin_bottom = 44.0
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="NewOptionOfCompComboAcceptDialog" type="AcceptDialog" parent="."]
 margin_left = 248.0
@@ -444,6 +449,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 266.0
 margin_bottom = 44.0
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="NewOptionOfSupComboAcceptDialog" type="AcceptDialog" parent="."]
 margin_left = 248.0
@@ -461,6 +468,8 @@ margin_left = 8.0
 margin_top = 8.0
 margin_right = 266.0
 margin_bottom = 44.0
+caret_blink = true
+caret_blink_speed = 0.5
 
 [node name="SaveButton" type="Button" parent="."]
 margin_left = 648.0
@@ -521,6 +530,7 @@ margin_top = 24.0
 margin_right = 930.0
 margin_bottom = 38.0
 text = "Name of Model"
+[connection signal="gui_input" from="." to="." method="_on_SatisfactionModelEditor_gui_input"]
 [connection signal="item_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_item_selected"]
 [connection signal="nothing_selected" from="OptionsItemList" to="." method="_on_OptionsItemList_nothing_selected"]
 [connection signal="pressed" from="DeleteOption" to="." method="_on_DeleteOption_pressed"]

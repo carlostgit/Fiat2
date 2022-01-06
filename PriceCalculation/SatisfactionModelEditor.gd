@@ -548,11 +548,15 @@ func _on_DeleteProductButton_pressed():
 		_satisfaction_calculator_ref.remove_product(product)
 		update_satisfaction_calculator_data()
 
-
-
 func _on_NewProductAcceptDialog_ok_pressed(text):
 	for i in range(0,$ProductsItemList.get_item_count()):
 		if text==$ProductsItemList.get_item_text(i):
 			return
 	_satisfaction_calculator_ref.add_product(text)
 	update_satisfaction_calculator_data()
+
+
+func _on_SatisfactionModelEditor_gui_input(event):
+	if event as InputEventScreenDrag:
+		var input_event_screen_drag:InputEventScreenDrag = event as InputEventScreenDrag
+		self.set_position(self.get_position()+input_event_screen_drag.relative)

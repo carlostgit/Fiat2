@@ -214,3 +214,9 @@ func _on_DrawSelected_pressed():
 		var first_select_index = selected_items[0]
 		var name = $OptionsItemList.get_item_text(first_select_index)
 		draw_option(name,max_to_draw,step)
+	
+
+func _on_TradeTesterScene_gui_input(event):
+	if event as InputEventScreenDrag:
+		var input_event_screen_drag:InputEventScreenDrag = event as InputEventScreenDrag
+		self.set_position(self.get_position()+input_event_screen_drag.relative)
