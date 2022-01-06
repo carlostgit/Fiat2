@@ -24,6 +24,7 @@ func _ready():
 	name_satisf_calc_dic[name_of_satisf] = satisfaction_calculator
 	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
+	$MarketTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$MarketTesterScene.init_default_example(satisfaction_calculator)
 	update_item_list()
 
@@ -174,3 +175,32 @@ func _on_LoadFileDialog_file_selected(path):
 func _on_LoadButton_pressed():
 	$LoadFileDialog.popup()
 
+
+
+func _on_HideButton_pressed():
+	$SatisfactionModelEditor.hide()
+	
+
+
+func _on_TradeTesterButton_pressed():
+	var selected_items = $SatisfactionModelItemList.get_selected_items()
+	if (selected_items.size()):
+		
+		var first_select_index = selected_items[0]
+		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
+		var satisf_calc:SatisfactionCalculator = name_satisf_calc_dic[name]
+		$TradeTesterScene.set_satisfaction_calculator_ref(satisf_calc)
+		$TradeTesterScene.show()
+
+
+func _on_HideTradeTesterButton_pressed():
+	$TradeTesterScene.hide()
+
+
+func _on_ShowPricesEditorButton_pressed():
+	$PricesEditor.show()
+
+
+
+func _on_HidePricesEditorButton_pressed():
+	$PricesEditor.hide()

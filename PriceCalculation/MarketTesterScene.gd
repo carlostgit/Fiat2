@@ -9,7 +9,10 @@ const Market = preload("res://PriceCalculation/Market.gd")
 
 var _market:Node = null
 
-var _default_satisf_calc = null
+#var _default_satisf_calc = null
+
+var _satisfaction_calculator_ref:Node = null
+var _name_of_model:String = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -24,6 +27,11 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func set_satisfaction_calculator_ref(satisf_calculator_arg):
+	_satisfaction_calculator_ref = satisf_calculator_arg
+	self._name_of_model = _satisfaction_calculator_ref.get_name()
+	$SatisfactionModelNameLabel.set_text(self._name_of_model)
+
 func update_person_list():
 	$PersonsItemList.clear()
 	for person in _market.get_persons():
@@ -32,7 +40,7 @@ func update_person_list():
 
 func init_default_example(satisf_calc_arg:Node):
 	_market.init_default_example(satisf_calc_arg)
-	_default_satisf_calc = satisf_calc_arg
+	_satisfaction_calculator_ref = satisf_calc_arg
 	update_person_list()
 
 
@@ -179,5 +187,5 @@ func _on_AddPersonAcceptDialog_ok_pressed(text):
 	for i in range(0,$PersonsItemList.get_item_count()):
 		if text==$PersonsItemList.get_item_text(i):
 			return
-	_market.add_person(text,_default_satisf_calc)
+	_market.add_person(text,_satisfaction_calculator_ref)
 	self.update_person_list()

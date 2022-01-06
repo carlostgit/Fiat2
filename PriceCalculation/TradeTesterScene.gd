@@ -23,10 +23,10 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func set_satisfaction_calculator_ref(satisf_calculator_arg, name_arg:String=""):
+func set_satisfaction_calculator_ref(satisf_calculator_arg):
 	_satisfaction_calculator_ref = satisf_calculator_arg
-	self.name_of_model = name_arg
-	
+	self.name_of_model = _satisfaction_calculator_ref.get_name()
+	$SatisfModelNameLabel.set_text(self.name_of_model)
 	_trade_calculator = TradeCalculator.new(_satisfaction_calculator_ref)
 
 #	He creado un _init en SatisfactionCalculator, que hace de constructor de copia
