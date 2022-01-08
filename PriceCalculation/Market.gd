@@ -112,8 +112,11 @@ func calculate_best_combination_for_person(person_arg:String)->Dictionary:
 		_person_value_of_owned[person_arg] = budget
 		if self._person_tradecalc.has(person_arg):
 			var trade_calc:TradeCalculator = self._person_tradecalc[person_arg]
+
 #			Hay formas de guardar los resultados de:
 			var best_combidict:Dictionary = trade_calc.calculate_best_combidict(budget)
+#			TODO: Hacer una versión precalculada (para unos precios), de calculate_best_combidict en TradeCalculator
+#			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
 			return best_combidict
 	var null_dictionary = {}
 	return null_dictionary
@@ -151,10 +154,22 @@ func get_value_of_owned(person_arg:String):
 		return 0.0
 
 func calculate_new_prices():
+#	TODO: Hacer versión de calculate_new_prices() y change_prices_step()
+#	en las que:
+#	Haya un control para saber cuándo dejar de calcular.
+#	Haya un control para saber cuándo empezar a hacer cáclulos con mejor precisión
+#		Para eso, habría que:
+#			Tener en cuenta si el precio de todos los productos no hace otra cosa que variar entre un máximo y mínimo
+#			Tal vez el máximo y mínimo tenga que ser solo de los últimos pasosç
+#			Puedo ir guardando los mínimos y máximos de precio absolutos, y los últimos mínimos y máximos
+#		
 	var exit:bool = false
+	var count:int = 0
+	var max_count:int = 10
 	while false==exit:
+		count += 1
 		var price_changed:bool = change_prices_step()
-		if false == price_changed:
+		if false == price_changed or count>max_count:
 			exit=true
 		
 func change_prices_step()->bool:
@@ -193,9 +208,13 @@ func calculate_new_prices_increment():
 		var amount = abs(excess_relative_to_currency[product])
 		if amount > max_amount_of_product_excess:
 			max_amount_of_product_excess = amount
-		
+	
+#	TODO: Este parámetro deberá ser 0, cuando desarrolle un mejor método para controlar cuándo dejar de calcular:
 	var param_min_product_excess_to_change_price = 0.1
-	var param_price_change_step = 0.1
+	
+	#TODO: Este parámetro deberían pasarse por argumento al método calculate_new_prices_increment():
+	var param_price_change_step = 0.1 
+
 	if (max_amount_of_product_excess > param_min_product_excess_to_change_price):
 		for product in excess_relative_to_currency.keys():
 			var amount = excess_relative_to_currency[product]

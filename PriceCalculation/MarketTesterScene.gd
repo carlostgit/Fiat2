@@ -162,9 +162,12 @@ func _on_NextStepButton_pressed():
 
 func _on_CalculateNewPricesButton_pressed():
 	_market.calculate_new_prices()
+	$PricesItemList.clear()
+	for product in Prices.get_products():
+		var price:float = Prices.get_price_of_product(product)
+		var product_price_text:String = product+" "+str(price)
+		$PricesItemList.add_item(product_price_text)
 	
-
-
 func _on_RemoveButton_pressed():
 	var person_product_dict:Dictionary = {}
 	var selected_persons:Array = $PersonsItemList.get_selected_items()
