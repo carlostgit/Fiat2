@@ -338,22 +338,23 @@ text = "currency"
 
 [node name="MarketTesterScene" type="WindowDialog" parent="."]
 visible = true
-margin_left = 336.0
-margin_top = 312.0
-margin_right = 976.0
-margin_bottom = 712.0
+margin_left = 168.0
+margin_top = 96.0
+margin_right = 1016.0
+margin_bottom = 608.0
 script = ExtResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="PersonsItemList" type="ItemList" parent="MarketTesterScene"]
-margin_left = 48.0
-margin_right = 176.0
+margin_left = 376.0
+margin_right = 504.0
 margin_bottom = 104.0
 
 [node name="AddButton" type="Button" parent="MarketTesterScene"]
-margin_right = 12.0
+margin_left = 328.0
+margin_right = 365.0
 margin_bottom = 20.0
 text = "Add"
 __meta__ = {
@@ -379,22 +380,22 @@ margin_right = 296.0
 margin_bottom = 76.0
 
 [node name="OwnedProductsItemList" type="ItemList" parent="MarketTesterScene"]
-margin_left = 232.0
-margin_right = 344.0
+margin_left = 560.0
+margin_right = 672.0
 margin_bottom = 104.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="AmountOwnedSpinBox" type="SpinBox" parent="MarketTesterScene"]
-margin_left = 360.0
-margin_right = 434.0
+margin_left = 688.0
+margin_right = 762.0
 margin_bottom = 24.0
 
 [node name="TradeLabel" type="Label" parent="MarketTesterScene"]
-margin_left = 360.0
+margin_left = 688.0
 margin_top = 24.0
-margin_right = 458.0
+margin_right = 786.0
 margin_bottom = 64.0
 text = "Traded Amount"
 __meta__ = {
@@ -402,9 +403,9 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="MarketTesterScene"]
-margin_left = 400.0
+margin_left = 728.0
 margin_top = 40.0
-margin_right = 498.0
+margin_right = 826.0
 margin_bottom = 54.0
 text = "Traded Amount"
 __meta__ = {
@@ -412,9 +413,9 @@ __meta__ = {
 }
 
 [node name="AmountSumOfTradeLabel" type="Label" parent="MarketTesterScene"]
-margin_left = 368.0
+margin_left = 696.0
 margin_top = 176.0
-margin_right = 514.0
+margin_right = 842.0
 margin_bottom = 190.0
 text = "Sum of Traded Amount"
 __meta__ = {
@@ -422,15 +423,15 @@ __meta__ = {
 }
 
 [node name="SumOfTradeItemList" type="ItemList" parent="MarketTesterScene"]
-margin_left = 232.0
+margin_left = 560.0
 margin_top = 168.0
-margin_right = 344.0
+margin_right = 672.0
 margin_bottom = 280.0
 
 [node name="CalculateTradeButton" type="Button" parent="MarketTesterScene"]
-margin_left = 88.0
+margin_left = 416.0
 margin_top = 192.0
-margin_right = 197.0
+margin_right = 525.0
 margin_bottom = 212.0
 text = "Calculate Trade"
 __meta__ = {
@@ -438,9 +439,9 @@ __meta__ = {
 }
 
 [node name="SumTradeButton" type="Button" parent="MarketTesterScene"]
-margin_left = 96.0
+margin_left = 424.0
 margin_top = 216.0
-margin_right = 175.0
+margin_right = 503.0
 margin_bottom = 236.0
 text = "Sum Trade"
 __meta__ = {
@@ -448,9 +449,9 @@ __meta__ = {
 }
 
 [node name="RemoveButton" type="Button" parent="MarketTesterScene"]
-margin_left = 16.0
+margin_left = 344.0
 margin_top = 32.0
-margin_right = 36.0
+margin_right = 364.0
 margin_bottom = 52.0
 text = "X"
 __meta__ = {
@@ -458,9 +459,9 @@ __meta__ = {
 }
 
 [node name="ValueOfOwnedLabel" type="Label" parent="MarketTesterScene"]
-margin_left = 24.0
+margin_left = 352.0
 margin_top = 104.0
-margin_right = 128.0
+margin_right = 456.0
 margin_bottom = 120.0
 text = "Value of owned"
 __meta__ = {
@@ -468,9 +469,9 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="MarketTesterScene"]
-margin_left = 40.0
+margin_left = 368.0
 margin_top = 120.0
-margin_right = 144.0
+margin_right = 472.0
 margin_bottom = 134.0
 text = "Value of owned"
 __meta__ = {
@@ -478,45 +479,47 @@ __meta__ = {
 }
 
 [node name="CalculateValueButton" type="Button" parent="MarketTesterScene"]
-margin_left = 48.0
+margin_left = 376.0
 margin_top = 136.0
-margin_right = 156.0
+margin_right = 484.0
 margin_bottom = 156.0
 text = "Calculate value"
 
 [node name="NextStepButton" type="Button" parent="MarketTesterScene"]
-margin_left = 96.0
+margin_left = 424.0
 margin_top = 240.0
-margin_right = 170.0
+margin_right = 498.0
 margin_bottom = 260.0
 text = "Next Step"
 
 [node name="CalculateNewPricesButton" type="Button" parent="MarketTesterScene"]
-margin_left = 64.0
+margin_left = 392.0
 margin_top = 272.0
-margin_right = 224.0
+margin_right = 552.0
 margin_bottom = 296.0
 text = "Calculate new prices"
 
 [node name="SatisfactionModelNameLabel" type="Label" parent="MarketTesterScene"]
-margin_left = 16.0
+margin_left = 344.0
 margin_top = 160.0
-margin_right = 175.0
+margin_right = 503.0
 margin_bottom = 174.0
 text = "Satisfaction Model Name"
 
 [node name="MousePositionLabel" type="Label" parent="MarketTesterScene"]
-margin_left = 8.0
+margin_left = 336.0
 margin_top = 208.0
-margin_right = 48.0
+margin_right = 406.0
 margin_bottom = 222.0
 text = "Mouse pos"
 
 [node name="PricesItemList" type="ItemList" parent="MarketTesterScene"]
-margin_left = 80.0
+margin_left = 408.0
 margin_top = 312.0
-margin_right = 176.0
+margin_right = 504.0
 margin_bottom = 352.0
+
+[node name="Plotter" parent="MarketTesterScene" instance=ExtResource( 4 )]
 [connection signal="pressed" from="AddButton" to="." method="_on_AddButton_pressed"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="HideButton" to="." method="_on_HideButton_pressed"]

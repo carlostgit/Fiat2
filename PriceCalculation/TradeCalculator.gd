@@ -144,6 +144,64 @@ func calculate_best_combidict_for_each_budget(max_budget_arg:float,step_length_a
 		count += 1
 
 	return combination_for_each_step
+
+func calculate_best_combidict_simple(money_arg:float)->Dictionary:
+
+	var step_length:float = 1.0
+	
+	var options:Array = _satisfaction_calculator.get_options()
+	var combination:Dictionary = {}
+	for option in options:
+		combination[option] = 0
+	
+	var left_money:float = money_arg
+	
+	var count = 0
+	var max_count = 10000 #En caso de error
+	var best_previous_satisfaction = 0.0
+	while true:
+
+		var end_calculating = false
+		var best_product_combination:Dictionary = {}
+		var best_product_satisfaction = 0.0
+		var best_product_price = 0.0
+		var best_increment_of_satisfaction_for_price:float = 0.0
+
+		var product_found = false
+		for option in options:
+			var trying_combination:Dictionary = combination.duplicate()
+			trying_combination[option] += step_length
+			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
+			
+			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+			
+			var product:String = _satisfaction_calculator.get_product_from_option(option)
+			
+			var price = Prices.get_price_of_product(product)*step_length
+			
+			if price<=left_money and increment_of_satisfaction > 0.0:
+				product_found = true
+				
+				var increment_of_satisfaction_for_price:float = increment_of_satisfaction/price
+				
+				if increment_of_satisfaction_for_price > best_increment_of_satisfaction_for_price:
+					best_product_satisfaction = satisfaction_of_trying_combination
+					best_product_combination = trying_combination
+					best_product_price = price
+					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price	
+		
+		if false==product_found:
+			break
+		
+		left_money -= best_product_price
+		combination = best_product_combination
+		best_previous_satisfaction = best_product_satisfaction
+
+		count += 1
+		if count>max_count:
+			 break
+			
+	return combination	
 	
 func calculate_best_combidict(money_arg:float)->Dictionary:
 #	Debería hacer una versión de este método, que solo recorriese una lista de combinaciones precalculadas

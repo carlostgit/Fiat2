@@ -167,6 +167,8 @@ func _on_CalculateNewPricesButton_pressed():
 		var price:float = Prices.get_price_of_product(product)
 		var product_price_text:String = product+" "+str(price)
 		$PricesItemList.add_item(product_price_text)
+	var product_pricearray = _market.get_last_price_calculation_prices()
+	draw_product_pricearray(product_pricearray)
 	
 func _on_RemoveButton_pressed():
 	var person_product_dict:Dictionary = {}
@@ -200,4 +202,25 @@ func _on_MarketTesterScene_gui_input(event):
 		$MousePositionLabel.set_text(str(self.get_position()))
 		self.set_position(self.get_position()+input_event_screen_drag.relative)
 
+func draw_product_pricearray(product_pricearray_arg:Dictionary):
+	
+	var count:int = 0
+	for product in product_pricearray_arg.keys(): 
+		count+=1
+#		var option_text:String = $OptionsItemList.get_item_text(option_idx)
+		
+		var price_array_vector2:Array = []
+		var price_count:int = 0
+		for price in product_pricearray_arg[product]:
+			price_array_vector2.append(Vector2(price,price_count))
+			price_count += 1
+		
+		var red = float(count)/5.0+0.2
+		var green = float(count)/5.0+0.0
+		var blue = float(-count)/5.0+1.0
+		var color:Color = Color(red,green,blue)
+		
+		$Plotter.add_point_group(count, price_array_vector2, color, product)
 
+	
+	
