@@ -156,7 +156,7 @@ func _on_SumTradeButton_pressed():
 
 
 func _on_NextStepButton_pressed():
-	_market.change_prices_step()
+	_market.change_prices_step(0.1)
 	
 
 
@@ -204,6 +204,9 @@ func _on_MarketTesterScene_gui_input(event):
 
 func draw_product_pricearray(product_pricearray_arg:Dictionary):
 	
+#	$Plotter.set_max_x_axis_value(20)
+#	$Plotter.set_max_y_axis_value(0.4)	
+	
 	var count:int = 0
 	for product in product_pricearray_arg.keys(): 
 		count+=1
@@ -212,7 +215,7 @@ func draw_product_pricearray(product_pricearray_arg:Dictionary):
 		var price_array_vector2:Array = []
 		var price_count:int = 0
 		for price in product_pricearray_arg[product]:
-			price_array_vector2.append(Vector2(price,price_count))
+			price_array_vector2.append(Vector2(price_count,price))
 			price_count += 1
 		
 		var red = float(count)/5.0+0.2
@@ -221,6 +224,13 @@ func draw_product_pricearray(product_pricearray_arg:Dictionary):
 		var color:Color = Color(red,green,blue)
 		
 		$Plotter.add_point_group(count, price_array_vector2, color, product)
+	
+	
+	
+func _on_XMaxSpinBox_value_changed(value):
+	$Plotter.set_max_x_axis_value(value)
 
-	
-	
+
+
+func _on_YMaxSpinBox_value_changed(value):
+	$Plotter.set_max_y_axis_value(value)	
