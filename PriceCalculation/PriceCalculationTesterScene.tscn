@@ -184,6 +184,7 @@ current_dir = "user://"
 current_path = "user://"
 
 [node name="TradeTesterScene" type="WindowDialog" parent="."]
+visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
 margin_top = 448.0
 margin_right = 680.0
@@ -337,7 +338,6 @@ margin_bottom = 94.0
 text = "currency"
 
 [node name="MarketTesterScene" type="WindowDialog" parent="."]
-visible = true
 margin_left = 168.0
 margin_top = 96.0
 margin_right = 1016.0

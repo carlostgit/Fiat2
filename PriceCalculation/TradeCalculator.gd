@@ -13,8 +13,8 @@ var _satisfaction_calculator:SatisfactionCalculator = null
 
 #Cosas precalculadas:
 var _precalculated_combination_for_each_step:Dictionary = {}
-var _max_precualculated_budget:float = 0.0
-var _step_used_for_precalculation = 0.0
+var _max_precalculated_budget:float = 0.0
+var _step_used_for_precalculation:float = 0.0
 #
 
 # Called when the node enters the scene tree for the first time.
@@ -89,8 +89,8 @@ func get_max_precalculated_budget():
 	
 func precalculate_best_combidict_for_each_budget(max_budget_arg:float,step_length_arg:float=1.0):
 	self._precalculated_combination_for_each_step = calculate_best_combidict_for_each_budget(max_budget_arg,step_length_arg)
-	self._step_used_for_precalculation
-	self._max_precalculated_budget = step_length_arg
+	self._step_used_for_precalculation = step_length_arg
+	self._max_precalculated_budget = max_budget_arg
 		
 func get_precalculated_best_combidict(budget_arg:float)->Dictionary:
 	
@@ -99,15 +99,17 @@ func get_precalculated_best_combidict(budget_arg:float)->Dictionary:
 		assert("No se ha precalculado para tanto presupuesto")
 		budget = self._max_precalculated_budget
 	if budget_arg == 0.0:
-		var product_nulls:Dictionary = {}
-		for product in Prices.get_products():
-			product_nulls[product]
+		var empty_options:Dictionary = {}
+		var options:Array = _satisfaction_calculator.get_options()				
+		for option in options:
+			empty_options[option] = 0
+		return empty_options
 			
 	var previous_money_step = 0.0
 	for money_step in self._precalculated_combination_for_each_step.keys():
 		if budget==money_step:
 			return _precalculated_combination_for_each_step[money_step]
-		if budget>money_step:
+		if budget<money_step:
 #			interpolamos entre los 2 pasos
 			var previous_step_combi:Dictionary = {}
 			if (0==previous_money_step): #Para presupuesto 0, hago una combinación con todo 0

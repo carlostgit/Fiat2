@@ -125,6 +125,52 @@ func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		var color:Color = Color(red,green,blue)
 		
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
+
+func draw_test3(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+#	Usando 	precalculate_best_combidict_for_each_budget
+	
+	
+	$Plotter.clear()
+	var option_info:Dictionary = {}
+	for option in _satisfaction_calculator_ref.get_options():
+		option_info[option]=Array()	
+	
+#	var i:float = 0
+	var step:float = step_arg
+#	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)	
+	_trade_calculator.precalculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)
+#	while  i <= max_amount_of_money_arg:
+	for i in range(0,max_amount_of_money_arg*10,1):
+		
+		var money_quant:float = i/10.0
+#		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
+#		var best_combidict:Dictionary = best_combidict_for_each_step[i]
+#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
+
+		if money_quant >30.0:
+			assert("debugea esto")
+
+		var best_combidict:Dictionary = _trade_calculator.get_precalculated_best_combidict(money_quant)
+		
+		for option in _satisfaction_calculator_ref.get_options():
+			var amount_of_option:float = 0
+			if best_combidict.has(option):
+				amount_of_option = best_combidict[option]
+			option_info[option].append(Vector2(money_quant,amount_of_option))
+		
+		i+=step	
+
+	var count:int = 0
+	for option_idx in $OptionsItemList.get_item_count(): 
+		count+=1
+		var option_text:String = $OptionsItemList.get_item_text(option_idx)
+		
+		var red = float(count)/5.0+0.2
+		var green = float(count)/5.0+0.0
+		var blue = float(-count)/5.0+1.0
+		var color:Color = Color(red,green,blue)
+		
+		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 		
 
 func draw_option(option_arg:String, max_amount_of_money_arg:float=50.0,step_arg:float = 0.1):
@@ -175,7 +221,8 @@ func _on_YMaxSpinBox_value_changed(value):
 
 
 func _on_RecalculateButton_pressed():
-	draw_test2()
+#	draw_test2()
+	draw_test3(50,1)
 
 func update_items():
 	$ProductsItemList.clear()
