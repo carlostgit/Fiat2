@@ -236,9 +236,15 @@ func calculate_best_combination_for_person(person_arg:String)->Dictionary:
 		_person_value_of_owned[person_arg] = budget
 		if self._person_tradecalc.has(person_arg):
 			var trade_calc:TradeCalculator = self._person_tradecalc[person_arg]
-
+			
+			
+#			TODO: probar bien esto. Comprobar que hay continidad, y que a un presupuesto ligeramnete mayor, hay ligeramente más satisfacción
 #			Hay formas de guardar los resultados de:
 			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple(budget)
+#			var best_combidict:Dictionary = trade_calc.calculate_best_combidict(budget)
+			assert(false)
+#			hay que revisar esto. Hay que usar un método que tenga continuidad
+			
 #			TODO: Hacer una versión precalculada (para unos precios), de calculate_best_combidict en TradeCalculator
 #			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
 			return best_combidict

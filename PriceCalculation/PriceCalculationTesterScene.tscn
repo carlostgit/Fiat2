@@ -186,9 +186,10 @@ current_path = "user://"
 [node name="TradeTesterScene" type="WindowDialog" parent="."]
 visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
-margin_top = 448.0
-margin_right = 680.0
-margin_bottom = 776.0
+margin_left = 104.0
+margin_top = 464.0
+margin_right = 832.0
+margin_bottom = 792.0
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -255,12 +256,52 @@ margin_bottom = 24.0
 min_value = 5.0
 value = 5.0
 
-[node name="RecalculateButton" type="Button" parent="TradeTesterScene"]
-margin_left = 296.0
-margin_top = 152.0
-margin_right = 381.0
-margin_bottom = 172.0
-text = "Recalculate"
+[node name="CalculateTest1Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 160.0
+margin_right = 689.0
+margin_bottom = 180.0
+text = "Test 1 normal calc"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalculateTest2Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 184.0
+margin_right = 706.0
+margin_bottom = 204.0
+text = "Test 2 spec calc step"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalculateTest3Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 208.0
+margin_right = 645.0
+margin_bottom = 228.0
+text = "Test 3 precalc"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalculateTest4Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 232.0
+margin_right = 645.0
+margin_bottom = 252.0
+text = "Test 4 simple"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalculateTest5Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 256.0
+margin_right = 723.0
+margin_bottom = 276.0
+text = "Test 5 simple continuty"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -296,13 +337,45 @@ value = 5.0
 
 [node name="StepOfGraphSpinBox" type="SpinBox" parent="TradeTesterScene"]
 margin_left = 464.0
-margin_top = 264.0
+margin_top = 280.0
 margin_right = 538.0
-margin_bottom = 288.0
+margin_bottom = 304.0
+min_value = 0.05
+max_value = 10.0
+step = 0.05
+value = 0.5
+
+[node name="StepOfCalcSpinBox" type="SpinBox" parent="TradeTesterScene"]
+margin_left = 624.0
+margin_top = 120.0
+margin_right = 698.0
+margin_bottom = 144.0
 min_value = 0.1
 max_value = 10.0
 step = 0.1
 value = 0.5
+
+[node name="CalcStepLabel" type="Label" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 128.0
+margin_right = 618.0
+margin_bottom = 159.0
+text = "Calc step
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DrawStepLabel" type="Label" parent="TradeTesterScene"]
+margin_left = 536.0
+margin_top = 288.0
+margin_right = 600.0
+margin_bottom = 319.0
+text = "Draw step
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="PricesEditor" type="WindowDialog" parent="."]
 visible = true
@@ -557,7 +630,11 @@ value = 5.0
 [connection signal="item_selected" from="TradeTesterScene/OptionsItemList" to="TradeTesterScene" method="_on_OptionsItemList_item_selected"]
 [connection signal="value_changed" from="TradeTesterScene/Plotter/XMaxSpinBox" to="TradeTesterScene" method="_on_XMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="TradeTesterScene/Plotter/YMaxSpinBox" to="TradeTesterScene" method="_on_YMaxSpinBox_value_changed"]
-[connection signal="pressed" from="TradeTesterScene/RecalculateButton" to="TradeTesterScene" method="_on_RecalculateButton_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest1Button" to="TradeTesterScene" method="_on_CalculateTest1Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest2Button" to="TradeTesterScene" method="_on_CalculateTest2Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest3Button" to="TradeTesterScene" method="_on_CalculateTest3Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest4Button" to="TradeTesterScene" method="_on_CalculateTest4Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest5Button" to="TradeTesterScene" method="_on_CalculateTest5Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]

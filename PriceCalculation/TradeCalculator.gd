@@ -222,6 +222,72 @@ func calculate_best_combidict_for_each_budget(max_budget_arg:float,step_length_a
 
 	return combination_for_each_step
 
+func calculate_best_combidict_simple_with_continuity(money_arg:float)->Dictionary:
+
+	var step_length:float = 1.0
+	
+	var options:Array = _satisfaction_calculator.get_options()
+	var combination:Dictionary = {}
+	for option in options:
+		combination[option] = 0
+	
+	var left_money:float = money_arg
+	
+	var count = 0
+	var max_count = 10000 #En caso de error
+	var best_previous_satisfaction = 0.0
+	while true:
+
+		var best_product_combination:Dictionary = {}
+		var best_product_satisfaction = 0.0
+		var best_product_price = 0.0
+		var best_increment_of_satisfaction_for_price:float = 0.0
+
+		var product_found = false
+		var run_out_of_money = false
+		for option in options:
+			var trying_combination:Dictionary = combination.duplicate()
+			trying_combination[option] += step_length
+			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
+			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+			var product:String = _satisfaction_calculator.get_product_from_option(option)
+			var price = Prices.get_price_of_product(product)*step_length
+			
+			if increment_of_satisfaction > 0.0:
+				product_found = true
+				
+				var increment_of_satisfaction_for_price:float = increment_of_satisfaction/price
+
+				if increment_of_satisfaction_for_price > best_increment_of_satisfaction_for_price:
+					
+					if left_money<price:
+						var portion_payable:float = left_money/price
+						var portion_non_payable:float = 1-(left_money/price)
+						trying_combination[option] -= portion_non_payable*step_length
+						increment_of_satisfaction *= portion_payable
+						satisfaction_of_trying_combination *= portion_payable
+						price *= portion_payable		
+					
+					best_product_satisfaction = satisfaction_of_trying_combination
+					best_product_combination = trying_combination
+					best_product_price = price
+					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price		
+			
+		if product_found:
+			left_money -= best_product_price
+			combination = best_product_combination
+			best_previous_satisfaction = best_product_satisfaction
+			if left_money<=0:
+				break
+		else:
+			break
+		count += 1
+		if count>max_count:
+			 break
+			
+	return combination	
+
+
 func calculate_best_combidict_simple(money_arg:float)->Dictionary:
 
 	var step_length:float = 1.0
@@ -238,7 +304,6 @@ func calculate_best_combidict_simple(money_arg:float)->Dictionary:
 	var best_previous_satisfaction = 0.0
 	while true:
 
-		var end_calculating = false
 		var best_product_combination:Dictionary = {}
 		var best_product_satisfaction = 0.0
 		var best_product_price = 0.0
@@ -249,11 +314,8 @@ func calculate_best_combidict_simple(money_arg:float)->Dictionary:
 			var trying_combination:Dictionary = combination.duplicate()
 			trying_combination[option] += step_length
 			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
-			
 			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
-			
 			var product:String = _satisfaction_calculator.get_product_from_option(option)
-			
 			var price = Prices.get_price_of_product(product)*step_length
 			
 			if price<=left_money and increment_of_satisfaction > 0.0:
@@ -265,15 +327,37 @@ func calculate_best_combidict_simple(money_arg:float)->Dictionary:
 					best_product_satisfaction = satisfaction_of_trying_combination
 					best_product_combination = trying_combination
 					best_product_price = price
-					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price	
+					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price		
+				
 		
 		if false==product_found:
+			for option in options:
+				var price:float = left_money
+				var product:String = _satisfaction_calculator.get_product_from_option(option)
+				var last_step_length:float = price/Prices.get_price_of_product(product)
+				var trying_combination:Dictionary = combination.duplicate()
+				trying_combination[option] += last_step_length
+				var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
+				var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+#				var product:String = _satisfaction_calculator.get_product_from_option(option)
+#				var price = Prices.get_price_of_product(product)*step_length
+				
+				if price<=left_money and increment_of_satisfaction > 0.0:
+					product_found = true
+					var increment_of_satisfaction_for_price:float = increment_of_satisfaction/price
+					
+					if increment_of_satisfaction_for_price > best_increment_of_satisfaction_for_price:
+						best_product_satisfaction = satisfaction_of_trying_combination
+						best_product_combination = trying_combination
+						best_product_price = price
+						best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price		
+						
+		if product_found:
+			left_money -= best_product_price
+			combination = best_product_combination
+			best_previous_satisfaction = best_product_satisfaction
+		else:
 			break
-		
-		left_money -= best_product_price
-		combination = best_product_combination
-		best_previous_satisfaction = best_product_satisfaction
-
 		count += 1
 		if count>max_count:
 			 break

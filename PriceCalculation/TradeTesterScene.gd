@@ -34,7 +34,7 @@ func set_satisfaction_calculator_ref(satisf_calculator_arg):
 	update_items()
 	
 
-	draw_test2()
+#	draw_test2()
 
 func _on_OptionsItemList_item_selected(index):
 #	Selecciono el producto asociado
@@ -55,17 +55,56 @@ func get_options_for_amount_of_currency(amount_arg:float)->Dictionary:
 	var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(amount_arg)
 	return best_combidict
 
-func draw_test(max_amount_of_money_arg:float=50.0):
+#func draw_test(max_amount_of_money_arg:float=50.0):
+#
+#	var option_info:Dictionary = {}
+#	for option in _satisfaction_calculator_ref.get_options():
+#		option_info[option]=Array()	
+#
+#	var i:float = 0
+#	var step:float = 1.0
+#	while  i <= max_amount_of_money_arg:
+#
+#		var money_quant:float = i
+#		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
+#
+#		for option in _satisfaction_calculator_ref.get_options():
+#			var amount_of_option:float = 0
+#			if best_combidict.has(option):
+#				amount_of_option = best_combidict[option]
+#			option_info[option].append(Vector2(money_quant,amount_of_option))
+#
+#		i+=step	
+#
+#	var count:int = 0
+#	for option_idx in $OptionsItemList.get_item_count(): 
+#		count+=1
+#		var option_text:String = $OptionsItemList.get_item_text(option_idx)
+#
+#		var red = float(count)/5.0+0.2
+#		var green = float(count)/5.0+0.0
+#		var blue = float(-count)/5.0+1.0
+#		var color:Color = Color(red,green,blue)
+#
+#		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
+
+func draw_test1(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 	
+		
+	$Plotter.clear()
 	var option_info:Dictionary = {}
 	for option in _satisfaction_calculator_ref.get_options():
 		option_info[option]=Array()	
 	
 	var i:float = 0
-	var step:float = 1.0
+	var step:float = step_arg
+#	var calculating_step:float = calculating_step_arg
+#	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,calculating_step)	
 	while  i <= max_amount_of_money_arg:
+#	for i in best_combidict_for_each_step.keys():
 		
 		var money_quant:float = i
+#		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
 		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
 		
 		for option in _satisfaction_calculator_ref.get_options():
@@ -89,7 +128,8 @@ func draw_test(max_amount_of_money_arg:float=50.0):
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
 
-func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+
+func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calculating_step_arg:float=0.5):
 	
 	$Plotter.clear()
 	var option_info:Dictionary = {}
@@ -98,7 +138,8 @@ func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 	
 #	var i:float = 0
 	var step:float = step_arg
-	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)	
+	var calculating_step:float = calculating_step_arg
+	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,calculating_step)	
 #	while  i <= max_amount_of_money_arg:
 	for i in best_combidict_for_each_step.keys():
 		
@@ -126,7 +167,7 @@ func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
-func draw_test3(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+func draw_test3_with_precalculation(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 #	Usando 	precalculate_best_combidict_for_each_budget
 	
 	
@@ -140,7 +181,8 @@ func draw_test3(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 #	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)	
 	_trade_calculator.precalculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)
 #	while  i <= max_amount_of_money_arg:
-	for i in range(0,max_amount_of_money_arg*10,1):
+	var i:float = 0
+	while (i <= max_amount_of_money_arg*10):
 		
 		var money_quant:float = i/10.0
 #		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
@@ -171,7 +213,101 @@ func draw_test3(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		var color:Color = Color(red,green,blue)
 		
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
+
+
+func draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+#	Usando 	precalculate_best_combidict_for_each_budget
+	
+	$Plotter.clear()
+	var option_info:Dictionary = {}
+	for option in _satisfaction_calculator_ref.get_options():
+		option_info[option]=Array()	
+	
+#	var i:float = 0
+	var step:float = step_arg
+#	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)	
+#	_trade_calculator.precalculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)
+#	while  i <= max_amount_of_money_arg:
+	var i:float = 0
+	while (i <= max_amount_of_money_arg):
 		
+		var money_quant:float = i
+#		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
+#		var best_combidict:Dictionary = best_combidict_for_each_step[i]
+#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
+
+		if money_quant >30.0:
+			assert("debugea esto")
+
+		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)
+		
+		for option in _satisfaction_calculator_ref.get_options():
+			var amount_of_option:float = 0
+			if best_combidict.has(option):
+				amount_of_option = best_combidict[option]
+			option_info[option].append(Vector2(money_quant,amount_of_option))
+		
+		i+=step	
+
+	var count:int = 0
+	for option_idx in $OptionsItemList.get_item_count(): 
+		count+=1
+		var option_text:String = $OptionsItemList.get_item_text(option_idx)
+		
+		var red = float(count)/5.0+0.2
+		var green = float(count)/5.0+0.0
+		var blue = float(-count)/5.0+1.0
+		var color:Color = Color(red,green,blue)
+		
+		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
+
+
+func draw_test4_simple(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+#	Usando 	precalculate_best_combidict_for_each_budget
+	
+	$Plotter.clear()
+	var option_info:Dictionary = {}
+	for option in _satisfaction_calculator_ref.get_options():
+		option_info[option]=Array()	
+	
+#	var i:float = 0
+	var step:float = step_arg
+#	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)	
+#	_trade_calculator.precalculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)
+#	while  i <= max_amount_of_money_arg:
+	var i:float = 0
+	while (i <= max_amount_of_money_arg):
+		
+		var money_quant:float = i
+#		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
+#		var best_combidict:Dictionary = best_combidict_for_each_step[i]
+#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
+
+		if money_quant >30.0:
+			assert("debugea esto")
+
+		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_simple(money_quant)
+		
+		for option in _satisfaction_calculator_ref.get_options():
+			var amount_of_option:float = 0
+			if best_combidict.has(option):
+				amount_of_option = best_combidict[option]
+			option_info[option].append(Vector2(money_quant,amount_of_option))
+		
+		i+=step	
+
+	var count:int = 0
+	for option_idx in $OptionsItemList.get_item_count(): 
+		count+=1
+		var option_text:String = $OptionsItemList.get_item_text(option_idx)
+		
+		var red = float(count)/5.0+0.2
+		var green = float(count)/5.0+0.0
+		var blue = float(-count)/5.0+1.0
+		var color:Color = Color(red,green,blue)
+		
+		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
+
 
 func draw_option(option_arg:String, max_amount_of_money_arg:float=50.0,step_arg:float = 0.1):
 	$Plotter.clear()
@@ -220,9 +356,6 @@ func _on_YMaxSpinBox_value_changed(value):
 	$Plotter.set_max_y_axis_value(value)
 
 
-func _on_RecalculateButton_pressed():
-#	draw_test2()
-	draw_test3(50,1)
 
 func update_items():
 	$ProductsItemList.clear()
@@ -249,7 +382,7 @@ func _on_UpdateItemsButton_pressed():
 func _on_DrawAllButton_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
-	draw_test2(max_to_draw,step)
+	draw_test2(max_to_draw,step,step)
 
 func _on_DrawSelected_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
@@ -267,3 +400,42 @@ func _on_TradeTesterScene_gui_input(event):
 	if event as InputEventScreenDrag:
 		var input_event_screen_drag:InputEventScreenDrag = event as InputEventScreenDrag
 		self.set_position(self.get_position()+input_event_screen_drag.relative)
+
+
+#func _on_CalculateTest1Button_pressed():
+#	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
+##	var step:float = $StepOfGraphSpinBox.get_value()
+#	draw_test(max_to_draw)
+
+func _on_CalculateTest2Button_pressed():
+	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
+	var step:float = $StepOfGraphSpinBox.get_value()
+	var calc_step:float = $StepOfCalcSpinBox.get_value()
+	draw_test2(max_to_draw,step,calc_step)
+
+func _on_CalculateTest3Button_pressed():
+	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
+	var step:float = $StepOfGraphSpinBox.get_value()
+	draw_test3_with_precalculation(max_to_draw,step)
+
+func _on_CalculateTest4Button_pressed():
+	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
+	var step:float = $StepOfGraphSpinBox.get_value()
+	draw_test4_simple(max_to_draw,step)
+
+
+func _on_CalculateTest1Button_pressed():
+	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
+	var step:float = $StepOfGraphSpinBox.get_value()
+#	var calc_step:float = $StepOfCalcSpinBox.get_value()
+	draw_test1(max_to_draw,step)
+
+
+#calculate_best_combidict_simple_with_continuity
+
+
+func _on_CalculateTest5Button_pressed():
+	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
+	var step:float = $StepOfGraphSpinBox.get_value()
+#	var calc_step:float = $StepOfCalcSpinBox.get_value()
+	draw_test5_simple_continuity(max_to_draw,step)
