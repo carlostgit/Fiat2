@@ -55,10 +55,9 @@ class PricesLogInfo:
 		var prices_evolving:bool = false
 		for product in Prices.get_products():
 			var product_info:ProductPriceAdjustmentInfo = _product_loginfo[product]
-			if (product_info.get_prices().size()>3 and 
-				0==product_info.get_num_price_tops() and
-				0==product_info.get_num_price_bottoms()):
-				continue #Los Los precios de este producto no se están moviendo en ningún sentido
+			if (product_info.get_prices().size()>1 and 
+				false == product_info.are_prices_changing()):
+				continue
 			else:				
 				if product_info.get_num_price_tops()<3:
 					prices_evolving = true
@@ -124,6 +123,15 @@ class ProductPriceAdjustmentInfo:
 #		_min_last_iterations = 1.79769e308
 #		_max_last_iterations = 0.0
 		_last_prices.clear()
+	
+	func are_prices_changing():
+		if _all_prices.size()>1:
+			if (0 ==_all_prices[_all_prices.size()-1] - _all_prices[_all_prices.size()-2]):
+				return false
+			else:
+				return true
+		else:
+			return false
 		
 	func get_prices():
 		return _last_prices
