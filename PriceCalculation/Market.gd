@@ -55,12 +55,17 @@ class PricesLogInfo:
 		var prices_evolving:bool = false
 		for product in Prices.get_products():
 			var product_info:ProductPriceAdjustmentInfo = _product_loginfo[product]
-			if product_info.get_num_price_tops()<3:
-				prices_evolving = true
-				break;
-			if product_info.get_num_price_bottoms()<3:
-				prices_evolving = true
-				break;
+			if (product_info.get_prices().size()>3 and 
+				0==product_info.get_num_price_tops() and
+				0==product_info.get_num_price_bottoms()):
+				continue #Los Los precios de este producto no se están moviendo en ningún sentido
+			else:				
+				if product_info.get_num_price_tops()<3:
+					prices_evolving = true
+					break;
+				if product_info.get_num_price_bottoms()<3:
+					prices_evolving = true
+					break;
 		return prices_evolving
 		
 	func get_product_pricesarray()->Dictionary:
@@ -181,9 +186,9 @@ class ProductPriceAdjustmentInfo:
 		var last_price_going_up:bool = true
 		var count:int = 0
 		for price in _last_prices:
-			if price>=last_price:
+			if price>last_price:
 				last_price_going_up = true;
-			if price<=last_price:
+			if price<last_price:
 				if last_price_going_up and count>1:
 					num_max_price_tops += 1
 				last_price_going_up = false;
@@ -198,11 +203,11 @@ class ProductPriceAdjustmentInfo:
 		var last_price_going_up:bool = true
 		var count:int = 0
 		for price in _last_prices:
-			if price>=last_price:
+			if price>last_price:
 				if false == last_price_going_up and count>1:
 					num_min_price_bottoms += 1
 				last_price_going_up = true;
-			if price<=last_price:
+			if price<last_price:
 				last_price_going_up = false;
 			last_price = price
 			count += 1
@@ -384,6 +389,8 @@ func calculate_new_prices():
 #		Aquí falla algo. Esto tarda muchos pasos en llegar a unos precios precisos
 		if false==prices_evolving:
 			if param_price_change_step<param_price_precission:
+				break
+			elif false == price_changed:
 				break
 			else:
 				param_price_change_step = param_price_change_step/2.0
