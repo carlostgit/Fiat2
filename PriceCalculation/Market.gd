@@ -28,26 +28,37 @@ var _prices_log_info:PricesLogInfo = null
 
 class PricesLogInfo:
 	var _product_loginfo:Dictionary = {}
+	var _pricechangestepsarray:Array = []
 	
 	func _init():
 		for product in Prices.get_products():
 			var product_info:ProductPriceAdjustmentInfo = ProductPriceAdjustmentInfo.new()
 			_product_loginfo[product] = product_info
 			
+	func set_pricechangesteparray(value_arg:float):
+		_pricechangestepsarray.append(value_arg)
+		
+	func reset_last_prices():
+		for product in Prices.get_products():
+			var product_info:ProductPriceAdjustmentInfo = _product_loginfo[product]
+			product_info.reset_last_prices()
+			
 	func register_prices():
 		for product in Prices.get_products():
 			var product_info:ProductPriceAdjustmentInfo = _product_loginfo[product]
 			var price:float = Prices.get_price_of_product(product)
+#			if product == "candy":
+#				print(price)
 			product_info.add_price_iteration(price)
 	
 	func are_prices_evolving()->bool:
 		var prices_evolving:bool = false
 		for product in Prices.get_products():
 			var product_info:ProductPriceAdjustmentInfo = _product_loginfo[product]
-			if product_info.get_num_price_tops()<2:
+			if product_info.get_num_price_tops()<3:
 				prices_evolving = true
 				break;
-			if product_info.get_num_price_bottoms()<2:
+			if product_info.get_num_price_bottoms()<3:
 				prices_evolving = true
 				break;
 		return prices_evolving
@@ -59,6 +70,34 @@ class PricesLogInfo:
 			product_pricesarray[product] = pricesinfo.get_prices()
 		
 		return product_pricesarray
+		
+	func get_product_allpricesarray()->Dictionary:
+		var product_pricesarray:Dictionary = {}
+		for product in _product_loginfo.keys():
+			var pricesinfo:ProductPriceAdjustmentInfo = _product_loginfo[product]
+			product_pricesarray[product] = pricesinfo.get_all_prices()
+		
+		return product_pricesarray
+	
+	func get_allpricechangesteparray()->Array:
+		return _pricechangestepsarray
+	
+	func get_product_price_tops()->Dictionary:
+		var product_pricesarray:Dictionary = {}
+		for product in _product_loginfo.keys():
+			var pricesinfo:ProductPriceAdjustmentInfo = _product_loginfo[product]
+			product_pricesarray[product] = pricesinfo.get_num_price_tops_array()
+		
+		return product_pricesarray
+	
+	func get_product_price_bottoms()->Dictionary:
+		var product_pricesarray:Dictionary = {}
+		for product in _product_loginfo.keys():
+			var pricesinfo:ProductPriceAdjustmentInfo = _product_loginfo[product]
+			product_pricesarray[product] = pricesinfo.get_num_price_bottoms_array()
+		
+		return product_pricesarray
+	
 	
 class ProductPriceAdjustmentInfo:
 	const _param_iterations_log = 10
@@ -68,6 +107,10 @@ class ProductPriceAdjustmentInfo:
 #	var _min_last_iterations:float = 1.79769e308
 #	var _max_last_iterations:float = 0.0
 	var _last_prices:Array = []
+	var _all_prices:Array = []
+	
+	var _num_price_tops:Array = []
+	var _num_price_bottoms:Array = []
 	
 	func reset():
 		_iteration = 0
@@ -79,7 +122,13 @@ class ProductPriceAdjustmentInfo:
 		
 	func get_prices():
 		return _last_prices
-
+		
+	func get_all_prices():
+		return _all_prices
+		
+	func reset_last_prices():
+		_last_prices.clear()
+		
 	func add_price_iteration(price_arg:float):
 		_iteration += 1
 		if price_arg<_min_price:
@@ -90,7 +139,10 @@ class ProductPriceAdjustmentInfo:
 			_last_prices.remove(0)
 		
 		_last_prices.push_back(price_arg)
+		_all_prices.push_back(price_arg)
 		
+		_num_price_tops.push_back(calculate_num_price_tops())
+		_num_price_bottoms.push_back(calculate_num_price_bottoms())
 #	func get_max_price_from_last_iterations():
 #		var max_price:float = 0.0
 #		for i in range(_last_prices.size()-1, 0, -1):
@@ -106,8 +158,24 @@ class ProductPriceAdjustmentInfo:
 #			if price>min_price:
 #				min_price = price				
 #		return min_price
+
+	func get_num_price_tops_array()->Array:
+		return _num_price_tops
 	
+	func get_num_price_bottoms_array()->Array:
+		return _num_price_bottoms
+	
+
 	func get_num_price_tops()->int:
+		return _num_price_tops.back()
+	
+	func get_num_price_bottoms()->int:
+		return _num_price_bottoms.back()
+	
+	
+	func calculate_num_price_tops()->int:
+		
+#		Estaría bien registrar esto, para poder verlo gráficamente
 		var num_max_price_tops:int = 0
 		var last_price:float = 0.0
 		var last_price_going_up:bool = true
@@ -123,7 +191,8 @@ class ProductPriceAdjustmentInfo:
 			count += 1
 		return num_max_price_tops
 	
-	func get_num_price_bottoms()->int:
+	
+	func calculate_num_price_bottoms()->int:
 		var num_min_price_bottoms:int = 0
 		var last_price:float = 0.0
 		var last_price_going_up:bool = true
@@ -240,9 +309,11 @@ func calculate_best_combination_for_person(person_arg:String)->Dictionary:
 			
 #			TODO: probar bien esto. Comprobar que hay continidad, y que a un presupuesto ligeramnete mayor, hay ligeramente más satisfacción
 #			Hay formas de guardar los resultados de:
-			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple(budget)
+#			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple(budget)
 #			var best_combidict:Dictionary = trade_calc.calculate_best_combidict(budget)
-			assert(false)
+			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple_with_continuity(budget)
+
+#			assert(false)
 #			hay que revisar esto. Hay que usar un método que tenga continuidad
 			
 #			TODO: Hacer una versión precalculada (para unos precios), de calculate_best_combidict en TradeCalculator
@@ -295,21 +366,28 @@ func calculate_new_prices():
 #
 	var exit:bool = false
 	var count:int = 0
-	var max_count:int = 40
+	var max_count:int = 400
 	
 	var param_price_change_step:float = 0.5 #Tiene que ser < 1
-	var param_price_precission:float = 0.001
+	var param_price_precission:float = 0.0001
 	
 	while false==exit:
 		count += 1
 		var price_changed:bool = change_prices_step(param_price_change_step)
 		_prices_log_info.register_prices()
 		var prices_evolving:bool = _prices_log_info.are_prices_evolving()
+#		change_prices_step.set_price_change_step(param_price_change_step)
+		_prices_log_info.set_pricechangesteparray(param_price_change_step)
+		
+		
+#		assert(false)
+#		Aquí falla algo. Esto tarda muchos pasos en llegar a unos precios precisos
 		if false==prices_evolving:
 			if param_price_change_step<param_price_precission:
 				break
 			else:
 				param_price_change_step = param_price_change_step/2.0
+				_prices_log_info.reset_last_prices()
 		if count>max_count:
 			break
 
@@ -378,3 +456,15 @@ func calculate_new_prices_increment(param_price_change_step_arg:float):
 		
 func get_last_price_calculation_prices()->Dictionary:
 	return _prices_log_info.get_product_pricesarray()
+
+func get_all_price_calculation_prices()->Dictionary:
+	return _prices_log_info.get_product_allpricesarray()
+
+func get_all_price_change_step()->Array:
+	return _prices_log_info.get_allpricechangesteparray()
+	
+func get_product_price_tops()->Dictionary:
+	return _prices_log_info.get_product_price_tops()
+		
+func get_product_price_bottoms()->Dictionary:
+	return _prices_log_info.get_product_price_bottoms()

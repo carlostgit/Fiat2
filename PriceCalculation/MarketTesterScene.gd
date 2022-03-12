@@ -161,14 +161,25 @@ func _on_NextStepButton_pressed():
 
 
 func _on_CalculateNewPricesButton_pressed():
+#	
+#	TODO: Ver por qué no se llega a un precio bien ajustado a la primera
+#	
 	_market.calculate_new_prices()
 	$PricesItemList.clear()
 	for product in Prices.get_products():
 		var price:float = Prices.get_price_of_product(product)
 		var product_price_text:String = product+" "+str(price)
 		$PricesItemList.add_item(product_price_text)
-	var product_pricearray = _market.get_last_price_calculation_prices()
+#	var product_pricearray = _market.get_last_price_calculation_prices()
+	var product_pricearray = _market.get_all_price_calculation_prices()
 	draw_product_pricearray(product_pricearray)
+	var price_change_step_array:Array = _market.get_all_price_change_step()
+	draw_price_change_step_array(price_change_step_array)
+	
+	var product_pricetops = _market.get_product_price_tops()
+	var product_pricebottoms = _market.get_product_price_bottoms()
+	draw_product_price_tops_bottoms(product_pricetops,product_pricebottoms)
+		
 	
 func _on_RemoveButton_pressed():
 	var person_product_dict:Dictionary = {}
@@ -202,6 +213,22 @@ func _on_MarketTesterScene_gui_input(event):
 		$MousePositionLabel.set_text(str(self.get_position()))
 		self.set_position(self.get_position()+input_event_screen_drag.relative)
 
+func draw_price_change_step_array(price_change_step_array:Array):
+	var param_group_id = 5
+	var red = 1
+	var green = 1
+	var blue = 1
+	var color:Color = Color(red,green,blue)
+	
+	var price_array_vector2:Array = []
+	var count:int = 0
+	for price_change_step in price_change_step_array:
+		price_array_vector2.append(Vector2(count,price_change_step))
+		count += 1
+	
+	$Plotter.add_point_group(param_group_id, price_array_vector2, color, "price_change_step")
+	
+
 func draw_product_pricearray(product_pricearray_arg:Dictionary):
 	
 #	$Plotter.set_max_x_axis_value(20)
@@ -225,6 +252,46 @@ func draw_product_pricearray(product_pricearray_arg:Dictionary):
 		
 		$Plotter.add_point_group(count, price_array_vector2, color, product)
 	
+func draw_product_price_tops_bottoms(product_pricetops_arg:Dictionary,product_pricebottoms_arg:Dictionary):
+	var count:int = 10
+	for product in product_pricetops_arg.keys(): 
+		count+=1
+#		var option_text:String = $OptionsItemList.get_item_text(option_idx)
+		
+		var price_array_vector2:Array = []
+		var price_count:int = 0
+		for price in product_pricetops_arg[product]:
+			price_array_vector2.append(Vector2(price_count,price))
+			price_count += 1
+		
+#		var red = float(count)/2.0+0.8
+#		var green = float(count)/2.0+0.0
+#		var blue = float(-count)/2.0+1.0
+##		var color:Color = Color(red,green,blue)
+		var color:Color = Color(0,1,0,0.5)
+				
+		$Plotter.add_point_group(count, price_array_vector2, color, "                                           tops"+product)
+	
+	for product in product_pricebottoms_arg.keys(): 
+		count+=1
+#		var option_text:String = $OptionsItemList.get_item_text(option_idx)
+		
+		var price_array_vector2:Array = []
+		var price_count:int = 0
+		for price in product_pricebottoms_arg[product]:
+			price_array_vector2.append(Vector2(price_count,price))
+			price_count += 1
+		
+#		var red = float(count)/5.0+1.0
+#		var green = float(count)/5.0+0.5
+#		var blue = float(-count)/5.0+1.0
+##		var color:Color = Color(red,green,blue)
+		var color:Color = Color(1,0,0,0.5)
+		
+		if product == "candy":
+			color = Color(0,1,1,0.5)
+		
+		$Plotter.add_point_group(count, price_array_vector2, color, "bottoms_"+product)
 	
 	
 func _on_XMaxSpinBox_value_changed(value):

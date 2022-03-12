@@ -20,7 +20,6 @@ __meta__ = {
 }
 
 [node name="SatisfactionModelEditor" parent="." instance=ExtResource( 2 )]
-visible = false
 modulate = Color( 0.839216, 0.839216, 1, 1 )
 margin_left = 296.0
 margin_top = 120.0
@@ -411,6 +410,7 @@ margin_bottom = 94.0
 text = "currency"
 
 [node name="MarketTesterScene" type="WindowDialog" parent="."]
+visible = true
 margin_left = 168.0
 margin_top = 96.0
 margin_right = 1016.0
@@ -571,6 +571,9 @@ margin_top = 272.0
 margin_right = 552.0
 margin_bottom = 296.0
 text = "Calculate new prices"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="SatisfactionModelNameLabel" type="Label" parent="MarketTesterScene"]
 margin_left = 344.0
