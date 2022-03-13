@@ -191,7 +191,7 @@ func draw_background():
 	
 	#Rectángulo opaco
 	if(_draw_backround_rect):
-		_canvas_item.draw_rect(Rect2(self.get_rect()),Color(0,0,0,1),true)
+		_canvas_item.draw_rect(Rect2(Vector2(0,0),Vector2(rect_width,rect_height)),Color(0,0,0,1),true)
 	
 	#Bordes del Control:
 	_canvas_item.draw_line(Vector2(0,rect_height),Vector2(rect_width,rect_height), Color(0,1,1))
