@@ -10,3 +10,42 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="XMaxSpinBox" type="SpinBox" parent="."]
+margin_left = 184.0
+margin_top = 280.0
+margin_right = 258.0
+margin_bottom = 304.0
+value = 5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="XMinSpinBox" type="SpinBox" parent="."]
+margin_left = 16.0
+margin_top = 280.0
+margin_right = 90.0
+margin_bottom = 304.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="YMaxSpinBox" type="SpinBox" parent="."]
+margin_right = 74.0
+margin_bottom = 24.0
+value = 5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="YMinSpinBox" type="SpinBox" parent="."]
+margin_top = 248.0
+margin_right = 74.0
+margin_bottom = 272.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="value_changed" from="XMaxSpinBox" to="." method="_on_XMaxSpinBox_value_changed"]
+[connection signal="value_changed" from="XMinSpinBox" to="." method="_on_XMinSpinBox_value_changed"]
+[connection signal="value_changed" from="YMaxSpinBox" to="." method="_on_YMaxSpinBox_value_changed"]
+[connection signal="value_changed" from="YMinSpinBox" to="." method="_on_YMinSpinBox_value_changed"]

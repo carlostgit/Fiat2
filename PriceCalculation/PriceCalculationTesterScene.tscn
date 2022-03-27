@@ -596,10 +596,6 @@ margin_right = 560.0
 margin_bottom = 352.0
 
 [node name="Plotter" parent="MarketTesterScene" instance=ExtResource( 4 )]
-margin_left = 32.0
-margin_top = 32.0
-margin_right = 310.0
-margin_bottom = 345.0
 
 [node name="XMaxSpinBox" type="SpinBox" parent="MarketTesterScene/Plotter"]
 margin_left = 192.0
@@ -609,6 +605,16 @@ margin_bottom = 312.0
 min_value = 0.5
 step = 0.5
 value = 5.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="XMinSpinBox" type="SpinBox" parent="MarketTesterScene/Plotter"]
+margin_left = 24.0
+margin_top = 288.0
+margin_right = 98.0
+margin_bottom = 312.0
+step = 0.5
 
 [node name="YMaxSpinBox" type="SpinBox" parent="MarketTesterScene/Plotter"]
 margin_right = 74.0
@@ -616,6 +622,12 @@ margin_bottom = 24.0
 min_value = 0.5
 step = 0.5
 value = 5.0
+
+[node name="YMinSpinBox" type="SpinBox" parent="MarketTesterScene/Plotter"]
+margin_top = 256.0
+margin_right = 74.0
+margin_bottom = 280.0
+step = 0.5
 [connection signal="pressed" from="AddButton" to="." method="_on_AddButton_pressed"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="HideButton" to="." method="_on_HideButton_pressed"]
@@ -664,4 +676,6 @@ value = 5.0
 [connection signal="pressed" from="MarketTesterScene/NextStepButton" to="MarketTesterScene" method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateNewPricesButton" to="MarketTesterScene" method="_on_CalculateNewPricesButton_pressed"]
 [connection signal="value_changed" from="MarketTesterScene/Plotter/XMaxSpinBox" to="MarketTesterScene" method="_on_XMaxSpinBox_value_changed"]
+[connection signal="value_changed" from="MarketTesterScene/Plotter/XMinSpinBox" to="MarketTesterScene" method="_on_XMinSpinBox_value_changed"]
 [connection signal="value_changed" from="MarketTesterScene/Plotter/YMaxSpinBox" to="MarketTesterScene" method="_on_YMaxSpinBox_value_changed"]
+[connection signal="value_changed" from="MarketTesterScene/Plotter/YMinSpinBox" to="MarketTesterScene" method="_on_YMinSpinBox_value_changed"]

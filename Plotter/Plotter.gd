@@ -2,6 +2,11 @@ extends Control
 
 var _draw_backround_rect:bool = true
 
+#TODO: valores mínimos
+var _min_x:float = 0
+var _min_y:float = 0
+#
+
 var _max_x:float = 5 
 var _max_y:float = 100
 
@@ -47,10 +52,8 @@ func _ready():
 
 #	init(7,80)
 #
-#	var test_funcref = funcref( self, "default_test_function")
-#	_func_array.append(test_funcref)
-#	#_label_array.append("test")
-#	_func_label_dict[test_funcref]="test"
+	var test_funcref = funcref( self, "default_test_function")
+	add_func_ref(test_funcref,[],"test",Color(0,1,1))
 	updated_size()
 
 	pass
@@ -66,7 +69,7 @@ func recalculate_member_variables():
 	
 	_width_per_calculated_point = _width/float(_total_num_of_calculated_points)
 	
-	_x_zoom = self._width/self._max_x
+	_x_zoom = self._width/(self._max_x - self._min_x)
 	
 	var y_max:float = _max_y
 	_height = self.get_rect().size.y - _top_margin - _bottom_margin
@@ -74,9 +77,9 @@ func recalculate_member_variables():
 	if _height < param_min_height:
 		_height = param_min_height
 
-	_y_zoom = _height/y_max
+	_y_zoom = _height/(y_max-self._min_y)
 	
-	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
+	_calculated_points_per_unit = float(_max_x-_min_x)/float(_total_num_of_calculated_points)
 
 	update()
 
@@ -151,9 +154,9 @@ func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_marg
 	if _height < param_min_height:
 		_height = param_min_height
 
-	_y_zoom = _height/y_max
+	_y_zoom = _height/(y_max-self._min_y)
 	
-	_calculated_points_per_unit = float(_max_x)/float(_total_num_of_calculated_points)
+	_calculated_points_per_unit = float(_max_x-self._min_x)/float(_total_num_of_calculated_points)
 
 
 func _draw():
@@ -215,15 +218,15 @@ func draw_background():
 	#Dibujo de líneas horizontales
 #	Primero calculo cuántas líneas quiero dibujar. No quiero dibujar más de 100 líneas
 	
-	var num_hor_lines_to_draw:float = self._max_y
+	var num_hor_lines_to_draw:float = self._max_y - self._min_y
 	var ten_times_reductions_in_hor_lines:int = 0
 	while num_hor_lines_to_draw>100:
 		num_hor_lines_to_draw = num_hor_lines_to_draw/(10)
 		ten_times_reductions_in_hor_lines += 1
 	
-	for value_y_of_line in range(0, self._max_y, pow(10,ten_times_reductions_in_hor_lines)):
+	for value_y_of_line in range(self._min_y, self._max_y, pow(10,ten_times_reductions_in_hor_lines)):
 		if (value_y_of_line>0 and value_y_of_line < self._max_y):
-			_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin-value_y_of_line*_y_zoom),Vector2(_width+_left_margin,_height+_top_margin-value_y_of_line*_y_zoom), Color(1,1,1,0.5)) #Value of 1 line
+			_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin-(value_y_of_line-self._min_y)*_y_zoom),Vector2(_width+_left_margin,_height+_top_margin-(value_y_of_line-self._min_y)*_y_zoom), Color(1,1,1,0.5)) #Value of 1 line
 
 	#10 líneas verticales
 #	for line in range(1,10):
@@ -231,16 +234,16 @@ func draw_background():
 	
 	#Dibujo de líneas verticales
 #	Primero calculo cuántas líneas quiero dibujar. No quiero dibujar más de 100 líneas
-	var num_vert_lines_to_draw = self._max_x
+	var num_vert_lines_to_draw = self._max_x-self._min_x
 	var ten_times_reductions_in_vert_lines:int = 0
 	while num_vert_lines_to_draw>100:
 		num_vert_lines_to_draw = num_vert_lines_to_draw/(10)
 		ten_times_reductions_in_vert_lines += 1
 	
 #	for line_x in self._max_x:
-	for value_x_of_line in range(0, self._max_x ,pow(10,ten_times_reductions_in_vert_lines)):		
+	for value_x_of_line in range(self._min_x, self._max_x ,pow(10,ten_times_reductions_in_vert_lines)):		
 		if (value_x_of_line>0 and value_x_of_line<self._max_x):
-			_canvas_item.draw_line(Vector2(value_x_of_line*_x_zoom+_left_margin,_height+_top_margin),Vector2(value_x_of_line*_x_zoom+_left_margin,_top_margin), Color(1,1,1,0.5)) 
+			_canvas_item.draw_line(Vector2((value_x_of_line-self._min_x)*_x_zoom+_left_margin,_height+_top_margin),Vector2((value_x_of_line-self._min_x)*_x_zoom+_left_margin,_top_margin), Color(1,1,1,0.5)) 
 
 	#Línea x
 	_canvas_item.draw_line(Vector2(_left_margin,_height+_top_margin),Vector2(_left_margin+_width,_height+_top_margin), Color(1,1,1)) #Cuantity of 100 line
@@ -251,7 +254,7 @@ func draw_background():
 	_canvas_item.draw_string(_font,Vector2(_total_num_of_calculated_points*_width_per_calculated_point+_left_margin,_height+_top_margin+font_size_y),String(_max_x),Color(1,1,1))
 	
 	#Etiqueta con el mínimo en x
-	_canvas_item.draw_string(_font,Vector2(_left_margin,_height+_top_margin+font_size_y),String("0"),Color(1,1,1))
+	_canvas_item.draw_string(_font,Vector2(_left_margin,_height+_top_margin+font_size_y),String(self._min_x),Color(1,1,1))
 	
 	#Dibujo la etiqueta del y=1
 	#_canvas_item.draw_string(_font,Vector2(0,_height+_top_margin-1*_y_zoom),"1",Color(1,1,1))
@@ -260,7 +263,7 @@ func draw_background():
 	_canvas_item.draw_string(_font,Vector2(0,_top_margin),str(_max_y),Color(1,1,1))
 	
 	#Etiqueta con el mínimo en y
-	_canvas_item.draw_string(_font,Vector2(0,_height+_top_margin),String("0"),Color(1,1,1))
+	_canvas_item.draw_string(_font,Vector2(0,_height+_top_margin),str(self._min_y),Color(1,1,1))
 
 
 func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color = Color(0,1,0)):
@@ -274,16 +277,16 @@ func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color 
 #		var y1:float = _y_zoom*myfunc.call_func(func_arg,i*_calculated_points_per_unit)
 #		var y2:float = _y_zoom*myfunc.call_func(func_arg,(i+1)*_calculated_points_per_unit)
 		var arguments_array1:Array = []
-		arguments_array1.append(i*_calculated_points_per_unit)
+		arguments_array1.append(i*_calculated_points_per_unit + self._min_x)
 		var arguments_array2:Array = []
-		arguments_array2.append((i+1)*_calculated_points_per_unit)
+		arguments_array2.append((i+1)*_calculated_points_per_unit + self._min_x)
 		for extra_arg in func_args_arg:
 			arguments_array1.append(extra_arg)
 			arguments_array2.append(extra_arg)
 #		var y1:float = _y_zoom*myfunc.call_func(i*_calculated_points_per_unit)
 		var debug = myfunc.call_funcv(arguments_array1)
-		var y1:float = _y_zoom*myfunc.call_funcv(arguments_array1)
-		var y2:float = _y_zoom*myfunc.call_funcv(arguments_array2)
+		var y1:float = _y_zoom*(myfunc.call_funcv(arguments_array1)-self._min_y)
+		var y2:float = _y_zoom*(myfunc.call_funcv(arguments_array2)-self._min_y)
 	
 		_canvas_item.draw_line(Vector2((_left_margin+x1),_height+_top_margin-y1), Vector2((_left_margin+x2), _height+_top_margin-y2), color_arg, 1)
 
@@ -349,19 +352,19 @@ func draw_point_groups():
 			var x_prev:float = previous_point.x
 			var y_prev:float = previous_point.y
 			
-			var y1:float = _y_zoom*y_prev
+			var y1:float = _y_zoom*(y_prev-self._min_y)
 			var y_canvas_prev:float = _height+_top_margin-y1
 			
-			var x1:float = _x_zoom*x_prev
+			var x1:float = _x_zoom*(x_prev-self._min_x)
 			var x_canvas_prev:float = _left_margin+x1
 			
 			var x:float = point.x
 			var y:float = point.y
 			
-			var y2:float = _y_zoom*y
+			var y2:float = _y_zoom*(y-self._min_y)
 			var y_canvas:float = _height+_top_margin-y2
 			
-			var x2:float = _x_zoom*x
+			var x2:float = _x_zoom*(x-self._min_x)
 			var x_canvas:float = _left_margin+x2
 		
 			_canvas_item.draw_line(Vector2(x_canvas_prev,y_canvas_prev),Vector2(x_canvas,y_canvas),color)
@@ -392,3 +395,23 @@ func set_func_color(func_ref_arg:FuncRef, color_arg:FuncRef):
 	if self._func_color_dict.has(func_ref_arg):
 		self._func_color_dict[func_ref_arg] = color_arg
 		
+func set_min_x_axis_value(min_value:float):
+	_min_x = min_value
+	updated_size()
+
+func set_min_y_axis_value(min_value:float):
+	_min_y = min_value
+	updated_size()
+
+
+func _on_XMaxSpinBox_value_changed(value):
+	set_max_x_axis_value(value)
+
+func _on_XMinSpinBox_value_changed(value):
+	set_min_x_axis_value(value)
+
+func _on_YMaxSpinBox_value_changed(value):
+	set_max_y_axis_value(value)
+
+func _on_YMinSpinBox_value_changed(value):
+	set_min_y_axis_value(value)

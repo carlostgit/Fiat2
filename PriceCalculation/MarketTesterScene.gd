@@ -301,3 +301,11 @@ func _on_XMaxSpinBox_value_changed(value):
 
 func _on_YMaxSpinBox_value_changed(value):
 	$Plotter.set_max_y_axis_value(value)	
+
+
+func _on_XMinSpinBox_value_changed(value):
+	$Plotter.set_min_x_axis_value(value)
+
+
+func _on_YMinSpinBox_value_changed(value):
+	$Plotter.set_min_y_axis_value(value)	
