@@ -24,7 +24,7 @@ var _total_num_of_calculated_points:int = 100
 var _width_per_calculated_point:float = 6
 var _x_zoom:float = 20
 var _y_zoom:float = 40.0
-var _calculated_points_per_unit:float = 0.0
+var _step_between_calculated_points:float = 0.0
 #
 
 var _canvas_item:CanvasItem = self
@@ -52,9 +52,11 @@ func _ready():
 
 #	init(7,80)
 #
-	var test_funcref = funcref( self, "default_test_function")
-	add_func_ref(test_funcref,[],"test",Color(0,1,1))
-	updated_size()
+#	Descomentar esto, para tener un ejeplo
+#	var test_funcref = funcref( self, "default_test_function")
+#	add_func_ref(test_funcref,[],"test",Color(0,1,1))
+#	updated_size()
+#	
 
 	pass
 
@@ -79,7 +81,7 @@ func recalculate_member_variables():
 
 	_y_zoom = _height/(y_max-self._min_y)
 	
-	_calculated_points_per_unit = float(_max_x-_min_x)/float(_total_num_of_calculated_points)
+	_step_between_calculated_points = float(_max_x-_min_x)/float(_total_num_of_calculated_points)
 
 	update()
 
@@ -156,7 +158,7 @@ func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_marg
 
 	_y_zoom = _height/(y_max-self._min_y)
 	
-	_calculated_points_per_unit = float(_max_x-self._min_x)/float(_total_num_of_calculated_points)
+	_step_between_calculated_points = float(_max_x-self._min_x)/float(_total_num_of_calculated_points)
 
 
 func _draw():
@@ -277,9 +279,9 @@ func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color 
 #		var y1:float = _y_zoom*myfunc.call_func(func_arg,i*_calculated_points_per_unit)
 #		var y2:float = _y_zoom*myfunc.call_func(func_arg,(i+1)*_calculated_points_per_unit)
 		var arguments_array1:Array = []
-		arguments_array1.append(i*_calculated_points_per_unit + self._min_x)
+		arguments_array1.append(i*_step_between_calculated_points + self._min_x)
 		var arguments_array2:Array = []
-		arguments_array2.append((i+1)*_calculated_points_per_unit + self._min_x)
+		arguments_array2.append((i+1)*_step_between_calculated_points + self._min_x)
 		for extra_arg in func_args_arg:
 			arguments_array1.append(extra_arg)
 			arguments_array2.append(extra_arg)

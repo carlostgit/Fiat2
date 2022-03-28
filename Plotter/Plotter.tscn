@@ -12,6 +12,7 @@ __meta__ = {
 }
 
 [node name="XMaxSpinBox" type="SpinBox" parent="."]
+visible = false
 margin_left = 184.0
 margin_top = 280.0
 margin_right = 258.0
@@ -22,6 +23,7 @@ __meta__ = {
 }
 
 [node name="XMinSpinBox" type="SpinBox" parent="."]
+visible = false
 margin_left = 16.0
 margin_top = 280.0
 margin_right = 90.0
@@ -31,6 +33,7 @@ __meta__ = {
 }
 
 [node name="YMaxSpinBox" type="SpinBox" parent="."]
+visible = false
 margin_right = 74.0
 margin_bottom = 24.0
 value = 5.0
@@ -39,6 +42,7 @@ __meta__ = {
 }
 
 [node name="YMinSpinBox" type="SpinBox" parent="."]
+visible = false
 margin_top = 248.0
 margin_right = 74.0
 margin_bottom = 272.0
