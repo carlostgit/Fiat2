@@ -2,6 +2,8 @@ extends Control
 
 var _draw_backround_rect:bool = true
 
+const _param_view_test_graph = false
+
 #TODO: valores mínimos
 var _min_x:float = 0
 var _min_y:float = 0
@@ -53,13 +55,17 @@ func _ready():
 #	init(7,80)
 #
 #	Descomentar esto, para tener un ejeplo
-#	var test_funcref = funcref( self, "default_test_function")
-#	add_func_ref(test_funcref,[],"test",Color(0,1,1))
-#	updated_size()
-#	
+	if _param_view_test_graph:
+		test()
 
 	pass
-
+	
+func test():
+	
+	var test_funcref = funcref( self, "default_test_function")
+	add_func_ref(test_funcref,[],"test",Color(0,1,1))
+	updated_size()
+	
 func recalculate_member_variables():
 
 	_canvas_item = self
@@ -149,6 +155,8 @@ func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_marg
 		_width = param_min_width
 	
 	_width_per_calculated_point = _width/float(points_calculated_arg)
+	
+	_x_zoom = self._width/(self._max_x - self._min_x)
 	
 	var y_max:float = _max_y
 	_height = self.get_rect().size.y - _top_margin - _bottom_margin
@@ -407,13 +415,31 @@ func set_min_y_axis_value(min_value:float):
 
 
 func _on_XMaxSpinBox_value_changed(value):
-	set_max_x_axis_value(value)
+	if (value>self._min_x):
+		set_max_x_axis_value(value)
 
 func _on_XMinSpinBox_value_changed(value):
-	set_min_x_axis_value(value)
+	if (value<self._max_x):
+		set_min_x_axis_value(value)
 
 func _on_YMaxSpinBox_value_changed(value):
-	set_max_y_axis_value(value)
+	if (value>self._min_y):
+		set_max_y_axis_value(value)
 
 func _on_YMinSpinBox_value_changed(value):
-	set_min_y_axis_value(value)
+	if (value<self._max_y):
+		set_min_y_axis_value(value)
+
+
+func _on_ShowControlsButton_toggled(button_pressed):
+	if button_pressed:
+		$XMaxSpinBox.show()
+		$XMinSpinBox.show()
+		$YMaxSpinBox.show()
+		$YMinSpinBox.show()
+	else:
+		$XMaxSpinBox.hide()
+		$XMinSpinBox.hide()
+		$YMaxSpinBox.hide()
+		$YMinSpinBox.hide()
+#	pass # Replace with function body.

@@ -49,7 +49,19 @@ margin_bottom = 272.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ShowControlsButton" type="Button" parent="."]
+margin_left = 232.0
+margin_top = 8.0
+margin_right = 252.0
+margin_bottom = 28.0
+toggle_mode = true
+text = "*"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="value_changed" from="XMaxSpinBox" to="." method="_on_XMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="XMinSpinBox" to="." method="_on_XMinSpinBox_value_changed"]
 [connection signal="value_changed" from="YMaxSpinBox" to="." method="_on_YMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="YMinSpinBox" to="." method="_on_YMinSpinBox_value_changed"]
+[connection signal="toggled" from="ShowControlsButton" to="." method="_on_ShowControlsButton_toggled"]
