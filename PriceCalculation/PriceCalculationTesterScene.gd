@@ -45,15 +45,19 @@ func create_default_satisfaction_model(name_arg:String="default_satisf_calc") ->
 
 	satisfaction_calculator.set_name(name_arg)
 
-	var options_array:Array = ["candy_savings","chocolate_savings",
-						"candy_consumption","chocolate_consumption"]
+	var options_array:Array = ["candy_savings","chocolate_savings","nut_savings",
+						"candy_consumption","chocolate_consumption","nut_consumption",
+						]
 
 	satisfaction_calculator.set_options(options_array)
 	
 	var option_product_dict:Dictionary = { "candy_savings": "candy",
 									"candy_consumption": "candy",
 									"chocolate_savings": "chocolate",
-									"chocolate_consumption": "chocolate",}
+									"chocolate_consumption": "chocolate",
+									"nut_savings": "nut",
+									"nut_consumption": "nut",
+									}
 
 	
 	var param_preference_at_0_for_candy_consu = 1.0
@@ -65,6 +69,11 @@ func create_default_satisfaction_model(name_arg:String="default_satisf_calc") ->
 	var maximum_satisf_for_chocolate_consu = 10.0
 	var satisfaction_curve_for_chocolate_consu:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_chocolate_consu, maximum_satisf_for_chocolate_consu)
 	satisfaction_calculator.set_satisfaction_curve("chocolate_consumption",satisfaction_curve_for_chocolate_consu)
+	
+	var param_preference_at_0_for_nut_consu = 1.0
+	var maximum_satisf_for_nut_consu = 10.0
+	var satisfaction_curve_for_nut_consu:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_nut_consu, maximum_satisf_for_nut_consu)
+	satisfaction_calculator.set_satisfaction_curve("nut_consumption",satisfaction_curve_for_nut_consu)
 	
 	var param_preference_at_0_for_sweets = 1.0
 	var maximum_satisf_for_sweets = 10.0
@@ -81,6 +90,12 @@ func create_default_satisfaction_model(name_arg:String="default_satisf_calc") ->
 	var maximum_satisf_for_chocolate_sav = 10.0
 	var satisfaction_curve_for_chocolate_sav:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_chocolate_sav, maximum_satisf_for_chocolate_sav)
 	satisfaction_calculator.set_satisfaction_curve("chocolate_savings",satisfaction_curve_for_chocolate_sav)	
+
+	var param_preference_at_0_for_nut_sav = 1.0
+	var maximum_satisf_for_nut_sav = 10.0
+	var satisfaction_curve_for_nut_sav:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_nut_sav, maximum_satisf_for_nut_sav)
+	satisfaction_calculator.set_satisfaction_curve("nut_savings",satisfaction_curve_for_nut_sav)	
+
 	
 	satisfaction_calculator.set_option_product_dict(option_product_dict)
 	

@@ -4,14 +4,17 @@ extends Control
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
+var _param_price_precission = 0.01
+
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
 
 var _persons:Array = ["Person1","Person2"]
 var _person_tradecalc:Dictionary = {}
-var _person_owned_dict:Dictionary = {"Person1": {"candy":1,"chocolate":2
+var _person_owned_dict:Dictionary = {"Person1": {"candy":1,"chocolate":2,"nut":2
 												},
-									"Person2": {"candy":1,"chocolate":2
+									"Person2": {"candy":1,"chocolate":2,"nut":2
 												}  
 									}
 
@@ -240,9 +243,9 @@ func init_default_example(satisf_calc_arg:Node):
 	add_person("Person 1", trade_calculator)
 	add_person("Person 2", trade_calculator)
 	
-	_person_owned_dict = {"Person 1": {"candy":1,"chocolate":20
+	_person_owned_dict = {"Person 1": {"candy":1,"chocolate":20,"nut":10
 												},
-									"Person 2": {"candy":1,"chocolate":40
+									"Person 2": {"candy":1,"chocolate":40,"nut":10
 												}  
 									}
 	
@@ -382,7 +385,7 @@ func calculate_new_prices():
 	var max_count:int = 400
 	
 	var param_price_change_step:float = 0.5 #Tiene que ser < 1
-	var param_price_precission:float = 0.0001
+	var param_price_precission:float = _param_price_precission
 	
 	while false==exit:
 		count += 1

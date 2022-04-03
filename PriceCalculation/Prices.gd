@@ -6,14 +6,14 @@ extends Control
 # var a = 2
 # var b = "text"
 
-var _products = ["chocolate","candy"]
+var _products = ["chocolate","candy","nut"]
 #var _equivalent_product_dict:Dictionary = { "candy_savings": "candy",
 #									"candy_consumption": "candy",
 #									"chocolate_savings": "chocolate",
 #									"chocolate_consumption": "chocolate",}
 #var _products = Globals._products
 var _currency = "candy"
-var _amounts_dict = {"chocolate": 1.0, "candy":0.5}
+var _amounts_dict = {"chocolate": 1.0, "candy":0.5,"nut":0.5}
 
 
 

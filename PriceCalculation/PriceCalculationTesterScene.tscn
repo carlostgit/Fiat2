@@ -183,7 +183,6 @@ current_dir = "user://"
 current_path = "user://"
 
 [node name="TradeTesterScene" type="WindowDialog" parent="."]
-visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
 margin_left = 104.0
 margin_top = 464.0
@@ -240,20 +239,6 @@ __meta__ = {
 }
 
 [node name="Plotter" parent="TradeTesterScene" instance=ExtResource( 4 )]
-
-[node name="XMaxSpinBox" type="SpinBox" parent="TradeTesterScene/Plotter"]
-margin_left = 200.0
-margin_top = 280.0
-margin_right = 274.0
-margin_bottom = 304.0
-min_value = 5.0
-value = 5.0
-
-[node name="YMaxSpinBox" type="SpinBox" parent="TradeTesterScene/Plotter"]
-margin_right = 74.0
-margin_bottom = 24.0
-min_value = 5.0
-value = 5.0
 
 [node name="CalculateTest1Button" type="Button" parent="TradeTesterScene"]
 margin_left = 560.0
@@ -377,7 +362,6 @@ __meta__ = {
 }
 
 [node name="PricesEditor" type="WindowDialog" parent="."]
-visible = true
 modulate = Color( 1, 1, 0.847059, 1 )
 margin_top = 304.0
 margin_right = 264.0
@@ -410,7 +394,6 @@ margin_bottom = 94.0
 text = "currency"
 
 [node name="MarketTesterScene" type="WindowDialog" parent="."]
-visible = true
 margin_left = 168.0
 margin_top = 96.0
 margin_right = 1016.0

@@ -8,7 +8,7 @@ extends Node
 var _product_price = 1
 var _tax_rate = 0.2
 
-var _products = ["chocolate","candy"]
+var _products = ["chocolate","candy","nut"]
 
 signal signal_tax_rate_changed(tax_rate)
 

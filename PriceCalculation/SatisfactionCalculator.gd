@@ -16,7 +16,8 @@ var _complementary_combos:Dictionary = {"sweets":["chocolate","candy"]}
 #Cambiar _complementary_combos de tal manera que se pueda ponderar cada opción
 #Por ejemplo, que por cada unidad de sweet_savings tenga que haber 1 unidad de candy, y solo 0.5 unidades de chocolate
 var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
-															"chocolate_savings":1.0
+															"chocolate_savings":1.0,
+															"nut_savings":0.2
 														}
 										}
 
@@ -31,13 +32,17 @@ var _option_satisf_curve_dict:Dictionary = {}
 var _complementary_combo_satisf_curve_dict:Dictionary = {}
 var _supplementary_combo_satisf_curve_dict:Dictionary = {}
 
-var _options:Array = ["candy_savings","chocolate_savings",
-						"candy_consumption","chocolate_consumption"]
+var _options:Array = ["candy_savings","chocolate_savings","nut_savings",
+						"candy_consumption","chocolate_consumption","nut_consumption"
+						]
 
 var _option_product_dict:Dictionary = { "candy_savings": "candy",
 									"candy_consumption": "candy",
 									"chocolate_savings": "chocolate",
-									"chocolate_consumption": "chocolate",}
+									"chocolate_consumption": "chocolate",
+									"nut_savings": "nut",
+									"nut_consumption": "nut"
+									}
 									
 
 var _name:String = "satisf_calc_default_name"
@@ -257,11 +262,14 @@ func init_candy_satisfaction():
 func init_chocolate_satisfaction():
 	var satis_curve_chocolate:SatisfactionCurve = SatisfactionCurve.new(2,30)
 	var satis_curve_candy:SatisfactionCurve = SatisfactionCurve.new(2,5)
+	var satis_curve_nut:SatisfactionCurve = SatisfactionCurve.new(1.2, 10)
 	var satis_curve_sweets:SatisfactionCurve = SatisfactionCurve.new(2, 3)
 	var satis_curve_savings:SatisfactionCurve = SatisfactionCurve.new(1.2, 1)
 	
+	
 	_option_satisf_curve_dict["chocolate_consumption"]=satis_curve_chocolate
 	_option_satisf_curve_dict["candy_consumption"]=satis_curve_candy
+	_option_satisf_curve_dict["nut_consumption"]=satis_curve_nut
 	_complementary_combo_satisf_curve_dict["sweets_consumption"]=satis_curve_sweets
 	_supplementary_combo_satisf_curve_dict["savings"]=satis_curve_savings
 

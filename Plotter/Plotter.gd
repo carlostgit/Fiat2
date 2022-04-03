@@ -147,26 +147,28 @@ func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_marg
 	_bottom_margin = bottom_margin_arg
 	_total_num_of_calculated_points = points_calculated_arg
 	
-	_canvas_item = self
-	var param_min_width = 10
-	_width = self.get_rect().size.x - _left_margin - _right_margin
+	recalculate_member_variables()
 	
-	if _width < param_min_width:
-		_width = param_min_width
-	
-	_width_per_calculated_point = _width/float(points_calculated_arg)
-	
-	_x_zoom = self._width/(self._max_x - self._min_x)
-	
-	var y_max:float = _max_y
-	_height = self.get_rect().size.y - _top_margin - _bottom_margin
-	var param_min_height = 10
-	if _height < param_min_height:
-		_height = param_min_height
-
-	_y_zoom = _height/(y_max-self._min_y)
-	
-	_step_between_calculated_points = float(_max_x-self._min_x)/float(_total_num_of_calculated_points)
+#	_canvas_item = self
+#	var param_min_width = 10
+#	_width = self.get_rect().size.x - _left_margin - _right_margin
+#
+#	if _width < param_min_width:
+#		_width = param_min_width
+#
+#	_width_per_calculated_point = _width/float(points_calculated_arg)
+#
+#	_x_zoom = self._width/(self._max_x - self._min_x)
+#
+#	var y_max:float = _max_y
+#	_height = self.get_rect().size.y - _top_margin - _bottom_margin
+#	var param_min_height = 10
+#	if _height < param_min_height:
+#		_height = param_min_height
+#
+#	_y_zoom = _height/(y_max-self._min_y)
+#
+#	_step_between_calculated_points = float(_max_x-self._min_x)/float(_total_num_of_calculated_points)
 
 
 func _draw():

@@ -11,6 +11,7 @@
 [ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=9]
 
 [node name="SatisfactionModelEditor" type="WindowDialog"]
+visible = true
 margin_right = 920.0
 margin_bottom = 440.0
 script = ExtResource( 6 )
@@ -312,29 +313,6 @@ __meta__ = {
 }
 
 [node name="Plotter" parent="." instance=ExtResource( 9 )]
-margin_bottom = 368.0
-
-[node name="XMaxSpinBox" type="SpinBox" parent="Plotter"]
-margin_left = 200.0
-margin_top = 288.0
-margin_right = 274.0
-margin_bottom = 312.0
-min_value = 5.0
-max_value = 200.0
-value = 5.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="YMaxSpinBox" type="SpinBox" parent="Plotter"]
-margin_right = 74.0
-margin_bottom = 24.0
-min_value = 10.0
-max_value = 200.0
-value = 10.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="GraphsControl" type="Control" parent="Plotter"]
 margin_top = 312.0
@@ -562,8 +540,6 @@ text = "Name of Model"
 [connection signal="item_selected" from="SatisfCurvesForSupCombos/SatisfCurvesForSupCombosItemList" to="." method="_on_SatisfCurvesForSupCombosItemList_item_selected"]
 [connection signal="value_changed" from="SatisfCurvesForSupCombos/MaxSatisfForSupCombosSpinBox" to="." method="_on_MaxSatisfForSupCombosSpinBox_value_changed"]
 [connection signal="value_changed" from="SatisfCurvesForSupCombos/PrefAt0ForSupCombosSpinBox" to="." method="_on_PrefAt0ForSupCombosSpinBox_value_changed"]
-[connection signal="value_changed" from="Plotter/XMaxSpinBox" to="." method="_on_XMaxSpinBox_value_changed"]
-[connection signal="value_changed" from="Plotter/YMaxSpinBox" to="." method="_on_YMaxSpinBox_value_changed"]
 [connection signal="pressed" from="Plotter/GraphsControl/ClearButton" to="Plotter/GraphsControl" method="_on_ClearButton_pressed"]
 [connection signal="item_selected" from="Plotter/GraphsControl/GraphsItemList" to="Plotter/GraphsControl" method="_on_GraphsItemList_item_selected"]
 [connection signal="confirmed" from="NewOptionAcceptDialog" to="NewOptionAcceptDialog" method="_on_NewOptionAcceptDialog_confirmed"]
