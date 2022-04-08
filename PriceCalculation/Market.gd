@@ -5,7 +5,9 @@ extends Control
 # var a = 2
 # var b = "text"
 
-var _param_price_precission = 0.01
+var _param_price_precission:float = 0.01
+var _param_initial_price_change_step:float = 0.5 #Tiene que ser < 1
+var _param_max_steps_calculating_new_prices:int = 400
 
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
@@ -38,7 +40,7 @@ class PricesLogInfo:
 			var product_info:ProductPriceAdjustmentInfo = ProductPriceAdjustmentInfo.new()
 			_product_loginfo[product] = product_info
 			
-	func set_pricechangesteparray(value_arg:float):
+	func add_pricechangestep_to_array(value_arg:float):
 		_pricechangestepsarray.append(value_arg)
 		
 	func reset_last_prices():
@@ -371,30 +373,19 @@ func get_value_of_owned(person_arg:String):
 		return 0.0
 
 func calculate_new_prices():
-#	TODO: Hacer versión de calculate_new_prices() y change_prices_step()
-#	en las que:
-#	Haya un control para saber cuándo dejar de calcular.
-#	Haya un control para saber cuándo empezar a hacer cáclulos con mejor precisión
-#		Para eso, habría que:
-#			Tener en cuenta si el precio de todos los productos no hace otra cosa que variar entre un máximo y mínimo
-#			Tal vez el máximo y mínimo tenga que ser solo de los últimos pasosç
-#			Puedo ir guardando los mínimos y máximos de precio absolutos, y los últimos mínimos y máximos
-#
+
 	var exit:bool = false
 	var count:int = 0
-	var max_count:int = 400
-	
-	var param_price_change_step:float = 0.5 #Tiene que ser < 1
+	var max_count:int = _param_max_steps_calculating_new_prices	
+	var param_price_change_step:float = _param_initial_price_change_step #Tiene que ser < 1
 	var param_price_precission:float = _param_price_precission
 	
 	while false==exit:
 		count += 1
-		var price_changed:bool = change_prices_step(param_price_change_step)
+		var price_changed:bool = change_prices(param_price_change_step)
 		_prices_log_info.register_prices()
 		var prices_evolving:bool = _prices_log_info.are_prices_evolving()
-#		change_prices_step.set_price_change_step(param_price_change_step)
-		_prices_log_info.set_pricechangesteparray(param_price_change_step)
-		
+		_prices_log_info.add_pricechangestep_to_array(param_price_change_step)
 		
 #		assert(false)
 #		Aquí falla algo. Esto tarda muchos pasos en llegar a unos precios precisos
@@ -412,7 +403,7 @@ func calculate_new_prices():
 #		if false == prices_evolving or count>max_count:
 #			exit=true
 		
-func change_prices_step(param_price_change_step_arg:float)->bool:
+func change_prices(param_price_change_step_arg:float)->bool:
 	var price_changed:bool = false
 	calculate_trades()
 	calculate_sum_of_trade()
@@ -421,7 +412,7 @@ func change_prices_step(param_price_change_step_arg:float)->bool:
 #	print(new_prices_increment)
 #	todo: Actualizar precios en Prices
 #	Todo. Cambiar esto. Es mejor que los cambios de precios sean proporcionales a los precios actuales
-	var param_min_price:float = 0.001 
+#	var param_min_price:float = 0.001 
 	for product in Prices.get_products():
 		if product != Prices.get_currency():
 			if new_prices_increment.has(product):
@@ -432,8 +423,8 @@ func change_prices_step(param_price_change_step_arg:float)->bool:
 #					TODO: PROBAR LO SIGUIENTE:
 #					tal vez debería hacer algo como:
 					var new_price = current_price+current_price*increment
-					if new_price<param_min_price:
-						new_price = param_min_price
+#					if new_price<param_min_price:
+#						new_price = param_min_price
 					Prices.set_price_of_product(product, new_price)
 					price_changed = true
 	return price_changed
