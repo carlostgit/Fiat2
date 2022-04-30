@@ -127,9 +127,11 @@ func draw_test1(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
-
-
+	
 func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calculating_step_arg:float=0.5):
+	
+	var usec_start = OS.get_ticks_usec()
+	var countCalc:int = 0
 	
 	$Plotter.clear()
 	var option_info:Dictionary = {}
@@ -140,6 +142,8 @@ func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calculat
 	var step:float = step_arg
 	var calculating_step:float = calculating_step_arg
 	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,calculating_step)	
+	countCalc += 1
+	var usec_end = OS.get_ticks_usec()
 #	while  i <= max_amount_of_money_arg:
 	for i in best_combidict_for_each_step.keys():
 		
@@ -166,6 +170,11 @@ func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calculat
 		var color:Color = Color(red,green,blue)
 		
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
+
+	
+	var usec_elapsed = usec_end-usec_start
+	$CalcCostLabel.set_text(str(usec_elapsed/countCalc))
+
 
 func draw_test3_with_precalculation(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 #	Usando 	precalculate_best_combidict_for_each_budget
@@ -218,6 +227,11 @@ func draw_test3_with_precalculation(max_amount_of_money_arg:float=50.0, step_arg
 func draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 #	Usando 	precalculate_best_combidict_for_each_budget
 	
+#	var usec_start = OS.get_ticks_usec()
+	
+#	PerformanceUtils.reset()
+#	PerformanceUtils.start("draw_test5_simple_continuity")
+	
 	$Plotter.clear()
 	var option_info:Dictionary = {}
 	for option in _satisfaction_calculator_ref.get_options():
@@ -228,6 +242,7 @@ func draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:f
 #	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)	
 #	_trade_calculator.precalculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)
 #	while  i <= max_amount_of_money_arg:
+#	var countCalc:int = 0
 	var i:float = 0
 	while (i <= max_amount_of_money_arg):
 		
@@ -239,8 +254,13 @@ func draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:f
 		if money_quant >30.0:
 			assert("debugea esto")
 
-		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)
+#		PerformanceUtils.start("_trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)")
 		
+		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)
+#		countCalc+=1
+		
+#		PerformanceUtils.stop("_trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)")
+			
 		for option in _satisfaction_calculator_ref.get_options():
 			var amount_of_option:float = 0
 			if best_combidict.has(option):
@@ -261,6 +281,21 @@ func draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:f
 		
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
+#	var usec_end = OS.get_ticks_usec()
+#
+#	var usec_elapsed = usec_end-usec_start
+	
+	
+#	PerformanceUtils.stop("draw_test5_simple_continuity")
+#	var elapsed = PerformanceUtils.get_average_time("draw_test5_simple_continuity")
+#	var elapsed = PerformanceUtils.get_total_time(1)
+#	var num_calls = PerformanceUtils.get_num_measurements(1)
+	
+#	$CalcCostLabel.set_text(str(usec_elapsed/countCalc))
+#	$CalcCostLabel.set_text("g: "+ str(elapsed))
+	
+#	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
+	
 
 func draw_test4_simple(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 #	Usando 	precalculate_best_combidict_for_each_budget

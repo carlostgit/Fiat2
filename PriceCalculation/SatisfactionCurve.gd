@@ -47,12 +47,20 @@ func get_diminishing_returns_factor(quantity_arg:float) -> float:
 	#Voy a llamar al termino "1-(1/(0.25*x+1)^2)" Diminishing Returns Factor
 	#Esta ecuación tendría un máximo en 1, y tendría pendiente 1 en 0
 	#Es como una ecuación y = x, pero que se va haciendo más y más horizontal hasta q ya no crece la y
+	
+#	PerformanceUtils.start(1)
+#	PerformanceUtils.stop(1)
+	
 	var result = 0.0
 	var denominator_square_root = 0.25*quantity_arg + 1.0;
 	var denominator = denominator_square_root*denominator_square_root
+	
 	result = 1.0 - (1.0/denominator)
 	if result < 0:
 		result = 0
+	
+	
+	
 	return result
 
 static func calculate_param_preference_at_0(max_satisfaction_arg:float, param_point_satisfaction_arg:float, param_point_quantity_arg:float)->float:
@@ -76,7 +84,9 @@ func calculate_satifaction(quantity_arg:float) -> float:
 	if max_satisf==0:
 		return max_satisf
 	
+	
 	ret_satisf = max_satisf*get_diminishing_returns_factor(quantity_arg*pref_at_0/max_satisf)
+	
 	
 	return ret_satisf
 

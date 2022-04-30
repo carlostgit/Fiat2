@@ -340,7 +340,9 @@ func calculate_satisf_of_combidict_from_individual_options(combidict_arg:Diction
 	for option in self._options:
 		if combidict_arg.has(option):
 			var amount_of_option = combidict_arg[option]
+			
 			satisf_of_opt_individually += self.calculate_satifaction_of_option(option,amount_of_option)
+			
 
 	return satisf_of_opt_individually
 
@@ -393,12 +395,16 @@ func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 	
 	var satisf_of_opt_individually = 0.0
 	satisf_of_opt_individually = calculate_satisf_of_combidict_from_individual_options(combidict_arg)
-
+	
+	
 	var satisf_of_complementary_combi = 0.0
 	satisf_of_complementary_combi = calculate_satisf_of_combidict_from_complementary_combos(combidict_arg)
+	
 
+	
 	var satisf_of_supplementary_combi = 0.0
 	satisf_of_supplementary_combi = calculate_satisf_of_combidict_from_supplementary_combos(combidict_arg)
+	
 
 	var satisfaction_return = 0.0
 	satisfaction_return = satisf_of_opt_individually+satisf_of_complementary_combi+satisf_of_supplementary_combi
@@ -481,7 +487,10 @@ func calculate_satifaction_of_option(option_arg:String, quantity_arg:float) -> f
 #	ret_satisf = max_satisf*get_diminishing_returns_factor(quantity_arg*pref_at_0/max_satisf)
 	
 	var option_satisf_curve:SatisfactionCurve = self._option_satisf_curve_dict[option_arg]
+	
+	
 	ret_satisf = option_satisf_curve.calculate_satifaction(quantity_arg)
+	
 	
 	return ret_satisf
 

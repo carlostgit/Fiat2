@@ -183,11 +183,12 @@ current_dir = "user://"
 current_path = "user://"
 
 [node name="TradeTesterScene" type="WindowDialog" parent="."]
+visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
 margin_left = 104.0
-margin_top = 464.0
-margin_right = 832.0
-margin_bottom = 792.0
+margin_top = 360.0
+margin_right = 856.0
+margin_bottom = 744.0
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -356,6 +357,28 @@ margin_top = 288.0
 margin_right = 600.0
 margin_bottom = 319.0
 text = "Draw step
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalcCostLabel" type="Label" parent="TradeTesterScene"]
+margin_left = 376.0
+margin_top = 320.0
+margin_right = 608.0
+margin_bottom = 351.0
+text = "CalcCostLabel
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalcCostLabelExtraInfo" type="Label" parent="TradeTesterScene"]
+margin_left = 376.0
+margin_top = 344.0
+margin_right = 608.0
+margin_bottom = 375.0
+text = "CalcCostLabelExtraInfo
 "
 __meta__ = {
 "_edit_use_anchors_": false

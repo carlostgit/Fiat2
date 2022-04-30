@@ -224,6 +224,8 @@ func calculate_best_combidict_for_each_budget(max_budget_arg:float,step_length_a
 
 func calculate_best_combidict_simple_with_continuity(money_arg:float)->Dictionary:
 
+#	PerformanceUtils.start("calculate_best_combidict_simple_with_continuity")
+	
 	var step_length:float = 1.0
 	
 	var options:Array = _satisfaction_calculator.get_options()
@@ -246,9 +248,13 @@ func calculate_best_combidict_simple_with_continuity(money_arg:float)->Dictionar
 		var product_found = false
 		var run_out_of_money = false
 		for option in options:
+#			PerformanceUtils.start("duplicate")
 			var trying_combination:Dictionary = combination.duplicate()
+#			PerformanceUtils.stop("duplicate")
 			trying_combination[option] += step_length
+#			PerformanceUtils.start("calculate_satisf_of_combidict")
 			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
+#			PerformanceUtils.stop("calculate_satisf_of_combidict")
 			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
 			var product:String = _satisfaction_calculator.get_product_from_option(option)
 			var price = Prices.get_price_of_product(product)*step_length
@@ -285,6 +291,7 @@ func calculate_best_combidict_simple_with_continuity(money_arg:float)->Dictionar
 		if count>max_count:
 			 break
 			
+#	PerformanceUtils.stop("calculate_best_combidict_simple_with_continuity")
 	return combination	
 
 

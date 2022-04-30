@@ -11,7 +11,6 @@
 [ext_resource path="res://Plotter/Plotter.tscn" type="PackedScene" id=9]
 
 [node name="SatisfactionModelEditor" type="WindowDialog"]
-visible = true
 margin_right = 920.0
 margin_bottom = 440.0
 script = ExtResource( 6 )
