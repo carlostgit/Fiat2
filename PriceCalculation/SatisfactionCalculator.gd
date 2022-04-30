@@ -22,7 +22,7 @@ var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1,
 										}
 
 #var _products = ["chocolate","candy"]
-var _products = Globals._products
+var _products = PriceCalculationGlobals._products
 
 
 #const Plotter = preload("res://Plotter.gd")
@@ -544,10 +544,10 @@ func get_products():
 	return self._products
 	
 func add_product(product_arg:String):
-	Globals.add_product(product_arg)
+	PriceCalculationGlobals.add_product(product_arg)
 		
 func remove_product(product_arg:String):
-	Globals.remove_product(product_arg)
+	PriceCalculationGlobals.remove_product(product_arg)
 	
 func get_product_from_option(product_arg:String):
 	return _option_product_dict[product_arg]

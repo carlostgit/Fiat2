@@ -28,6 +28,7 @@ config/icon="res://icon.png"
 
 Globals="*res://Globals.gd"
 Prices="*res://PriceCalculation/Prices.gd"
+PriceCalculationGlobals="*res://PriceCalculation/PriceCalculationGlobals.gd"
 
 [display]
 
