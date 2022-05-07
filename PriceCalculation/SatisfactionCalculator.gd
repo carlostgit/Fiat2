@@ -393,6 +393,8 @@ func calculate_satisf_of_combidict_from_supplementary_combos(combidict_arg:Dicti
 
 func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 	
+	TimeMeasurement.start("calculate_satisf_of_combidict")
+	
 	var satisf_of_opt_individually = 0.0
 	satisf_of_opt_individually = calculate_satisf_of_combidict_from_individual_options(combidict_arg)
 	
@@ -408,6 +410,8 @@ func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
 
 	var satisfaction_return = 0.0
 	satisfaction_return = satisf_of_opt_individually+satisf_of_complementary_combi+satisf_of_supplementary_combi
+	
+	TimeMeasurement.stop("calculate_satisf_of_combidict")
 		
 	return satisfaction_return
 

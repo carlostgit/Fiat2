@@ -187,7 +187,7 @@ visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
 margin_left = 104.0
 margin_top = 360.0
-margin_right = 856.0
+margin_right = 920.0
 margin_bottom = 744.0
 script = ExtResource( 5 )
 __meta__ = {
@@ -291,6 +291,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CalculateTest6Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 280.0
+margin_right = 723.0
+margin_bottom = 300.0
+text = "Test 6 simple continuty budget step"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="UpdateItemsButton" type="Button" parent="TradeTesterScene"]
 margin_left = 576.0
 margin_top = 80.0
@@ -299,31 +309,31 @@ margin_bottom = 100.0
 text = "Update Items"
 
 [node name="DrawAllButton" type="Button" parent="TradeTesterScene"]
-margin_left = 344.0
-margin_top = 232.0
-margin_right = 409.0
-margin_bottom = 252.0
+margin_left = 304.0
+margin_top = 224.0
+margin_right = 369.0
+margin_bottom = 244.0
 text = "Draw All"
 
 [node name="DrawSelected" type="Button" parent="TradeTesterScene"]
-margin_left = 344.0
+margin_left = 304.0
 margin_top = 280.0
-margin_right = 356.0
+margin_right = 407.0
 margin_bottom = 300.0
 text = "Draw Selected"
 
 [node name="MaxToDrawSpinBox" type="SpinBox" parent="TradeTesterScene"]
-margin_left = 464.0
-margin_top = 232.0
-margin_right = 538.0
-margin_bottom = 256.0
+margin_left = 384.0
+margin_top = 224.0
+margin_right = 458.0
+margin_bottom = 248.0
 min_value = 5.0
 value = 5.0
 
 [node name="StepOfGraphSpinBox" type="SpinBox" parent="TradeTesterScene"]
-margin_left = 464.0
+margin_left = 408.0
 margin_top = 280.0
-margin_right = 538.0
+margin_right = 482.0
 margin_bottom = 304.0
 min_value = 0.05
 max_value = 10.0
@@ -352,10 +362,10 @@ __meta__ = {
 }
 
 [node name="DrawStepLabel" type="Label" parent="TradeTesterScene"]
-margin_left = 536.0
-margin_top = 288.0
-margin_right = 600.0
-margin_bottom = 319.0
+margin_left = 480.0
+margin_top = 280.0
+margin_right = 544.0
+margin_bottom = 311.0
 text = "Draw step
 "
 __meta__ = {
@@ -383,6 +393,13 @@ text = "CalcCostLabelExtraInfo
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="MaxBudgetLabel" type="Label" parent="TradeTesterScene"]
+margin_left = 464.0
+margin_top = 224.0
+margin_right = 504.0
+margin_bottom = 238.0
+text = "MaxBudget"
 
 [node name="PricesEditor" type="WindowDialog" parent="."]
 modulate = Color( 1, 1, 0.847059, 1 )
@@ -626,6 +643,7 @@ margin_bottom = 352.0
 [connection signal="pressed" from="TradeTesterScene/CalculateTest3Button" to="TradeTesterScene" method="_on_CalculateTest3Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest4Button" to="TradeTesterScene" method="_on_CalculateTest4Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest5Button" to="TradeTesterScene" method="_on_CalculateTest5Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest6Button" to="TradeTesterScene" method="_on_CalculateTest6Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]

@@ -69,7 +69,9 @@ func get_last_time(name_arg:String)->float:
 
 func print_info()->void:
 	for name in _measurement_times.keys():
+		print("") #Un espacio
 		print(name)
+		print("total time: "+str(get_total_time(name)))
 		print("average time: "+str(get_average_time(name)))
 		print("calls: "+str(get_num_measurements(name)))
 		
