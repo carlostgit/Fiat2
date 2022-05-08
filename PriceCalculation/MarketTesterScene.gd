@@ -163,7 +163,10 @@ func _on_NextStepButton_pressed():
 func _on_CalculateNewPricesButton_pressed():
 #	
 #	TODO: Ver por qué no se llega a un precio bien ajustado a la primera
-#	
+
+#
+	TimeMeasurement.reset()
+
 	_market.calculate_new_prices()
 	$PricesItemList.clear()
 	for product in Prices.get_products():
@@ -179,7 +182,18 @@ func _on_CalculateNewPricesButton_pressed():
 	var product_pricetops = _market.get_product_price_tops()
 	var product_pricebottoms = _market.get_product_price_bottoms()
 	draw_product_price_tops_bottoms(product_pricetops,product_pricebottoms)
-		
+	
+	
+	#var elapsed = TimeMeasurement.get_average_time("draw_test5_simple_continuity")
+	var elapsed = TimeMeasurement.get_total_time("calculate_best_combidict_simple_with_continuity")
+	var num_calls = TimeMeasurement.get_num_measurements("calculate_best_combidict_simple_with_continuity")
+	
+	TimeMeasurement.print_info()
+
+#	$CalcCostLabel.set_text("calculate_best_combidict_simple_with_continuity: "+ str(elapsed))
+#	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
+
+	
 	
 func _on_RemoveButton_pressed():
 	var person_product_dict:Dictionary = {}

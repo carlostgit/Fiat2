@@ -8,6 +8,7 @@ extends Control
 var _param_price_precission:float = 0.01
 var _param_initial_price_change_step:float = 0.5 #Tiene que ser < 1
 var _param_max_steps_calculating_new_prices:int = 400
+var _param_product_step_for_best_combidict_calc:float = 5
 
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
@@ -329,7 +330,8 @@ func calculate_best_combination_for_person(person_arg:String)->Dictionary:
 #			Hay formas de guardar los resultados de:
 #			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple(budget)
 #			var best_combidict:Dictionary = trade_calc.calculate_best_combidict(budget)
-			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple_with_continuity(budget)
+			var param_product_step:float = _param_product_step_for_best_combidict_calc
+			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple_with_continuity(budget,param_product_step)
 
 #			assert(false)
 #			hay que revisar esto. Hay que usar un método que tenga continuidad

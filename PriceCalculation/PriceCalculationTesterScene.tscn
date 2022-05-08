@@ -187,7 +187,7 @@ visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
 margin_left = 104.0
 margin_top = 360.0
-margin_right = 920.0
+margin_right = 1064.0
 margin_bottom = 744.0
 script = ExtResource( 5 )
 __meta__ = {
@@ -297,6 +297,16 @@ margin_top = 280.0
 margin_right = 723.0
 margin_bottom = 300.0
 text = "Test 6 simple continuty budget step"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalculateTest7Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 304.0
+margin_right = 803.0
+margin_bottom = 324.0
+text = "Test 7 simple continuty budget&product max step (TODO)"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -644,6 +654,7 @@ margin_bottom = 352.0
 [connection signal="pressed" from="TradeTesterScene/CalculateTest4Button" to="TradeTesterScene" method="_on_CalculateTest4Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest5Button" to="TradeTesterScene" method="_on_CalculateTest5Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest6Button" to="TradeTesterScene" method="_on_CalculateTest6Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest7Button" to="TradeTesterScene" method="_on_CalculateTest7Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]

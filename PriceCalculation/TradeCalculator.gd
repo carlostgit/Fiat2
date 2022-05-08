@@ -222,11 +222,14 @@ func calculate_best_combidict_for_each_budget(max_budget_arg:float,step_length_a
 
 	return combination_for_each_step
 
-func calculate_best_combidict_simple_with_continuity(money_arg:float)->Dictionary:
+func calculate_best_combidict_simple_with_continuity_with_product_step(money_arg:float,step_arg:float)->Dictionary:
+	return calculate_best_combidict_simple_with_continuity(money_arg,step_arg)
 
-#	PerformanceUtils.start("calculate_best_combidict_simple_with_continuity")
+func calculate_best_combidict_simple_with_continuity(money_arg:float, step_arg:float=1.0)->Dictionary:
+
+	TimeMeasurement.start("calculate_best_combidict_simple_with_continuity")
 	
-	var step_length:float = 1.0
+	var step_length:float = step_arg
 	
 	var options:Array = _satisfaction_calculator.get_options()
 	var combination:Dictionary = {}
@@ -291,7 +294,7 @@ func calculate_best_combidict_simple_with_continuity(money_arg:float)->Dictionar
 		if count>max_count:
 			 break
 			
-#	PerformanceUtils.stop("calculate_best_combidict_simple_with_continuity")
+	TimeMeasurement.stop("calculate_best_combidict_simple_with_continuity")
 	return combination	
 
 
@@ -302,6 +305,87 @@ func calculate_best_combidict_simple_with_continuity_budget_step(money_arg:float
 
 #	TODO: hacer que el paso constanto sea en la cantidad de dinero
 
+#	PerformanceUtils.start("calculate_best_combidict_simple_with_continuity")
+	
+	var step_length:float = step_arg
+	
+	var options:Array = _satisfaction_calculator.get_options()
+	var combination:Dictionary = {}
+	for option in options:
+		combination[option] = 0
+	
+	var left_money:float = money_arg
+	
+	var count = 0
+	var max_count = 10000 #En caso de error
+	var best_previous_satisfaction = 0.0
+	while true:
+
+		var best_product_combination:Dictionary = {}
+		var best_product_satisfaction = 0.0
+		var best_product_amount_of_money = 0.0
+		var best_increment_of_satisfaction_for_price:float = 0.0
+
+		var product_found = false
+		var run_out_of_money = false
+		for option in options:
+			var amount_of_money_to_spend = step_length
+			var product:String = _satisfaction_calculator.get_product_from_option(option)
+			var amount_of_option = amount_of_money_to_spend/Prices.get_price_of_product(product)
+#			PerformanceUtils.start("duplicate")
+			var trying_combination:Dictionary = combination.duplicate()
+#			PerformanceUtils.stop("duplicate")
+			trying_combination[option] += amount_of_option
+			TimeMeasurement.start("_satisfaction_calculator.calculate_satisf_of_combidict")
+			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
+			TimeMeasurement.stop("_satisfaction_calculator.calculate_satisf_of_combidict")
+			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+			
+
+			
+			
+			if increment_of_satisfaction > 0.0:
+				product_found = true
+				
+				var increment_of_satisfaction_for_price:float = increment_of_satisfaction/amount_of_money_to_spend
+
+				if increment_of_satisfaction_for_price > best_increment_of_satisfaction_for_price:
+					
+					if left_money<amount_of_money_to_spend:
+						var portion_payable:float = left_money/amount_of_money_to_spend
+						var portion_non_payable:float = 1-(left_money/amount_of_money_to_spend)
+						trying_combination[option] -= portion_non_payable*amount_of_option
+						increment_of_satisfaction *= portion_payable
+						satisfaction_of_trying_combination *= portion_payable
+						amount_of_money_to_spend *= portion_payable		
+					
+					best_product_satisfaction = satisfaction_of_trying_combination
+					best_product_combination = trying_combination
+					best_product_amount_of_money = amount_of_money_to_spend
+					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price		
+			
+		if product_found:
+			left_money -= best_product_amount_of_money
+			combination = best_product_combination
+			best_previous_satisfaction = best_product_satisfaction
+			if left_money<=0:
+				break
+		else:
+			break
+		count += 1
+		if count>max_count:
+			 break
+			
+#	PerformanceUtils.stop("calculate_best_combidict_simple_with_continuity")
+	return combination	
+
+func calculate_best_combidict_simple_with_continuity_budget_product_max_step(money_arg:float, step_arg:float)->Dictionary:
+#	TODO: Mejorar el nombre de este método
+#	TODO: pasar el paso en el argumento
+#	
+
+#	TODO: intentar un paso sobre una cantidad de dinero, pero recortarlo teniendo un cuenta un paso máximo de producto 
+	assert(false)#Esto está sin acer
 #	PerformanceUtils.start("calculate_best_combidict_simple_with_continuity")
 	
 	var step_length:float = step_arg
