@@ -27,6 +27,7 @@ var _person_best_combination_dict:Dictionary = {}
 var _person_trade_combination_dict:Dictionary = {}
 var _sum_of_trade:Dictionary = {}
 var _person_value_of_owned:Dictionary = {}
+var _excess_products_dict:Dictionary = {} #La idea es que esto se sume de alguna manera al _sum_of_trade, para corregir errores en los precios
 # Called when the node enters the scene tree for the first time.
 
 #ajuste de precios
@@ -229,6 +230,7 @@ class ProductPriceAdjustmentInfo:
 	
 func _init():
 	_prices_log_info = PricesLogInfo.new()
+	_excess_products_dict.clear()
 
 func _ready():
 	pass # Replace with function body.
@@ -239,6 +241,7 @@ func _ready():
 #	pass
 
 func init_default_example(satisf_calc_arg:Node):
+	_excess_products_dict.clear()
 	_persons.clear()
 	_person_tradecalc.clear()
 	_person_owned_dict.clear()
@@ -401,6 +404,8 @@ func calculate_new_prices():
 				_prices_log_info.reset_last_prices()
 		if count>max_count:
 			break
+			
+	set_excess_products(_sum_of_trade)
 
 #		if false == prices_evolving or count>max_count:
 #			exit=true
@@ -432,17 +437,26 @@ func change_prices(param_price_change_step_arg:float)->bool:
 	return price_changed
 
 func calculate_new_prices_increment(param_price_change_step_arg:float):
-	var new_prices_increment:Dictionary = _sum_of_trade.duplicate()
-	var amount_of_currency_excess = 0.0
-	for product in _sum_of_trade.keys():
-		if product == Prices.get_currency():
-			amount_of_currency_excess = _sum_of_trade[product]
-		
-	var excess_relative_to_currency:Dictionary = {}
-	for product in _sum_of_trade.keys():
-		var amount = _sum_of_trade[product]
-		excess_relative_to_currency[product] = amount - amount_of_currency_excess
+#	var new_prices_increment:Dictionary = _sum_of_trade.duplicate() #Creo que esto sobra
+	var new_prices_increment:Dictionary = {}
 	
+	var sum_of_trade_and_excess_trade = Utils.sum_combidict(_sum_of_trade,_excess_products_dict)
+	
+	var amount_of_currency_excess = 0.0
+#	for product in _sum_of_trade.keys():
+#		if product == Prices.get_currency():
+#			amount_of_currency_excess = _sum_of_trade[product]
+			
+	if (sum_of_trade_and_excess_trade.has(Prices.get_currency())):
+		amount_of_currency_excess = sum_of_trade_and_excess_trade[Prices.get_currency()]
+				
+	var excess_relative_to_currency:Dictionary = {}
+	for product in sum_of_trade_and_excess_trade.keys():
+		var amount = sum_of_trade_and_excess_trade[product]
+		excess_relative_to_currency[product] = amount - amount_of_currency_excess
+		#	Añadimos el _excess_products_dict
+		
+	#		
 	
 	var max_amount_of_product_excess=0.0
 	for product in excess_relative_to_currency.keys():
@@ -479,3 +493,8 @@ func get_product_price_tops()->Dictionary:
 		
 func get_product_price_bottoms()->Dictionary:
 	return _prices_log_info.get_product_price_bottoms()
+
+func set_excess_products(excess_product_arg:Dictionary)->void:
+	self._excess_products_dict = Utils.deep_copy(excess_product_arg)
+	
+	

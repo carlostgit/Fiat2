@@ -53,6 +53,8 @@ static func compare_dictionaries(dict_1:Dictionary,dict_2:Dictionary)-> bool:
 		
 	return true
 	
+
+
 static func find_value_in_dictionary_with_dictionary_key(dict_with_dictionary_key_arg:Dictionary,dict_key_arg:Dictionary):
 	#Este método casero es necesario, porque en la versión de gdscript actual
 	#no funciona bien la comparación (operador==) entre objetos Dictionary
@@ -79,3 +81,30 @@ static func get_ordered_combidicts(combination_satisfaction_arg:Dictionary) -> A
 	assert(combination_satisfaction_arg.size()==combinations_ordered.size())
 
 	return combinations_ordered
+
+static func deep_copy(v):
+	var t = typeof(v)
+	if t == TYPE_DICTIONARY:
+		var d = {}
+		for k in v:
+			d[k] = deep_copy(v[k])
+		return d
+
+	elif t == TYPE_ARRAY:
+		var d = []
+		d.resize(len(v))
+		for i in range(len(v)):
+			d[i] = deep_copy(v[i])
+		return d
+		
+	elif t == TYPE_OBJECT:
+		if v.has_method("duplicate"):
+			return v.duplicate()
+		else:
+			print("Found an object, but I don't know how to copy it!")
+			return v
+
+	else:
+		# Other types should be fine,
+		# they are value types (except poolarrays maybe)
+		return v
