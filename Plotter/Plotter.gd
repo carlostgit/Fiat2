@@ -66,7 +66,7 @@ func test():
 	add_func_ref(test_funcref,[],"test",Color(0,1,1))
 	updated_size()
 	
-func recalculate_member_variables():
+func _recalculate_member_variables():
 
 	_canvas_item = self
 	var param_min_width = 10
@@ -129,7 +129,7 @@ func default_test_function(x_arg:float) -> float:
 
 
 func updated_size()->void:
-	recalculate_member_variables()
+	_recalculate_member_variables()
 	update()
 
 func _init(x_max_arg:float=5, y_max_arg:float=10, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=80, points_calculated_arg=100):
@@ -147,7 +147,7 @@ func init(x_max_arg:float, y_max_arg:float, left_margin_arg:float=40, right_marg
 	_bottom_margin = bottom_margin_arg
 	_total_num_of_calculated_points = points_calculated_arg
 	
-	recalculate_member_variables()
+	_recalculate_member_variables()
 	
 #	_canvas_item = self
 #	var param_min_width = 10
@@ -188,7 +188,7 @@ func _draw():
 		var func_args = self._func_args_dict[func_to_draw]
 		var color:Color = self._func_color_dict[func_to_draw]
 		if func_to_draw.is_valid():
-			draw(func_to_draw,label,func_args,color)
+			_draw_func(func_to_draw,label,func_args,color)
 		else:
 			index_of_not_valid_func=count
 			not_valid_func = func_to_draw
@@ -278,7 +278,7 @@ func draw_background():
 	_canvas_item.draw_string(_font,Vector2(0,_height+_top_margin),str(self._min_y),Color(1,1,1))
 
 
-func draw(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color = Color(0,1,0)):
+func _draw_func(var myfunc, var label_arg:String, func_args_arg = [], color_arg:Color = Color(0,1,0)):
 
 	var last_y:float = 0
 	var last_x:float = 0

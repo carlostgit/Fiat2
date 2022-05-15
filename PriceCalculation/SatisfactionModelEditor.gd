@@ -22,7 +22,7 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func update_satisfaction_calculator_data():
+func _update_satisfaction_calculator_data():
 	
 	$NameOfModelLabel.set_text(self.name_of_model)
 	
@@ -85,7 +85,7 @@ func set_satisfaction_calculator_ref(satisf_calculator_arg):
 #	He creado un _init en SatisfactionCalculator, que hace de constructor de copia
 #	_satisfaction_calculator_copy = SatisfactionCalculator.new(satisf_calculator_arg)
 
-	update_satisfaction_calculator_data()
+	_update_satisfaction_calculator_data()
 	
 func get_satisfaction_calculator_ref():
 	return _satisfaction_calculator_ref
@@ -326,7 +326,7 @@ func _on_DeleteOption_pressed():
 #		$OptionsItemList.remove_item(select[0])
 		var item_to_erase:String = $OptionsItemList.get_item_text(select[0])
 		_satisfaction_calculator_ref.erase_option(item_to_erase)
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 	
 func _on_AddOption_pressed():
 	$NewOptionAcceptDialog.show_modal(true)
@@ -336,14 +336,14 @@ func _on_NewOptionAcceptDialog_ok_pressed(text):
 		if text==$OptionsItemList.get_item_text(i):
 			return
 	_satisfaction_calculator_ref.add_option(text)
-	update_satisfaction_calculator_data()
+	_update_satisfaction_calculator_data()
 
 func _on_DeleteCompCombo_pressed():
 	var select:Array = $CompCombosItemList.get_selected_items()
 	if false == select.empty():
 		var item_to_erase:String = $CompCombosItemList.get_item_text(select[0])
 		_satisfaction_calculator_ref.erase_complementary_combo(item_to_erase)
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 		$OptionsOfCompComboItemList.clear()
 
 func _on_AddCompCombo_pressed():
@@ -356,7 +356,7 @@ func _on_NewCompComboAcceptDialog_ok_pressed(text):
 			return
 #	$CompCombosItemList.add_item(text)
 	_satisfaction_calculator_ref.set_complementary_combo(text,[])
-	update_satisfaction_calculator_data()
+	_update_satisfaction_calculator_data()
 
 func _on_DeleteOptionOfCompCombo_pressed():
 	var select:Array = $OptionsOfCompComboItemList.get_selected_items()
@@ -366,7 +366,7 @@ func _on_DeleteOptionOfCompCombo_pressed():
 		var item_to_erase:String = $OptionsOfCompComboItemList.get_item_text(select[0])
 		var combo_of_items_to_erase:String = $CompCombosItemList.get_item_text(select_combo[0])
 		_satisfaction_calculator_ref.erase_option_in_comp_combo(combo_of_items_to_erase,item_to_erase)
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 		$CompCombosItemList.select(select_combo[0])
 		var options:Array = _satisfaction_calculator_ref.get_options_from_complementary_combo(combo_of_items_to_erase)
 		$OptionsOfCompComboItemList.clear()
@@ -389,7 +389,7 @@ func _on_NewOptionOfCompComboAcceptDialog_ok_pressed(text):
 		var combo_of_options_to_add:String = $CompCombosItemList.get_item_text(select_combo[0])
 		_satisfaction_calculator_ref.add_option_in_comp_combo(combo_of_options_to_add,text)
 
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 		$CompCombosItemList.select(select_combo[0])
 		var options:Array = _satisfaction_calculator_ref.get_options_from_complementary_combo(combo_of_options_to_add)
 		$OptionsOfCompComboItemList.clear()
@@ -402,7 +402,7 @@ func _on_DeleteSupCombo_pressed():
 	if false == select.empty():
 		var item_to_erase:String = $SupCombosItemList.get_item_text(select[0])
 		_satisfaction_calculator_ref.erase_supplementary_combo(item_to_erase)
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 		$OptionsOfSupComboItemList.clear()
 
 
@@ -412,7 +412,7 @@ func _on_NewSupComboAcceptDialog_ok_pressed(text):
 			return
 #	$CompCombosItemList.add_item(text)
 	_satisfaction_calculator_ref.set_supplementary_combo(text,{})
-	update_satisfaction_calculator_data()
+	_update_satisfaction_calculator_data()
 
 
 func _on_AddSupCombo_pressed():
@@ -427,7 +427,7 @@ func _on_DeleteOptionOfSupCombo_pressed():
 		var item_to_erase:String = $OptionsOfSupComboItemList.get_item_text(select[0])
 		var combo_of_items_to_erase:String = $SupCombosItemList.get_item_text(select_combo[0])
 		_satisfaction_calculator_ref.erase_option_in_sup_combo(combo_of_items_to_erase,item_to_erase)
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 		$SupCombosItemList.select(select_combo[0])
 		var options:Array = _satisfaction_calculator_ref.get_options_from_supplementary_combo(combo_of_items_to_erase)
 		$OptionsOfSupComboItemList.clear()
@@ -450,7 +450,7 @@ func _on_NewOptionOfSupComboAcceptDialog_ok_pressed(text):
 		var combo_of_options_to_add:String = $SupCombosItemList.get_item_text(select_combo[0])
 		_satisfaction_calculator_ref.add_option_in_sup_combo(combo_of_options_to_add,text)
 
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 		$SupCombosItemList.select(select_combo[0])
 		var options:Array = _satisfaction_calculator_ref.get_options_from_supplementary_combo(combo_of_options_to_add)
 		$OptionsOfSupComboItemList.clear()
@@ -507,7 +507,7 @@ func _on_LoadFileDialog_file_selected(path):
 #TODO. Comprobar que se carga bien. Y luego sustituir lo que hay por lo cargado y refrescar controles
 
 	self._satisfaction_calculator_copy = satisfaction_calculator_new
-	self.update_satisfaction_calculator_data()
+	self._update_satisfaction_calculator_data()
 
 
 func _on_SaveAsButton_pressed():
@@ -546,14 +546,14 @@ func _on_DeleteProductButton_pressed():
 		var first_select_index = selected_items[0]
 		var product = $ProductsItemList.get_item_text(first_select_index)
 		_satisfaction_calculator_ref.remove_product(product)
-		update_satisfaction_calculator_data()
+		_update_satisfaction_calculator_data()
 
 func _on_NewProductAcceptDialog_ok_pressed(text):
 	for i in range(0,$ProductsItemList.get_item_count()):
 		if text==$ProductsItemList.get_item_text(i):
 			return
 	_satisfaction_calculator_ref.add_product(text)
-	update_satisfaction_calculator_data()
+	_update_satisfaction_calculator_data()
 
 
 func _on_SatisfactionModelEditor_gui_input(event):

@@ -63,7 +63,7 @@ func get_diminishing_returns_factor_old(quantity_arg:float) -> float:
 	
 	return result
 	
-func get_diminishing_returns_factor(quantity_arg:float) -> float:
+func _get_diminishing_returns_factor(quantity_arg:float) -> float:
 	#Voy a llamar al termino "1-(1/(x+1))" Diminishing Returns Factor
 	#Esta ecuación tendría un máximo en 1, y tendría pendiente 1 en 0
 	#Es como una ecuación y = x, pero que se va haciendo más y más horizontal hasta q ya no crece la y
@@ -85,17 +85,17 @@ func get_diminishing_returns_factor(quantity_arg:float) -> float:
 	return result
 
 
-static func calculate_param_preference_at_0(max_satisfaction_arg:float, param_point_satisfaction_arg:float, param_point_quantity_arg:float)->float:
-	#
-	var coefficient_q:float = 0.25*param_point_quantity_arg/max_satisfaction_arg
-	var coefficient_z:float = param_point_satisfaction_arg-max_satisfaction_arg
-	var coefficient_qq:float = coefficient_q*coefficient_q
-
-	var coefficient_sqrt:float = sqrt(-4*coefficient_qq*max_satisfaction_arg/coefficient_z)
-	
-	var preference_at_0:float = (-2*coefficient_q+coefficient_sqrt)/(2*coefficient_qq)
-
-	return preference_at_0
+#static func calculate_param_preference_at_0(max_satisfaction_arg:float, param_point_satisfaction_arg:float, param_point_quantity_arg:float)->float:
+#	#
+#	var coefficient_q:float = 0.25*param_point_quantity_arg/max_satisfaction_arg
+#	var coefficient_z:float = param_point_satisfaction_arg-max_satisfaction_arg
+#	var coefficient_qq:float = coefficient_q*coefficient_q
+#
+#	var coefficient_sqrt:float = sqrt(-4*coefficient_qq*max_satisfaction_arg/coefficient_z)
+#
+#	var preference_at_0:float = (-2*coefficient_q+coefficient_sqrt)/(2*coefficient_qq)
+#
+#	return preference_at_0
 
 func calculate_satifaction(quantity_arg:float) -> float:
 	
@@ -109,7 +109,7 @@ func calculate_satifaction(quantity_arg:float) -> float:
 		return max_satisf
 	
 	
-	ret_satisf = max_satisf*get_diminishing_returns_factor(quantity_arg*pref_at_0/max_satisf)
+	ret_satisf = max_satisf*_get_diminishing_returns_factor(quantity_arg*pref_at_0/max_satisf)
 	
 #	TimeMeasurement.stop("calculate_satifaction")
 	

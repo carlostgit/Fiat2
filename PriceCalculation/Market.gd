@@ -161,8 +161,8 @@ class ProductPriceAdjustmentInfo:
 		_last_prices.push_back(price_arg)
 		_all_prices.push_back(price_arg)
 		
-		_num_price_tops.push_back(calculate_num_price_tops())
-		_num_price_bottoms.push_back(calculate_num_price_bottoms())
+		_num_price_tops.push_back(_calculate_num_price_tops())
+		_num_price_bottoms.push_back(_calculate_num_price_bottoms())
 #	func get_max_price_from_last_iterations():
 #		var max_price:float = 0.0
 #		for i in range(_last_prices.size()-1, 0, -1):
@@ -193,7 +193,7 @@ class ProductPriceAdjustmentInfo:
 		return _num_price_bottoms.back()
 	
 	
-	func calculate_num_price_tops()->int:
+	func _calculate_num_price_tops()->int:
 		
 #		Estaría bien registrar esto, para poder verlo gráficamente
 		var num_max_price_tops:int = 0
@@ -212,7 +212,7 @@ class ProductPriceAdjustmentInfo:
 		return num_max_price_tops
 	
 	
-	func calculate_num_price_bottoms()->int:
+	func _calculate_num_price_bottoms()->int:
 		var num_min_price_bottoms:int = 0
 		var last_price:float = 0.0
 		var last_price_going_up:bool = true
@@ -275,23 +275,23 @@ func remove_person(person_arg:String):
 	if _persons.has(person_arg):
 		_persons.erase(person_arg)
 		
-func calculate_best_combinations():
+func _calculate_best_combinations():
 	for person in _persons:
-		var best_combidict = self.calculate_best_combination_for_person(person)
+		var best_combidict = self._calculate_best_combination_for_person(person)
 		_person_best_combination_dict[person] = best_combidict
 		
-func get_trade_calculator(person_arg:String)->Node:
+func _get_trade_calculator(person_arg:String)->Node:
 	var node:Node = null
 	if _person_tradecalc.has(person_arg):
 		return _person_tradecalc[person_arg]
 	return node
 	
 func calculate_trades():
-	calculate_best_combinations()
+	_calculate_best_combinations()
 	for person in _person_best_combination_dict.keys():
 		var best_option_combidict:Dictionary = _person_best_combination_dict[person]
 		
-		var trade_calculator:TradeCalculator = get_trade_calculator(person)
+		var trade_calculator:TradeCalculator = _get_trade_calculator(person)
 		if trade_calculator:
 			var satisfaction_calculator:SatisfactionCalculator = trade_calculator.get_satisfaction_calculator()
 			var best_product_combidict:Dictionary = satisfaction_calculator.get_product_combidict_from_option_combidict(best_option_combidict)
@@ -300,7 +300,7 @@ func calculate_trades():
 #			print(best_option_combidict)
 #			print("best_product_combidict")
 #			print(best_product_combidict)
-			var trade:Dictionary = self.calculate_trade_from_best_combination(person,best_product_combidict)
+			var trade:Dictionary = self._calculate_trade_from_best_combination(person,best_product_combidict)
 			self._person_trade_combination_dict[person] = trade
 		
 func calculate_sum_of_trade():
@@ -312,14 +312,14 @@ func calculate_sum_of_trade():
 func get_sum_of_trade():
 	return _sum_of_trade		
 
-func calculate_trade_from_best_combination(person_arg:String, best_combination_arg:Dictionary)->Dictionary:
+func _calculate_trade_from_best_combination(person_arg:String, best_combination_arg:Dictionary)->Dictionary:
 	var owned_combidict:Dictionary = {}
 	if _person_owned_dict.has(person_arg):
 		owned_combidict = _person_owned_dict[person_arg]
 	var trade:Dictionary = Utils.calculate_combination_difference(best_combination_arg,owned_combidict)
 	return trade
 	
-func calculate_best_combination_for_person(person_arg:String)->Dictionary:
+func _calculate_best_combination_for_person(person_arg:String)->Dictionary:
 	if _person_owned_dict.has(person_arg):
 		var combidict:Dictionary = _person_owned_dict[person_arg]
 		var budget:float = Prices.calculate_combidict_price(combidict)
@@ -387,7 +387,7 @@ func calculate_new_prices():
 	
 	while false==exit:
 		count += 1
-		var price_changed:bool = change_prices(param_price_change_step)
+		var price_changed:bool = _change_prices(param_price_change_step)
 		_prices_log_info.register_prices()
 		var prices_evolving:bool = _prices_log_info.are_prices_evolving()
 		_prices_log_info.add_pricechangestep_to_array(param_price_change_step)
@@ -410,11 +410,11 @@ func calculate_new_prices():
 #		if false == prices_evolving or count>max_count:
 #			exit=true
 		
-func change_prices(param_price_change_step_arg:float)->bool:
+func _change_prices(param_price_change_step_arg:float)->bool:
 	var price_changed:bool = false
 	calculate_trades()
 	calculate_sum_of_trade()
-	var new_prices_increment:Dictionary = calculate_new_prices_increment(param_price_change_step_arg)
+	var new_prices_increment:Dictionary = _calculate_new_prices_increment(param_price_change_step_arg)
 #	print("new_prices_increment")
 #	print(new_prices_increment)
 #	todo: Actualizar precios en Prices
@@ -436,7 +436,7 @@ func change_prices(param_price_change_step_arg:float)->bool:
 					price_changed = true
 	return price_changed
 
-func calculate_new_prices_increment(param_price_change_step_arg:float):
+func _calculate_new_prices_increment(param_price_change_step_arg:float):
 #	var new_prices_increment:Dictionary = _sum_of_trade.duplicate() #Creo que esto sobra
 	var new_prices_increment:Dictionary = {}
 	

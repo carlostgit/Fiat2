@@ -31,10 +31,10 @@ func set_satisfaction_calculator_ref(satisf_calculator_arg):
 
 #	He creado un _init en SatisfactionCalculator, que hace de constructor de copia
 #	_satisfaction_calculator_copy = SatisfactionCalculator.new(satisf_calculator_arg)
-	update_items()
+	_update_items()
 	
 
-#	draw_test2()
+#	_draw_test2()
 
 func _on_OptionsItemList_item_selected(index):
 #	Selecciono el producto asociado
@@ -88,7 +88,7 @@ func get_options_for_amount_of_currency(amount_arg:float)->Dictionary:
 #
 #		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
-func draw_test1(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+func _draw_test1(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 	
 		
 	$Plotter.clear()
@@ -128,7 +128,7 @@ func draw_test1(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
 	
-func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calculating_step_arg:float=0.5):
+func _draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calculating_step_arg:float=0.5):
 	
 	var usec_start = OS.get_ticks_usec()
 	var countCalc:int = 0
@@ -176,7 +176,7 @@ func draw_test2(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calculat
 	$CalcCostLabel.set_text(str(usec_elapsed/countCalc))
 
 
-func draw_test3_with_precalculation(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+func _draw_test3_with_precalculation(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 #	Usando 	precalculate_best_combidict_for_each_budget
 	
 	
@@ -224,7 +224,7 @@ func draw_test3_with_precalculation(max_amount_of_money_arg:float=50.0, step_arg
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
 
-func draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float=1.0):
+func _draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float=1.0):
 #	Usando 	precalculate_best_combidict_for_each_budget
 	
 #	var usec_start = OS.get_ticks_usec()
@@ -303,7 +303,7 @@ func draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:f
 	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
 	
 	
-func draw_test6_simple_continuity_budget_step(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float = 0.5):
+func _draw_test6_simple_continuity_budget_step(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float = 0.5):
 #	Usando 	precalculate_best_combidict_for_each_budget
 	
 #	var usec_start = OS.get_ticks_usec()
@@ -382,7 +382,7 @@ func draw_test6_simple_continuity_budget_step(max_amount_of_money_arg:float=50.0
 #	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
 
 
-func draw_test7_simple_continuity_budget_product_max_step(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float = 0.5):	
+func _draw_test7_simple_continuity_budget_product_max_step(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float = 0.5):	
 #	var usec_start = OS.get_ticks_usec()
 	
 #	PerformanceUtils.reset()
@@ -459,7 +459,7 @@ func draw_test7_simple_continuity_budget_product_max_step(max_amount_of_money_ar
 #	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
 
 
-func draw_test4_simple(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
+func _draw_test4_simple(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 #	Usando 	precalculate_best_combidict_for_each_budget
 	
 	$Plotter.clear()
@@ -506,7 +506,7 @@ func draw_test4_simple(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
 
 
-func draw_option(option_arg:String, max_amount_of_money_arg:float=50.0,step_arg:float = 0.1):
+func _draw_option(option_arg:String, max_amount_of_money_arg:float=50.0,step_arg:float = 0.1):
 	$Plotter.clear()
 	var option_info:Array = []
 	
@@ -554,7 +554,7 @@ func _on_YMaxSpinBox_value_changed(value):
 
 
 
-func update_items():
+func _update_items():
 	$ProductsItemList.clear()
 	for product in _satisfaction_calculator_ref.get_products():
 		$ProductsItemList.add_item(product)
@@ -568,18 +568,18 @@ func update_items():
 
 
 func _on_Button_pressed():
-	update_items()
+	_update_items()
 	
 
 
 func _on_UpdateItemsButton_pressed():
-	update_items()
+	_update_items()
 
 
 func _on_DrawAllButton_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
-	draw_test2(max_to_draw,step,step)
+	_draw_test2(max_to_draw,step,step)
 
 func _on_DrawSelected_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
@@ -590,7 +590,7 @@ func _on_DrawSelected_pressed():
 				
 		var first_select_index = selected_items[0]
 		var name = $OptionsItemList.get_item_text(first_select_index)
-		draw_option(name,max_to_draw,step)
+		_draw_option(name,max_to_draw,step)
 	
 
 func _on_TradeTesterScene_gui_input(event):
@@ -608,24 +608,24 @@ func _on_CalculateTest2Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
 	var calc_step:float = $StepOfCalcSpinBox.get_value()
-	draw_test2(max_to_draw,step,calc_step)
+	_draw_test2(max_to_draw,step,calc_step)
 
 func _on_CalculateTest3Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
-	draw_test3_with_precalculation(max_to_draw,step)
+	_draw_test3_with_precalculation(max_to_draw,step)
 
 func _on_CalculateTest4Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
-	draw_test4_simple(max_to_draw,step)
+	_draw_test4_simple(max_to_draw,step)
 
 
 func _on_CalculateTest1Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
 #	var calc_step:float = $StepOfCalcSpinBox.get_value()
-	draw_test1(max_to_draw,step)
+	_draw_test1(max_to_draw,step)
 
 
 #calculate_best_combidict_simple_with_continuity
@@ -635,18 +635,18 @@ func _on_CalculateTest5Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
 	var calc_step:float = $StepOfCalcSpinBox.get_value()
-	draw_test5_simple_continuity(max_to_draw,step,calc_step)
+	_draw_test5_simple_continuity(max_to_draw,step,calc_step)
 
 
 func _on_CalculateTest6Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
 	var calc_step:float = $StepOfCalcSpinBox.get_value()
-	draw_test6_simple_continuity_budget_step(max_to_draw,step,calc_step)
+	_draw_test6_simple_continuity_budget_step(max_to_draw,step,calc_step)
 
 
 func _on_CalculateTest7Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
 	var calc_step:float = $StepOfCalcSpinBox.get_value()
-	draw_test7_simple_continuity_budget_product_max_step(max_to_draw,step,calc_step)
+	_draw_test7_simple_continuity_budget_product_max_step(max_to_draw,step,calc_step)

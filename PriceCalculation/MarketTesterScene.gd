@@ -52,7 +52,7 @@ func _on_PersonsItemList_item_selected(index):
 	$AmountOwnedSpinBox.hide()
 	
 #	_market.calculate_value_of_owned()
-	update_value_of_owned(person)
+	_update_value_of_owned(person)
 
 
 func _on_OwnedProductsItemList_item_selected(index):
@@ -75,18 +75,20 @@ func _on_OwnedProductsItemList_item_selected(index):
 		$AmountOwnedSpinBox.show()
 
 
-func update_aumount_owned_spinbox(person_arg:String, product_arg:String):
-	var own_products_dict = _market.get_owned_products(person_arg)
-	if own_products_dict.has(product_arg):
-		var amount = own_products_dict[product_arg]
-		$AmountOwnedSpinBox.set_value(amount)
-		
-func update_amount_traded_label(person_arg:String, product_arg:String):
+#func update_aumount_owned_spinbox(person_arg:String, product_arg:String):
+#	var own_products_dict = _market.get_owned_products(person_arg)
+#	if own_products_dict.has(product_arg):
+#		var amount = own_products_dict[product_arg]
+#		$AmountOwnedSpinBox.set_value(amount)
+#
+
+
+func _update_amount_traded_label(person_arg:String, product_arg:String):
 	var traded_products_dict:Dictionary = _market.get_traded_products(person_arg)
 	if traded_products_dict.has(product_arg):
 		var amount = traded_products_dict[product_arg]
 		$TradeLabel.set_text(str(amount))
-	
+
 
 func get_selected_person_and_product():
 	var person_product_dict:Dictionary = {}
@@ -120,7 +122,7 @@ func _on_CalculateTradeButton_pressed():
 		var person:String = person_product_dict["person"]
 		var product:String = person_product_dict["product"]
 	#	update_aumount_owned_spinbox(person,product)
-		update_amount_traded_label(person,product)
+		_update_amount_traded_label(person,product)
 
 
 func _on_CalculateValueButton_pressed():
@@ -128,9 +130,9 @@ func _on_CalculateValueButton_pressed():
 	var person_product_dict:Dictionary = get_selected_person_and_product()
 	if person_product_dict.has("person"):
 		var person:String = person_product_dict["person"]
-		update_value_of_owned(person)
+		_update_value_of_owned(person)
 	
-func update_value_of_owned(person_arg:String):
+func _update_value_of_owned(person_arg:String):
 	var value:float = _market.get_value_of_owned(person_arg)
 	$ValueOfOwnedLabel.set_text(str(value))
 	
@@ -175,13 +177,13 @@ func _on_CalculateNewPricesButton_pressed():
 		$PricesItemList.add_item(product_price_text)
 #	var product_pricearray = _market.get_last_price_calculation_prices()
 	var product_pricearray = _market.get_all_price_calculation_prices()
-	draw_product_pricearray(product_pricearray)
+	_draw_product_pricearray(product_pricearray)
 	var price_change_step_array:Array = _market.get_all_price_change_step()
-	draw_price_change_step_array(price_change_step_array)
+	_draw_price_change_step_array(price_change_step_array)
 	
 	var product_pricetops = _market.get_product_price_tops()
 	var product_pricebottoms = _market.get_product_price_bottoms()
-	draw_product_price_tops_bottoms(product_pricetops,product_pricebottoms)
+	_draw_product_price_tops_bottoms(product_pricetops,product_pricebottoms)
 	
 	
 	#var elapsed = TimeMeasurement.get_average_time("draw_test5_simple_continuity")
@@ -227,7 +229,7 @@ func _on_MarketTesterScene_gui_input(event):
 		$MousePositionLabel.set_text(str(self.get_position()))
 		self.set_position(self.get_position()+input_event_screen_drag.relative)
 
-func draw_price_change_step_array(price_change_step_array:Array):
+func _draw_price_change_step_array(price_change_step_array:Array):
 	var param_group_id = 5
 	var red = 1
 	var green = 1
@@ -243,7 +245,7 @@ func draw_price_change_step_array(price_change_step_array:Array):
 	$Plotter.add_point_group(param_group_id, price_array_vector2, color, "price_change_step")
 	
 
-func draw_product_pricearray(product_pricearray_arg:Dictionary):
+func _draw_product_pricearray(product_pricearray_arg:Dictionary):
 	
 #	$Plotter.set_max_x_axis_value(20)
 #	$Plotter.set_max_y_axis_value(0.4)	
@@ -266,7 +268,7 @@ func draw_product_pricearray(product_pricearray_arg:Dictionary):
 		
 		$Plotter.add_point_group(count, price_array_vector2, color, product)
 	
-func draw_product_price_tops_bottoms(product_pricetops_arg:Dictionary,product_pricebottoms_arg:Dictionary):
+func _draw_product_price_tops_bottoms(product_pricetops_arg:Dictionary,product_pricebottoms_arg:Dictionary):
 	var count:int = 10
 	for product in product_pricetops_arg.keys(): 
 		count+=1

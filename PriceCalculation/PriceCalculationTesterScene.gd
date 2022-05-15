@@ -19,7 +19,7 @@ var name_satisf_calc_dic:Dictionary = {}
 func _ready():
 	
 	var name_of_satisf = "prueba satisfaction model"
-	var satisfaction_calculator:SatisfactionCalculator = create_default_satisfaction_model(name_of_satisf)
+	var satisfaction_calculator:SatisfactionCalculator = _create_default_satisfaction_model(name_of_satisf)
 	name_satisf_calc_dic[name_of_satisf] = satisfaction_calculator
 	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
@@ -39,7 +39,7 @@ func update_item_list():
 		$SatisfactionModelItemList.add_item(name)
 
 	
-func create_default_satisfaction_model(name_arg:String="default_satisf_calc") -> Node:
+func _create_default_satisfaction_model(name_arg:String="default_satisf_calc") -> Node:
 	
 	var satisfaction_calculator:SatisfactionCalculator = SatisfactionCalculator.new()
 
@@ -106,7 +106,7 @@ func _on_AddAcceptDialog_ok_pressed(text):
 	for i in range(0,$SatisfactionModelItemList.get_item_count()):
 		if text==$SatisfactionModelItemList.get_item_text(i):
 			return
-	name_satisf_calc_dic[text] = create_default_satisfaction_model(text)
+	name_satisf_calc_dic[text] = _create_default_satisfaction_model(text)
 	update_item_list()	
 
 
