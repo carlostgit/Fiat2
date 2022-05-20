@@ -46,7 +46,11 @@ var _points_to_draw:Array = []
 #Grupos de puntos
 var _groupid_points:Dictionary = {}
 var _groupid_color:Dictionary = {}
+var _groupid_color_selected:Dictionary = {}
 var _groupid_label:Dictionary = {}
+
+#Señales
+signal canvas_updated_signal
 
 #
 # Called when the node enters the scene tree for the first time.
@@ -89,8 +93,12 @@ func _recalculate_member_variables():
 	
 	_step_between_calculated_points = float(_max_x-_min_x)/float(_total_num_of_calculated_points)
 
-	update()
+	_update_canvas()
 
+func _update_canvas():
+	emit_signal("canvas_updated_signal")
+	update_item_lists()
+	update()
 
 func clear():
 	_func_array.clear()
@@ -103,7 +111,7 @@ func clear():
 	_groupid_color.clear()
 	_groupid_label.clear()
 
-	update()
+	_update_canvas()
 
 	
 func clear_group_of_points(groupid_arg:int):
@@ -111,7 +119,7 @@ func clear_group_of_points(groupid_arg:int):
 	_groupid_color.erase(groupid_arg)
 	_groupid_label.erase(groupid_arg)
 	
-	update()
+	_update_canvas()
 
 func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "", color_arg:Color = Color(0,1,1))->void:
 	_func_array.append(func_ref_arg)
@@ -121,7 +129,7 @@ func add_func_ref(func_ref_arg:FuncRef, func_args_arg = [], label_arg:String = "
 	
 	_func_color_dict[func_ref_arg]=color_arg
 
-	update()	
+	_update_canvas()	
 
 func default_test_function(x_arg:float) -> float:
 	var y:float = x_arg*x_arg
@@ -130,7 +138,7 @@ func default_test_function(x_arg:float) -> float:
 
 func updated_size()->void:
 	_recalculate_member_variables()
-	update()
+	_update_canvas()
 
 func _init(x_max_arg:float=5, y_max_arg:float=10, left_margin_arg:float=40, right_margin_arg:float=40, top_margin_arg:float=40, bottom_margin_arg:float=80, points_calculated_arg=100):
 	self.connect("item_rect_changed",self,"updated_size")
@@ -317,7 +325,7 @@ func _draw_func(var myfunc, var label_arg:String, func_args_arg = [], color_arg:
 func add_point(point_arg:Vector2):
 	_points_to_draw.append(point_arg)
 	
-	update()
+	_update_canvas()
 
 func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1,1), label_arg = ""):
 	
@@ -325,7 +333,7 @@ func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1
 	_groupid_color[group_id] = color_arg
 	_groupid_label[group_id] = label_arg
 
-	update()
+	_update_canvas()
 
 func draw_points(color_arg:Color = Color(0,1,0)):
 	
@@ -350,6 +358,10 @@ func draw_point_groups():
 	for id in _groupid_points.keys():
 		var points:Array = _groupid_points[id]
 		var color:Color = _groupid_color[id]
+		
+		if (_groupid_color_selected.has(id)):
+			color = _groupid_color_selected[id]
+			
 		if points.empty():
 			continue
 		
@@ -406,6 +418,11 @@ func set_max_y_axis_value(max_value:float):
 func set_func_color(func_ref_arg:FuncRef, color_arg:FuncRef):
 	if self._func_color_dict.has(func_ref_arg):
 		self._func_color_dict[func_ref_arg] = color_arg
+
+func set_group_color(group_arg:int, color_arg:Color):
+	_groupid_color_selected.clear()
+	if self._groupid_color.has(group_arg):
+		self._groupid_color_selected[group_arg] = color_arg
 		
 func set_min_x_axis_value(min_value:float):
 	_min_x = min_value
@@ -445,3 +462,29 @@ func _on_ShowControlsButton_toggled(button_pressed):
 		$YMaxSpinBox.hide()
 		$YMinSpinBox.hide()
 #	pass # Replace with function body.
+
+#func get_groupid_label()->Dictionary:
+#	return _groupid_label
+
+func update_item_lists():
+	if null != $GroupGraphItemList:
+		$GroupGraphItemList.clear()
+		for id in _groupid_label.keys():
+			var label = _groupid_label[id]
+			$GroupGraphItemList.add_item(label)
+#	var _groupid_points:Dictionary = {}
+#	var _groupid_color:Dictionary = {}
+#	var _groupid_label:Dictionary = {}
+
+
+
+
+func _on_GroupGraphItemList_item_selected(index):
+	var id = _groupid_label.keys()[index]
+	set_group_color(id,Color.white)
+	self.update()
+	
+
+func _on_ClearButton_pressed():
+	clear()
+

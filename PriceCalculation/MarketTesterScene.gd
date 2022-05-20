@@ -286,7 +286,7 @@ func _draw_product_price_tops_bottoms(product_pricetops_arg:Dictionary,product_p
 ##		var color:Color = Color(red,green,blue)
 		var color:Color = Color(0,1,0,0.5)
 				
-		$Plotter.add_point_group(count, price_array_vector2, color, "                                           tops"+product)
+		$Plotter.add_point_group(count, price_array_vector2, color, "tops_"+product)
 	
 	for product in product_pricebottoms_arg.keys(): 
 		count+=1

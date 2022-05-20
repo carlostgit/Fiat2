@@ -59,9 +59,12 @@ class PricesLogInfo:
 			product_info.add_price_iteration(price)
 	
 	func are_prices_evolving()->bool:
+		
 		var prices_evolving:bool = false
 		for product in Prices.get_products():
 			var product_info:ProductPriceAdjustmentInfo = _product_loginfo[product]
+#			if 125==product_info.get_all_prices().size():
+#				print("debugeo")
 			if (product_info.get_prices().size()>1 and 
 				false == product_info.are_prices_changing()):
 				continue
@@ -120,8 +123,8 @@ class ProductPriceAdjustmentInfo:
 	var _last_prices:Array = []
 	var _all_prices:Array = []
 	
-	var _num_price_tops:Array = []
-	var _num_price_bottoms:Array = []
+	var _num_last_price_tops:Array = []
+	var _num_last_price_bottoms:Array = []
 	
 	func reset():
 		_iteration = 0
@@ -161,8 +164,8 @@ class ProductPriceAdjustmentInfo:
 		_last_prices.push_back(price_arg)
 		_all_prices.push_back(price_arg)
 		
-		_num_price_tops.push_back(_calculate_num_price_tops())
-		_num_price_bottoms.push_back(_calculate_num_price_bottoms())
+		_num_last_price_tops.push_back(_calculate_num_price_tops())
+		_num_last_price_bottoms.push_back(_calculate_num_price_bottoms())
 #	func get_max_price_from_last_iterations():
 #		var max_price:float = 0.0
 #		for i in range(_last_prices.size()-1, 0, -1):
@@ -180,17 +183,17 @@ class ProductPriceAdjustmentInfo:
 #		return min_price
 
 	func get_num_price_tops_array()->Array:
-		return _num_price_tops
+		return _num_last_price_tops
 	
 	func get_num_price_bottoms_array()->Array:
-		return _num_price_bottoms
+		return _num_last_price_bottoms
 	
 
 	func get_num_price_tops()->int:
-		return _num_price_tops.back()
+		return _num_last_price_tops.back()
 	
 	func get_num_price_bottoms()->int:
-		return _num_price_bottoms.back()
+		return _num_last_price_bottoms.back()
 	
 	
 	func _calculate_num_price_tops()->int:

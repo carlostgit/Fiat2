@@ -3,8 +3,8 @@
 [ext_resource path="res://Plotter/Plotter.gd" type="Script" id=1]
 
 [node name="Plotter" type="Control"]
-margin_right = 278.0
-margin_bottom = 313.0
+margin_right = 280.0
+margin_bottom = 320.0
 rect_min_size = Vector2( 200, 200 )
 script = ExtResource( 1 )
 __meta__ = {
@@ -64,8 +64,26 @@ text = "*"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="GroupGraphItemList" type="ItemList" parent="."]
+margin_left = 80.0
+margin_top = 248.0
+margin_right = 184.0
+margin_bottom = 320.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ClearButton" type="Button" parent="."]
+margin_left = 168.0
+margin_top = 8.0
+margin_right = 180.0
+margin_bottom = 28.0
+text = "clear"
 [connection signal="value_changed" from="XMaxSpinBox" to="." method="_on_XMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="XMinSpinBox" to="." method="_on_XMinSpinBox_value_changed"]
 [connection signal="value_changed" from="YMaxSpinBox" to="." method="_on_YMaxSpinBox_value_changed"]
 [connection signal="value_changed" from="YMinSpinBox" to="." method="_on_YMinSpinBox_value_changed"]
 [connection signal="toggled" from="ShowControlsButton" to="." method="_on_ShowControlsButton_toggled"]
+[connection signal="item_selected" from="GroupGraphItemList" to="." method="_on_GroupGraphItemList_item_selected"]
+[connection signal="pressed" from="ClearButton" to="." method="_on_ClearButton_pressed"]
