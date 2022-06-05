@@ -90,6 +90,10 @@ func _ready():
 	satisfaction_calculator.set_option_product_dict(option_product_dict)
 	
 	
+	var max_amount_of_money:float = 10
+	var calc_step:float = 1
+	var polyline = trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money, calc_step)
+	
 	#TODO
 #	var options_result = satisfaction_calculator.get_options()
 #	print (options_result)

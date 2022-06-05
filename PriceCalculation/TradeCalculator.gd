@@ -5,6 +5,9 @@ extends Control
 # var a = 2
 # var b = "text"
 
+const Polyline = preload("res://PriceCalculation/Polyline.gd")
+const PolylineGroup = preload("res://PriceCalculation/PolylineGroup.gd")
+
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 
 var _satisfaction_calculator:SatisfactionCalculator = null
@@ -15,6 +18,9 @@ var _satisfaction_calculator:SatisfactionCalculator = null
 var _precalculated_combination_for_each_step:Dictionary = {}
 var _max_precalculated_budget:float = 0.0
 var _step_used_for_precalculation:float = 0.0
+
+#Curvas aproximadas precualculadas:
+var _precalculated_aprox_curves = null
 #
 
 # Called when the node enters the scene tree for the first time.
@@ -377,25 +383,24 @@ func calculate_best_combidict_simple_with_continuity_budget_step(money_arg:float
 			 break
 			
 #	PerformanceUtils.stop("calculate_best_combidict_simple_with_continuity")
-	return combination	
+	return combination
 
-func calculate_best_combidict_simple_with_continuity_budget_product_max_step(money_arg:float, step_arg:float)->Dictionary:
-#	TODO: Mejorar el nombre de este método
-#	TODO: pasar el paso en el argumento
-#	
 
-#	TODO: intentar un paso sobre una cantidad de dinero, pero recortarlo teniendo un cuenta un paso máximo de producto 
-	assert(false)#Esto está sin acer
-#	PerformanceUtils.start("calculate_best_combidict_simple_with_continuity")
+func precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money_arg:float, calc_step_arg:float):
 	
-	var step_length:float = step_arg
+	var polyline_group:PolylineGroup = PolylineGroup.new()
+		
+	var combination_for_each_budget:Dictionary = {}
+
+	var step_length:float = calc_step_arg
 	
 	var options:Array = _satisfaction_calculator.get_options()
 	var combination:Dictionary = {}
 	for option in options:
 		combination[option] = 0
+		polyline_group.add_point(option, 0, 0)
 	
-	var left_money:float = money_arg
+	var left_money:float = max_amount_of_money_arg
 	
 	var count = 0
 	var max_count = 10000 #En caso de error
@@ -406,27 +411,29 @@ func calculate_best_combidict_simple_with_continuity_budget_product_max_step(mon
 		var best_product_satisfaction = 0.0
 		var best_product_amount_of_money = 0.0
 		var best_increment_of_satisfaction_for_price:float = 0.0
+		var best_option = ""
 
 		var product_found = false
+		var current_product_selected = ""
+		var current_amount_of_option:float = 0 
 		var run_out_of_money = false
 		for option in options:
 			var amount_of_money_to_spend = step_length
 			var product:String = _satisfaction_calculator.get_product_from_option(option)
 			var amount_of_option = amount_of_money_to_spend/Prices.get_price_of_product(product)
-#			PerformanceUtils.start("duplicate")
-			var trying_combination:Dictionary = combination.duplicate()
-#			PerformanceUtils.stop("duplicate")
-			trying_combination[option] += amount_of_option
-			TimeMeasurement.start("_satisfaction_calculator.calculate_satisf_of_combidict")
-			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
-			TimeMeasurement.stop("_satisfaction_calculator.calculate_satisf_of_combidict")
-			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
-			
 
-			
-			
+			var trying_combination:Dictionary = combination.duplicate()
+
+			trying_combination[option] += amount_of_option
+
+			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination)
+
+			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+
 			if increment_of_satisfaction > 0.0:
 				product_found = true
+				current_product_selected = option
+				current_amount_of_option = amount_of_option
 				
 				var increment_of_satisfaction_for_price:float = increment_of_satisfaction/amount_of_money_to_spend
 
@@ -443,22 +450,34 @@ func calculate_best_combidict_simple_with_continuity_budget_product_max_step(mon
 					best_product_satisfaction = satisfaction_of_trying_combination
 					best_product_combination = trying_combination
 					best_product_amount_of_money = amount_of_money_to_spend
-					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price		
+					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price
+					best_option = option
 			
 		if product_found:
 			left_money -= best_product_amount_of_money
 			combination = best_product_combination
 			best_previous_satisfaction = best_product_satisfaction
+			
+			var current_budget = max_amount_of_money_arg-left_money
+			
+			polyline_group.add_point(best_option, current_budget, combination[best_option])
+
 			if left_money<=0:
 				break
 		else:
 			break
 		count += 1
+#		
 		if count>max_count:
 			 break
 			
-#	PerformanceUtils.stop("calculate_best_combidict_simple_with_continuity")
-	return combination	
+	return polyline_group
+
+
+
+func calculate_best_combidict_from_precalculated_aprox_curves(money_quant_arg:float):
+#	todo
+	pass
 
 
 func calculate_best_combidict_simple(money_arg:float)->Dictionary:

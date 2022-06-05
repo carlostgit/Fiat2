@@ -382,42 +382,22 @@ func _draw_test6_simple_continuity_budget_step(max_amount_of_money_arg:float=50.
 #	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
 
 
-func _draw_test7_simple_continuity_budget_product_max_step(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float = 0.5):	
-#	var usec_start = OS.get_ticks_usec()
-	
-#	PerformanceUtils.reset()
-#	TimeMeasurement.reset()
-#	PerformanceUtils.start("draw_test5_simple_continuity")
-	
+func _draw_test7_aprox_curves_from_budget_steps(max_amount_of_money_arg:float=50.0, step_arg:float=0.1, calc_step_arg:float = 0.5):	
+
 	$Plotter.clear()
 	var option_info:Dictionary = {}
 	for option in _satisfaction_calculator_ref.get_options():
 		option_info[option]=Array()	
 	
-#	var i:float = 0
 	var step:float = step_arg
 	var calc_step:float = calc_step_arg
-#	var best_combidict_for_each_step:Dictionary = _trade_calculator.calculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)	
-#	_trade_calculator.precalculate_best_combidict_for_each_budget(max_amount_of_money_arg,step)
-#	while  i <= max_amount_of_money_arg:
-#	var countCalc:int = 0
+	var best_combidict_for_each_step:Dictionary = _trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money_arg,calc_step_arg)	
+
 	var i:float = 0
 	while (i <= max_amount_of_money_arg):
 		
 		var money_quant:float = i
-#		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
-#		var best_combidict:Dictionary = best_combidict_for_each_step[i]
-#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
-
-#		if money_quant >30.0:
-#			assert("debugea esto")
-
-#		PerformanceUtils.start("_trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)")
-#		TimeMeasurement.start("draw_test5_simple_continuity")	
-		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_simple_with_continuity_budget_product_max_step(money_quant,calc_step)
-#		countCalc+=1
-#		TimeMeasurement.stop("draw_test5_simple_continuity")	
-#		PerformanceUtils.stop("_trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)")
+		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_from_precalculated_aprox_curves(money_quant)
 			
 		for option in _satisfaction_calculator_ref.get_options():
 			var amount_of_option:float = 0
@@ -426,8 +406,6 @@ func _draw_test7_simple_continuity_budget_product_max_step(max_amount_of_money_a
 			option_info[option].append(Vector2(money_quant,amount_of_option))
 		
 		i+=step	
-
-	
 
 	var count:int = 0
 	for option_idx in $OptionsItemList.get_item_count(): 
@@ -440,23 +418,6 @@ func _draw_test7_simple_continuity_budget_product_max_step(max_amount_of_money_a
 		var color:Color = Color(red,green,blue)
 		
 		$Plotter.add_point_group(option_idx, option_info[option_text], color, option_text)
-
-	
-#	var usec_end = OS.get_ticks_usec()
-#
-#	var usec_elapsed = usec_end-usec_start
-	
-	
-#	PerformanceUtils.stop("draw_test5_simple_continuity")
-#	var elapsed = TimeMeasurement.get_average_time("draw_test5_simple_continuity")
-#	var elapsed = TimeMeasurement.get_total_time("draw_test5_simple_continuity")
-#	var num_calls = TimeMeasurement.get_num_measurements("draw_test5_simple_continuity")
-	
-#	TimeMeasurement.print_info()
-#	$CalcCostLabel.set_text(str(usec_elapsed/countCalc))
-#	$CalcCostLabel.set_text("draw_test5_simple_continuity: "+ str(elapsed))
-	
-#	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
 
 
 func _draw_test4_simple(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
@@ -649,4 +610,4 @@ func _on_CalculateTest7Button_pressed():
 	var max_to_draw:float = $MaxToDrawSpinBox.get_value()
 	var step:float = $StepOfGraphSpinBox.get_value()
 	var calc_step:float = $StepOfCalcSpinBox.get_value()
-	_draw_test7_simple_continuity_budget_product_max_step(max_to_draw,step,calc_step)
+	_draw_test7_aprox_curves_from_budget_steps(max_to_draw,step,calc_step)

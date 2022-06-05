@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://PriceCalculation/PriceCalculationTesterScene.gd" type="Script" id=1]
 [ext_resource path="res://PriceCalculation/SatisfactionModelEditor.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://PriceCalculation/PricesEditor.gd" type="Script" id=6]
 [ext_resource path="res://PriceCalculation/MarketTesterScene.gd" type="Script" id=7]
 [ext_resource path="res://PriceCalculation/AddPersonAcceptDialog.gd" type="Script" id=8]
+[ext_resource path="res://PriceCalculation/PruebaButton.gd" type="Script" id=9]
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -304,9 +305,10 @@ __meta__ = {
 [node name="CalculateTest7Button" type="Button" parent="TradeTesterScene"]
 margin_left = 560.0
 margin_top = 304.0
-margin_right = 803.0
+margin_right = 944.0
 margin_bottom = 324.0
-text = "Test 7 simple continuty budget&product max step (TODO)"
+text = "Test 7 aprox curves from budget steps"
+align = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -629,6 +631,14 @@ margin_right = 560.0
 margin_bottom = 352.0
 
 [node name="Plotter" parent="MarketTesterScene" instance=ExtResource( 4 )]
+
+[node name="PruebaButton" type="Button" parent="."]
+margin_left = 224.0
+margin_top = 144.0
+margin_right = 280.0
+margin_bottom = 164.0
+text = "Prueba"
+script = ExtResource( 9 )
 [connection signal="pressed" from="AddButton" to="." method="_on_AddButton_pressed"]
 [connection signal="pressed" from="EditButton" to="." method="_on_EditButton_pressed"]
 [connection signal="pressed" from="HideButton" to="." method="_on_HideButton_pressed"]
@@ -676,3 +686,4 @@ margin_bottom = 352.0
 [connection signal="pressed" from="MarketTesterScene/CalculateValueButton" to="MarketTesterScene" method="_on_CalculateValueButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/NextStepButton" to="MarketTesterScene" method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateNewPricesButton" to="MarketTesterScene" method="_on_CalculateNewPricesButton_pressed"]
+[connection signal="pressed" from="PruebaButton" to="PruebaButton" method="_on_PruebaButton_pressed"]
