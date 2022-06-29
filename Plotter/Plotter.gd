@@ -327,6 +327,13 @@ func add_point(point_arg:Vector2):
 	
 	_update_canvas()
 
+func add_point_groups(groupname_points_dict_arg:Dictionary):
+	var count:int = 0
+	for name in groupname_points_dict_arg:
+		var pointsarray = groupname_points_dict_arg[name]
+		add_point_group(count,pointsarray,Color(0,1,1),name)
+		count += 1
+
 func add_point_group(group_id:int, points_arg:Array, color_arg:Color = Color(0,1,1), label_arg = ""):
 	
 	_groupid_points[group_id] = points_arg

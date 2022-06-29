@@ -34,7 +34,21 @@ func add_point(name_arg:String,x_arg:float,y_arg:float):
 		var new_polyline:Polyline = Polyline.new()
 		new_polyline.add_point(x_arg,y_arg)
 		add_polyline(name_arg, new_polyline)
+
+func get_polyline_dict()->Dictionary:
+	return _name_polyline_dict
 	
+func get_groupname_points_dict()->Dictionary:
+	var groupname_points_dict:Dictionary = {}
+	var count:int = 0
+	for name in _name_polyline_dict.keys():
+		var polyline = _name_polyline_dict[name]
+		var points_array = polyline.get_points_array()
+		groupname_points_dict[name] = points_array
+		
+	return groupname_points_dict
+		
+
 func print_info():
 	print("Polyline group:")
 	for name in _name_polyline_dict.keys():

@@ -5,8 +5,8 @@ extends Control
 # var a = 2
 # var b = "text"
 
-const Polyline = preload("res://PriceCalculation/Polyline.gd")
-const PolylineGroup = preload("res://PriceCalculation/PolylineGroup.gd")
+#const Polyline = preload("res://PriceCalculation/Polyline.gd")
+var PolylineGroup = load("res://PriceCalculation/PolylineGroup.gd")
 
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 
@@ -308,7 +308,6 @@ func calculate_best_combidict_simple_with_continuity_budget_step(money_arg:float
 #	TODO: Mejorar el nombre de este método
 #	TODO: pasar el paso en el argumento
 #	
-
 #	TODO: hacer que el paso constanto sea en la cantidad de dinero
 
 #	PerformanceUtils.start("calculate_best_combidict_simple_with_continuity")
@@ -347,9 +346,6 @@ func calculate_best_combidict_simple_with_continuity_budget_step(money_arg:float
 			TimeMeasurement.stop("_satisfaction_calculator.calculate_satisf_of_combidict")
 			var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
 			
-
-			
-			
 			if increment_of_satisfaction > 0.0:
 				product_found = true
 				
@@ -387,21 +383,21 @@ func calculate_best_combidict_simple_with_continuity_budget_step(money_arg:float
 
 
 func precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money_arg:float, calc_step_arg:float):
-	
-	var polyline_group:PolylineGroup = PolylineGroup.new()
-		
+
+	var polyline_group = PolylineGroup.new()
+
 	var combination_for_each_budget:Dictionary = {}
 
 	var step_length:float = calc_step_arg
-	
+
 	var options:Array = _satisfaction_calculator.get_options()
 	var combination:Dictionary = {}
 	for option in options:
 		combination[option] = 0
 		polyline_group.add_point(option, 0, 0)
-	
+
 	var left_money:float = max_amount_of_money_arg
-	
+
 	var count = 0
 	var max_count = 10000 #En caso de error
 	var best_previous_satisfaction = 0.0
@@ -434,11 +430,11 @@ func precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_m
 				product_found = true
 				current_product_selected = option
 				current_amount_of_option = amount_of_option
-				
+
 				var increment_of_satisfaction_for_price:float = increment_of_satisfaction/amount_of_money_to_spend
 
 				if increment_of_satisfaction_for_price > best_increment_of_satisfaction_for_price:
-					
+
 					if left_money<amount_of_money_to_spend:
 						var portion_payable:float = left_money/amount_of_money_to_spend
 						var portion_non_payable:float = 1-(left_money/amount_of_money_to_spend)
@@ -446,39 +442,74 @@ func precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_m
 						increment_of_satisfaction *= portion_payable
 						satisfaction_of_trying_combination *= portion_payable
 						amount_of_money_to_spend *= portion_payable		
-					
+
 					best_product_satisfaction = satisfaction_of_trying_combination
 					best_product_combination = trying_combination
 					best_product_amount_of_money = amount_of_money_to_spend
 					best_increment_of_satisfaction_for_price = increment_of_satisfaction_for_price
 					best_option = option
-			
+
 		if product_found:
 			left_money -= best_product_amount_of_money
+			var previous_amount_of_best_option = combination[best_option]
 			combination = best_product_combination
 			best_previous_satisfaction = best_product_satisfaction
-			
+
 			var current_budget = max_amount_of_money_arg-left_money
-			
-			polyline_group.add_point(best_option, current_budget, combination[best_option])
+
+			var whole_amount_for_best_option = combination[best_option]
+			var half_increment_for_best_option = (whole_amount_for_best_option+previous_amount_of_best_option)/2.0
+
+			polyline_group.add_point(best_option, current_budget, half_increment_for_best_option)
 
 			if left_money<=0:
 				break
 		else:
 			break
 		count += 1
-#		
+
 		if count>max_count:
 			 break
 			
+	_adjust_polyline_group_to_prices(polyline_group)
+
 	return polyline_group
 
+func _adjust_polyline_group_to_prices(polyline_group_arg)->void:
+	var all_budget_points_array:Array = []
+	var polyline_group_dict = polyline_group_arg.get_polyline_dict()
+	for option in polyline_group_dict.keys():
+		var points:Array = polyline_group_dict[option].get_points_array()
+		for point in points:
+			all_budget_points_array.append(point.x)
+	
+	for budget in all_budget_points_array:
+		var sum_of_price:float = 0.0
+		for option in polyline_group_dict.keys():
+			var polyline = polyline_group_dict[option]
+			var amount_of_option = polyline.get_value(budget)
+			var price_of_this_amount = Prices.get_price_of_product(option)
+			sum_of_price += price_of_this_amount
+		
+		var correcting_factor:float = 1
+		if (sum_of_price!=0):
+			correcting_factor = budget/sum_of_price
+		for option in polyline_group_dict.keys():
+			var polyline = polyline_group_dict[option]
+			var amount_of_option = polyline.get_value(budget)
+			polyline.set_point(budget,correcting_factor*amount_of_option)
+	
 
-
-func calculate_best_combidict_from_precalculated_aprox_curves(money_quant_arg:float):
-#	todo
-	pass
-
+func calculate_best_combidict_from_precalculated_aprox_curves(money_quant_arg:float, polyline_group_arg):
+#	
+	var option_amount_dict:Dictionary = {}
+	var points_group_dict = polyline_group_arg.get_polyline_dict()
+	for option in points_group_dict:
+		var polyline = points_group_dict[option]
+		var amount = polyline.get_value(money_quant_arg)
+		option_amount_dict[option]=amount
+		
+	return option_amount_dict
 
 func calculate_best_combidict_simple(money_arg:float)->Dictionary:
 

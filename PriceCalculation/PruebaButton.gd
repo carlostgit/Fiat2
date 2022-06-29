@@ -8,7 +8,7 @@ const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalcu
 const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
 
-const Plotter = preload("res://Plotter/Plotter.gd")
+var PlotterResource = preload("res://Plotter/Plotter.tscn")
 #const PriceCalculationTesterSceneRes = preload("res:://PriceCalculation/PriceCalculationTesterScene.tscn")
 
 #const PriceCalculationTesterSceneRes = preload("res://PriceCalculation/PriceCalculationTesterScene.tscn")
@@ -93,6 +93,39 @@ func _on_PruebaButton_pressed():
 	var max_amount_of_money:float = 10
 	var calc_step:float = 1
 	var polyline_group = trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money, calc_step)
+	
+	#	Plotter
+	var polyline_group_dict = polyline_group.get_polyline_dict()
+	
+	
+#	var plotter_scene_resource = load(Plotter_path)
+	var plotter_scene = PlotterResource.instance()
+	self.add_child(plotter_scene)
+#	var plotter = plotter_scene.get_script()
+	plotter_scene.add_point(Vector2(0,0))
+	plotter_scene.add_point(Vector2(5,5))
+	plotter_scene.draw_points()
+	var points_array:Array = []
+	points_array.append(Vector2(0,1))
+	points_array.append(Vector2(5,2))
+	plotter_scene.add_point_group(1,points_array)
+	
+	var points_group_dict = polyline_group.get_groupname_points_dict()
+	
+	plotter_scene.add_point_groups(points_group_dict)
+	
+#	for idgroup in points_group_dict:
+#		var points = points_group_dict[idgroup]
+#		plotter_scene.add_point_group(idgroup,points)
+#
+		
+	
+#	var x_max:float = 10
+#	var y_max:float = 10
+#	var plotter:Plotter = Plotter.new(x_max,y_max)
+#	plotter.set_size(Vector2(600,400))
+#	self.add_child(plotter)
+
 	
 	polyline_group.print_info()
 	

@@ -391,13 +391,13 @@ func _draw_test7_aprox_curves_from_budget_steps(max_amount_of_money_arg:float=50
 	
 	var step:float = step_arg
 	var calc_step:float = calc_step_arg
-	var best_combidict_for_each_step:Dictionary = _trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money_arg,calc_step_arg)	
+	var polyline_group = _trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money_arg,calc_step_arg)	
 
 	var i:float = 0
 	while (i <= max_amount_of_money_arg):
 		
 		var money_quant:float = i
-		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_from_precalculated_aprox_curves(money_quant)
+		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_from_precalculated_aprox_curves(money_quant,polyline_group)
 			
 		for option in _satisfaction_calculator_ref.get_options():
 			var amount_of_option:float = 0

@@ -9,12 +9,15 @@ const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalcu
 const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
 
-const Plotter = preload("res://Plotter/Plotter.gd")
+#const Plotter = preload("res://Plotter/Plotter.gd")
+var PlotterResource = preload("res://Plotter/Plotter.tscn")
 #const PriceCalculationTesterSceneRes = preload("res:://PriceCalculation/PriceCalculationTesterScene.tscn")
 
 const PriceCalculationTesterSceneRes = preload("res://PriceCalculation/PriceCalculationTesterScene.tscn")
 
 const PriceCalculationInterface = preload("res://PriceCalculation/PriceCalculationInterface.gd")
+
+const Polyline = preload("res://PriceCalculation/Polyline.gd")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():	
@@ -92,7 +95,10 @@ func _ready():
 	
 	var max_amount_of_money:float = 10
 	var calc_step:float = 1
-	var polyline = trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money, calc_step)
+	var polyline_group = trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money, calc_step)
+	
+	var polyline_group_dict:Dictionary = polyline_group.get_polyline_dict()
+	
 	
 	#TODO
 #	var options_result = satisfaction_calculator.get_options()
