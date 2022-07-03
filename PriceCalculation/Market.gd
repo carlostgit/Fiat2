@@ -282,13 +282,19 @@ func _calculate_best_combinations():
 	for person in _persons:
 		var best_combidict = self._calculate_best_combination_for_person(person)
 		_person_best_combination_dict[person] = best_combidict
+
+#func _calculate_best_combinations_using_func(best_comb_func_to_use_arg:String):
+#	for person in _persons:
+##		var best_combidict = self._calculate_best_combination_for_person(person)
+#		var best_combidict = self._calculate_best_combination_for_person_using_func(best_comb_func_to_use_arg,person)
+#		_person_best_combination_dict[person] = best_combidict
 		
 func _get_trade_calculator(person_arg:String)->Node:
 	var node:Node = null
 	if _person_tradecalc.has(person_arg):
 		return _person_tradecalc[person_arg]
 	return node
-	
+
 func calculate_trades():
 	_calculate_best_combinations()
 	for person in _person_best_combination_dict.keys():
@@ -305,6 +311,7 @@ func calculate_trades():
 #			print(best_product_combidict)
 			var trade:Dictionary = self._calculate_trade_from_best_combination(person,best_product_combidict)
 			self._person_trade_combination_dict[person] = trade
+
 		
 func calculate_sum_of_trade():
 	var sum:Dictionary = {}
@@ -331,18 +338,8 @@ func _calculate_best_combination_for_person(person_arg:String)->Dictionary:
 		if self._person_tradecalc.has(person_arg):
 			var trade_calc:TradeCalculator = self._person_tradecalc[person_arg]
 			
-			
-#			TODO: probar bien esto. Comprobar que hay continidad, y que a un presupuesto ligeramnete mayor, hay ligeramente más satisfacción
-#			Hay formas de guardar los resultados de:
-#			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple(budget)
-#			var best_combidict:Dictionary = trade_calc.calculate_best_combidict(budget)
-			var param_product_step:float = _param_product_step_for_best_combidict_calc
-			var best_combidict:Dictionary = trade_calc.calculate_best_combidict_simple_with_continuity(budget,param_product_step)
+			var best_combidict:Dictionary = trade_calc.calculate_best_combidict(budget)
 
-#			assert(false)
-#			hay que revisar esto. Hay que usar un método que tenga continuidad
-			
-#			TODO: Hacer una versión precalculada (para unos precios), de calculate_best_combidict en TradeCalculator
 #			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
 			return best_combidict
 	var null_dictionary = {}
@@ -418,23 +415,15 @@ func _change_prices(param_price_change_step_arg:float)->bool:
 	calculate_trades()
 	calculate_sum_of_trade()
 	var new_prices_increment:Dictionary = _calculate_new_prices_increment(param_price_change_step_arg)
-#	print("new_prices_increment")
-#	print(new_prices_increment)
-#	todo: Actualizar precios en Prices
-#	Todo. Cambiar esto. Es mejor que los cambios de precios sean proporcionales a los precios actuales
-#	var param_min_price:float = 0.001 
+
 	for product in Prices.get_products():
 		if product != Prices.get_currency():
 			if new_prices_increment.has(product):
 				var increment:float = new_prices_increment[product]
 				if increment!=0:					
 					var current_price:float = Prices.get_price_of_product(product)
-#					var new_price = current_price+increment
-#					TODO: PROBAR LO SIGUIENTE:
-#					tal vez debería hacer algo como:
 					var new_price = current_price+current_price*increment
-#					if new_price<param_min_price:
-#						new_price = param_min_price
+
 					Prices.set_price_of_product(product, new_price)
 					price_changed = true
 	return price_changed
@@ -467,10 +456,9 @@ func _calculate_new_prices_increment(param_price_change_step_arg:float):
 		if amount > max_amount_of_product_excess:
 			max_amount_of_product_excess = amount
 	
-#	TODO: Este parámetro deberá ser 0, cuando desarrolle un mejor método para controlar cuándo dejar de calcular:
 	var param_min_product_excess_to_change_price = 0.0
 	
-	#TODO: Este parámetro deberían pasarse por argumento al método calculate_new_prices_increment():
+	#Este parámetro deberían pasarse por argumento al método calculate_new_prices_increment():
 	var param_price_change_step = param_price_change_step_arg 
 
 	if (max_amount_of_product_excess > param_min_product_excess_to_change_price):

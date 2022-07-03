@@ -4,12 +4,8 @@ extends Node
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-#{0.0€:0.0products, 10.0€:4.0products, 30€:4.4products}
-#var _points_x_y_dict:Dictionary = {} #A eliminar
-#Lo anterior tiene que ser sustituido por lo siguiente
+
 var _points_array:Array = []
-#todo
-#TODO: CAMBIAR TODO ESTO PARA USAR UN ARRAY EN VEZ DE UN DICTIONARY. Y USAR bsearch_custom PARA insertar elementos
 
 func test():
 	add_point(0, 20)
@@ -64,8 +60,6 @@ func set_point(x_arg:float, y_arg:float):
 	
 func get_value(x_arg:float):
 	
-#	TODO
-#	TODO:REHACER ESTE MÉTODO CON _points_array en vez de _points_x_y_dict
 	if (self._points_array.size()<2):
 		return 0.0
 	

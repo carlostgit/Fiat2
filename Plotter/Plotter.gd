@@ -4,10 +4,9 @@ var _draw_backround_rect:bool = true
 
 const _param_view_test_graph = false
 
-#TODO: valores mínimos
+
 var _min_x:float = 0
 var _min_y:float = 0
-#
 
 var _max_x:float = 5 
 var _max_y:float = 100

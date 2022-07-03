@@ -196,10 +196,6 @@ func _draw_test3_with_precalculation(max_amount_of_money_arg:float=50.0, step_ar
 		var money_quant:float = i/10.0
 #		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
 #		var best_combidict:Dictionary = best_combidict_for_each_step[i]
-#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
-
-		if money_quant >30.0:
-			assert("debugea esto")
 
 		var best_combidict:Dictionary = _trade_calculator.get_precalculated_best_combidict(money_quant)
 		
@@ -251,7 +247,7 @@ func _draw_test5_simple_continuity(max_amount_of_money_arg:float=50.0, step_arg:
 		var money_quant:float = i
 #		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
 #		var best_combidict:Dictionary = best_combidict_for_each_step[i]
-#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
+
 
 		if money_quant >30.0:
 			assert("debugea esto")
@@ -330,10 +326,6 @@ func _draw_test6_simple_continuity_budget_step(max_amount_of_money_arg:float=50.
 		var money_quant:float = i
 #		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
 #		var best_combidict:Dictionary = best_combidict_for_each_step[i]
-#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
-
-#		if money_quant >30.0:
-#			assert("debugea esto")
 
 #		PerformanceUtils.start("_trade_calculator.calculate_best_combidict_simple_with_continuity(money_quant)")
 #		TimeMeasurement.start("draw_test5_simple_continuity")	
@@ -439,10 +431,6 @@ func _draw_test4_simple(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		var money_quant:float = i
 #		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
 #		var best_combidict:Dictionary = best_combidict_for_each_step[i]
-#		TODO: debugear que los resultados salgan bien. Creo que no están saliendo bien
-
-		if money_quant >30.0:
-			assert("debugea esto")
 
 		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_simple(money_quant)
 		

@@ -83,8 +83,6 @@ func _on_PruebaButton_pressed():
 	var maximum_satisf_for_chocolate_sav = 10.0
 	var satisfaction_curve_for_chocolate_sav:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_chocolate_sav, maximum_satisf_for_chocolate_sav)
 	satisfaction_calculator.set_satisfaction_curve("chocolate_savings",satisfaction_curve_for_chocolate_sav)
-	
-	#TODO. seguir haciendo lo mismo con las versiones savings, para las que no habrá combos
 		
 	
 	satisfaction_calculator.set_option_product_dict(option_product_dict)
@@ -129,15 +127,7 @@ func _on_PruebaButton_pressed():
 	
 	polyline_group.print_info()
 	
-	#TODO
-#	var options_result = satisfaction_calculator.get_options()
-#	print (options_result)
-#	var products_result = satisfaction_calculator.get_products()
-#	print (products_result)
-#	var combos_result = satisfaction_calculator.get_complementary_combos()
-#	print (combos_result)
-	
-#	TODO: comprobar y corregir los errores que saca check_integrity()
+#	comprobar y corregir los errores que saca check_integrity()
 	satisfaction_calculator.check_integrity()
 
 	

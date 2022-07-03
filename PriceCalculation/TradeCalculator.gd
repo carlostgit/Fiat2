@@ -65,14 +65,14 @@ func get_satisfaction_calculator()->SatisfactionCalculator:
 	return _satisfaction_calculator
 
 func calculate_trade_for_combidict(combidict_arg:Dictionary)->Dictionary:
-	
+
 	var satisfaction:float =_satisfaction_calculator.calculate_satisf_of_combidict(combidict_arg)
 	#Prices está en autoload, por lo que lo puedo usar en cualquier lado
 	var price:float = Prices.calculate_combidict_price(combidict_arg)
-		
+
 	var best_combination:Dictionary = calculate_best_combidict(price)
 	var satisfaction_of_best_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(best_combination)
-	
+
 	var combination_diff:Dictionary = {}
 	if (satisfaction_of_best_combination > satisfaction):
 		combination_diff = calculate_combination_difference(best_combination,combidict_arg)
@@ -82,11 +82,12 @@ func calculate_trade_for_combidict(combidict_arg:Dictionary)->Dictionary:
 #
 #
 #
-#TODO: probar estos métodos:
-#	precalculate_best_combidict_for_each_budget
-#	get_precalculated_best_combidict
+#
+#
+#
 #	
 #
+
 func get_step_used_for_precalculation():
 	return self._step_used_for_precalculation
 	
@@ -305,10 +306,10 @@ func calculate_best_combidict_simple_with_continuity(money_arg:float, step_arg:f
 
 
 func calculate_best_combidict_simple_with_continuity_budget_step(money_arg:float, step_arg:float)->Dictionary:
-#	TODO: Mejorar el nombre de este método
-#	TODO: pasar el paso en el argumento
+
+
 #	
-#	TODO: hacer que el paso constanto sea en la cantidad de dinero
+
 
 #	PerformanceUtils.start("calculate_best_combidict_simple_with_continuity")
 	
@@ -382,7 +383,7 @@ func calculate_best_combidict_simple_with_continuity_budget_step(money_arg:float
 	return combination
 
 
-func precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money_arg:float, calc_step_arg:float):
+func precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money_arg:float, calc_step_arg:float)->Node:
 
 	var polyline_group = PolylineGroup.new()
 
@@ -757,4 +758,34 @@ func calculate_better_combidicts_from_list(money_available_arg:float, combidicts
 #	assert("falta esto")
 	return better_combidicts
 
+#
+func calculate_best_combination_using_func(budget_arg:float)->Dictionary:
+	var response:Dictionary
+	var param_product_step:float = 5
+	var best_comb_func_to_use = 5#TODO: Probar con el 7
 
+	if (1==best_comb_func_to_use):
+		return calculate_best_combidict(budget_arg)
+#	elif("2"==best_comb_func_to_use_arg):
+#		calculate_best_combidict_for_each_budget(max_amount_of_money_arg,calculating_step)
+	elif(2==best_comb_func_to_use):
+		return calculate_best_combidict_simple(budget_arg)
+	elif(3==best_comb_func_to_use):
+		var max_budget_for_precalculation:float = 2*budget_arg
+		var step_for_precalculation:float = 1
+		precalculate_best_combidict_for_each_budget(max_budget_for_precalculation,step_for_precalculation)
+		return get_precalculated_best_combidict(budget_arg)
+	elif(4==best_comb_func_to_use):
+		var step_for_calculation:float = 1
+		return calculate_best_combidict_simple_with_continuity_with_product_step(budget_arg,step_for_calculation)
+	elif(5==best_comb_func_to_use):
+		var step_for_calculation:float = 1
+		return calculate_best_combidict_simple_with_continuity_budget_step(budget_arg,step_for_calculation)
+	elif(7==best_comb_func_to_use): #TODO: Probar esta opción
+		var max_budget_for_precalculation:float = 2*budget_arg
+		var step_for_precalculation:float = 1
+		var polyline_group = precalculate_aprox_best_combidict_curves_for_a_budget_range(max_budget_for_precalculation, step_for_precalculation)
+		return calculate_best_combidict_from_precalculated_aprox_curves(budget_arg,polyline_group)
+	
+	return calculate_best_combidict(budget_arg)
+ 

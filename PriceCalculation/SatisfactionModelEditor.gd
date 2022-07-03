@@ -504,7 +504,7 @@ func _on_LoadFileDialog_file_selected(path):
 	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
 	satisfaction_calculator_new.from_dict(loaded_dict)
 	
-#TODO. Comprobar que se carga bien. Y luego sustituir lo que hay por lo cargado y refrescar controles
+
 
 	self._satisfaction_calculator_copy = satisfaction_calculator_new
 	self._update_satisfaction_calculator_data()

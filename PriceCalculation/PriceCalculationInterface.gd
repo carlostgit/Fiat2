@@ -52,17 +52,17 @@ func calculate_all_trade() -> Dictionary:
 	var total_trade:Dictionary = {}
 	for trade_calculator in _trade_calculator_owned_prod.keys():
 		var trade:Dictionary = trade_calculator.calculate_trade_for_combidict(_trade_calculator_owned_prod[trade_calculator])
-		#TODO crear método sum_combidict en un Utils.gd o así
-		#Copiar Utils.gd del proyecto Prices
+
+
 		total_trade = Utils.sum_combidict(total_trade, trade)
 	return total_trade	
 	
-#func calculate_all_trade_and_update_owned_products() -> Dictionary:
-#	var total_trade:Dictionary = {}
-#	for trade_calculator in _trade_calculator_owned_prod.keys():
-#		var trade:Dictionary = trade_calculator.calculate_trade_for_combidict(_trade_calculator_owned_prod[trade_calculator])
-#		#TODO crear método sum_combidict en un Utils.gd o así
-#		#Copiar Utils.gd del proyecto Prices
-#		total_trade = Utils.sum_combidict(total_trade, trade)
-#		add_owned_products_for_trade_calculator(trade_calculator, trade)	
-#	return total_trade
+#
+#
+#
+#
+#
+#
+#
+#
+#
