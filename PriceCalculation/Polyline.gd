@@ -44,18 +44,18 @@ func add_point(x_arg:float, y_arg:float):
 	if -1==find_x_result:
 		var insertion_index:int = 0
 		insertion_index = self._points_array.bsearch_custom(new_point, CPointsSorter, "points_sorter", false)
-		print("old _points_array:")
-		print(_points_array)
-		print("old _points_array.size(): "+str(_points_array.size()))
-		print("new_point: "+str(new_point))
-		print("insertion_index: "+str(insertion_index))
+#		print("old _points_array:")
+#		print(_points_array)
+#		print("old _points_array.size(): "+str(_points_array.size()))
+#		print("new_point: "+str(new_point))
+#		print("insertion_index: "+str(insertion_index))
 		_points_array.insert(insertion_index,new_point)
 		
-		print("new _points_array:")
-		print(_points_array)
+#		print("new _points_array:")
+#		print(_points_array)
 #		for point in _points_array:
 #			print (point)
-		print("end")
+#		print("end")
 	else:
 		_points_array[find_x_result]=new_point
 		
