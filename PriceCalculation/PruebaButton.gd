@@ -87,7 +87,15 @@ func _on_PruebaButton_pressed():
 	
 	satisfaction_calculator.set_option_product_dict(option_product_dict)
 	
-	
+#	
+	var budget = 10.0
+	var budget_step = 0.01
+	var current_combidict:Dictionary = {"candy_savings":1,"chocolate_savings":1,
+						"candy_consumption":1,"chocolate_consumption":1}
+
+	var adjusted_combidict:Dictionary = trade_calculator.adjust_best_combidict(budget, current_combidict, budget_step)
+	print(adjusted_combidict)
+
 	var max_amount_of_money:float = 10
 	var calc_step:float = 1
 	var polyline_group = trade_calculator.precalculate_aprox_best_combidict_curves_for_a_budget_range(max_amount_of_money, calc_step)

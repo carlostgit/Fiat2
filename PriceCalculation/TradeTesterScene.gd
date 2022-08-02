@@ -51,9 +51,9 @@ func _on_OptionsItemList_item_selected(index):
 		var price:float = Prices.get_price_of_product(product)
 		$PriceLabel.set_text(str(price))
 
-func get_options_for_amount_of_currency(amount_arg:float)->Dictionary:
-	var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(amount_arg)
-	return best_combidict
+#func get_options_for_amount_of_currency(amount_arg:float)->Dictionary:
+#	var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(amount_arg)
+#	return best_combidict
 
 #func draw_test(max_amount_of_money_arg:float=50.0):
 #
@@ -105,7 +105,7 @@ func _draw_test1(max_amount_of_money_arg:float=50.0, step_arg:float=0.1):
 		
 		var money_quant:float = i
 #		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
-		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict(money_quant)
+		var best_combidict:Dictionary = _trade_calculator.calculate_best_combidict_classic(money_quant)
 		
 		for option in _satisfaction_calculator_ref.get_options():
 			var amount_of_option:float = 0

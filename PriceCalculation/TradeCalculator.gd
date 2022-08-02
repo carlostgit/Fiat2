@@ -588,7 +588,7 @@ func calculate_best_combidict_simple(money_arg:float)->Dictionary:
 			
 	return combination	
 	
-func calculate_best_combidict(money_arg:float)->Dictionary:
+func calculate_best_combidict_classic(money_arg:float)->Dictionary:
 #	Debería hacer una versión de este método, que solo recorriese una lista de combinaciones precalculadas
 	
 #	Prueba
@@ -757,15 +757,97 @@ func calculate_better_combidicts_from_list(money_available_arg:float, combidicts
 	
 #	assert("falta esto")
 	return better_combidicts
-
 #
-func calculate_best_combination_using_func(budget_arg:float)->Dictionary:
+
+func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg):
+#	TDOO: Terminar de hacer este método y probarlo
+
+#	var new_combidict:Dictionary = current_combidict
+	
+#	var best_combination:Dictionary = {}
+	var budget_step_length:float = budget_step_arg
+	
+#	var products:Array = Prices.get_products()
+	var options:Array = _satisfaction_calculator.get_options()
+
+#	var combination:Dictionary = {}
+	var combination:Dictionary = current_combidict
+#	for option in options:
+#		combination[option] = 0
+	
+	var productdict = _satisfaction_calculator.calculate_productdict_from_optiondict(combination)
+	var cost_of_arg_combination = Prices.calculate_combidict_price(productdict)
+	
+	var left_money:float = budget_arg - cost_of_arg_combination
+	
+#	var best_previous_satisfaction = combination
+	var best_previous_satisfaction:float = _satisfaction_calculator.calculate_satisf_of_combidict(combination)
+#	var best_previous_combination:Dictionary = combination
+			
+	if left_money > 0:
+#		Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
+		var count2:int = 0
+		while true:
+			count2 += 1
+			if count2>1000:
+				break			
+				print ("Exited adjust_best_combidict because too many iterations are being used")
+			var change_made = false
+			for new_option in options:
+				var new_product = _satisfaction_calculator.get_product_from_option(new_option)
+				var new_product_step = budget_step_length/Prices.get_price_of_product(new_product)
+
+				var trying_combination_adding_product:Dictionary = combination.duplicate()
+				trying_combination_adding_product[new_option] += new_product_step
+				var current_left_money = left_money-budget_step_length
+
+				if (current_left_money < 0.0):
+					for old_option in options:
+						if new_option!=old_option:
+							var old_product = _satisfaction_calculator.get_product_from_option(old_option)
+							var old_product_step = budget_step_length/Prices.get_price_of_product(old_product)
+							if combination[old_option]>=old_product_step:
+								var trying_combination_swapping_products:Dictionary = trying_combination_adding_product.duplicate()
+								trying_combination_swapping_products[old_option] -= old_product_step
+								current_left_money = left_money
+
+								var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination_swapping_products)
+
+								var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+								
+								if  increment_of_satisfaction > 0.0:
+									combination = trying_combination_swapping_products
+									change_made = true
+									left_money = current_left_money
+									best_previous_satisfaction = satisfaction_of_trying_combination
+									break
+								
+				else:
+					
+					var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination_adding_product)
+
+					var increment_of_satisfaction:float = satisfaction_of_trying_combination - best_previous_satisfaction
+					
+					if  increment_of_satisfaction > 0.0:
+						combination = trying_combination_adding_product
+						change_made = true
+						left_money = current_left_money
+						best_previous_satisfaction = satisfaction_of_trying_combination
+					
+			if false==change_made:
+				break
+
+	return combination
+
+	
+
+func calculate_best_combidict(budget_arg:float)->Dictionary:
 	var response:Dictionary
 	var param_product_step:float = 5
-	var best_comb_func_to_use = 5#TODO: Probar con el 7
+	var best_comb_func_to_use = 7#TODO: Probar con el 7
 
 	if (1==best_comb_func_to_use):
-		return calculate_best_combidict(budget_arg)
+		return calculate_best_combidict_classic(budget_arg)
 #	elif("2"==best_comb_func_to_use_arg):
 #		calculate_best_combidict_for_each_budget(max_amount_of_money_arg,calculating_step)
 	elif(2==best_comb_func_to_use):
@@ -787,5 +869,5 @@ func calculate_best_combination_using_func(budget_arg:float)->Dictionary:
 		var polyline_group = precalculate_aprox_best_combidict_curves_for_a_budget_range(max_budget_for_precalculation, step_for_precalculation)
 		return calculate_best_combidict_from_precalculated_aprox_curves(budget_arg,polyline_group)
 	
-	return calculate_best_combidict(budget_arg)
+	return calculate_best_combidict_classic(budget_arg)
  
