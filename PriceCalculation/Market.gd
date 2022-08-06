@@ -5,9 +5,9 @@ extends Control
 # var a = 2
 # var b = "text"
 
-var _param_price_precission:float = 0.01
-var _param_initial_price_change_step:float = 0.5 #Tiene que ser < 1
-var _param_max_steps_calculating_new_prices:int = 400
+var _param_price_precission:float = 0.1
+var _param_initial_price_change_step:float = 0.1 #Tiene que ser < 1
+var _param_max_steps_calculating_new_prices:int = 40
 var _param_product_step_for_best_combidict_calc:float = 5
 
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
@@ -24,6 +24,7 @@ var _person_owned_dict:Dictionary = {"Person1": {"candy":1,"chocolate":2,"nut":2
 
 #resultados:
 var _person_best_combination_dict:Dictionary = {}
+var _person_best_combination_dict_test:Dictionary = {} #Solo para pruebas
 var _person_trade_combination_dict:Dictionary = {}
 var _sum_of_trade:Dictionary = {}
 var _person_value_of_owned:Dictionary = {}
@@ -234,6 +235,7 @@ class ProductPriceAdjustmentInfo:
 func _init():
 	_prices_log_info = PricesLogInfo.new()
 	_excess_products_dict.clear()
+	
 
 func _ready():
 	pass # Replace with function body.
@@ -296,7 +298,7 @@ func _get_trade_calculator(person_arg:String)->Node:
 	return node
 
 func calculate_trades():
-	_calculate_best_combinations()
+	
 	for person in _person_best_combination_dict.keys():
 		var best_option_combidict:Dictionary = _person_best_combination_dict[person]
 		
@@ -339,11 +341,13 @@ func _calculate_best_combination_for_person(person_arg:String)->Dictionary:
 			var trade_calc:TradeCalculator = self._person_tradecalc[person_arg]
 			
 			var best_combidict:Dictionary = trade_calc.calculate_best_combidict(budget)
+			
 
 #			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
 			return best_combidict
 	var null_dictionary = {}
 	return null_dictionary
+
 
 func get_owned_products(person_arg:String)->Dictionary:
 	var empty_dict:Dictionary = {}
@@ -387,6 +391,8 @@ func calculate_new_prices():
 	
 	while false==exit:
 		count += 1
+		if 30==count:
+			print(count)
 		var price_changed:bool = _change_prices(param_price_change_step)
 		_prices_log_info.register_prices()
 		var prices_evolving:bool = _prices_log_info.are_prices_evolving()
@@ -412,6 +418,15 @@ func calculate_new_prices():
 		
 func _change_prices(param_price_change_step_arg:float)->bool:
 	var price_changed:bool = false
+#	if (_param_initial_price_change_step<=param_price_change_step_arg):
+##		La primera vez se llama a _calculate_best_combinations, y el resto de veces a _adjust_best_combinations
+#		_calculate_best_combinations()
+#	else:
+	var budget_step = 0.01
+	var max_num_steps = 10
+	_adjust_best_combinations(budget_step,max_num_steps)
+	
+#
 	calculate_trades()
 	calculate_sum_of_trade()
 	var new_prices_increment:Dictionary = _calculate_new_prices_increment(param_price_change_step_arg)
@@ -489,3 +504,48 @@ func set_excess_products(excess_product_arg:Dictionary)->void:
 	self._excess_products_dict = Utils.deep_copy(excess_product_arg)
 	
 	
+#Código de prueba
+#			TODO: Probar a usar 
+#			func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg):
+#Hacer los siguientes métodos:
+#func _adjust_best_combinations():
+#func _adjust_best_combination_for_person(person_arg:String,current_best_combidict:Dictionary)->Dictionary:
+#Cambiar el método:
+#func calculate_trades():
+#para que no se llame a calculate_best_combinations()
+#Habría que llamar a calculate_best_combinations() o adjust_best_combinations antes de llamar a calculate_trades
+#Fin del código de pruebaa
+
+func _adjust_best_combinations(budget_step:float,max_num_steps:int):
+	for person in _persons:
+		if _person_best_combination_dict.has(person)==false:
+			var empty_combidict:Dictionary = {}
+			_person_best_combination_dict[person] = empty_combidict
+		var best_combidict = self._adjust_best_combination_for_person(person, _person_best_combination_dict[person],budget_step,max_num_steps)
+		_person_best_combination_dict[person] = best_combidict
+
+func _adjust_best_combinations_test(budget_step:float,max_num_steps:int):
+	for person in _persons:
+		var best_combidict = self._adjust_best_combination_for_person(person, _person_best_combination_dict[person],budget_step,max_num_steps)
+		_person_best_combination_dict_test[person] = best_combidict
+
+func _adjust_best_combination_for_person(person_arg:String, current_best_combidict_arg:Dictionary,budget_step:float,max_num_steps:int)->Dictionary:
+	if _person_owned_dict.has(person_arg):
+		var combidict:Dictionary = _person_owned_dict[person_arg]
+		var budget:float = Prices.calculate_combidict_price(combidict)
+#		print("Budget for "+person_arg+": "+str(budget))
+		_person_value_of_owned[person_arg] = budget
+		if self._person_tradecalc.has(person_arg):
+			var trade_calc:TradeCalculator = self._person_tradecalc[person_arg]
+			
+#			var best_combidict:Dictionary = trade_calc.adjust_best_combidict(budget,current_best_combidict_arg,budget_step,max_num_steps)
+#			TODO: Probar adjust_best_combidict_changing_step
+			var init_budget_step = budget_step*16
+			var best_combidict:Dictionary = trade_calc.adjust_best_combidict_changing_step(budget,current_best_combidict_arg,init_budget_step,budget_step,max_num_steps)
+			
+
+#			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
+			return best_combidict
+	var null_dictionary = {}
+	return null_dictionary
+

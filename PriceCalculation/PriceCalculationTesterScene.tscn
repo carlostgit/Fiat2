@@ -313,6 +313,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="CalculateTest8Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 328.0
+margin_right = 944.0
+margin_bottom = 348.0
+text = "Test 8 adjust"
+align = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="UpdateItemsButton" type="Button" parent="TradeTesterScene"]
 margin_left = 576.0
 margin_top = 80.0
@@ -665,6 +676,7 @@ script = ExtResource( 9 )
 [connection signal="pressed" from="TradeTesterScene/CalculateTest5Button" to="TradeTesterScene" method="_on_CalculateTest5Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest6Button" to="TradeTesterScene" method="_on_CalculateTest6Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest7Button" to="TradeTesterScene" method="_on_CalculateTest7Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest8Button" to="TradeTesterScene" method="_on_CalculateTest8Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]

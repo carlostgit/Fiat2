@@ -759,9 +759,20 @@ func calculate_better_combidicts_from_list(money_available_arg:float, combidicts
 	return better_combidicts
 #
 
-func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg):
-#	TDOO: Terminar de hacer este método y probarlo
+#TODO: Probar este método
+func adjust_best_combidict_changing_step(budget_arg:float, current_combidict_arg:Dictionary, init_budget_step_arg:float, target_budget_step_arg:float, max_step_arg:int):
+	var max_step_param:int = max_step_arg
+	var current_budget_step:float = init_budget_step_arg
+	var current_best_combidict:Dictionary = current_combidict_arg
+	while current_budget_step >  target_budget_step_arg:
+		current_best_combidict = adjust_best_combidict(budget_arg, current_best_combidict, current_budget_step, max_step_param)
+		current_budget_step = current_budget_step/2.0
+		
+	return current_best_combidict
+		
 
+func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):
+#	TDOO: Hacer un método que llame a este método con pasos decrecientes en tamaño
 #	var new_combidict:Dictionary = current_combidict
 	
 #	var best_combination:Dictionary = {}
@@ -783,21 +794,61 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 #	var best_previous_satisfaction = combination
 	var best_previous_satisfaction:float = _satisfaction_calculator.calculate_satisf_of_combidict(combination)
 #	var best_previous_combination:Dictionary = combination
+	
+	while left_money < 0:
+		
+		var change_made:bool = false
+#		eliminaré productos en orden de menor reducción de satisfacción
+		var best_decrement_of_satisfaction = best_previous_satisfaction
+		var best_trying_combination = combination.duplicate()
+		
+		for option_to_remove in options:
+			var product_to_remove = _satisfaction_calculator.get_product_from_option(option_to_remove)
+			var trying_combination_removing_product:Dictionary = combination.duplicate()
+			var remove_product_step = budget_step_length/Prices.get_price_of_product(product_to_remove)
+			if trying_combination_removing_product.has(option_to_remove)==false:
+				trying_combination_removing_product[option_to_remove] = 0
+			trying_combination_removing_product[option_to_remove] -= remove_product_step
+			if trying_combination_removing_product[option_to_remove]<0:
+				continue
+			var satisfaction_of_trying_combination:float = _satisfaction_calculator.calculate_satisf_of_combidict(trying_combination_removing_product)
+			var curent_decrement_of_satisfaction:float = best_previous_satisfaction - satisfaction_of_trying_combination
 			
-	if left_money > 0:
+			
+			if  curent_decrement_of_satisfaction <= best_decrement_of_satisfaction:
+				best_trying_combination = trying_combination_removing_product
+				change_made = true
+				
+				best_previous_satisfaction = satisfaction_of_trying_combination				
+
+		if true == change_made:
+			combination = best_trying_combination
+			var current_left_money:float = left_money + budget_step_length
+			left_money = current_left_money
+			
+		if false==change_made:
+			print ("Exited adjust_best_combidict because no option to remove found")
+			break
+			
+			
+			
+	if left_money >= 0:
 #		Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
-		var count2:int = 0
+		var count:int = 0
 		while true:
-			count2 += 1
-			if count2>1000:
-				break			
+			count += 1
+			if count>max_step_arg:
 				print ("Exited adjust_best_combidict because too many iterations are being used")
+				break			
+				
 			var change_made = false
 			for new_option in options:
 				var new_product = _satisfaction_calculator.get_product_from_option(new_option)
 				var new_product_step = budget_step_length/Prices.get_price_of_product(new_product)
 
 				var trying_combination_adding_product:Dictionary = combination.duplicate()
+				if trying_combination_adding_product.has(new_option)==false:
+					trying_combination_adding_product[new_option]=0
 				trying_combination_adding_product[new_option] += new_product_step
 				var current_left_money = left_money-budget_step_length
 
@@ -808,6 +859,8 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 							var old_product_step = budget_step_length/Prices.get_price_of_product(old_product)
 							if combination[old_option]>=old_product_step:
 								var trying_combination_swapping_products:Dictionary = trying_combination_adding_product.duplicate()
+								if trying_combination_swapping_products.has(old_option)==false:
+									trying_combination_swapping_products[old_option]=0
 								trying_combination_swapping_products[old_option] -= old_product_step
 								current_left_money = left_money
 
