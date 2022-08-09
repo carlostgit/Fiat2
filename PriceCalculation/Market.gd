@@ -5,9 +5,9 @@ extends Control
 # var a = 2
 # var b = "text"
 
-var _param_price_precission:float = 0.1
-var _param_initial_price_change_step:float = 0.1 #Tiene que ser < 1
-var _param_max_steps_calculating_new_prices:int = 40
+var _param_price_precission:float = 0.01
+var _param_initial_price_change_step:float = 0.5 #Tiene que ser < 1
+var _param_max_steps_calculating_new_prices:int = 80
 var _param_product_step_for_best_combidict_calc:float = 5
 
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
@@ -70,10 +70,10 @@ class PricesLogInfo:
 				false == product_info.are_prices_changing()):
 				continue
 			else:				
-				if product_info.get_num_price_tops()<3:
+				if product_info.get_num_price_tops()<1:
 					prices_evolving = true
 					break;
-				if product_info.get_num_price_bottoms()<3:
+				if product_info.get_num_price_bottoms()<1:
 					prices_evolving = true
 					break;
 		return prices_evolving
@@ -391,8 +391,8 @@ func calculate_new_prices():
 	
 	while false==exit:
 		count += 1
-		if 30==count:
-			print(count)
+#		if 30==count:
+#			print(count)
 		var price_changed:bool = _change_prices(param_price_change_step)
 		_prices_log_info.register_prices()
 		var prices_evolving:bool = _prices_log_info.are_prices_evolving()
@@ -423,7 +423,7 @@ func _change_prices(param_price_change_step_arg:float)->bool:
 #		_calculate_best_combinations()
 #	else:
 	var budget_step = 0.01
-	var max_num_steps = 10
+	var max_num_steps = 5
 	_adjust_best_combinations(budget_step,max_num_steps)
 	
 #
@@ -540,7 +540,7 @@ func _adjust_best_combination_for_person(person_arg:String, current_best_combidi
 			
 #			var best_combidict:Dictionary = trade_calc.adjust_best_combidict(budget,current_best_combidict_arg,budget_step,max_num_steps)
 #			TODO: Probar adjust_best_combidict_changing_step
-			var init_budget_step = budget_step*16
+			var init_budget_step = budget_step*8
 			var best_combidict:Dictionary = trade_calc.adjust_best_combidict_changing_step(budget,current_best_combidict_arg,init_budget_step,budget_step,max_num_steps)
 			
 
