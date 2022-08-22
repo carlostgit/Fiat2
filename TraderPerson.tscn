@@ -1,0 +1,90 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Owner.tscn" type="PackedScene" id=1]
+[ext_resource path="res://slacker_french.png" type="Texture" id=2]
+[ext_resource path="res://eating.png" type="Texture" id=3]
+[ext_resource path="res://house.png" type="Texture" id=4]
+[ext_resource path="res://Consumer.gd" type="Script" id=5]
+[ext_resource path="res://candy_small.png" type="Texture" id=6]
+[ext_resource path="res://chocolate_small.png" type="Texture" id=7]
+[ext_resource path="res://shop.png" type="Texture" id=9]
+
+[node name="TraderPerson" type="Sprite"]
+position = Vector2( -2, 0 )
+texture = ExtResource( 4 )
+script = ExtResource( 5 )
+
+[node name="Consumer" type="Sprite" parent="."]
+position = Vector2( -60, -47 )
+texture = ExtResource( 3 )
+
+[node name="Chocolate" type="Sprite" parent="Consumer"]
+position = Vector2( -26, -36 )
+scale = Vector2( 1.14286, 1.14286 )
+texture = ExtResource( 7 )
+
+[node name="ChocolatesToEatLabel" type="Label" parent="Consumer/Chocolate"]
+margin_left = 18.375
+margin_top = -3.5
+margin_right = 46.375
+margin_bottom = 10.5
+text = "0.0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Candy" type="Sprite" parent="Consumer"]
+position = Vector2( -23, -64 )
+scale = Vector2( 1.14286, 1.14286 )
+texture = ExtResource( 6 )
+
+[node name="CandiesToEatLabel" type="Label" parent="Consumer/Candy"]
+margin_left = 14.875
+margin_top = -4.375
+margin_right = 42.875
+margin_bottom = 9.625
+text = "0.0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Trader" type="Sprite" parent="."]
+position = Vector2( 61, -45.7398 )
+scale = Vector2( 1.14286, 1.14286 )
+texture = ExtResource( 9 )
+
+[node name="BillsInMarketLabel" type="Label" parent="Trader"]
+margin_left = -15.75
+margin_top = -37.8526
+margin_right = 9.25004
+margin_bottom = -23.8526
+text = "-0.0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ChocolatesInMarketLabel" type="Label" parent="Trader"]
+margin_left = -14.875
+margin_top = -60.6025
+margin_right = 9.12504
+margin_bottom = -44.6025
+text = "-0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CandiesInMarketLabel" type="Label" parent="Trader"]
+margin_left = -14.875
+margin_top = -86.8524
+margin_right = 9.12504
+margin_bottom = -70.8524
+text = "-0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Person" type="Sprite" parent="."]
+position = Vector2( -40, 8 )
+texture = ExtResource( 2 )
+
+[node name="Owner" parent="." instance=ExtResource( 1 )]

@@ -22,8 +22,8 @@ func _ready():
 #	var combi = {"chocolate": 10.0, "candy": 10.0}
 #	var satisf:float = sat_calc.calculate_satisf_of_combidict(combi)
 #	print(satisf)
-	var price_calc_tester:PriceCalculationTester = PriceCalculationTester.new()
-	self.add_child(price_calc_tester)
+#	var price_calc_tester:PriceCalculationTester = PriceCalculationTester.new()
+#	self.add_child(price_calc_tester)
 	
 	#Fin de testeo de scripts
 	
