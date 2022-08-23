@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Producer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Shop.gd" type="Script" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://Owner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://government.png" type="Texture" id=8]
 [ext_resource path="res://chocolate_small.png" type="Texture" id=9]
-[ext_resource path="res://Government.gd" type="Script" id=10]
 [ext_resource path="res://Globals.gd" type="Script" id=11]
 [ext_resource path="res://TraderPerson.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Factory.tscn" type="PackedScene" id=13]
@@ -18,94 +17,75 @@
 script = ExtResource( 5 )
 
 [node name="ProduceButton" type="Button" parent="."]
-margin_left = 528.0
-margin_top = 16.0
-margin_right = 592.0
-margin_bottom = 40.0
+margin_left = 680.0
+margin_top = 32.0
+margin_right = 744.0
+margin_bottom = 56.0
 text = "Produce"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CreateMoney" type="Button" parent="."]
-margin_left = 600.0
-margin_top = 16.0
-margin_right = 701.0
-margin_bottom = 40.0
-text = "Create money"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="GiveGovMoneyButton" type="Button" parent="."]
-margin_left = 712.0
-margin_top = 16.0
-margin_right = 827.0
-margin_bottom = 40.0
+margin_left = 760.0
+margin_top = 32.0
+margin_right = 875.0
+margin_bottom = 56.0
 text = "Give gov money"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConsumeAndTradeButton" type="Button" parent="."]
-margin_left = 528.0
-margin_top = 112.0
-margin_right = 697.0
-margin_bottom = 136.0
-text = "Consume and trade"
+[node name="ConsumeButton" type="Button" parent="."]
+margin_left = 680.0
+margin_top = 128.0
+margin_right = 760.0
+margin_bottom = 152.0
+text = "Consume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TradeButton" type="Button" parent="."]
+margin_left = 768.0
+margin_top = 128.0
+margin_right = 848.0
+margin_bottom = 152.0
+text = "Trade"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="CalculatePrices" type="Button" parent="."]
-margin_left = 528.0
-margin_top = 48.0
-margin_right = 641.0
-margin_bottom = 72.0
+margin_left = 680.0
+margin_top = 64.0
+margin_right = 793.0
+margin_bottom = 88.0
 text = "Calculate prices"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CalculateTrade" type="Button" parent="."]
-margin_left = 648.0
-margin_top = 48.0
-margin_right = 761.0
-margin_bottom = 72.0
-text = "Calculate trade"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="CalculateConsumption" type="Button" parent="."]
-margin_left = 528.0
-margin_top = 80.0
-margin_right = 686.0
-margin_bottom = 104.0
-text = "Calculate consumption"
+[node name="CalculateTradeAndConsumption" type="Button" parent="."]
+margin_left = 680.0
+margin_top = 96.0
+margin_right = 889.0
+margin_bottom = 120.0
+text = "Calculate trade & consumption"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Producer1" parent="." instance=ExtResource( 1 )]
-position = Vector2( 32, 192 )
-_shop_node_path = NodePath("../Shop")
-_government_node_path = NodePath("../CivilServant")
+position = Vector2( 48, 32 )
 
 [node name="Producer2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 360, 192 )
-_shop_node_path = NodePath("../Shop")
-_government_node_path = NodePath("../CivilServant")
-_produced_product_type = "Chocolate"
-_product_texture = ExtResource( 9 )
+position = Vector2( 352, 32 )
 
 [node name="Shop" type="Sprite" parent="."]
-position = Vector2( 48, 584 )
+position = Vector2( 40, 424 )
 texture = ExtResource( 6 )
 script = ExtResource( 2 )
-_factory_node_path_1 = NodePath("../Producer1")
-_factory_node_path_2 = NodePath("../Producer2")
-_government_node_path = NodePath("../CivilServant")
 
 [node name="TaxIncludedPricesLabel" type="Label" parent="Shop"]
 margin_left = -8.0
@@ -243,20 +223,16 @@ __meta__ = {
 }
 
 [node name="CivilServant" type="Node2D" parent="."]
-position = Vector2( 352, 768 )
-script = ExtResource( 10 )
+position = Vector2( 344, 608 )
 
 [node name="TraderPerson" parent="CivilServant" instance=ExtResource( 12 )]
 position = Vector2( 64, -56 )
-_shop_node_path = NodePath("../../Shop")
-_government_node_path = NodePath("../../CivilServant")
-_production_rate = 0.0
 
 [node name="Globals" type="Node" parent="."]
 script = ExtResource( 11 )
 
 [node name="Government" type="Sprite" parent="."]
-position = Vector2( 728, 568 )
+position = Vector2( 720, 408 )
 texture = ExtResource( 8 )
 
 [node name="Owner" parent="Government" instance=ExtResource( 7 )]
@@ -394,16 +370,6 @@ __meta__ = {
 
 [node name="Factory" parent="Government" instance=ExtResource( 13 )]
 position = Vector2( -64, 120 )
-[connection signal="pressed" from="ProduceButton" to="Producer1" method="_on_ProduceButton_pressed"]
-[connection signal="pressed" from="ProduceButton" to="Producer2" method="_on_ProduceButton_pressed"]
-[connection signal="pressed" from="CreateMoney" to="CivilServant" method="_on_CreateMoney_pressed"]
-[connection signal="pressed" from="GiveGovMoneyButton" to="CivilServant" method="_on_CreateMoney_pressed"]
-[connection signal="pressed" from="ConsumeAndTradeButton" to="Producer1" method="_on_SendProductsToMarketButton_pressed"]
-[connection signal="pressed" from="ConsumeAndTradeButton" to="Producer2" method="_on_SendProductsToMarketButton_pressed"]
-[connection signal="pressed" from="CalculatePrices" to="Shop" method="_on_CalculatePrices_pressed"]
-[connection signal="pressed" from="CalculateTrade" to="Shop" method="_on_CalculatePrices_pressed"]
-[connection signal="pressed" from="CalculateConsumption" to="Shop" method="_on_CalculatePrices_pressed"]
+_product_texture = ExtResource( 3 )
+_produce_candy = true
 [connection signal="signal_tax_rate_changed" from="Globals" to="CivilServant" method="_on_Globals_signal_tax_rate_changed"]
-[connection signal="pressed" from="Government/GiveMoneyButton" to="CivilServant" method="_on_Buy_pressed"]
-[connection signal="pressed" from="Government/InvestMoneyButton" to="CivilServant" method="_on_Buy_pressed"]
-[connection signal="pressed" from="Government/SellProductsButton" to="CivilServant" method="_on_Buy_pressed"]
