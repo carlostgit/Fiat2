@@ -222,10 +222,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="CivilServant" type="Node2D" parent="."]
-position = Vector2( 344, 608 )
+[node name="CivilServant" type="Node2D" parent="Shop"]
+position = Vector2( 304, 184 )
 
-[node name="TraderPerson" parent="CivilServant" instance=ExtResource( 12 )]
+[node name="TraderPerson" parent="Shop/CivilServant" instance=ExtResource( 12 )]
 position = Vector2( 64, -56 )
 
 [node name="Globals" type="Node" parent="."]
@@ -372,4 +372,15 @@ __meta__ = {
 position = Vector2( -64, 120 )
 _product_texture = ExtResource( 3 )
 _produce_candy = true
-[connection signal="signal_tax_rate_changed" from="Globals" to="CivilServant" method="_on_Globals_signal_tax_rate_changed"]
+
+[node name="Button" type="Button" parent="."]
+margin_left = 688.0
+margin_top = 168.0
+margin_right = 824.0
+margin_bottom = 208.0
+text = "Test"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="signal_tax_rate_changed" from="Globals" to="Shop/CivilServant" method="_on_Globals_signal_tax_rate_changed"]
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

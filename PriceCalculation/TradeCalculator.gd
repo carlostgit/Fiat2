@@ -35,13 +35,13 @@ func _ready():
 #	print ("diff: "+ str(combination_result))
 
 	#Hay que hacer Autoload de Pricees.gd
-	Prices.set_amount_of_product("candy",10.0)
-	Prices.set_amount_of_product("chocolate",1.0)
-	Prices.set_currency("candy")
-	
-	var best_combidict:Dictionary = calculate_best_combidict(2.0)
-	print("best combi: "+ str(best_combidict))
-	print("cost: "+ str(Prices.calculate_combidict_price(best_combidict)))
+#	Prices.set_amount_of_product("candy",10.0)
+#	Prices.set_amount_of_product("chocolate",1.0)
+#	Prices.set_currency("candy")
+#
+#	var best_combidict:Dictionary = calculate_best_combidict(2.0)
+#	print("best combi: "+ str(best_combidict))
+#	print("cost: "+ str(Prices.calculate_combidict_price(best_combidict)))
 	
 	
 #	var bad_combi_too_much_candy:Dictionary = {"chocolate": 2, "candy": 50}

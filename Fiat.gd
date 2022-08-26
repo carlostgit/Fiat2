@@ -9,8 +9,8 @@ extends Node2D
 #const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 
 
-const PriceCalculationTester = preload("res://PriceCalculation/PriceCalculationTester.gd")
-
+#var PriceCalculationTester = load("res://PriceCalculation/PriceCalculationTester.gd")
+var PriceCalculationInterface = load("res://PriceCalculation/PriceCalculationInterface.gd")
 
 #Fin de testeo de scripts
 
@@ -34,3 +34,10 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+
+func _on_Button_pressed():
+	var price_calculation_interface = PriceCalculationInterface.new()
+	price_calculation_interface.init_default_scenario()
+	price_calculation_interface.print_scenario_info()
+	pass # Replace with function body.

@@ -94,7 +94,7 @@ func _on_PruebaButton_pressed():
 						"candy_consumption":1,"chocolate_consumption":1}
 	var step:int = 20
 	var adjusted_combidict:Dictionary = trade_calculator.adjust_best_combidict(budget, current_combidict, budget_step, step)
-	print(adjusted_combidict)
+#	print(adjusted_combidict)
 
 	var max_amount_of_money:float = 10
 	var calc_step:float = 1

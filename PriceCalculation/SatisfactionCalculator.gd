@@ -10,46 +10,50 @@ extends Control
 
 #const Combination = preload("res://Combination.gd")
 
-var _complementary_combos:Dictionary = {"sweets":["chocolate","candy"]}
+#var _complementary_combos:Dictionary = {"sweets_consumption":["chocolate_consumption","candy_consumption"]}
+var _complementary_combos:Dictionary = {} #Hay que inicializarlo
 
 #Añadir _supplementary_combos
 #Cambiar _complementary_combos de tal manera que se pueda ponderar cada opción
 #Por ejemplo, que por cada unidad de sweet_savings tenga que haber 1 unidad de candy, y solo 0.5 unidades de chocolate
-var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
-															"chocolate_savings":1.0,
-															"nut_savings":0.2
-														}
-										}
-
+#var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
+#															"chocolate_savings":1.0,
+#															"nut_savings":0.2
+#														}
+#										}
+var _supplementary_combos:Dictionary = {} #Hay que inicializarlo
+	
 #var _products = ["chocolate","candy"]
-var _products = PriceCalculationGlobals._products
+#var _products = PriceCalculationGlobals._products
 
 
 #const Plotter = preload("res://Plotter.gd")
 const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 
 var _option_satisf_curve_dict:Dictionary = {}
+var _option_use:Dictionary = {} #{candy_consumption:consumption}
 var _complementary_combo_satisf_curve_dict:Dictionary = {}
 var _supplementary_combo_satisf_curve_dict:Dictionary = {}
 
-var _options:Array = ["candy_savings","chocolate_savings","nut_savings",
-						"candy_consumption","chocolate_consumption","nut_consumption"
-						]
+#var _options:Array = ["candy_savings","chocolate_savings","nut_savings",
+#						"candy_consumption","chocolate_consumption","nut_consumption"
+#						]
+var _options:Array = [] #Hay que inicializarlo a partir de los productos
 
-var _option_product_dict:Dictionary = { "candy_savings": "candy",
-									"candy_consumption": "candy",
-									"chocolate_savings": "chocolate",
-									"chocolate_consumption": "chocolate",
-									"nut_savings": "nut",
-									"nut_consumption": "nut"
-									}
-									
+#var _option_product_dict:Dictionary = { "candy_savings": "candy",
+#									"candy_consumption": "candy",
+#									"chocolate_savings": "chocolate",
+#									"chocolate_consumption": "chocolate",
+#									"nut_savings": "nut",
+#									"nut_consumption": "nut"
+#									}
+var _option_product_dict:Dictionary = {} #Hay que inicializarlo a partir de los productos
 
 var _name:String = "satisf_calc_default_name"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-
+	pass
 #	var test_combination:Dictionary = {"chocolate": 2, "candy": 2}	
 #	print(calculate_satisf_of_combidict(test_combination))
 
@@ -79,16 +83,16 @@ func _ready():
 
 	#init_default_satisfaction()
 #	_init_candy_satisfaction()
-	_init_chocolate_satisfaction()
+#	_init_chocolate_satisfaction()
 	
 #	plotter.add_func_ref(funcref( self, "calculate_satifaction_of_chocolate"),"chocolate")
 #	plotter.add_func_ref(funcref( self, "calculate_satifaction_of_candy"),"candy")
 #	plotter.add_func_ref(funcref( self, "calculate_satifaction_of_sweets"),"sweets")
 
-	var combi = {"chocolate": 10.0, "candy": 10.0}
-	print("satisf_combi: " + str(self.calculate_satisf_of_combidict(combi)))
-	var combi_2 = {"chocolate": 11.0, "candy": 9.0}
-	print("satisf_combi_2: " + str(self.calculate_satisf_of_combidict(combi_2)))
+#	var combi = {"chocolate": 10.0, "candy": 10.0}
+#	print("satisf_combi: " + str(self.calculate_satisf_of_combidict(combi)))
+#	var combi_2 = {"chocolate": 11.0, "candy": 9.0}
+#	print("satisf_combi_2: " + str(self.calculate_satisf_of_combidict(combi_2)))
 	
 	
 ##test funcs
@@ -115,7 +119,7 @@ func copy(satisfaction_calculator_arg:Control):
 #	El método duplicate() de Object no hace bien la copia de mis variables miembro Dictionary
 	_complementary_combos = (satisfaction_calculator_arg.get_complementary_combos()).duplicate()
 	_supplementary_combos = (satisfaction_calculator_arg.get_supplementary_combos()).duplicate()
-	_products = (satisfaction_calculator_arg.get_products()).duplicate()
+#	_products = (satisfaction_calculator_arg.get_products()).duplicate()
 	_option_satisf_curve_dict = (satisfaction_calculator_arg.get_satisfaction_curves_of_options()).duplicate()
 	_complementary_combo_satisf_curve_dict = (satisfaction_calculator_arg.get_satisfaction_curves_of_complementary_combos()).duplicate()
 	_supplementary_combo_satisf_curve_dict = (satisfaction_calculator_arg.get_satisfaction_curves_of_supplementary_combos()).duplicate()
@@ -131,8 +135,17 @@ func set_name(name_arg:String):
 	
 func reset()->void:
 	_option_satisf_curve_dict.clear()
+	_option_product_dict.clear()
+	_options.clear()
+	_option_use.clear()
 	_complementary_combo_satisf_curve_dict.clear()
 	_supplementary_combo_satisf_curve_dict.clear()
+	_complementary_combos.clear()
+	_supplementary_combos.clear()
+#	_products.clear()
+	
+	
+	
 
 #func copy()->Control:
 #
@@ -238,15 +251,55 @@ func set_max_satisfaction_of_supplementary_combo(combo_arg:String,max_satisf_arg
 
 
 func init_default_satisfaction():
-	var satis_curve_chocolate:SatisfactionCurve = SatisfactionCurve.new(2.16,10)
-	var satis_curve_candy:SatisfactionCurve = SatisfactionCurve.new(2.2,14)
-	var satis_curve_sweets:SatisfactionCurve = SatisfactionCurve.new(1.8, 1)
-	var satis_curve_savings:SatisfactionCurve = SatisfactionCurve.new(1.2, 1)
+	reset()
+	var satis_curve_default_curve:SatisfactionCurve = SatisfactionCurve.new(1.0, 10)
+	var satis_curve_complementary:SatisfactionCurve = SatisfactionCurve.new(1.0, 10)
+	var satis_curve_supplementary:SatisfactionCurve = SatisfactionCurve.new(1.0, 10)
 	
-	_option_satisf_curve_dict["chocolate_consumption"]=satis_curve_chocolate
-	_option_satisf_curve_dict["candy_consumption"]=satis_curve_candy
-	_complementary_combo_satisf_curve_dict["sweets_consumption"]=satis_curve_sweets
-	_supplementary_combo_satisf_curve_dict["savings"]=satis_curve_savings
+	for use in PriceCalculationGlobals._product_uses:
+		var new_options:Array = _create_options_from_products(use)
+		for option in new_options:
+			_option_satisf_curve_dict[option] = satis_curve_default_curve
+			_option_use[option]=use
+	
+	for complementary_group in PriceCalculationGlobals.get_complementary_group_names():
+		var products:Array = PriceCalculationGlobals.get_products_of_complementary_group(complementary_group)
+		var use:String = PriceCalculationGlobals.get_use_of_complementary_group(complementary_group)
+		var options:Array = []
+		for product in products:
+			options.append(PriceCalculationGlobals.get_option_name_from_product_and_use(product,use))	
+		_complementary_combos[complementary_group]=options
+		_complementary_combo_satisf_curve_dict[complementary_group]=satis_curve_complementary
+#		var _complementary_combos:Dictionary = {"sweets_consumption":["chocolate_consumption","candy_consumption"]}
+		
+
+	for supplementary_group in PriceCalculationGlobals.get_supplementary_group_names():
+		var products:Array = PriceCalculationGlobals.get_products_of_supplementary_group(supplementary_group)
+		var use:String = PriceCalculationGlobals.get_use_of_supplementary_group(supplementary_group)
+		var option_weight_dict:Dictionary = {}
+		for product in products:
+			option_weight_dict[PriceCalculationGlobals.get_option_name_from_product_and_use(product,use)] = 1.0 #Por defecto, todos tienen peso 1
+		_supplementary_combos[supplementary_group]=option_weight_dict
+		_supplementary_combo_satisf_curve_dict[supplementary_group]=satis_curve_supplementary
+	
+	#var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1, 
+#															"chocolate_savings":1.0,
+#															"nut_savings":0.2
+#														}
+#										}
+		
+	
+	
+func _create_options_from_products(option_type_arg:String)->Array:
+	var new_options:Array = []
+	for product in PriceCalculationGlobals._products:
+		var new_option_name:String = PriceCalculationGlobals.get_option_name_from_product_and_use(product,option_type_arg)
+		if false==self._options.has(new_option_name):
+			self._options.append(new_option_name)
+			new_options.append(new_option_name)
+			_option_product_dict[new_option_name]=product
+	return new_options
+	
 
 func _init_candy_satisfaction():
 	var satis_curve_chocolate:SatisfactionCurve = SatisfactionCurve.new(2,5)
@@ -545,7 +598,7 @@ func get_options():
 	return self._options
 	
 func get_products():
-	return self._products
+	return PriceCalculationGlobals._products
 	
 func add_product(product_arg:String):
 	PriceCalculationGlobals.add_product(product_arg)
@@ -571,7 +624,7 @@ func set_option_product_dict(option_product_dict_arg:Dictionary):
 
 func set_product_for_option(product_arg:String,option_arg:String):
 	if _option_product_dict.has(option_arg):
-		if self._products.has(product_arg):
+		if PriceCalculationGlobals._products.has(product_arg):
 			_option_product_dict[option_arg] = product_arg
 
 func get_option_product_dict():
@@ -670,7 +723,7 @@ func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictiona
 		
 		else:
 	#	No sé si está bien que pueda haber products entre las options
-			if _products.has(option):
+			if PriceCalculationGlobals._products.has(option):
 				if (product_dict.has(option)):
 					product_dict[option] += option_dict_arg[option]
 				else:
@@ -700,7 +753,7 @@ func print_info():
 	print("Options:")
 	print(self._options)
 	print("Products:")
-	print(self._products)
+	print(PriceCalculationGlobals._products)
 	print("Option->Product map:")
 	for option in self._option_satisf_curve_dict.keys():
 		var satis_curve:SatisfactionCurve  = _option_satisf_curve_dict[option]
@@ -846,3 +899,25 @@ func from_dict(saved_dict:Dictionary):
 		if dic_key == "_name":
 			self._name = saved_dict[dic_key]
 
+
+func get_complementary_combo_names()->Array:
+	var combo_names:Array = []
+	for combo_name in _complementary_combos.keys():
+		combo_names.append(combo_name)
+	return combo_names
+
+func get_options_of_complementary_combo(combo_name:String)->Array:
+	if _complementary_combos.has(combo_name):
+		return _complementary_combos[combo_name]
+	return []
+func get_weighed_options_of_supplementary_combo(combo_name:String)->Dictionary:
+	if _supplementary_combos.has(combo_name):
+		return _supplementary_combos[combo_name]
+	return {}
+
+	
+func get_supplementary_combo_names()->Array:
+	var combo_names:Array = []
+	for combo_name in _supplementary_combos.keys():
+		combo_names.append(combo_name)
+	return combo_names

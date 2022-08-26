@@ -20,10 +20,10 @@ var _amounts_dict = {"chocolate": 1.0, "candy":0.5,"nut":0.5}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-	for product in _products:
-		print(product +": " + str(get_price_of_product(product)))
+#	for product in _products:
+#		print(product +": " + str(get_price_of_product(product)))
 	
-	var combination_dict:Dictionary = {"chocolate": 4,"candy":6}
+#	var combination_dict:Dictionary = {"chocolate": 4,"candy":6}
 #	print("combination price: "+str(calculate_price(combination_dict)))
 	pass # Replace with function body.
 

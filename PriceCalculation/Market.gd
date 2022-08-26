@@ -13,13 +13,16 @@ var _param_product_step_for_best_combidict_calc:float = 5
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
 
-var _persons:Array = ["Person1","Person2"]
+#var _persons:Array = ["Person1","Person2"]
+var _persons:Array = []
 var _person_tradecalc:Dictionary = {}
-var _person_owned_dict:Dictionary = {"Person1": {"candy":1,"chocolate":2,"nut":2
-												},
-									"Person2": {"candy":1,"chocolate":2,"nut":2
-												}  
-									}
+#var _person_owned_dict:Dictionary = {"Person1": {"candy":1,"chocolate":2,"nut":2
+#												},
+#									"Person2": {"candy":1,"chocolate":2,"nut":2
+#												}  
+#									}
+
+var _person_owned_dict:Dictionary = {}
 
 
 #resultados:
@@ -291,7 +294,7 @@ func _calculate_best_combinations():
 #		var best_combidict = self._calculate_best_combination_for_person_using_func(best_comb_func_to_use_arg,person)
 #		_person_best_combination_dict[person] = best_combidict
 		
-func _get_trade_calculator(person_arg:String)->Node:
+func get_trade_calculator(person_arg:String)->Node:
 	var node:Node = null
 	if _person_tradecalc.has(person_arg):
 		return _person_tradecalc[person_arg]
@@ -302,7 +305,7 @@ func calculate_trades():
 	for person in _person_best_combination_dict.keys():
 		var best_option_combidict:Dictionary = _person_best_combination_dict[person]
 		
-		var trade_calculator:TradeCalculator = _get_trade_calculator(person)
+		var trade_calculator:TradeCalculator = get_trade_calculator(person)
 		if trade_calculator:
 			var satisfaction_calculator:SatisfactionCalculator = trade_calculator.get_satisfaction_calculator()
 			var best_product_combidict:Dictionary = satisfaction_calculator.get_product_combidict_from_option_combidict(best_option_combidict)

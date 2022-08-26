@@ -210,8 +210,8 @@ func _on_RemoveButton_pressed():
 
 func _on_AddButton_pressed():
 	$AddPersonAcceptDialog.popup()
-	print("$AddPersonAcceptDialog.get_position()")
-	print($AddPersonAcceptDialog.get_position())
+#	print("$AddPersonAcceptDialog.get_position()")
+#	print($AddPersonAcceptDialog.get_position())
 	$AddPersonAcceptDialog.set_position(self.get_position())
 
 
