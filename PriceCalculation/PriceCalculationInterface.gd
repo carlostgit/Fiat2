@@ -32,13 +32,15 @@ func init_default_scenario():
 	set_products(["chocolate","candy","bill"])
 	set_currency("bill")
 	
-	var satisfaction_calculator1 = SatisfactionCalculator.new()
-	var trade_calculator1:TradeCalculator = TradeCalculator.new(satisfaction_calculator1)
-	_market.add_person("Person 1", trade_calculator1)
+	add_person("Person 1")
+	add_person("Person 2")
 	
-	var satisfaction_calculator2 = SatisfactionCalculator.new()
-	var trade_calculator2:TradeCalculator = TradeCalculator.new(satisfaction_calculator2)
-	_market.add_person("Person 2", trade_calculator2)
+func add_person(person_arg:String):
+	if _market:
+		var satisfaction_calculator1 = SatisfactionCalculator.new()
+		var trade_calculator1:TradeCalculator = TradeCalculator.new(satisfaction_calculator1)
+		_market.add_person(person_arg, trade_calculator1)
+	
 	
 func set_products(products_array_arg:Array):
 	Prices.set_products(products_array_arg)

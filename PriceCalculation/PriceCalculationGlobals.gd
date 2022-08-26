@@ -28,6 +28,9 @@ var _supplementary_groups = {
 func _ready():
 	pass # Replace with function body.
 
+func _init():
+	pass
+
 func get_option_name_from_product_and_use(product_arg:String,use_arg:String)->String:
 	return product_arg+"_"+use_arg
 	
