@@ -12,11 +12,10 @@ extends Control
 #									"chocolate_savings": "chocolate",
 #									"chocolate_consumption": "chocolate",}
 #var _products = Globals._products
-var _currency = "candy"
+var _currency = "bill"
 #var _amounts_dict = {"chocolate": 1.0, "candy":0.5,"nut":0.5}
 var _amounts_dict = {}
 #var PriceCalculationGlobals = load("res://PriceCalculation/PriceCalculationGlobals.gd")
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -96,4 +95,10 @@ func set_products(products_array_arg:Array):
 func set_init_price_for_products(products_array_arg:Array):
 	for product in products_array_arg:
 		_amounts_dict[product]=1.0
+		
+func get_prices()->Dictionary:
+	var product_price:Dictionary = {}
+	for product in PriceCalculationGlobals._products:
+		product_price[product] = self.get_price_of_product(product)
+	return product_price
 	

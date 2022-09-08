@@ -838,7 +838,7 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 		while true:
 			count += 1
 			if count>max_step_arg:
-				print ("Exited adjust_best_combidict because too many iterations are being used")
+#				print ("Exited adjust_best_combidict because too many iterations are being used")
 				break			
 				
 			var change_made = false

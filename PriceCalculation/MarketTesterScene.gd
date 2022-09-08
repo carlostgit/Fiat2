@@ -116,7 +116,7 @@ func _on_AmountOwnedSpinBox_value_changed(value):
 
 
 func _on_CalculateTradeButton_pressed():
-	_market.calculate_trades()
+	_market.calculate_trades_with_current_best_combinations()
 	var person_product_dict:Dictionary = get_selected_person_and_product()
 	if person_product_dict.has("person") and person_product_dict.has("product"):
 		var person:String = person_product_dict["person"]

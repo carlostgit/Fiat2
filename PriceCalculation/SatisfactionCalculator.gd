@@ -921,3 +921,14 @@ func get_supplementary_combo_names()->Array:
 	for combo_name in _supplementary_combos.keys():
 		combo_names.append(combo_name)
 	return combo_names
+
+func get_optidict_of_type_from_optidict(option_amount_dict_arg:Dictionary, type_arg:String):
+	var optidict:Dictionary = {}
+	for option in self._option_use.keys():
+		if _option_use[option] == type_arg:
+			if (option_amount_dict_arg.has(option)):
+				optidict[option] = option_amount_dict_arg[option]
+		
+	return optidict
+		
+	

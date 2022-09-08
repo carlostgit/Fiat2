@@ -2,16 +2,19 @@
 
 [ext_resource path="res://TraderPerson.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Factory.tscn" type="PackedScene" id=2]
-[ext_resource path="res://candy_small.png" type="Texture" id=3]
+[ext_resource path="res://Producer.gd" type="Script" id=4]
 
 [node name="Producer" type="Node2D"]
 position = Vector2( 2.74999, -1.25 )
 scale = Vector2( 1.0614, 1.0614 )
+script = ExtResource( 4 )
 
 [node name="TraderPerson" parent="." instance=ExtResource( 1 )]
 position = Vector2( 92.3143, 152.612 )
 
 [node name="Factory" parent="." instance=ExtResource( 2 )]
 position = Vector2( 30.4134, 224.481 )
-_product_texture = ExtResource( 3 )
-_produce_candy = true
+[connection signal="person_owned_updated_signal" from="TraderPerson" to="." method="_on_TraderPerson_person_owned_updated_signal"]
+[connection signal="signal_trade_and_consumption_calc" from="TraderPerson" to="." method="_on_TraderPerson_signal_trade_and_consumption_calc"]
+[connection signal="signal_trade_order" from="TraderPerson" to="." method="_on_TraderPerson_signal_trade_order"]
+[connection signal="produced_signal" from="Factory" to="." method="_on_Factory_produced_signal"]

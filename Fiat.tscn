@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Producer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Shop.gd" type="Script" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Owner.tscn" type="PackedScene" id=7]
 [ext_resource path="res://government.png" type="Texture" id=8]
 [ext_resource path="res://chocolate_small.png" type="Texture" id=9]
+[ext_resource path="res://CivilServant.gd" type="Script" id=10]
 [ext_resource path="res://Globals.gd" type="Script" id=11]
 [ext_resource path="res://TraderPerson.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Factory.tscn" type="PackedScene" id=13]
@@ -81,6 +82,13 @@ position = Vector2( 48, 32 )
 
 [node name="Producer2" parent="." instance=ExtResource( 1 )]
 position = Vector2( 352, 32 )
+
+[node name="CivilServant" type="Node2D" parent="."]
+position = Vector2( 344, 608 )
+script = ExtResource( 10 )
+
+[node name="TraderPerson" parent="CivilServant" instance=ExtResource( 12 )]
+position = Vector2( 64, -56 )
 
 [node name="Shop" type="Sprite" parent="."]
 position = Vector2( 40, 424 )
@@ -221,12 +229,6 @@ text = "0.0"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CivilServant" type="Node2D" parent="Shop"]
-position = Vector2( 304, 184 )
-
-[node name="TraderPerson" parent="Shop/CivilServant" instance=ExtResource( 12 )]
-position = Vector2( 64, -56 )
 
 [node name="Globals" type="Node" parent="."]
 script = ExtResource( 11 )
@@ -370,8 +372,6 @@ __meta__ = {
 
 [node name="Factory" parent="Government" instance=ExtResource( 13 )]
 position = Vector2( -64, 120 )
-_product_texture = ExtResource( 3 )
-_produce_candy = true
 
 [node name="Button" type="Button" parent="."]
 margin_left = 688.0
@@ -382,5 +382,25 @@ text = "Test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="signal_tax_rate_changed" from="Globals" to="Shop/CivilServant" method="_on_Globals_signal_tax_rate_changed"]
+[connection signal="consumption_of_person_updated_signal" from="." to="CivilServant" method="_on_Fiat_consumption_of_person_updated_signal"]
+[connection signal="consumption_of_person_updated_signal" from="." to="Producer2" method="_on_Fiat_consumption_of_person_updated_signal"]
+[connection signal="consumption_of_person_updated_signal" from="." to="Producer1" method="_on_Fiat_consumption_of_person_updated_signal"]
+[connection signal="initialize_owned_products_signal" from="." to="CivilServant" method="_on_Fiat_initialize_owned_products_signal"]
+[connection signal="initialize_owned_products_signal" from="." to="Producer2" method="_on_Fiat_initialize_owned_products_signal"]
+[connection signal="initialize_owned_products_signal" from="." to="Producer1" method="_on_Fiat_initialize_owned_products_signal"]
+[connection signal="trade_of_person_updated_signal" from="." to="CivilServant" method="_on_Fiat_trade_of_person_updated_signal"]
+[connection signal="trade_of_person_updated_signal" from="." to="Producer2" method="_on_Fiat_trade_of_person_updated_signal"]
+[connection signal="trade_of_person_updated_signal" from="." to="Producer1" method="_on_Fiat_trade_of_person_updated_signal"]
+[connection signal="pressed" from="CalculatePrices" to="." method="_on_CalculatePrices_pressed"]
+[connection signal="person_owned_updated_signal" from="Producer1" to="." method="_on_Producer1_person_owned_updated_signal"]
+[connection signal="signal_trade_and_consumption_calc" from="Producer1" to="." method="_on_Producer1_signal_trade_and_consumption_calc"]
+[connection signal="signal_trade_order" from="Producer1" to="." method="_on_Producer1_signal_trade_order"]
+[connection signal="person_owned_updated_signal" from="Producer2" to="." method="_on_Producer2_person_owned_updated_signal"]
+[connection signal="signal_trade_and_consumption_calc" from="Producer2" to="." method="_on_Producer2_signal_trade_and_consumption_calc"]
+[connection signal="signal_trade_order" from="Producer2" to="." method="_on_Producer2_signal_trade_order"]
+[connection signal="person_owned_updated_signal" from="CivilServant" to="." method="_on_CivilServant_person_owned_updated_signal"]
+[connection signal="person_owned_updated_signal" from="CivilServant/TraderPerson" to="CivilServant" method="_on_TraderPerson_person_owned_updated_signal"]
+[connection signal="signal_trade_and_consumption_calc" from="CivilServant/TraderPerson" to="." method="_on_TraderPerson_signal_trade_and_consumption_calc"]
+[connection signal="signal_trade_order" from="CivilServant/TraderPerson" to="." method="_on_TraderPerson_signal_trade_order"]
+[connection signal="signal_tax_rate_changed" from="Globals" to="CivilServant" method="_on_Globals_signal_tax_rate_changed"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

@@ -75,6 +75,48 @@ func get_owned_products(person_arg:String)->Dictionary:
 	else:
 		return {}
 
+func set_owned_products(person_arg:String, owned_products_arg:Dictionary):
+	if _market:
+		_market.set_owned_products(person_arg,owned_products_arg)
+
+func add_owned_products(person_arg:String, owned_product_to_add:Dictionary):
+	if _market:
+		_market.add_owned_products(person_arg,owned_product_to_add)
+
+func get_traded_products(person_arg:String)->Dictionary:
+	if _market:
+		return _market.get_traded_products(person_arg)
+	return {}
+	
+func calculate_trades():
+	if _market:
+		_market.calculate_trades()
+
+
+func adjust_best_combination_for_person(person_arg:String)->Dictionary:
+	if _market:
+		return _market.adjust_best_combination_for_person(person_arg)
+	return {}
+
+func calculate_trade_for_person(person_arg:String)->Dictionary:
+	if _market:
+		return _market.calculate_trade_for_person(person_arg)
+	return {}
+
+func calculate_trade_for_person_with_current_best_combinations(person_arg:String)->Dictionary:
+	if _market:
+		return _market.calculate_trade_for_person_with_current_best_combinations(person_arg)
+	return {}
+	
+func calculate_consumption_for_person_with_current_best_combinations(person_arg:String)->Dictionary:
+	if _market:
+		return _market.calculate_consumption_for_person_with_current_best_combinations(person_arg)
+	return {}
+		
+func calculate_new_prices():
+	if _market:
+		_market.calculate_new_prices()
+
 func print_scenario_info():
 	if null == _market:
 		print("No market")

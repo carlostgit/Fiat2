@@ -10,17 +10,12 @@
 position = Vector2( -0.677601, -0.692993 )
 texture = ExtResource( 4 )
 script = ExtResource( 5 )
-_shop_node_path = null
-_government_node_path = null
-_produced_product_type = null
-_product_texture = null
-_produce_candy = null
 
 [node name="ProduceButton" type="Button" parent="."]
-margin_left = -24.7192
-margin_top = 45.3556
-margin_right = 39.2808
-margin_bottom = 65.3556
+margin_left = -25.0
+margin_top = 45.0
+margin_right = 39.0
+margin_bottom = 65.0
 text = "Produce"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -64,3 +59,4 @@ __meta__ = {
 [node name="bill" type="Sprite" parent="MoneyToProduceSpinBox"]
 position = Vector2( 105.752, 16.418 )
 texture = ExtResource( 1 )
+[connection signal="pressed" from="ProduceButton" to="." method="_on_ProduceButton_pressed"]

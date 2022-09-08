@@ -30,7 +30,7 @@ var _person_best_combination_dict:Dictionary = {}
 var _person_best_combination_dict_test:Dictionary = {} #Solo para pruebas
 var _person_trade_combination_dict:Dictionary = {}
 var _sum_of_trade:Dictionary = {}
-var _person_value_of_owned:Dictionary = {}
+#var _person_value_of_owned:Dictionary = {}
 var _excess_products_dict:Dictionary = {} #La idea es que esto se sume de alguna manera al _sum_of_trade, para corregir errores en los precios
 # Called when the node enters the scene tree for the first time.
 
@@ -300,24 +300,45 @@ func get_trade_calculator(person_arg:String)->Node:
 		return _person_tradecalc[person_arg]
 	return node
 
-func calculate_trades():
+func calculate_trades_with_current_best_combinations():
 	
 	for person in _person_best_combination_dict.keys():
-		var best_option_combidict:Dictionary = _person_best_combination_dict[person]
+		calculate_trade_for_person_with_current_best_combinations(person)
+#		var best_option_combidict:Dictionary = _person_best_combination_dict[person]
+#
+#		var trade_calculator:TradeCalculator = get_trade_calculator(person)
+#		if trade_calculator:
+#			var satisfaction_calculator:SatisfactionCalculator = trade_calculator.get_satisfaction_calculator()
+#			var best_product_combidict:Dictionary = satisfaction_calculator.get_product_combidict_from_option_combidict(best_option_combidict)
+##			print(person)
+##			print("best_option_combidict")
+##			print(best_option_combidict)
+##			print("best_product_combidict")
+##			print(best_product_combidict)
+#			var trade:Dictionary = self._calculate_trade_from_best_combination(person,best_product_combidict)
+#			self._person_trade_combination_dict[person] = trade
+
+func calculate_trade_for_person_with_current_best_combinations(person_arg:String)->Dictionary:
+	var best_option_combidict:Dictionary = _person_best_combination_dict[person_arg]
 		
-		var trade_calculator:TradeCalculator = get_trade_calculator(person)
-		if trade_calculator:
-			var satisfaction_calculator:SatisfactionCalculator = trade_calculator.get_satisfaction_calculator()
-			var best_product_combidict:Dictionary = satisfaction_calculator.get_product_combidict_from_option_combidict(best_option_combidict)
+	var trade_calculator:TradeCalculator = get_trade_calculator(person_arg)
+	if trade_calculator:
+		var satisfaction_calculator:SatisfactionCalculator = trade_calculator.get_satisfaction_calculator()
+		var best_product_combidict:Dictionary = satisfaction_calculator.get_product_combidict_from_option_combidict(best_option_combidict)
 #			print(person)
 #			print("best_option_combidict")
 #			print(best_option_combidict)
 #			print("best_product_combidict")
 #			print(best_product_combidict)
-			var trade:Dictionary = self._calculate_trade_from_best_combination(person,best_product_combidict)
-			self._person_trade_combination_dict[person] = trade
-
+		var trade:Dictionary = self._calculate_trade_from_best_combination(person_arg,best_product_combidict)
 		
+		self._person_trade_combination_dict[person_arg] = trade
+		return trade
+	self._person_trade_combination_dict[person_arg] = {}
+	return {}
+	
+
+
 func calculate_sum_of_trade():
 	var sum:Dictionary = {}
 	for person in _person_trade_combination_dict.keys():
@@ -336,10 +357,11 @@ func _calculate_trade_from_best_combination(person_arg:String, best_combination_
 	
 func _calculate_best_combination_for_person(person_arg:String)->Dictionary:
 	if _person_owned_dict.has(person_arg):
-		var combidict:Dictionary = _person_owned_dict[person_arg]
-		var budget:float = Prices.calculate_combidict_price(combidict)
-#		print("Budget for "+person_arg+": "+str(budget))
-		_person_value_of_owned[person_arg] = budget
+#		var combidict:Dictionary = _person_owned_dict[person_arg]
+#		var budget:float = Prices.calculate_combidict_price(combidict)
+##		print("Budget for "+person_arg+": "+str(budget))
+#		_person_value_of_owned[person_arg] = budget
+		var budget:float = self.get_value_of_owned(person_arg)
 		if self._person_tradecalc.has(person_arg):
 			var trade_calc:TradeCalculator = self._person_tradecalc[person_arg]
 			
@@ -358,6 +380,24 @@ func get_owned_products(person_arg:String)->Dictionary:
 		return _person_owned_dict[person_arg]
 	return empty_dict
 
+func set_owned_products(person_arg:String, owned_product:Dictionary):
+	if _person_owned_dict.has(person_arg):
+		_person_owned_dict[person_arg]=owned_product
+
+func add_owned_products(person_arg:String, owned_product_to_add:Dictionary):
+	if _person_owned_dict.has(person_arg):
+		var owned_prod_dict:Dictionary = _person_owned_dict[person_arg]
+		for product in owned_product_to_add.keys():
+			var amount_to_add:float = owned_product_to_add[product]
+			if owned_prod_dict.has(product):
+				var old_amount = owned_prod_dict[product]
+				var total_amount:float = amount_to_add+old_amount
+				owned_prod_dict[product] = total_amount
+			else:
+				assert(product in PriceCalculationGlobals._products)
+				owned_prod_dict[product] = amount_to_add
+		_person_owned_dict[person_arg] = owned_prod_dict
+
 func set_amount_of_product(person_arg:String, product_arg:String, amount_arg:float):
 	if _person_owned_dict.has(person_arg):
 		var owned_product_dict:Dictionary = _person_owned_dict[person_arg]
@@ -371,18 +411,25 @@ func get_traded_products(person_arg:String)->Dictionary:
 		return _person_trade_combination_dict[person_arg]
 	return empty_dict
 
-func calculate_value_of_owned():
-	for person in self._persons:
-		if _person_owned_dict.has(person):
-			var combidict:Dictionary = _person_owned_dict[person]
-			var budget:float = Prices.calculate_combidict_price(combidict)
-			_person_value_of_owned[person] = budget
+#func calculate_value_of_owned():
+#	for person in self._persons:
+#		if _person_owned_dict.has(person):
+#			var combidict:Dictionary = _person_owned_dict[person]
+#			var budget:float = Prices.calculate_combidict_price(combidict)
+#			_person_value_of_owned[person] = budget
 
 func get_value_of_owned(person_arg:String):
-	if _person_value_of_owned.has(person_arg):
-		return _person_value_of_owned[person_arg]
-	else:
-		return 0.0
+#	if _person_value_of_owned.has(person_arg):
+#		return _person_value_of_owned[person_arg]
+#	else:
+#		return 0.0
+#	for person in self._persons:
+	if _person_owned_dict.has(person_arg):
+		var combidict:Dictionary = _person_owned_dict[person_arg]
+		var budget:float = Prices.calculate_combidict_price(combidict)
+#			_person_value_of_owned[person] = budget
+		return budget
+	return 0
 
 func calculate_new_prices():
 
@@ -430,7 +477,7 @@ func _change_prices(param_price_change_step_arg:float)->bool:
 	_adjust_best_combinations(budget_step,max_num_steps)
 	
 #
-	calculate_trades()
+	calculate_trades_with_current_best_combinations()
 	calculate_sum_of_trade()
 	var new_prices_increment:Dictionary = _calculate_new_prices_increment(param_price_change_step_arg)
 
@@ -521,34 +568,79 @@ func set_excess_products(excess_product_arg:Dictionary)->void:
 
 func _adjust_best_combinations(budget_step:float,max_num_steps:int):
 	for person in _persons:
-		if _person_best_combination_dict.has(person)==false:
-			var empty_combidict:Dictionary = {}
-			_person_best_combination_dict[person] = empty_combidict
-		var best_combidict = self._adjust_best_combination_for_person(person, _person_best_combination_dict[person],budget_step,max_num_steps)
-		_person_best_combination_dict[person] = best_combidict
+#		if _person_best_combination_dict.has(person)==false:
+#			var empty_combidict:Dictionary = {}
+#			_person_best_combination_dict[person] = empty_combidict
+		self.adjust_best_combination_for_person_with_max_num_steps(person,budget_step,max_num_steps)
 
 func _adjust_best_combinations_test(budget_step:float,max_num_steps:int):
 	for person in _persons:
-		var best_combidict = self._adjust_best_combination_for_person(person, _person_best_combination_dict[person],budget_step,max_num_steps)
-		_person_best_combination_dict_test[person] = best_combidict
+		self.adjust_best_combination_for_person_with_max_num_steps(person,budget_step,max_num_steps)
+		
 
-func _adjust_best_combination_for_person(person_arg:String, current_best_combidict_arg:Dictionary,budget_step:float,max_num_steps:int)->Dictionary:
+
+func adjust_best_combination_for_person_with_max_num_steps(person_arg:String, budget_step:float,max_num_steps:int)->Dictionary:
 	if _person_owned_dict.has(person_arg):
-		var combidict:Dictionary = _person_owned_dict[person_arg]
-		var budget:float = Prices.calculate_combidict_price(combidict)
-#		print("Budget for "+person_arg+": "+str(budget))
-		_person_value_of_owned[person_arg] = budget
+#		var combidict:Dictionary = _person_owned_dict[person_arg]
+#		var budget:float = Prices.calculate_combidict_price(combidict)
+##		print("Budget for "+person_arg+": "+str(budget))
+#		_person_value_of_owned[person_arg] = budget
+#
+#		var budget:float = self.get_value_of_owned(person_arg)
 		if self._person_tradecalc.has(person_arg):
 			var trade_calc:TradeCalculator = self._person_tradecalc[person_arg]
 			
+			if _person_best_combination_dict.has(person_arg)==false:
+				var empty_combidict:Dictionary = {}
+				_person_best_combination_dict[person_arg] = empty_combidict			
+			var current_best_combidict = _person_best_combination_dict[person_arg]
 #			var best_combidict:Dictionary = trade_calc.adjust_best_combidict(budget,current_best_combidict_arg,budget_step,max_num_steps)
 #			TODO: Probar adjust_best_combidict_changing_step
-			var init_budget_step = budget_step*8
-			var best_combidict:Dictionary = trade_calc.adjust_best_combidict_changing_step(budget,current_best_combidict_arg,init_budget_step,budget_step,max_num_steps)
-			
-
+#			var init_budget_step = budget_step*8
+#			var best_combidict:Dictionary = trade_calc.adjust_best_combidict_changing_step(budget,current_best_combidict,init_budget_step,budget_step,max_num_steps)
+#			_person_best_combination_dict[person_arg] = best_combidict
+#
+			var best_combidict:Dictionary = improve_combination(trade_calc,_person_owned_dict[person_arg], current_best_combidict,budget_step,max_num_steps)
+			_person_best_combination_dict[person_arg] = best_combidict
 #			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
 			return best_combidict
 	var null_dictionary = {}
+	_person_best_combination_dict[person_arg]=null_dictionary
 	return null_dictionary
+
+func improve_combination(trade_calc_arg:TradeCalculator, owned_combidict_arg:Dictionary, current_best_combidict_arg:Dictionary,budget_step:float,max_num_steps:int)->Dictionary:
+
+	var budget:float = Prices.calculate_combidict_price(owned_combidict_arg)
+	var init_budget_step = budget_step*8
+	var best_combidict:Dictionary = trade_calc_arg.adjust_best_combidict_changing_step(budget,current_best_combidict_arg,init_budget_step,budget_step,max_num_steps)
+#			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
+	return best_combidict
+
+
+func calculate_trades():
+	for person in self._persons:
+		calculate_trade_for_person(person)
+
+func adjust_best_combination_for_person(person_arg:String):
+	var budget_step = 0.01
+	var max_num_steps = 5
+	adjust_best_combination_for_person_with_max_num_steps(person_arg,budget_step,max_num_steps)
+		
+func calculate_trade_for_person(person_arg:String)->Dictionary:
+	adjust_best_combination_for_person(person_arg)
+	return calculate_trade_for_person_with_current_best_combinations(person_arg)
+	
+func calculate_consumption_for_person_with_current_best_combinations(person_arg:String)->Dictionary:
+	var best_option_combidict:Dictionary = _person_best_combination_dict[person_arg]
+		
+	var trade_calculator:TradeCalculator = get_trade_calculator(person_arg)
+	if trade_calculator:
+		var satisfaction_calculator:SatisfactionCalculator = trade_calculator.get_satisfaction_calculator()		
+		var consumption_option_combidict:Dictionary = satisfaction_calculator.get_optidict_of_type_from_optidict(best_option_combidict, "consumption")		
+		var consumption_product_combidict:Dictionary = satisfaction_calculator.get_product_combidict_from_option_combidict(consumption_option_combidict)
+		
+		return consumption_product_combidict
+	
+	return {}
+
 
