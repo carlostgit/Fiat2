@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Producer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Shop.gd" type="Script" id=2]
@@ -13,6 +13,7 @@
 [ext_resource path="res://Globals.gd" type="Script" id=11]
 [ext_resource path="res://TraderPerson.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Factory.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Government.gd" type="Script" id=14]
 
 [node name="Fiat" type="Node2D"]
 script = ExtResource( 5 )
@@ -230,12 +231,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ResetShopButton" type="Button" parent="Shop"]
+margin_left = -16.0
+margin_top = 32.0
+margin_right = 32.0
+margin_bottom = 52.0
+text = "Reset shop"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Globals" type="Node" parent="."]
 script = ExtResource( 11 )
 
 [node name="Government" type="Sprite" parent="."]
 position = Vector2( 720, 408 )
 texture = ExtResource( 8 )
+script = ExtResource( 14 )
 
 [node name="Owner" parent="Government" instance=ExtResource( 7 )]
 position = Vector2( 64, 64 )
@@ -393,14 +405,19 @@ __meta__ = {
 [connection signal="trade_of_person_updated_signal" from="." to="Producer1" method="_on_Fiat_trade_of_person_updated_signal"]
 [connection signal="pressed" from="CalculatePrices" to="." method="_on_CalculatePrices_pressed"]
 [connection signal="person_owned_updated_signal" from="Producer1" to="." method="_on_Producer1_person_owned_updated_signal"]
+[connection signal="send_to_shop_from_traderperson" from="Producer1" to="Shop" method="_on_Producer1_send_to_shop_from_traderperson"]
 [connection signal="signal_trade_and_consumption_calc" from="Producer1" to="." method="_on_Producer1_signal_trade_and_consumption_calc"]
-[connection signal="signal_trade_order" from="Producer1" to="." method="_on_Producer1_signal_trade_order"]
 [connection signal="person_owned_updated_signal" from="Producer2" to="." method="_on_Producer2_person_owned_updated_signal"]
+[connection signal="send_to_shop_from_traderperson" from="Producer2" to="Shop" method="_on_Producer2_send_to_shop_from_traderperson"]
 [connection signal="signal_trade_and_consumption_calc" from="Producer2" to="." method="_on_Producer2_signal_trade_and_consumption_calc"]
-[connection signal="signal_trade_order" from="Producer2" to="." method="_on_Producer2_signal_trade_order"]
 [connection signal="person_owned_updated_signal" from="CivilServant" to="." method="_on_CivilServant_person_owned_updated_signal"]
+[connection signal="send_to_shop_from_traderperson" from="CivilServant" to="Shop" method="_on_CivilServant_send_to_shop_from_traderperson"]
 [connection signal="person_owned_updated_signal" from="CivilServant/TraderPerson" to="CivilServant" method="_on_TraderPerson_person_owned_updated_signal"]
+[connection signal="send_to_shop_from_traderperson" from="CivilServant/TraderPerson" to="CivilServant" method="_on_TraderPerson_send_to_shop_from_traderperson"]
 [connection signal="signal_trade_and_consumption_calc" from="CivilServant/TraderPerson" to="." method="_on_TraderPerson_signal_trade_and_consumption_calc"]
-[connection signal="signal_trade_order" from="CivilServant/TraderPerson" to="." method="_on_TraderPerson_signal_trade_order"]
+[connection signal="pressed" from="Shop/ResetShopButton" to="Shop" method="_on_ResetShopButton_pressed"]
 [connection signal="signal_tax_rate_changed" from="Globals" to="CivilServant" method="_on_Globals_signal_tax_rate_changed"]
+[connection signal="send_money_to_civil_servant" from="Government" to="CivilServant" method="_on_Government_send_money_to_civil_servant"]
+[connection signal="pressed" from="Government/GiveMoneyButton" to="Government" method="_on_GiveMoneyButton_pressed"]
+[connection signal="produced_signal" from="Government/Factory" to="Government" method="_on_Factory_produced_signal"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

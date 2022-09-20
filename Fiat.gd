@@ -17,6 +17,7 @@ signal trade_of_person_updated_signal(trader_person_node, trade_dict)
 signal consumption_of_person_updated_signal(trader_person_node, trade_dict)
 signal initialize_owned_products_signal(trader_person_node,owned_products)
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
@@ -42,6 +43,9 @@ func _ready():
 	
 #	_price_calculation_interface.calculate_new_prices()
 #	print(Prices.get_prices())
+	
+#	Para que se escriban los precios en los labels correspondientes:
+	prices_updated()
 	
 		
 	pass # Replace with function body.
@@ -105,17 +109,6 @@ func _on_CalculatePrices_pressed():
 	self.calculate_prices()
 #	pass # Replace with function body.
 
-
-func _on_TraderPerson_signal_trade_order(node):
-	pass
-	
-func _on_Producer1_signal_trade_order(node):
-	pass
-	
-func _on_Producer2_signal_trade_order(node):
-	pass
-
- 
 
 func _on_Producer1_person_owned_updated_signal(node_person, product_amount_dict):
 	person_owned_updated(node_person, product_amount_dict)

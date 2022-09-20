@@ -6,9 +6,10 @@ extends Node2D
 # var b = "text"
 
 
-signal signal_trade_order(node)
+
 signal signal_trade_and_consumption_calc(node)
 signal person_owned_updated_signal(node_person, product_amount_dict)
+signal send_to_shop_from_traderperson(amountdict, traderperson)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,8 +21,6 @@ func _ready():
 #	pass
 
 
-func _on_TraderPerson_signal_trade_order(node):
-	emit_signal("signal_trade_order",node)
 	
 
 func _on_Fiat_trade_of_person_updated_signal(trader_person_node, trade_dict):
@@ -57,3 +56,8 @@ func _on_Fiat_initialize_owned_products_signal(trader_person_node, owned_product
 	var node:Node = $TraderPerson
 	if (trader_person_node==node):
 		node.initialize_owned_products(owned_products)
+
+
+func _on_TraderPerson_send_to_shop_from_traderperson(amountdict, traderperson):
+	emit_signal("send_to_shop_from_traderperson",amountdict, traderperson)
+	pass # Replace with function body.

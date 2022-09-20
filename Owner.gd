@@ -8,9 +8,19 @@ extends Sprite
 
 signal owner_products_updated_signal(product_amount_dict)
 
-var _owned_bills:float = 0.0
-var _owned_chocolates:float = 0.0
-var _owned_candies:float = 0.0
+#var _owned_bills:float = 0.0
+#var _owned_chocolates:float = 0.0
+#var _owned_candies:float = 0.0
+
+var _owned_amounts:Dictionary = {"bill":0.0,
+								"candy":0.0,
+								"chocolate":0.0}
+
+var _in_market_amounts:Dictionary = {"bill":0.0,
+								"candy":0.0,
+								"chocolate":0.0}
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,49 +31,71 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func get_amount_of_product(product_arg:String)->float:
+	if _owned_amounts.has(product_arg):
+		return _owned_amounts[product_arg]
+	else:
+		return 0.0
+		
+func update_labels():
+	var owned_minus_in_market:Dictionary = Utils.calculate_combination_difference(_owned_amounts,_in_market_amounts)
+	if owned_minus_in_market.has("bill"):
+		var value_to_add:float = owned_minus_in_market["bill"]
+		$Bill/OwnedBillsLabel.set_text(str(value_to_add))
+	if owned_minus_in_market.has("candy"):
+		var value_to_add:float = owned_minus_in_market["candy"]
+		$Candy/OwnedCandiesLabel.set_text(str(value_to_add))
+	if owned_minus_in_market.has("chocolate"):
+		var value_to_add:float = owned_minus_in_market["chocolate"]
+		$Chocolate/OwnedChocolatesLabel.set_text(str(value_to_add))
+		
+		
 func add_products(product_amount_dict:Dictionary):
 	if product_amount_dict.has("bill"):
-		var old_value:float = _owned_bills
+		var old_value:float = _owned_amounts["bill"]
 		var value_to_add:float = product_amount_dict["bill"]
 		var new_value:float = old_value+value_to_add
 		$Bill/OwnedBillsLabel.set_text(str(new_value))
-		_owned_bills=new_value
+		_owned_amounts["bill"]=new_value
 	if product_amount_dict.has("candy"):
-		var old_value:float = _owned_candies
+		var old_value:float = _owned_amounts["candy"]
 		var value_to_add:float = product_amount_dict["candy"]
 		var new_value:float = old_value+value_to_add
 		$Candy/OwnedCandiesLabel.set_text(str(new_value))
-		_owned_candies=new_value
+		_owned_amounts["candy"]=new_value
 	if product_amount_dict.has("chocolate"):
-		var old_value:float = _owned_chocolates
+		var old_value:float = _owned_amounts["chocolate"]
 		var value_to_add:float = product_amount_dict["chocolate"]
 		var new_value:float = old_value+value_to_add
 		$Chocolate/OwnedChocolatesLabel.set_text(str(new_value))
-		_owned_chocolates=new_value
-	products_updated()
+		_owned_amounts["chocolate"]=new_value
+	emit_products_updated_signal()
 	
 func initialize_products(product_amount_dict:Dictionary):
 	if product_amount_dict.has("bill"):
 		var value:float = product_amount_dict["bill"]
 		$Bill/OwnedBillsLabel.set_text(str(value))
-		_owned_bills=value
+		_owned_amounts["bill"]=value
 	if product_amount_dict.has("candy"):		
 		var value:float = product_amount_dict["candy"]
 		$Candy/OwnedCandiesLabel.set_text(str(value))
-		_owned_candies=value
+		_owned_amounts["candy"]=value
 	if product_amount_dict.has("chocolate"):
 		var value:float = product_amount_dict["chocolate"]
 		$Chocolate/OwnedChocolatesLabel.set_text(str(value))
-		_owned_chocolates=value
+		_owned_amounts["chocolate"]=value
 	
 func get_products()->Dictionary:
-	var product_amount_dict:Dictionary = {}
-	product_amount_dict["bill"] = _owned_bills
-	product_amount_dict["candy"] = _owned_candies
-	product_amount_dict["chocolate"] = _owned_chocolates
-	return product_amount_dict
+	return _owned_amounts
 	
-func products_updated():
+func emit_products_updated_signal():
 	var product_amount_dict:Dictionary = get_products()
 	emit_signal("owner_products_updated_signal",product_amount_dict)
+	
+
+
+func _on_Trader_send_to_shop_signal(amountsdict):
+	_in_market_amounts = amountsdict
+	update_labels()
+	emit_products_updated_signal()
 	

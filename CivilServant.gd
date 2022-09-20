@@ -6,6 +6,7 @@ extends Node2D
 # var b = "text"
 
 signal person_owned_updated_signal(node_person, product_amount_dict)
+signal send_to_shop_from_traderperson(amountdict, traderperson)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -38,3 +39,17 @@ func _on_Fiat_initialize_owned_products_signal(trader_person_node, owned_product
 	if (trader_person_node==node):
 		node.initialize_owned_products(owned_products)
 		
+
+
+func _on_TraderPerson_send_to_shop_from_traderperson(amountdict, traderperson):
+	emit_signal("send_to_shop_from_traderperson",amountdict, traderperson)
+	pass # Replace with function body.
+
+
+
+
+func _on_Government_send_money_to_civil_servant(amount_to_send):
+	var products:Dictionary = {}
+	products["bill"]=amount_to_send
+	$TraderPerson.add_products(products)
+	pass # Replace with function body.

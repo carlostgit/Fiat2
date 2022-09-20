@@ -5,10 +5,9 @@ extends Sprite
 # var a = 2
 # var b = "text"
 
-signal signal_trade_order(node)
 signal signal_trade_and_consumption_calc(node)
 signal person_owned_updated_signal(node_person,product_amount_dict)
-
+signal send_to_shop_from_traderperson(amountdict,traderperson)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -19,19 +18,19 @@ func _ready():
 #	pass
 
 
-func _on_TradeButton_pressed():
-	emit_signal("signal_trade_order",self)
+
 	
 func trade_of_person_updated_received(trade_dict):
-	if trade_dict.has("bill"):
-		var amount:float = trade_dict["bill"]
-		$Trader/BillsInMarketLabel.set_text(str(amount))
-	if trade_dict.has("candy"):
-		var amount:float = trade_dict["candy"]
-		$Trader/CandiesInMarketLabel.set_text(str(amount))
-	if trade_dict.has("chocolate"):
-		var amount:float = trade_dict["chocolate"]
-		$Trader/ChocolatesInMarketLabel.set_text(str(amount))	
+	$Trader.set_products(trade_dict)
+#	if trade_dict.has("bill"):
+#		var amount:float = trade_dict["bill"]
+#		$Trader/BillsInMarketLabel.set_text(str(amount))
+#	if trade_dict.has("candy"):
+#		var amount:float = trade_dict["candy"]
+#		$Trader/CandiesInMarketLabel.set_text(str(amount))
+#	if trade_dict.has("chocolate"):
+#		var amount:float = trade_dict["chocolate"]
+#		$Trader/ChocolatesInMarketLabel.set_text(str(amount))	
 
 func consumption_of_person_updated_received(trade_dict):
 	if trade_dict.has("bill"):
@@ -60,3 +59,8 @@ func _on_CalcTradeAndConsumptionButton_pressed():
 
 func initialize_owned_products(owned_products:Dictionary):
 	$Owner.initialize_products(owned_products)
+
+
+func _on_Trader_send_to_shop_signal(amountsdict):
+	emit_signal("send_to_shop_from_traderperson",amountsdict,self)
+
