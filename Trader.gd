@@ -70,3 +70,5 @@ func get_products()->Dictionary:
 func _on_SendToShopButton_pressed():
 	emit_signal("send_to_shop_signal",_amounts_dict)
 	
+
+

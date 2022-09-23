@@ -32,16 +32,17 @@ func trade_of_person_updated_received(trade_dict):
 #		var amount:float = trade_dict["chocolate"]
 #		$Trader/ChocolatesInMarketLabel.set_text(str(amount))	
 
-func consumption_of_person_updated_received(trade_dict):
-	if trade_dict.has("bill"):
-		var amount:float = trade_dict["bill"]
-		$Consumer/Bill/BillsToEatLabel.set_text(str(amount))
-	if trade_dict.has("candy"):
-		var amount:float = trade_dict["candy"]
-		$Consumer/Candy/CandiesToEatLabel.set_text(str(amount))
-	if trade_dict.has("chocolate"):
-		var amount:float = trade_dict["chocolate"]
-		$Consumer/Chocolate/ChocolatesToEatLabel.set_text(str(amount))	
+func consumption_of_person_updated_received(consumption_dict):
+	$Consumer.calculated_consumption_of_person(consumption_dict)
+#	if trade_dict.has("bill"):
+#		var amount:float = trade_dict["bill"]
+#		$Consumer/Bill/BillsToEatLabel.set_text(str(amount))
+#	if trade_dict.has("candy"):
+#		var amount:float = trade_dict["candy"]
+#		$Consumer/Candy/CandiesToEatLabel.set_text(str(amount))
+#	if trade_dict.has("chocolate"):
+#		var amount:float = trade_dict["chocolate"]
+#		$Consumer/Chocolate/ChocolatesToEatLabel.set_text(str(amount))	
 
 func add_products(product_amount_dict:Dictionary):
 	$Owner.add_products(product_amount_dict)

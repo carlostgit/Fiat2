@@ -20,6 +20,9 @@ var _in_market_amounts:Dictionary = {"bill":0.0,
 								"candy":0.0,
 								"chocolate":0.0}
 
+var _for_consumption_amounts:Dictionary = {"bill":0.0,
+								"candy":0.0,
+								"chocolate":0.0}
 
 
 # Called when the node enters the scene tree for the first time.
@@ -39,14 +42,15 @@ func get_amount_of_product(product_arg:String)->float:
 		
 func update_labels():
 	var owned_minus_in_market:Dictionary = Utils.calculate_combination_difference(_owned_amounts,_in_market_amounts)
-	if owned_minus_in_market.has("bill"):
-		var value_to_add:float = owned_minus_in_market["bill"]
+	var owned_minus_in_market_minus_consumed:Dictionary = Utils.calculate_combination_difference(owned_minus_in_market, _for_consumption_amounts)
+	if owned_minus_in_market_minus_consumed.has("bill"):
+		var value_to_add:float = owned_minus_in_market_minus_consumed["bill"]
 		$Bill/OwnedBillsLabel.set_text(str(value_to_add))
-	if owned_minus_in_market.has("candy"):
-		var value_to_add:float = owned_minus_in_market["candy"]
+	if owned_minus_in_market_minus_consumed.has("candy"):
+		var value_to_add:float = owned_minus_in_market_minus_consumed["candy"]
 		$Candy/OwnedCandiesLabel.set_text(str(value_to_add))
-	if owned_minus_in_market.has("chocolate"):
-		var value_to_add:float = owned_minus_in_market["chocolate"]
+	if owned_minus_in_market_minus_consumed.has("chocolate"):
+		var value_to_add:float = owned_minus_in_market_minus_consumed["chocolate"]
 		$Chocolate/OwnedChocolatesLabel.set_text(str(value_to_add))
 		
 		
@@ -99,3 +103,9 @@ func _on_Trader_send_to_shop_signal(amountsdict):
 	update_labels()
 	emit_products_updated_signal()
 	
+
+
+func _on_Consumer_send_products_to_consume_signal(to_be_consumed_dict):
+	_for_consumption_amounts = to_be_consumed_dict
+	update_labels()
+
