@@ -10,6 +10,7 @@ extends Node2D
 signal signal_trade_and_consumption_calc(node)
 signal person_owned_updated_signal(node_person, product_amount_dict)
 signal send_to_shop_from_traderperson(amountdict, traderperson)
+signal trade_signal(traderperson)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -60,4 +61,9 @@ func _on_Fiat_initialize_owned_products_signal(trader_person_node, owned_product
 
 func _on_TraderPerson_send_to_shop_from_traderperson(amountdict, traderperson):
 	emit_signal("send_to_shop_from_traderperson",amountdict, traderperson)
+	pass # Replace with function body.
+
+
+func _on_TraderPerson_trade_signal(traderperson):
+	emit_signal("trade_signal",traderperson)
 	pass # Replace with function body.

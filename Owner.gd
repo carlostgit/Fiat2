@@ -109,3 +109,10 @@ func _on_Consumer_send_products_to_consume_signal(to_be_consumed_dict):
 	_for_consumption_amounts = to_be_consumed_dict
 	update_labels()
 
+
+
+func _on_ConsumeButton_pressed():
+	_owned_amounts = Utils.calculate_combination_difference(_owned_amounts,_for_consumption_amounts)
+	_for_consumption_amounts.clear()
+	update_labels() #No hace falta
+	

@@ -24,6 +24,15 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func reset():
+	_to_be_consumed_dict["bill"]=0.0
+	_to_be_consumed_dict["candy"]=0.0
+	_to_be_consumed_dict["chocolate"]=0.0
+	_current_consumption_dict["bill"]=0.0
+	_current_consumption_dict["candy"]=0.0
+	_current_consumption_dict["chocolate"]=0.0
+	
+
 func update_labels():
 	if _to_be_consumed_dict.has("bill"):
 		var amount:float = _to_be_consumed_dict["bill"]
@@ -44,6 +53,10 @@ func calculated_consumption_of_person(consumpt_dict):
 
 
 func _on_ConsumeButton_pressed():
+	reset()
+	update_labels()
+
+func _on_SendToConsumeButton_pressed():
 #	#De momento, se consume todo lo que se había calculado
 	#Pero tal vez habría que comprobar que hay suficientes productos
 	_current_consumption_dict = _to_be_consumed_dict

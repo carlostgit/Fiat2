@@ -24,39 +24,51 @@ func _ready():
 #func _process(delta):
 #	pass
 
+func update_labels():
+	if _amounts_dict.has("bill"):
+		var value:float = _amounts_dict["bill"]
+		$BillsInMarketLabel.set_text(str(value))
+	if _amounts_dict.has("candy"):
+		var value:float = _amounts_dict["candy"]
+		$CandiesInMarketLabel.set_text(str(value))
+	if _amounts_dict.has("chocolate"):
+		var value:float = _amounts_dict["chocolate"]
+		$ChocolatesInMarketLabel.set_text(str(value))
+	
+
 func add_products(product_amount_dict:Dictionary):
-	if product_amount_dict.has("bill"):
-		var old_value:float = _amounts_dict["bill"]
-		var value_to_add:float = product_amount_dict["bill"]
-		var new_value:float = old_value+value_to_add
-		$BillsInMarketLabel.set_text(str(new_value))
-		_amounts_dict["bill"]=new_value
-	if product_amount_dict.has("candy"):
-		var old_value:float = _amounts_dict["candy"]
-		var value_to_add:float = product_amount_dict["candy"]
-		var new_value:float = old_value+value_to_add
-		$CandiesInMarketLabel.set_text(str(new_value))
-		_amounts_dict["candy"]=new_value
-	if product_amount_dict.has("chocolate"):
-		var old_value:float = _amounts_dict["chocolate"]
-		var value_to_add:float = product_amount_dict["chocolate"]
-		var new_value:float = old_value+value_to_add
-		$ChocolatesInMarketLabel.set_text(str(new_value))
-		_amounts_dict["chocolate"]=new_value
+	_amounts_dict = product_amount_dict
+	update_labels()
+#	if product_amount_dict.has("bill"):
+#		var old_value:float = _amounts_dict["bill"]
+#		var value_to_add:float = product_amount_dict["bill"]
+#		var new_value:float = old_value+value_to_add
+#		$BillsInMarketLabel.set_text(str(new_value))
+#		_amounts_dict["bill"]=new_value
+#	if product_amount_dict.has("candy"):
+#		var old_value:float = _amounts_dict["candy"]
+#		var value_to_add:float = product_amount_dict["candy"]
+#		var new_value:float = old_value+value_to_add
+#		$CandiesInMarketLabel.set_text(str(new_value))
+#		_amounts_dict["candy"]=new_value
+#	if product_amount_dict.has("chocolate"):
+#		var old_value:float = _amounts_dict["chocolate"]
+#		var value_to_add:float = product_amount_dict["chocolate"]
+#		var new_value:float = old_value+value_to_add
+#		$ChocolatesInMarketLabel.set_text(str(new_value))
+#		_amounts_dict["chocolate"]=new_value
 	
 func set_products(product_amount_dict:Dictionary):
 	if product_amount_dict.has("bill"):
 		var value:float = product_amount_dict["bill"]
-		$BillsInMarketLabel.set_text(str(value))
 		_amounts_dict["bill"]=value
 	if product_amount_dict.has("candy"):		
 		var value:float = product_amount_dict["candy"]
-		$CandiesInMarketLabel.set_text(str(value))
 		_amounts_dict["candy"]=value
 	if product_amount_dict.has("chocolate"):
 		var value:float = product_amount_dict["chocolate"]
-		$ChocolatesInMarketLabel.set_text(str(value))
 		_amounts_dict["chocolate"]=value
+	update_labels()
 	
 func get_products()->Dictionary:
 #	var product_amount_dict:Dictionary = {}
@@ -72,3 +84,9 @@ func _on_SendToShopButton_pressed():
 	
 
 
+
+func _on_TradeButton_pressed():
+	_amounts_dict["bill"]=0.0
+	_amounts_dict["candy"]=0.0
+	_amounts_dict["chocolate"]=0.0
+	update_labels()

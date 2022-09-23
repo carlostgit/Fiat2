@@ -73,6 +73,13 @@ func update_labels():
 	$Candies/CandiesInMarketLabel.set_text(str(sum_of_candy))
 	$Chocolate/ChocolatesInMarketLabel.set_text(str(sum_of_chocolate))
 
+func trade(traderperson:Node):
+	if (_traderperson_amounts.has(traderperson)):
+		_traderperson_amounts[traderperson]["bill"]=0.0
+		_traderperson_amounts[traderperson]["candy"]=0.0
+		_traderperson_amounts[traderperson]["chocolate"]=0.0
+	update_labels()
+
 func _on_Producer1_send_to_shop_from_traderperson(amountdict, traderperson):
 #	add_products(amountdict)
 	_traderperson_amounts[traderperson] = amountdict
@@ -87,3 +94,13 @@ func _on_CivilServant_send_to_shop_from_traderperson(amountdict, traderperson):
 #	add_products(amountdict)
 	_traderperson_amounts[traderperson] = amountdict
 	update_labels()
+
+
+func _on_Producer1_trade_signal(traderperson):
+	trade(traderperson)
+
+func _on_Producer2_trade_signal(traderperson):
+	trade(traderperson)
+
+func _on_TraderPerson_trade_signal(traderperson):
+	trade(traderperson)

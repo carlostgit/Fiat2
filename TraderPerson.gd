@@ -8,6 +8,7 @@ extends Sprite
 signal signal_trade_and_consumption_calc(node)
 signal person_owned_updated_signal(node_person,product_amount_dict)
 signal send_to_shop_from_traderperson(amountdict,traderperson)
+signal trade_signal(traderperson)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -65,3 +66,8 @@ func initialize_owned_products(owned_products:Dictionary):
 func _on_Trader_send_to_shop_signal(amountsdict):
 	emit_signal("send_to_shop_from_traderperson",amountsdict,self)
 
+
+
+func _on_TradeButton_pressed():
+	emit_signal("trade_signal", self)
+	pass # Replace with function body.
