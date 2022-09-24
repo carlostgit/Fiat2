@@ -37,12 +37,18 @@ func update_labels():
 	if _to_be_consumed_dict.has("bill"):
 		var amount:float = _to_be_consumed_dict["bill"]
 		$Bill/BillsToEatLabel.set_text(str(amount))
+	else:
+		$Bill/BillsToEatLabel.set_text(str(0))
 	if _to_be_consumed_dict.has("candy"):
 		var amount:float = _to_be_consumed_dict["candy"]
 		$Candy/CandiesToEatLabel.set_text(str(amount))
+	else:
+		$Candy/CandiesToEatLabel.set_text(str(0))
 	if _to_be_consumed_dict.has("chocolate"):
 		var amount:float = _to_be_consumed_dict["chocolate"]
 		$Chocolate/ChocolatesToEatLabel.set_text(str(amount))	
+	else:
+		$Chocolate/ChocolatesToEatLabel.set_text(str(0))	
 
 
 func calculated_consumption_of_person(consumpt_dict):

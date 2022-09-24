@@ -28,12 +28,18 @@ func update_labels():
 	if _amounts_dict.has("bill"):
 		var value:float = _amounts_dict["bill"]
 		$BillsInMarketLabel.set_text(str(value))
+	else:
+		$BillsInMarketLabel.set_text(str(0))
 	if _amounts_dict.has("candy"):
 		var value:float = _amounts_dict["candy"]
 		$CandiesInMarketLabel.set_text(str(value))
+	else:
+		$CandiesInMarketLabel.set_text(str(0))
 	if _amounts_dict.has("chocolate"):
 		var value:float = _amounts_dict["chocolate"]
 		$ChocolatesInMarketLabel.set_text(str(value))
+	else:
+		$ChocolatesInMarketLabel.set_text(str(0))
 	
 
 func add_products(product_amount_dict:Dictionary):
@@ -59,15 +65,16 @@ func add_products(product_amount_dict:Dictionary):
 #		_amounts_dict["chocolate"]=new_value
 	
 func set_products(product_amount_dict:Dictionary):
-	if product_amount_dict.has("bill"):
-		var value:float = product_amount_dict["bill"]
-		_amounts_dict["bill"]=value
-	if product_amount_dict.has("candy"):		
-		var value:float = product_amount_dict["candy"]
-		_amounts_dict["candy"]=value
-	if product_amount_dict.has("chocolate"):
-		var value:float = product_amount_dict["chocolate"]
-		_amounts_dict["chocolate"]=value
+	_amounts_dict = product_amount_dict.duplicate()
+#	if product_amount_dict.has("bill"):
+#		var value:float = product_amount_dict["bill"]
+#		_amounts_dict["bill"]=value
+#	if product_amount_dict.has("candy"):		
+#		var value:float = product_amount_dict["candy"]
+#		_amounts_dict["candy"]=value
+#	if product_amount_dict.has("chocolate"):
+#		var value:float = product_amount_dict["chocolate"]
+#		_amounts_dict["chocolate"]=value
 	update_labels()
 	
 func get_products()->Dictionary:

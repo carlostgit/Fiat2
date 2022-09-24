@@ -394,15 +394,15 @@ text = "Test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_consumption_of_person_updated"]
-[connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
+[connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer1" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer2" method="_on_Fiat_signal_initialize_owned_products"]
-[connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
+[connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_trade_of_person_updated"]
-[connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="pressed" from="CalculatePrices" to="." method="_on_CalculatePrices_pressed"]
 [connection signal="signal_person_owned_updated" from="Producer1" to="." method="_on_Producer1_signal_person_owned_updated"]
 [connection signal="signal_send_to_shop_from_traderperson" from="Producer1" to="Shop" method="_on_Producer1_signal_send_to_shop_from_traderperson"]
@@ -419,5 +419,7 @@ __meta__ = {
 [connection signal="signal_trade_and_consumption_calc" from="CivilServant/TraderPerson" to="." method="_on_TraderPerson_signal_trade_and_consumption_calc"]
 [connection signal="pressed" from="Shop/ResetShopButton" to="Shop" method="_on_ResetShopButton_pressed"]
 [connection signal="signal_tax_rate_changed" from="Globals" to="CivilServant" method="_on_Globals_signal_tax_rate_changed"]
+[connection signal="signal_send_money_to_civil_servant" from="Government" to="CivilServant" method="_on_Government_signal_send_money_to_civil_servant"]
 [connection signal="pressed" from="Government/GiveMoneyButton" to="Government" method="_on_GiveMoneyButton_pressed"]
+[connection signal="signal_produced" from="Government/Factory" to="Government/Owner" method="_on_Factory_signal_produced"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

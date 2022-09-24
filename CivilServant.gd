@@ -40,12 +40,9 @@ func _on_Fiat_signal_initialize_owned_products(trader_person_node, owned_product
 		node.initialize_owned_products(owned_products)
 		
 
-
 func _on_TraderPerson_signal_send_to_shop_from_traderperson(amountdict, traderperson):
 	emit_signal("signal_send_to_shop_from_traderperson",amountdict, traderperson)
 	pass # Replace with function body.
-
-
 
 
 func _on_Government_signal_send_money_to_civil_servant(amount_to_send):

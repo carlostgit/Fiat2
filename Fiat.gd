@@ -107,19 +107,15 @@ func _on_Button_pressed():
 
 func _on_CalculatePrices_pressed():
 	self.calculate_prices()
-#	pass # Replace with function body.
-
 
 func _on_Producer1_signal_person_owned_updated(node_person, product_amount_dict):
 	person_owned_updated(node_person, product_amount_dict)
-
 
 func _on_CivilServant_signal_person_owned_updated(node_person, product_amount_dict):
 	person_owned_updated(node_person, product_amount_dict)
 
 func _on_Producer2_signal_person_owned_updated(node_person, product_amount_dict):
 	person_owned_updated(node_person, product_amount_dict)
-
 
 func _on_Producer1_signal_trade_and_consumption_calc(node):
 	calc_trade_and_consumption(node)

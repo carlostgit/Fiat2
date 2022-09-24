@@ -15,6 +15,7 @@ signal owner_products_updated_signal(product_amount_dict)
 var _owned_amounts:Dictionary = {"bill":0.0,
 								"candy":0.0,
 								"chocolate":0.0}
+								
 
 var _in_market_amounts:Dictionary = {"bill":0.0,
 								"candy":0.0,
@@ -46,43 +47,50 @@ func update_labels():
 	if owned_minus_in_market_minus_consumed.has("bill"):
 		var value_to_add:float = owned_minus_in_market_minus_consumed["bill"]
 		$Bill/OwnedBillsLabel.set_text(str(value_to_add))
+	else:
+		$Bill/OwnedBillsLabel.set_text(str(0))
 	if owned_minus_in_market_minus_consumed.has("candy"):
 		var value_to_add:float = owned_minus_in_market_minus_consumed["candy"]
 		$Candy/OwnedCandiesLabel.set_text(str(value_to_add))
+	else:
+		$Candy/OwnedCandiesLabel.set_text(str(0))
 	if owned_minus_in_market_minus_consumed.has("chocolate"):
 		var value_to_add:float = owned_minus_in_market_minus_consumed["chocolate"]
 		$Chocolate/OwnedChocolatesLabel.set_text(str(value_to_add))
-		
+	else:
+		$Chocolate/OwnedChocolatesLabel.set_text(str(0))
 		
 func add_products(product_amount_dict:Dictionary):
-	if product_amount_dict.has("bill"):
-		var old_value:float = _owned_amounts["bill"]
-		var value_to_add:float = product_amount_dict["bill"]
-		var new_value:float = old_value+value_to_add
-		_owned_amounts["bill"]=new_value
-	if product_amount_dict.has("candy"):
-		var old_value:float = _owned_amounts["candy"]
-		var value_to_add:float = product_amount_dict["candy"]
-		var new_value:float = old_value+value_to_add
-		_owned_amounts["candy"]=new_value
-	if product_amount_dict.has("chocolate"):
-		var old_value:float = _owned_amounts["chocolate"]
-		var value_to_add:float = product_amount_dict["chocolate"]
-		var new_value:float = old_value+value_to_add
-		_owned_amounts["chocolate"]=new_value
+	_owned_amounts = Utils.sum_combidict(_owned_amounts, product_amount_dict)
+#	if product_amount_dict.has("bill"):
+#		var old_value:float = _owned_amounts["bill"]
+#		var value_to_add:float = product_amount_dict["bill"]
+#		var new_value:float = old_value+value_to_add
+#		_owned_amounts["bill"]=new_value
+#	if product_amount_dict.has("candy"):
+#		var old_value:float = _owned_amounts["candy"]
+#		var value_to_add:float = product_amount_dict["candy"]
+#		var new_value:float = old_value+value_to_add
+#		_owned_amounts["candy"]=new_value
+#	if product_amount_dict.has("chocolate"):
+#		var old_value:float = _owned_amounts["chocolate"]
+#		var value_to_add:float = product_amount_dict["chocolate"]
+#		var new_value:float = old_value+value_to_add
+#		_owned_amounts["chocolate"]=new_value
 	update_labels()
 	emit_products_updated_signal()
 	
 func initialize_products(product_amount_dict:Dictionary):
-	if product_amount_dict.has("bill"):
-		var value:float = product_amount_dict["bill"]
-		_owned_amounts["bill"]=value
-	if product_amount_dict.has("candy"):		
-		var value:float = product_amount_dict["candy"]
-		_owned_amounts["candy"]=value
-	if product_amount_dict.has("chocolate"):
-		var value:float = product_amount_dict["chocolate"]
-		_owned_amounts["chocolate"]=value
+	_owned_amounts = product_amount_dict.duplicate()
+#	if product_amount_dict.has("bill"):
+#		var value:float = product_amount_dict["bill"]
+#		_owned_amounts["bill"]=value
+#	if product_amount_dict.has("candy"):		
+#		var value:float = product_amount_dict["candy"]
+#		_owned_amounts["candy"]=value
+#	if product_amount_dict.has("chocolate"):
+#		var value:float = product_amount_dict["chocolate"]
+#		_owned_amounts["chocolate"]=value
 	update_labels()
 	
 func get_products()->Dictionary:
@@ -97,18 +105,31 @@ func emit_products_updated_signal():
 func _on_Trader_signal_send_to_shop(amountsdict):
 	_in_market_amounts = amountsdict.duplicate()
 	update_labels()
-	emit_products_updated_signal()
 	
 
 
 func _on_Consumer_send_products_to_consume_signal(to_be_consumed_dict):
 	_for_consumption_amounts = to_be_consumed_dict.duplicate()
 	update_labels()
-
+	
 
 
 func _on_ConsumeButton_pressed():
 	_owned_amounts = Utils.calculate_combination_difference(_owned_amounts,_for_consumption_amounts)
 	_for_consumption_amounts.clear()
 	update_labels() #No hace falta
+	emit_products_updated_signal()
+	
+
+
+func _on_TradeButton_pressed():
+	_owned_amounts = Utils.calculate_combination_difference(_owned_amounts,_in_market_amounts)
+	_in_market_amounts.clear()
+	update_labels() #No hace falta
+	emit_products_updated_signal()
+	
+
+
+func _on_Factory_signal_produced(node, product_amount_dict):
+	add_products(product_amount_dict)
 	
