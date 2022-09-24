@@ -46,7 +46,7 @@ func update_labels():
 
 
 func calculated_consumption_of_person(consumpt_dict):
-	_to_be_consumed_dict = consumpt_dict
+	_to_be_consumed_dict = consumpt_dict.duplicate()
 	update_labels()
 
 

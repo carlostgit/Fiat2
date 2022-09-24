@@ -129,9 +129,10 @@ __meta__ = {
 }
 
 [node name="SendToShopButton" type="Button" parent="."]
-margin_left = 35.0
-margin_top = -20.0
-margin_right = 107.0
+margin_left = 30.0
+margin_top = -22.0
+margin_right = 125.0
+margin_bottom = -2.0
 text = "Send to shop"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -148,21 +149,20 @@ __meta__ = {
 }
 
 [node name="SendToConsumeButton" type="Button" parent="."]
-margin_left = -176.0
-margin_top = -22.0
-margin_right = -53.0
-margin_bottom = -2.0
-text = "Send to consume"
+margin_left = -148.0
+margin_top = -20.0
+margin_right = -50.0
+text = "Send to cons."
 __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="send_products_to_consume_signal" from="Consumer" to="Owner" method="_on_Consumer_send_products_to_consume_signal"]
-[connection signal="send_to_shop_signal" from="Trader" to="." method="_on_Trader_send_to_shop_signal"]
 [connection signal="send_to_shop_signal" from="Trader" to="Owner" method="_on_Trader_send_to_shop_signal"]
+[connection signal="send_to_shop_signal" from="Trader" to="." method="_on_Trader_send_to_shop_signal"]
 [connection signal="owner_products_updated_signal" from="Owner" to="." method="_on_Owner_owner_products_updated_signal"]
 [connection signal="pressed" from="CalcTradeAndConsumptionButton" to="." method="_on_CalcTradeAndConsumptionButton_pressed"]
-[connection signal="pressed" from="ConsumeButton" to="Consumer" method="_on_ConsumeButton_pressed"]
 [connection signal="pressed" from="ConsumeButton" to="Owner" method="_on_ConsumeButton_pressed"]
+[connection signal="pressed" from="ConsumeButton" to="Consumer" method="_on_ConsumeButton_pressed"]
 [connection signal="pressed" from="SendToShopButton" to="Trader" method="_on_SendToShopButton_pressed"]
 [connection signal="pressed" from="TradeButton" to="." method="_on_TradeButton_pressed"]
 [connection signal="pressed" from="TradeButton" to="Trader" method="_on_TradeButton_pressed"]
