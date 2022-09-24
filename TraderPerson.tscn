@@ -157,8 +157,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 [connection signal="send_products_to_consume_signal" from="Consumer" to="Owner" method="_on_Consumer_send_products_to_consume_signal"]
-[connection signal="send_to_shop_signal" from="Trader" to="Owner" method="_on_Trader_send_to_shop_signal"]
-[connection signal="send_to_shop_signal" from="Trader" to="." method="_on_Trader_send_to_shop_signal"]
+[connection signal="signal_send_to_shop" from="Trader" to="." method="_on_Trader_signal_send_to_shop"]
+[connection signal="signal_send_to_shop" from="Trader" to="Owner" method="_on_Trader_signal_send_to_shop"]
 [connection signal="owner_products_updated_signal" from="Owner" to="." method="_on_Owner_owner_products_updated_signal"]
 [connection signal="pressed" from="CalcTradeAndConsumptionButton" to="." method="_on_CalcTradeAndConsumptionButton_pressed"]
 [connection signal="pressed" from="ConsumeButton" to="Owner" method="_on_ConsumeButton_pressed"]

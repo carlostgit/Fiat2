@@ -80,27 +80,27 @@ func trade(traderperson:Node):
 		_traderperson_amounts[traderperson]["chocolate"]=0.0
 	update_labels()
 
-func _on_Producer1_send_to_shop_from_traderperson(amountdict, traderperson):
+func _on_Producer1_signal_send_to_shop_from_traderperson(amountdict, traderperson):
 #	add_products(amountdict)
 	_traderperson_amounts[traderperson] = amountdict
 	update_labels()
 
-func _on_Producer2_send_to_shop_from_traderperson(amountdict, traderperson):
+func _on_Producer2_signal_send_to_shop_from_traderperson(amountdict, traderperson):
 #	add_products(amountdict)
 	_traderperson_amounts[traderperson] = amountdict
 	update_labels()
 
-func _on_CivilServant_send_to_shop_from_traderperson(amountdict, traderperson):
+func _on_CivilServant_signal_send_to_shop_from_traderperson(amountdict, traderperson):
 #	add_products(amountdict)
 	_traderperson_amounts[traderperson] = amountdict
 	update_labels()
 
-
-func _on_Producer1_trade_signal(traderperson):
+func _on_Producer2_signal_trade(traderperson):
 	trade(traderperson)
 
-func _on_Producer2_trade_signal(traderperson):
+func _on_TraderPerson_signal_trade(traderperson):
 	trade(traderperson)
 
-func _on_TraderPerson_trade_signal(traderperson):
+
+func _on_Producer1_signal_trade(traderperson):
 	trade(traderperson)

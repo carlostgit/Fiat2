@@ -14,8 +14,8 @@ position = Vector2( 92.3143, 152.612 )
 
 [node name="Factory" parent="." instance=ExtResource( 2 )]
 position = Vector2( 30.4134, 224.481 )
-[connection signal="person_owned_updated_signal" from="TraderPerson" to="." method="_on_TraderPerson_person_owned_updated_signal"]
-[connection signal="send_to_shop_from_traderperson" from="TraderPerson" to="." method="_on_TraderPerson_send_to_shop_from_traderperson"]
+[connection signal="signal_person_owned_updated" from="TraderPerson" to="." method="_on_TraderPerson_signal_person_owned_updated"]
+[connection signal="signal_send_to_shop_from_traderperson" from="TraderPerson" to="." method="_on_TraderPerson_signal_send_to_shop_from_traderperson"]
+[connection signal="signal_trade" from="TraderPerson" to="." method="_on_TraderPerson_signal_trade"]
 [connection signal="signal_trade_and_consumption_calc" from="TraderPerson" to="." method="_on_TraderPerson_signal_trade_and_consumption_calc"]
-[connection signal="trade_signal" from="TraderPerson" to="." method="_on_TraderPerson_trade_signal"]
-[connection signal="produced_signal" from="Factory" to="." method="_on_Factory_produced_signal"]
+[connection signal="signal_produced" from="Factory" to="." method="_on_Factory_signal_produced"]

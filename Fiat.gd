@@ -12,10 +12,10 @@ var _price_calculation_interface = null
 var _person_node_dict = {}
 var _node_person_dict = {}
 
-signal price_updated_signal
-signal trade_of_person_updated_signal(trader_person_node, trade_dict)
-signal consumption_of_person_updated_signal(trader_person_node, trade_dict)
-signal initialize_owned_products_signal(trader_person_node,owned_products)
+signal signal_price_updated
+signal signal_trade_of_person_updated(trader_person_node, trade_dict)
+signal signal_consumption_of_person_updated(trader_person_node, trade_dict)
+signal signal_initialize_owned_products(trader_person_node,owned_products)
 
 
 # Called when the node enters the scene tree for the first time.
@@ -31,7 +31,7 @@ func _ready():
 	for person in get_persons():
 		_price_calculation_interface.set_owned_products(person,owned_products)
 		print(_price_calculation_interface.get_owned_products(person))
-		emit_signal("initialize_owned_products_signal",_person_node_dict[person],owned_products)
+		emit_signal("signal_initialize_owned_products",_person_node_dict[person],owned_products)
 	
 #	print(Prices.get_prices())
 #	_price_calculation_interface.calculate_new_prices()
@@ -74,13 +74,13 @@ func prices_updated():
 	var price_chocolate:float = Prices.get_price_of_product("chocolate")
 	$Shop/PricesLabel/ChocolatePriceLabel.set_text(str(price_chocolate))
 	
-	emit_signal("price_updated_signal")
+	emit_signal("signal_price_updated")
 
 func trade_of_person_updated(trader_person_node:Node,trade_dict:Dictionary):
-	emit_signal("trade_of_person_updated_signal",trader_person_node, trade_dict)
+	emit_signal("signal_trade_of_person_updated",trader_person_node, trade_dict)
 
 func consumption_of_person_updated(trader_person_node:Node,consumption_dict:Dictionary):
-	emit_signal("consumption_of_person_updated_signal",trader_person_node, consumption_dict)
+	emit_signal("signal_consumption_of_person_updated",trader_person_node, consumption_dict)
 	
 
 func calc_trade_and_consumption(trader_person_node:Node):
@@ -110,14 +110,14 @@ func _on_CalculatePrices_pressed():
 #	pass # Replace with function body.
 
 
-func _on_Producer1_person_owned_updated_signal(node_person, product_amount_dict):
+func _on_Producer1_signal_person_owned_updated(node_person, product_amount_dict):
 	person_owned_updated(node_person, product_amount_dict)
 
 
-func _on_CivilServant_person_owned_updated_signal(node_person, product_amount_dict):
+func _on_CivilServant_signal_person_owned_updated(node_person, product_amount_dict):
 	person_owned_updated(node_person, product_amount_dict)
 
-func _on_Producer2_person_owned_updated_signal(node_person, product_amount_dict):
+func _on_Producer2_signal_person_owned_updated(node_person, product_amount_dict):
 	person_owned_updated(node_person, product_amount_dict)
 
 

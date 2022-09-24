@@ -382,7 +382,7 @@ func get_owned_products(person_arg:String)->Dictionary:
 
 func set_owned_products(person_arg:String, owned_product:Dictionary):
 	if _person_owned_dict.has(person_arg):
-		_person_owned_dict[person_arg]=owned_product
+		_person_owned_dict[person_arg]=owned_product.duplicate()
 
 func add_owned_products(person_arg:String, owned_product_to_add:Dictionary):
 	if _person_owned_dict.has(person_arg):

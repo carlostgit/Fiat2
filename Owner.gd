@@ -94,7 +94,7 @@ func emit_products_updated_signal():
 	
 
 
-func _on_Trader_send_to_shop_signal(amountsdict):
+func _on_Trader_signal_send_to_shop(amountsdict):
 	_in_market_amounts = amountsdict.duplicate()
 	update_labels()
 	emit_products_updated_signal()

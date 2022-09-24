@@ -59,5 +59,5 @@ func _on_ConsumeButton_pressed():
 func _on_SendToConsumeButton_pressed():
 #	#De momento, se consume todo lo que se había calculado
 	#Pero tal vez habría que comprobar que hay suficientes productos
-	_current_consumption_dict = _to_be_consumed_dict
+	_current_consumption_dict = _to_be_consumed_dict.duplicate()
 	emit_signal("send_products_to_consume_signal",_to_be_consumed_dict)

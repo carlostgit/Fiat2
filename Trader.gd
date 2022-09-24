@@ -13,7 +13,7 @@ var _amounts_dict:Dictionary = {"bill":0,
 								"candy":0,
 								"chocolate":0}
 
-signal send_to_shop_signal(amountsdict)
+signal signal_send_to_shop(amountsdict)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -37,7 +37,7 @@ func update_labels():
 	
 
 func add_products(product_amount_dict:Dictionary):
-	_amounts_dict = product_amount_dict
+	_amounts_dict = product_amount_dict.duplicate()
 	update_labels()
 #	if product_amount_dict.has("bill"):
 #		var old_value:float = _amounts_dict["bill"]
@@ -80,7 +80,7 @@ func get_products()->Dictionary:
 
 
 func _on_SendToShopButton_pressed():
-	emit_signal("send_to_shop_signal",_amounts_dict)
+	emit_signal("signal_send_to_shop",_amounts_dict)
 	
 
 

@@ -6,9 +6,9 @@ extends Sprite
 # var b = "text"
 
 signal signal_trade_and_consumption_calc(node)
-signal person_owned_updated_signal(node_person,product_amount_dict)
-signal send_to_shop_from_traderperson(amountdict,traderperson)
-signal trade_signal(traderperson)
+signal signal_person_owned_updated(node_person,product_amount_dict)
+signal signal_send_to_shop_from_traderperson(amountdict,traderperson)
+signal signal_trade(traderperson)
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -51,7 +51,7 @@ func add_products(product_amount_dict:Dictionary):
 
 
 func _on_Owner_owner_products_updated_signal(product_amount_dict):
-	emit_signal("person_owned_updated_signal",self,product_amount_dict)
+	emit_signal("signal_person_owned_updated",self,product_amount_dict)
 	
 
 
@@ -63,11 +63,11 @@ func initialize_owned_products(owned_products:Dictionary):
 	$Owner.initialize_products(owned_products)
 
 
-func _on_Trader_send_to_shop_signal(amountsdict):
-	emit_signal("send_to_shop_from_traderperson",amountsdict,self)
+func _on_Trader_signal_send_to_shop(amountsdict):
+	emit_signal("signal_send_to_shop_from_traderperson",amountsdict,self)
 
 
 
 func _on_TradeButton_pressed():
-	emit_signal("trade_signal", self)
+	emit_signal("signal_trade", self)
 	pass # Replace with function body.

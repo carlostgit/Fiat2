@@ -5,7 +5,7 @@ extends Sprite
 # var a = 2
 # var b = "text"
 
-signal send_money_to_civil_servant(amount_to_send)
+signal signal_send_money_to_civil_servant(amount_to_send)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,14 +21,14 @@ func _on_GiveMoneyButton_pressed():
 	var spin_box_value:float = $GiveMoneyButton/MoneyToGiveSpinBox.get_value()
 	var money:float = $Owner.get_amount_of_product("bill")
 	var amount_to_send:float = min(spin_box_value,money)
-	emit_signal("send_money_to_civil_servant",amount_to_send)
+	emit_signal("signal_send_money_to_civil_servant",amount_to_send)
 	
 	var amount_to_remove:Dictionary = {}
 	amount_to_remove["bill"] = -amount_to_send
 	$Owner.add_products(amount_to_remove)
 	
 
-func _on_Factory_produced_signal(node, product_amount_dict):
+func _on_Factory_signal_produced(node, product_amount_dict):
 	$Owner.add_products(product_amount_dict)
 	
 	
