@@ -18,11 +18,21 @@
 [node name="Fiat" type="Node2D"]
 script = ExtResource( 5 )
 
+[node name="NextStepButton" type="Button" parent="."]
+margin_left = 680.0
+margin_top = 16.0
+margin_right = 750.0
+margin_bottom = 36.0
+text = "NextStep"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ProduceButton" type="Button" parent="."]
 margin_left = 680.0
-margin_top = 32.0
+margin_top = 48.0
 margin_right = 744.0
-margin_bottom = 56.0
+margin_bottom = 72.0
 text = "Produce"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -30,9 +40,9 @@ __meta__ = {
 
 [node name="GiveGovMoneyButton" type="Button" parent="."]
 margin_left = 760.0
-margin_top = 32.0
+margin_top = 48.0
 margin_right = 875.0
-margin_bottom = 56.0
+margin_bottom = 72.0
 text = "Give gov money"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -40,9 +50,9 @@ __meta__ = {
 
 [node name="ConsumeButton" type="Button" parent="."]
 margin_left = 680.0
-margin_top = 128.0
+margin_top = 144.0
 margin_right = 760.0
-margin_bottom = 152.0
+margin_bottom = 168.0
 text = "Consume"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -50,9 +60,9 @@ __meta__ = {
 
 [node name="TradeButton" type="Button" parent="."]
 margin_left = 768.0
-margin_top = 128.0
+margin_top = 144.0
 margin_right = 848.0
-margin_bottom = 152.0
+margin_bottom = 168.0
 text = "Trade"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -60,9 +70,9 @@ __meta__ = {
 
 [node name="CalculatePrices" type="Button" parent="."]
 margin_left = 680.0
-margin_top = 64.0
+margin_top = 80.0
 margin_right = 793.0
-margin_bottom = 88.0
+margin_bottom = 104.0
 text = "Calculate prices"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -70,9 +80,9 @@ __meta__ = {
 
 [node name="CalculateTradeAndConsumption" type="Button" parent="."]
 margin_left = 680.0
-margin_top = 96.0
+margin_top = 112.0
 margin_right = 889.0
-margin_bottom = 120.0
+margin_bottom = 136.0
 text = "Calculate trade & consumption"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -387,22 +397,23 @@ position = Vector2( -64, 120 )
 
 [node name="Button" type="Button" parent="."]
 margin_left = 688.0
-margin_top = 168.0
+margin_top = 184.0
 margin_right = 824.0
-margin_bottom = 208.0
+margin_bottom = 224.0
 text = "Test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_consumption_of_person_updated"]
-[connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
+[connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer1" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer2" method="_on_Fiat_signal_initialize_owned_products"]
-[connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
+[connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_trade_of_person_updated"]
+[connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
+[connection signal="pressed" from="NextStepButton" to="." method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="CalculatePrices" to="." method="_on_CalculatePrices_pressed"]
 [connection signal="signal_person_owned_updated" from="Producer1" to="." method="_on_Producer1_signal_person_owned_updated"]
 [connection signal="signal_send_to_shop_from_traderperson" from="Producer1" to="Shop" method="_on_Producer1_signal_send_to_shop_from_traderperson"]
@@ -414,6 +425,7 @@ __meta__ = {
 [connection signal="signal_trade_and_consumption_calc" from="Producer2" to="." method="_on_Producer2_signal_trade_and_consumption_calc"]
 [connection signal="signal_person_owned_updated" from="CivilServant" to="." method="_on_CivilServant_signal_person_owned_updated"]
 [connection signal="signal_send_to_shop_from_traderperson" from="CivilServant" to="Shop" method="_on_CivilServant_signal_send_to_shop_from_traderperson"]
+[connection signal="signal_person_owned_updated" from="CivilServant/TraderPerson" to="CivilServant" method="_on_TraderPerson_signal_person_owned_updated"]
 [connection signal="signal_send_to_shop_from_traderperson" from="CivilServant/TraderPerson" to="CivilServant" method="_on_TraderPerson_signal_send_to_shop_from_traderperson"]
 [connection signal="signal_trade" from="CivilServant/TraderPerson" to="Shop" method="_on_TraderPerson_signal_trade"]
 [connection signal="signal_trade_and_consumption_calc" from="CivilServant/TraderPerson" to="." method="_on_TraderPerson_signal_trade_and_consumption_calc"]

@@ -9,6 +9,7 @@ signal signal_trade_and_consumption_calc(node)
 signal signal_person_owned_updated(node_person,product_amount_dict)
 signal signal_send_to_shop_from_traderperson(amountdict,traderperson)
 signal signal_trade(traderperson)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -52,6 +53,7 @@ func add_products(product_amount_dict:Dictionary):
 
 func _on_Owner_owner_products_updated_signal(product_amount_dict):
 	emit_signal("signal_person_owned_updated",self,product_amount_dict)
+	
 	
 
 

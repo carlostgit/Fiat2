@@ -92,18 +92,42 @@ func calc_trade_and_consumption(trader_person_node:Node):
 		
 		var consumption_dict:Dictionary = _price_calculation_interface.calculate_consumption_for_person_with_current_best_combinations(person)
 		consumption_of_person_updated(trader_person_node, consumption_dict)
+		
 	
 func person_owned_updated(node_person, product_amount_dict):
 	if _node_person_dict.has(node_person):
 		var person:String = _node_person_dict[node_person]
 		_price_calculation_interface.set_owned_products(person, product_amount_dict)
 
+
+
+
+func _on_NextStepButton_pressed():
+	_price_calculation_interface.calculate_new_prices()
+	
+	for person in _person_node_dict.keys():	
+		_price_calculation_interface.adjust_best_combination_for_person(person)
+		
+		prices_updated()
+		
+		var trade_dict:Dictionary = _price_calculation_interface.calculate_trade_for_person_with_current_best_combinations(person)
+		var consumption_dict:Dictionary = _price_calculation_interface.calculate_consumption_for_person_with_current_best_combinations(person)
+
+		var owned_products_dict = _price_calculation_interface.get_owned_products(person)
+		var owned_products_minus_trade = Utils.calculate_combination_difference(owned_products_dict,trade_dict)	
+		var owned_products_minus_trade_and_consumpt = Utils.calculate_combination_difference(owned_products_minus_trade,consumption_dict)
+
+		_price_calculation_interface.set_owned_products(person,owned_products_minus_trade_and_consumpt)
+		
+		emit_signal("signal_initialize_owned_products",_person_node_dict[person],owned_products_minus_trade_and_consumpt)
+		#TODO:
+		#ESTOY PROBANDO ESTE MÉTODO
+
 func _on_Button_pressed():
 	var price_calculation_interface = PriceCalculationInterface.new()
 	price_calculation_interface.init_default_scenario()
 	price_calculation_interface.print_scenario_info()
 	pass # Replace with function body.
-
 
 func _on_CalculatePrices_pressed():
 	self.calculate_prices()
@@ -126,3 +150,5 @@ func _on_Producer2_signal_trade_and_consumption_calc(node):
 func _on_TraderPerson_signal_trade_and_consumption_calc(node):
 	calc_trade_and_consumption(node)
 
+
+	
