@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Producer.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Shop.gd" type="Script" id=2]
@@ -14,6 +14,7 @@
 [ext_resource path="res://TraderPerson.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Factory.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Government.gd" type="Script" id=14]
+[ext_resource path="res://GDNativeTestButton.gd" type="Script" id=15]
 
 [node name="Fiat" type="Node2D"]
 script = ExtResource( 5 )
@@ -404,14 +405,35 @@ text = "Test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="signal_consumption_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_consumption_of_person_updated"]
+
+[node name="GDNativeTestButton" type="Button" parent="."]
+margin_left = 688.0
+margin_top = 232.0
+margin_right = 824.0
+margin_bottom = 272.0
+text = "GDNative Test"
+script = ExtResource( 15 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GDNativeTestButton"]
+margin_left = 152.0
+margin_top = 8.0
+margin_right = 216.0
+margin_bottom = 32.0
+text = "test"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
+[connection signal="signal_consumption_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
-[connection signal="signal_initialize_owned_products" from="." to="Producer2" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
+[connection signal="signal_initialize_owned_products" from="." to="Producer2" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer1" method="_on_Fiat_signal_initialize_owned_products"]
-[connection signal="signal_trade_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
+[connection signal="signal_trade_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="pressed" from="NextStepButton" to="." method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="CalculatePrices" to="." method="_on_CalculatePrices_pressed"]
@@ -435,3 +457,4 @@ __meta__ = {
 [connection signal="pressed" from="Government/GiveMoneyButton" to="Government" method="_on_GiveMoneyButton_pressed"]
 [connection signal="signal_produced" from="Government/Factory" to="Government/Owner" method="_on_Factory_signal_produced"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="GDNativeTestButton" to="GDNativeTestButton" method="_on_GDNativeTestButton_pressed"]
