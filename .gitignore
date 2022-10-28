@@ -1,0 +1,10 @@
+# ignore ALL .layout files
+*.layout
+
+# ignore ALL files in ANY directory named bin, obj
+bin/
+obj/
+debug/
+Debug/
+release/
+Release/
