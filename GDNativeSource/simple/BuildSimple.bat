@@ -10,13 +10,13 @@ REM todos los archivos, y seleccionar nuestra librería .so)
 
 REM Añadimos el path al compilador gcc de MinGW
 set PATH=%PATH%;D:\CodeBlocks20_03\codeblocks-20.03-32bit-mingw-32bit-nosetup\MinGW\bin
-cd simple
+cd batchBin
 mkdir release
 cd..
-gcc -std=c11 -fPIC -c -I../godot-headers simple/simple.c -o simple/release/simple.o
+gcc -std=c11 -fPIC -c -I../../godot-headers src/simple.c -o batchBin/release/simple.o
 
 REM En la documentación viene que hay que poner la linea siguiente:
 REM gcc -rdynamic -shared simple.o -o ../simple/bin/libsimple.so
 REM pero a mi no me reconocía lo de -rdynamic y he probado sin eso, y también ha funcionado
 REM En vez del comando de la documentación, usamos el siguiente, donde falta lo de -rdynamic
-gcc -shared simple/release/simple.o -o simple/release/libsimple.so
+gcc -shared batchBin/release/simple.o -o batchBin/release/libsimple.so

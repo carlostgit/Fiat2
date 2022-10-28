@@ -426,14 +426,14 @@ text = "test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-[connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_consumption_of_person_updated"]
+[connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
-[connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer2" method="_on_Fiat_signal_initialize_owned_products"]
+[connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer1" method="_on_Fiat_signal_initialize_owned_products"]
-[connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_trade_of_person_updated"]
+[connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="pressed" from="NextStepButton" to="." method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="CalculatePrices" to="." method="_on_CalculatePrices_pressed"]
