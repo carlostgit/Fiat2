@@ -24,8 +24,7 @@ func _on_GDNativeTestButton_pressed():
 	#$Label.text = "get_num_args = " + data.get_num_args(5,3)
 #	$Label2.text = "set_data = " + data.set_and_get_data("Kuku")
 	
-	var text_dict_arg:Dictionary = {"cucu": 5.0, "coco":"lulu"}
-	
+	var text_dict_arg:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}	
 	var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
 	
 	for text_key in text_dict_arg:

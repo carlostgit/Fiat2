@@ -237,28 +237,18 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
     //Esta copia sobraba. No funciona como se espera de una copia.
     //Si modifico arg_dict_copy, se modifica también el diccionario recibido como argumento
 
-    wchar_t wchar_cucu[10] = L"cucu";
-    godot_int godint_cucu_length = wcslen(wchar_cucu);
-    godot_string godstring_cucu;
-    api->godot_string_new_with_wide_string(&godstring_cucu, &wchar_cucu, godint_cucu_length);
-    //Supongo que estos strings se copian, y que da igual que luego destruya el puntero
-    api->godot_print(&godstring_cucu);
 
-    godot_variant godvar_cucu;
-    api->godot_variant_new_string(&godvar_cucu,&godstring_cucu);
-
+    //////////
+    //Copia manual
+    //Primero copio manualmente el diccionario, y luego cambiaré el valor de cucu
+    //Tengo que copiar el diccionario elemento a elemento, a mano, porque no tengo
+    //acceso a la estructura godot_gdnative_core_1_2_api_struct que es la
+    //que tiene el método godot_dictionary_duplicate
+    //Y el método copy, parece que no duplica. Cuando modificas
+    //la copia, ves que se modifica el original también
     godot_dictionary godict_arg_man_copy;
-    api->godot_dictionary_new(&godict_arg_man_copy);
-
-    godot_bool bool_has_cucu = api->godot_dictionary_has(&godict_arg, &godvar_cucu);
-    printf("bool_has_cucu %d \n",bool_has_cucu);
-
-    if (bool_has_cucu)
     {
-        double d_new_value_for_cucu = 17.0;
-
-        godot_variant godvar_new_value_for_cucu;
-        api->godot_variant_new_real(&godvar_new_value_for_cucu, d_new_value_for_cucu);
+        api->godot_dictionary_new(&godict_arg_man_copy);
 
         godot_array godarray_keys = api->godot_dictionary_keys(&godict_arg);
         godot_array godarray_values = api->godot_dictionary_values(&godict_arg);
@@ -267,12 +257,6 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
 
         printf("Size of array: %d \n", godint_size_of_array);
 
-        //Primero copio manualmente el diccionario, y luego cambiaré el valor de cucu
-        //Tengo que copiar el diccionario elemento a elemento, a mano, porque no tengo
-        //acceso a la estructura godot_gdnative_core_1_2_api_struct que es la
-        //que tiene el método godot_dictionary_duplicate
-        //Y el método copy, parece que no duplica. Cuando modificas
-        //la copia, ves que se modifica el original también
         int i=0;
         for(i=0;i<godint_size_of_array;i++)
         {
@@ -306,10 +290,109 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
             printf("after set");
 
         }
-
-        //godot_variant value_of_cucu = api->godot_dictionary_get(&godict_arg_man_copy, &godvar_cucu);
-        api->godot_dictionary_set(&godict_arg_man_copy, &godvar_cucu, &godvar_new_value_for_cucu);
     }
+    //Fin de copia manual
+    //////
+
+    ////
+    //Pongo un valor 17 al elemento con key cucu
+    {
+        wchar_t wchar_cucu[10] = L"cucu";
+        godot_int godint_cucu_length = wcslen(wchar_cucu);
+        godot_string godstring_cucu;
+        api->godot_string_new_with_wide_string(&godstring_cucu, &wchar_cucu, godint_cucu_length);
+        //Supongo que estos strings se copian, y que da igual que luego destruya el wchar_cucu
+        api->godot_print(&godstring_cucu);
+
+        godot_variant godvar_cucu;
+        api->godot_variant_new_string(&godvar_cucu,&godstring_cucu);
+
+        godot_bool bool_has_cucu = api->godot_dictionary_has(&godict_arg, &godvar_cucu);
+        printf("bool_has_cucu %d \n",bool_has_cucu);
+
+        if (bool_has_cucu)
+        {
+            double d_new_value_for_cucu = 17.0;
+
+            godot_variant godvar_new_value_for_cucu;
+            api->godot_variant_new_real(&godvar_new_value_for_cucu, d_new_value_for_cucu);
+
+            //godot_variant value_of_cucu = api->godot_dictionary_get(&godict_arg_man_copy, &godvar_cucu);
+            api->godot_dictionary_set(&godict_arg_man_copy, &godvar_cucu, &godvar_new_value_for_cucu);
+        }
+    }
+    //Fin de poner un 17 donde cucu
+    //////
+
+
+    //////
+    //Cambiar el array que hay en el key caca, para añadir un elemento con valor c al array
+    {
+
+
+        wchar_t wchar_caca[10] = L"caca";
+        godot_int godint_caca_length = wcslen(wchar_caca);
+        godot_string godstring_caca;
+        api->godot_string_new_with_wide_string(&godstring_caca, &wchar_caca, godint_caca_length);
+        api->godot_print(&godstring_caca);
+        godot_variant godvar_caca;
+        api->godot_variant_new_string(&godvar_caca,&godstring_caca);
+
+
+        godot_bool bool_has_caca = api->godot_dictionary_has(&godict_arg, &godvar_caca);
+        printf("bool_has_caca %d \n",bool_has_caca);
+
+        if (bool_has_caca)
+        {
+            //Nuevo valor a añadir al array
+            wchar_t wchar_c[5] = L"c";
+            godot_int godint_c_length = wcslen(wchar_c);
+            godot_string godstring_c;
+            api->godot_string_new_with_wide_string(&godstring_c, &wchar_c, godint_c_length);
+            api->godot_print(&godstring_c);
+            godot_variant godvar_c;
+            api->godot_variant_new_string(&godvar_c,&godstring_c);
+
+            //Obtener el array actual
+            godot_variant govar_old_array = api->godot_dictionary_get(&godict_arg,&godvar_caca);
+
+            godot_array godarray_old_array =  api->godot_variant_as_array(&govar_old_array);
+
+            //voy a hacer una copia, para no alterar el antiguo array. Pq el tipo
+            //de copia que he hecho de los diccionarios, es solo del puntero al array
+
+            godot_array godarray_new_array;
+            api->godot_array_new(&godarray_new_array);
+
+            godot_variant govar_new_array;
+            api->godot_variant_new_array(&govar_new_array,&godarray_new_array);
+
+            //Copio los viejos elementos
+
+            godot_int godint_old_array_size = api->godot_array_size(&godarray_old_array);
+            int i=0;
+            for(i=0;i<godint_old_array_size;i++)
+            {
+                //godot_variant *(*godot_array_operator_index)(godot_array *p_self, const godot_int p_idx);
+
+                godot_variant* pGovar_old_elem = api->godot_array_operator_index(&godarray_old_array,i);
+
+                api->godot_array_append(&godarray_new_array, pGovar_old_elem);
+            }
+
+            //Añado el nuevo elemento
+            api->godot_array_append(&godarray_new_array, &godvar_c);
+
+
+            //Sustituyo en viejo array por el nuevo
+            api->godot_dictionary_set(&godict_arg_man_copy,&godvar_caca,&govar_new_array);
+
+        }
+
+
+    }
+    //Fin de añader una c en el array que hay en el key caca
+    //////
 
     api->godot_variant_new_dictionary(&godvar_ret, &godict_arg_man_copy);
 

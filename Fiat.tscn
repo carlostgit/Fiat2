@@ -413,24 +413,19 @@ margin_right = 824.0
 margin_bottom = 272.0
 text = "GDNative Test"
 script = ExtResource( 15 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label" type="Label" parent="GDNativeTestButton"]
-margin_left = 168.0
-margin_right = 232.0
-margin_bottom = 24.0
+margin_left = -104.0
+margin_top = 40.0
+margin_right = -40.0
+margin_bottom = 54.0
 text = "test"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Label2" type="Label" parent="GDNativeTestButton"]
-margin_left = 168.0
-margin_top = 32.0
-margin_right = 208.0
-margin_bottom = 46.0
+margin_left = -104.0
+margin_top = 64.0
+margin_right = -64.0
+margin_bottom = 78.0
 text = "Test2"
 
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
