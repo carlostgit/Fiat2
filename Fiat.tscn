@@ -418,23 +418,30 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="GDNativeTestButton"]
-margin_left = 152.0
-margin_top = 8.0
-margin_right = 216.0
-margin_bottom = 32.0
+margin_left = 168.0
+margin_right = 232.0
+margin_bottom = 24.0
 text = "test"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Label2" type="Label" parent="GDNativeTestButton"]
+margin_left = 168.0
+margin_top = 32.0
+margin_right = 208.0
+margin_bottom = 46.0
+text = "Test2"
+
+[connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_consumption_of_person_updated"]
-[connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
+[connection signal="signal_initialize_owned_products" from="." to="Producer1" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="Producer2" method="_on_Fiat_signal_initialize_owned_products"]
 [connection signal="signal_initialize_owned_products" from="." to="CivilServant" method="_on_Fiat_signal_initialize_owned_products"]
-[connection signal="signal_initialize_owned_products" from="." to="Producer1" method="_on_Fiat_signal_initialize_owned_products"]
+[connection signal="signal_trade_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="signal_trade_of_person_updated" from="." to="CivilServant" method="_on_Fiat_signal_trade_of_person_updated"]
-[connection signal="signal_trade_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_trade_of_person_updated"]
 [connection signal="pressed" from="NextStepButton" to="." method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="CalculatePrices" to="." method="_on_CalculatePrices_pressed"]
 [connection signal="signal_person_owned_updated" from="Producer1" to="." method="_on_Producer1_signal_person_owned_updated"]

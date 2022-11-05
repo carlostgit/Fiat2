@@ -1,0 +1,181 @@
+# depslib dependency file v1.0
+1666651890 source:d:\godot\proyectos\fiat2\gdnativesource\simple\src\simple.c
+	<gdnative_api_struct.gen.h>
+	<string.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative_api_struct.gen.h
+	<gdnative/gdnative.h>
+	<android/godot_android.h>
+	<arvr/godot_arvr.h>
+	<nativescript/godot_nativescript.h>
+	<net/godot_net.h>
+	<pluginscript/godot_pluginscript.h>
+	<videodecoder/godot_videodecoder.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\gdnative.h
+	"TargetConditionals.h"
+	<stdbool.h>
+	<stdint.h>
+	<gdnative/string.h>
+	<gdnative/string_name.h>
+	<gdnative/vector2.h>
+	<gdnative/rect2.h>
+	<gdnative/vector3.h>
+	<gdnative/transform2d.h>
+	<gdnative/plane.h>
+	<gdnative/quat.h>
+	<gdnative/aabb.h>
+	<gdnative/basis.h>
+	<gdnative/transform.h>
+	<gdnative/color.h>
+	<gdnative/node_path.h>
+	<gdnative/rid.h>
+	<gdnative/dictionary.h>
+	<gdnative/array.h>
+	<gdnative/pool_arrays.h>
+	<gdnative/variant.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\string.h
+	<stdint.h>
+	<wchar.h>
+	<gdnative/array.h>
+	<gdnative/gdnative.h>
+	<gdnative/variant.h>
+
+1666646052 d:\godot\proyectos\fiat2\godot-headers\gdnative\array.h
+	<stdint.h>
+	<gdnative/pool_arrays.h>
+	<gdnative/variant.h>
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\pool_arrays.h
+	<stdint.h>
+	<gdnative/array.h>
+	<gdnative/color.h>
+	<gdnative/vector2.h>
+	<gdnative/vector3.h>
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\color.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/string.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\vector2.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\vector3.h
+	<stdint.h>
+	<gdnative/basis.h>
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\basis.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/quat.h>
+	<gdnative/vector3.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\quat.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/vector3.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\variant.h
+	<stdint.h>
+	<gdnative/aabb.h>
+	<gdnative/array.h>
+	<gdnative/basis.h>
+	<gdnative/color.h>
+	<gdnative/dictionary.h>
+	<gdnative/node_path.h>
+	<gdnative/plane.h>
+	<gdnative/pool_arrays.h>
+	<gdnative/quat.h>
+	<gdnative/rect2.h>
+	<gdnative/rid.h>
+	<gdnative/string.h>
+	<gdnative/transform.h>
+	<gdnative/transform2d.h>
+	<gdnative/variant.h>
+	<gdnative/vector2.h>
+	<gdnative/vector3.h>
+	<gdnative/gdnative.h>
+
+1666646052 d:\godot\proyectos\fiat2\godot-headers\gdnative\aabb.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/plane.h>
+	<gdnative/vector3.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\plane.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/vector3.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\dictionary.h
+	<stdint.h>
+	<gdnative/array.h>
+	<gdnative/gdnative.h>
+	<gdnative/variant.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\node_path.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/string.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\rect2.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/vector2.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\rid.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\transform.h
+	<stdint.h>
+	<gdnative/basis.h>
+	<gdnative/gdnative.h>
+	<gdnative/variant.h>
+	<gdnative/vector3.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\transform2d.h
+	<stdint.h>
+	<gdnative/gdnative.h>
+	<gdnative/variant.h>
+	<gdnative/vector2.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\gdnative\string_name.h
+	<stdint.h>
+	<wchar.h>
+	<gdnative/gdnative.h>
+
+1666646050 d:\godot\proyectos\fiat2\godot-headers\android\godot_android.h
+	<gdnative/gdnative.h>
+	<jni.h>
+
+1666646052 d:\godot\proyectos\fiat2\godot-headers\arvr\godot_arvr.h
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\nativescript\godot_nativescript.h
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\net\godot_net.h
+	<gdnative/gdnative.h>
+	"net/godot_webrtc.h"
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\net\godot_webrtc.h
+	<gdnative/gdnative.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\pluginscript\godot_pluginscript.h
+	<gdnative/gdnative.h>
+	<nativescript/godot_nativescript.h>
+
+1666646054 d:\godot\proyectos\fiat2\godot-headers\videodecoder\godot_videodecoder.h
+	<gdnative/gdnative.h>
+
+1667323936 source:d:\godot\proyectos\fiat2\gdnativesource\simplemods\src\simple.c
+	<gdnative_api_struct.gen.h>
+	<string.h>
+
