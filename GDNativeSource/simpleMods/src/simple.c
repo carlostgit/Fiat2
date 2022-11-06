@@ -1,5 +1,6 @@
 #include <gdnative_api_struct.gen.h>
 #include <string.h>
+#include "MarketTest.h"
 
 typedef struct user_data_struct {
 	char data[256];
@@ -312,7 +313,7 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
 
         if (bool_has_cucu)
         {
-            double d_new_value_for_cucu = 17.0;
+            double d_new_value_for_cucu = calculationTest(35);
 
             godot_variant godvar_new_value_for_cucu;
             api->godot_variant_new_real(&godvar_new_value_for_cucu, d_new_value_for_cucu);
@@ -328,8 +329,6 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
     //////
     //Cambiar el array que hay en el key caca, para añadir un elemento con valor c al array
     {
-
-
         wchar_t wchar_caca[10] = L"caca";
         godot_int godint_caca_length = wcslen(wchar_caca);
         godot_string godstring_caca;
@@ -395,6 +394,7 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
     //////
 
     api->godot_variant_new_dictionary(&godvar_ret, &godict_arg_man_copy);
+
 
 	return godvar_ret;
 }
