@@ -2,6 +2,16 @@
 #include <string.h>
 #include "MarketTest.h"
 
+//Callback para pasarse como puntero como argumento del método
+// setCallbackMethodForPrices de MarketTest
+void setDataFromMarket(int nProduct, double dAmount);
+
+
+//Variable global para guardar los resultados que llegan en setPrice
+//Es como otro user_data_struct
+double g_dDataFromMarket = 0.0;
+//
+
 typedef struct user_data_struct {
 	char data[256];
 } user_data_struct;
@@ -22,6 +32,7 @@ godot_variant simple_get_data2(godot_object *p_instance, void *p_method_data, vo
 godot_variant simple_set_and_get_data(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
 godot_variant simple_get_num_args(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
 godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
+godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
 
 
 // `gdnative_init` is a function that initializes our dynamic library.
@@ -91,6 +102,9 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
     godot_instance_method get_and_set_dict = { NULL, NULL, NULL };
     get_and_set_dict.method = &simple_get_and_set_dict;
 
+    godot_instance_method calc_info_from_market_test = { NULL, NULL, NULL };
+    calc_info_from_market_test.method = &simple_calc_info_from_market_test;
+
 	godot_method_attributes attributes = { GODOT_METHOD_RPC_MODE_DISABLED };
 
 	// We then tell Godot about our methods by calling this for each
@@ -107,6 +121,7 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
 	nativescript_api->godot_nativescript_register_method(p_handle, "SIMPLE", "set_and_get_data", attributes, set_and_get_data);
 	nativescript_api->godot_nativescript_register_method(p_handle, "SIMPLE", "get_num_args", attributes, get_num_args);
 	nativescript_api->godot_nativescript_register_method(p_handle, "SIMPLE", "get_and_set_dict", attributes, get_and_set_dict);
+	nativescript_api->godot_nativescript_register_method(p_handle, "SIMPLE", "calc_info_from_market_test", attributes, calc_info_from_market_test);
 }
 
 // In our constructor, allocate memory for our structure and fill
@@ -216,6 +231,7 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
     //También podría probar a convertir todo a un json, y usar un json
     //como argumento, y como respuesta.
 
+
     godot_variant godvar_ret;
 
 //    printf("Godot version mayor:%d, minor%d\n", api->version.major,api->version.minor);
@@ -313,7 +329,7 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
 
         if (bool_has_cucu)
         {
-            double d_new_value_for_cucu = calculationTest(35);
+            double d_new_value_for_cucu = 84;
 
             godot_variant godvar_new_value_for_cucu;
             api->godot_variant_new_real(&godvar_new_value_for_cucu, d_new_value_for_cucu);
@@ -396,7 +412,36 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
     api->godot_variant_new_dictionary(&godvar_ret, &godict_arg_man_copy);
 
 
+
+
+
 	return godvar_ret;
 }
 
+
+
+godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args)
+{
+    godot_variant godvar_ret;
+
+    market_addPriceForProduct(2,34.6);
+    //Test de registro de callback
+    market_setCallbackMethodForPrices(&setDataFromMarket);
+    market_calculationTest(35);
+
+
+
+    double d_new_value = g_dDataFromMarket;
+    api->godot_variant_new_real(&godvar_ret, d_new_value);
+
+	return godvar_ret;
+}
+
+//Metodo callback para que lo use MarketTest
+void setDataFromMarket(int nProduct, double dAmount)
+{
+    printf("nProduct: %d",nProduct );
+    printf("dAmount: %d",dAmount);
+    g_dDataFromMarket = dAmount;
+}
 

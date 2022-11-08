@@ -25,22 +25,23 @@ func _on_GDNativeTestButton_pressed():
 #	$Label2.text = "set_data = " + data.set_and_get_data("Kuku")
 	
 	var text_dict_arg:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}	
-	var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
+	#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
+#	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
 	
 	$Label.text = ""
-	$Label2.text = ""
+	$Label2.text = "calc_info_from_market_test: "+ str(data.calc_info_from_market_test())
 	
 	for text_key in text_dict_arg:
 		$Label.text += " Key: "+text_key
 		$Label.text += " Value: "+str(text_dict_arg[text_key])
 	
-	for text_key in text_dict_answ:
-		$Label2.text += " Key: "+text_key
-		$Label2.text += " Value: "+str(text_dict_answ[text_key])
-#		if "cucu"==text_key:
-#			$Label2.text += " "+str(text_dict_answ[text_key])
-#		else:
-#			$Label2.text += " "+str(text_dict_answ[text_key])
+#	for text_key in text_dict_answ:
+#		$Label2.text += " Key: "+text_key
+#		$Label2.text += " Value: "+str(text_dict_answ[text_key])
+##		if "cucu"==text_key:
+##			$Label2.text += " "+str(text_dict_answ[text_key])
+##		else:
+##			$Label2.text += " "+str(text_dict_answ[text_key])
 	
 	
 	
