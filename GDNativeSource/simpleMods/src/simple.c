@@ -2,6 +2,17 @@
 #include <string.h>
 #include "MarketTest.h"
 
+//Prueba con libreria Market.dll
+#include "../../Market/market.h"
+//tipo del método
+//void DLL_EXPORT SomeFunction(const LPCSTR sometext);
+//DWORD(*Arithmetic)(DWORD, DWORD);
+//void(*SomeFunction)(const LPCSTR sometext);
+typedef void(*SomeF)(const LPCSTR sometext);
+//
+
+//
+
 //Callback para pasarse como puntero como argumento del método
 // setCallbackMethodForPrices de MarketTest
 void setDataFromMarket(int nProduct, double dAmount);
@@ -429,10 +440,35 @@ godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *
     market_setCallbackMethodForPrices(&setDataFromMarket);
     market_calculationTest(35);
 
-
-
     double d_new_value = g_dDataFromMarket;
     api->godot_variant_new_real(&godvar_ret, d_new_value);
+
+    //Pruebo a llamar a un método de Market.dll
+    //He comprobado, q carga la librería, solo si la pongo en el exe de godot
+    //Ejemplo con run-time inking. Creo que no es necesario compilar linkando
+    //con la librería estática
+    //HMODULE hDll = LoadLibrary(_T("Marketd.dll"));
+    HMODULE hDll = LoadLibrary("Marketd.dll");
+    if (!hDll || hDll == INVALID_HANDLE_VALUE) {
+        printf("unable to load libraray\n");
+        wchar_t wchar_caca[20] = L"unable to load libraray";
+        godot_int godint_caca_length = wcslen(wchar_caca);
+        godot_string godstring_caca;
+        api->godot_string_new_with_wide_string(&godstring_caca, &wchar_caca, godint_caca_length);
+        api->godot_print(&godstring_caca);
+        return godvar_ret;
+    }
+
+    printf("Marketd.dll loaded\n");
+
+    void(*functionPtr)(const LPCSTR sometext);
+    functionPtr = (SomeF)(GetProcAddress(hDll, "SomeFunction"));
+    //Lo anterior queda más bonito, pero también se puede hacer
+    //como en la siguiente linea, sin usar el typdef
+    //functionPtr = (void(*)(const LPCSTR sometext))(GetProcAddress(hDll, "SomeFunction"));
+
+    functionPtr("Hello from run-time linked dll");
+    //Fin del ejemplo con run-time linking.
 
 	return godvar_ret;
 }

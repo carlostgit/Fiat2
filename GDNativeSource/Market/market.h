@@ -25,4 +25,8 @@ void DLL_EXPORT SomeFunction(const LPCSTR sometext);
 }
 #endif
 
+//static method:
+//void SomeFunctionForStaticLibrary(const LPCSTR sometext);
+//void SomeFunctionForStaticLibrary(int coco){int i =0;}
+
 #endif // __MARKET_H__

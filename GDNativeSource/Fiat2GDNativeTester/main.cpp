@@ -19,6 +19,10 @@ typedef void(*SomeF)(const LPCSTR sometext);
 
 int main()
 {
+
+    //SomeFunctionForStaticLibrary("Hello from statically linked lib");
+    //SomeFunctionForStaticLibrary(3);
+
     //Ejemplo con load-time linking. Es necesario compilar linkando con la
     //librería estática
     cout << "Hello world!" << endl;

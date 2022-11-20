@@ -2,4 +2,4 @@
 
 [resource]
 entry/Windows.32 = "res://GDNativeSource/simpleMods/bin/Debug/simple.dll"
-dependency/Windows.32 = [  ]
+dependency/Windows.32 = [ "res://GDNativeSource/Market/bin/Debug/Marketd.dll" ]

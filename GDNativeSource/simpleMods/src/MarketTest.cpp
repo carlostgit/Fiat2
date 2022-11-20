@@ -48,6 +48,4 @@ extern "C" void market_setCallbackMethodForPrices(void(*setPrice)(int nProduct, 
         m_setPrice(nFirstAmount,nSecondAmount);
 
     }
-
-
 }

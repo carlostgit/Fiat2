@@ -1,0 +1,30 @@
+# depslib dependency file v1.0
+1314898158 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\main.cpp
+	<iostream>
+
+1668465166 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\person.cpp
+	"Person.h"
+
+1668465120 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\person.h
+	<map>
+
+1668381708 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculator.cpp
+	"PriceCalculator.h"
+	"Person.h"
+	"Prices.h"
+
+1668381630 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculator.h
+	<vector>
+	<memory>
+
+1668465626 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\prices.cpp
+	"Prices.h"
+
+1668465606 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\prices.h
+	<map>
+
+1668467658 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.cpp
+	"SatisfactionCurve.h"
+
+1668467628 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.h
+
