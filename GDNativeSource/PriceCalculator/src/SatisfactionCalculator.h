@@ -23,7 +23,7 @@ class CSatisfactionCalculator
 
     private:
         //std::vector<long> m_vOptions; //Igual se puede sustituir esto por otra cosa
-        std::set<long> m_setOptions;//Igual se puede sustituir esto por otra cosa
+        std::set<long> m_setOptions;//TODO: sustituir por lo de PriceCalculationDefines
         std::map<long, CSatisfactionCurve*> m_Option_SatisfactionCurve;
 
         std::map<long, std::set<long> > m_mapComplementaryCombo_setOptions;
@@ -31,6 +31,8 @@ class CSatisfactionCalculator
 
         std::map<long, std::map<long,double> > m_mapSupplementaryCombo_mapOption_dWeight;
         std::map<long, CSatisfactionCurve*> m_mapSupplementaryCombo_pSatisfCurve;
+
+        long m_nId = 0;
 
 /*
 //Combos suplementarios y complementarios con su ponderación

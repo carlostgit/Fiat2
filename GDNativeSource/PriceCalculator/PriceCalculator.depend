@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1314898158 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\main.cpp
+1669327536 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\main.cpp
 	<iostream>
+	"Tester.h"
 
 1668465166 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\person.cpp
 	"Person.h"
@@ -8,12 +9,12 @@
 1668465120 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\person.h
 	<map>
 
-1668381708 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculator.cpp
+1669073678 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculator.cpp
 	"PriceCalculator.h"
 	"Person.h"
 	"Prices.h"
 
-1668381630 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculator.h
+1668726974 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculator.h
 	<vector>
 	<memory>
 
@@ -23,8 +24,27 @@
 1668465606 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\prices.h
 	<map>
 
-1668467658 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.cpp
+1668548366 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.cpp
 	"SatisfactionCurve.h"
 
-1668467628 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.h
+1669328038 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.h
+
+1668978080 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncalculator.cpp
+	"SatisfactionCalculator.h"
+	"SatisfactionCurve.h"
+
+1669073802 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\satisfactioncalculator.h
+	<map>
+	<vector>
+	<set>
+
+1669073634 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculationdefines.h
+	<set>
+
+1669329482 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\tester.h
+
+1669329374 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\tester.cpp
+	"Tester.h"
+	<iostream>
+	"SatisfactionCurve.h"
 

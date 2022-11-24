@@ -2,6 +2,7 @@
 #include "Person.h"
 #include "Prices.h"
 
+
 CPriceCalculator::CPriceCalculator()
 {
     //ctor
