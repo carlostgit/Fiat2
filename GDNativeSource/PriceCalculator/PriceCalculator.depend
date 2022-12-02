@@ -48,3 +48,56 @@
 	<iostream>
 	"SatisfactionCurve.h"
 
+1670011356 source:d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\main.cpp
+	<iostream>
+	"Tester.h"
+
+1670011356 d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\tester.h
+
+1670011356 source:d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\person.cpp
+	"Person.h"
+
+1670011356 d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\person.h
+	<map>
+
+1670011356 source:d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\pricecalculator.cpp
+	"PriceCalculator.h"
+	"Person.h"
+	"Prices.h"
+
+1670011356 d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\pricecalculator.h
+	<vector>
+	<memory>
+
+1670011356 d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\prices.h
+	<map>
+
+1670011356 source:d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\prices.cpp
+	"Prices.h"
+
+1670020212 source:d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\satisfactioncalculator.cpp
+	"SatisfactionCalculator.h"
+	"SatisfactionCurve.h"
+	"PriceCalculationDefines.h"
+
+1670020178 d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\satisfactioncalculator.h
+	<map>
+	<vector>
+	<set>
+	<memory>
+
+1670011356 d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.h
+
+1670011356 source:d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\satisfactioncurve.cpp
+	"SatisfactionCurve.h"
+
+1670011356 source:d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\tester.cpp
+	"Tester.h"
+	<iostream>
+	"SatisfactionCurve.h"
+	"SatisfactionCalculator.h"
+
+1670016173 d:\carlos\proyectosgodot\fiat2\gdnativesource\pricecalculator\src\pricecalculationdefines.h
+	<set>
+	<map>
+

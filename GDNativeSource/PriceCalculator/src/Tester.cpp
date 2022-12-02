@@ -1,7 +1,9 @@
 #include "Tester.h"
 #include <iostream>
+#include "PriceCalculationDefines.h"
 #include "SatisfactionCurve.h"
 #include "SatisfactionCalculator.h"
+
 
 CTester::CTester()
 {
@@ -35,6 +37,15 @@ CTester::Test_SatisfactionCalculator()
     std::cout << "Starting Test_SatisfactionCalculator" << std::endl;
 
     CSatisfactionCalculator oSatCalculator;
+    std::map<int,double> map_nOption_dAmount;
+    for(auto & nOption:c_setOptions)
+    {
+        map_nOption_dAmount[nOption] = 1.0;
+
+    }
+    std::cout << "Prueba..." << std::endl;
+    double dSatisf = oSatCalculator.CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
+    std::cout << "dSatisfAt_"<<": "<< dSatisf << std::endl;
     //Esto hay que inicializarlo primero bien
 
     //TODO... hacer el test de Test_SatisfactionCalculator
