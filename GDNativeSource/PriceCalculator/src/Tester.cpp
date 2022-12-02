@@ -1,6 +1,7 @@
 #include "Tester.h"
 #include <iostream>
 #include "SatisfactionCurve.h"
+#include "SatisfactionCalculator.h"
 
 CTester::CTester()
 {
@@ -28,3 +29,17 @@ CTester::Test_SatisfactionCurve()
 
     std::cout << "Test_SatisfactionCurve finished" << std::endl;
 }
+
+CTester::Test_SatisfactionCalculator()
+{
+    std::cout << "Starting Test_SatisfactionCalculator" << std::endl;
+
+    CSatisfactionCalculator oSatCalculator;
+    //Esto hay que inicializarlo primero bien
+
+    //TODO... hacer el test de Test_SatisfactionCalculator
+    std::cout << "TODO... hacer el test de Test_SatisfactionCalculator" << std::endl;
+
+    std::cout << "Test_SatisfactionCalculator finished" << std::endl;
+}
+

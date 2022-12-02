@@ -9,6 +9,8 @@ int main()
 
     oTester.Test_SatisfactionCurve();
 
+    oTester.Test_SatisfactionCalculator();
+
     cout << "Hello world!" << endl;
     return 0;
 }

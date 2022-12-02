@@ -9,6 +9,7 @@ class CTester
         virtual ~CTester();
 
         Test_SatisfactionCurve();
+        Test_SatisfactionCalculator();
 
     protected:
 

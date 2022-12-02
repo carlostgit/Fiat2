@@ -45,6 +45,8 @@
 		<Unit filename="src/SatisfactionCalculator.h" />
 		<Unit filename="src/SatisfactionCurve.cpp" />
 		<Unit filename="src/SatisfactionCurve.h" />
+		<Unit filename="src/Tester.cpp" />
+		<Unit filename="src/Tester.h" />
 		<Unit filename="src/main.cpp" />
 		<Extensions />
 	</Project>

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1669327536 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\main.cpp
+1669849708 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\main.cpp
 	<iostream>
 	"Tester.h"
 
@@ -41,7 +41,7 @@
 1669073634 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\pricecalculationdefines.h
 	<set>
 
-1669329482 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\tester.h
+1669849644 d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\tester.h
 
 1669329374 source:d:\godot\proyectos\fiat2\gdnativesource\pricecalculator\src\tester.cpp
 	"Tester.h"
