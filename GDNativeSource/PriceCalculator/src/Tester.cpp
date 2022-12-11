@@ -44,9 +44,14 @@ CTester::Test_SatisfactionCalculator()
 
     }
     std::cout << "Prueba..." << std::endl;
-    double dSatisf = oSatCalculator.CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
-    std::cout << "dSatisfAt_"<<": "<< dSatisf << std::endl;
-    //Esto hay que inicializarlo primero bien
+    double dSatisfFormIndivOptions = oSatCalculator.CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
+    std::cout << "dSatisfFormIndivOptions: "<< dSatisfFormIndivOptions << std::endl;
+    double dSatisfFormSuppCombos = oSatCalculator.CalculateSatisfOfCombidictFromSupplementaryCombos(map_nOption_dAmount);
+    std::cout << "dSatisfFormSuppCombos "<< dSatisfFormSuppCombos << std::endl;
+    double dSatisfFormCompCombos = oSatCalculator.CalculateSatisfOfCombidictFromComplementaryCombos(map_nOption_dAmount);
+    std::cout << "dSatisfFormCompCombos "<< dSatisfFormCompCombos << std::endl;
+    double dSatisfTotal = oSatCalculator.CalculateSatisfOfCombidict(map_nOption_dAmount);
+    std::cout << "dSatisfTotal "<< dSatisfTotal << std::endl;
 
     //TODO... hacer el test de Test_SatisfactionCalculator
     std::cout << "TODO... hacer el test de Test_SatisfactionCalculator" << std::endl;

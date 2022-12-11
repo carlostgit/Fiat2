@@ -2,6 +2,7 @@
 #include "SatisfactionCurve.h"
 #include "PriceCalculationDefines.h"
 
+#include <memory>
 
 CSatisfactionCalculator::CSatisfactionCalculator()
 {
@@ -189,6 +190,22 @@ double CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOptions(
     }
 
     return dSatisfOfOptIndividually;
+}
+
+
+//func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
+double CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<int,double> map_nOption_dAmount)
+{
+    double dSatisfOfOptIndividually = CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
+
+    double dSatisfOfOptComplementaryCombi = CalculateSatisfOfCombidictFromComplementaryCombos(map_nOption_dAmount);
+
+    double dSatisfOfOptSupplementaryCombi = CalculateSatisfOfCombidictFromSupplementaryCombos(map_nOption_dAmount);
+
+    double dSatisfactionReturn = dSatisfOfOptIndividually + dSatisfOfOptComplementaryCombi + dSatisfOfOptSupplementaryCombi;
+
+    return dSatisfactionReturn;
+
 }
 
 /*

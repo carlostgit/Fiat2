@@ -23,6 +23,7 @@ class CSatisfactionCalculator
         double CalculateSatifactionOfOptComplementaryCombo(int nCombo, double dAmount);
         double CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<int,double> mapOption_dAmount);
         double CalculateSatifactionOfOptSupplementaryCombo(int nCombo, double dAmount);
+        double CalculateSatisfOfCombidict(std::map<int,double> map_nOption_dAmount);
 
         void DefaultInitialization();
 
