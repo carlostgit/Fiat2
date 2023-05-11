@@ -3,6 +3,7 @@
 #include "PriceCalculationDefines.h"
 #include "SatisfactionCurve.h"
 #include "SatisfactionCalculator.h"
+#include "TradeCalculator.h"
 
 
 CTester::CTester()
@@ -57,5 +58,16 @@ CTester::Test_SatisfactionCalculator()
     std::cout << "TODO... hacer el test de Test_SatisfactionCalculator" << std::endl;
 
     std::cout << "Test_SatisfactionCalculator finished" << std::endl;
+    ;
+
+    CTradeCalculator oTradeCalculator;
+    std::cout << "Probando AdjustBestCombidict..." << std::endl;
+    std::map<int,double> mapOpAmmAdjusted = oTradeCalculator.AdjustBestCombidict(10.0, map_nOption_dAmount,1.0,100);
+    for (auto & pair_Op_Am:mapOpAmmAdjusted)
+    {
+       std::cout << "Option: "<< pair_Op_Am.first << std::endl;
+       std::cout << "Amount: "<< pair_Op_Am.second<< std::endl;
+    }
+
 }
 
