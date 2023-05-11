@@ -55,9 +55,6 @@ margin_top = 144.0
 margin_right = 760.0
 margin_bottom = 168.0
 text = "Consume"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="TradeButton" type="Button" parent="."]
 margin_left = 768.0
@@ -75,9 +72,6 @@ margin_top = 80.0
 margin_right = 793.0
 margin_bottom = 104.0
 text = "Calculate prices"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CalculateTradeAndConsumption" type="Button" parent="."]
 margin_left = 680.0
