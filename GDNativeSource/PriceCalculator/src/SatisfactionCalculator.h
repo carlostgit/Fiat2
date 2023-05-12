@@ -16,6 +16,8 @@ class CSatisfactionCalculator
         CSatisfactionCalculator();
         virtual ~CSatisfactionCalculator();
 
+        std::map<int,double> CalculateProductdictFromOptiondict(std::map<int,double> mapOptiondictArg );
+
     protected:
         double CalculateSatisfOfCombidictFromIndividualOptions(std::map<int,double> map_nOption_dAmount);
         double CalculateSatifactionOfOption(int nOption, double dQuantity);

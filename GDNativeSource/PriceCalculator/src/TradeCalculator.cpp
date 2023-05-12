@@ -1,6 +1,9 @@
 #include "TradeCalculator.h"
 
 #include <iostream>
+#include <set>
+#include "PriceCalculationDefines.h"
+#include "SatisfactionCalculator.h"
 
 CTradeCalculator::CTradeCalculator()
 {
@@ -14,13 +17,22 @@ CTradeCalculator::~CTradeCalculator()
 
 
 //TODO: Pasar este método a C++
-std::map<int,double> CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<int,double> map_nOption_dAmount, double dBudgetStepArg, int nMaxStepArg)
+std::map<int,double> CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<int,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
 {
-    std::map<int,double> mapCalculatedCombidict;
+    std::map<int,double> mapCombidictCombidict;
+
+    double dBudgetStepLength = dBudgetStepArg;
+
+    std::set<int> setOptions = c_setOptions;
+
+    std::map<int, double> mapCombination = mapCurrentCombidict;
+
+    std::map<int, double> mapProductDict = m_pSatisfactionCalculator->CalculateProductdictFromOptiondict(mapCombination);
+    //var productdict = _satisfaction_calculator.calculate_productdict_from_optiondict(combination)
 
     std::cout << "TODO: AdjustBestCombidict" << std::endl;
 
-    return mapCalculatedCombidict;
+    return mapCombidictCombidict;
 }
 
 //func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):

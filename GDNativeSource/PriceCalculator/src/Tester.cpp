@@ -54,6 +54,7 @@ CTester::Test_SatisfactionCalculator()
     double dSatisfTotal = oSatCalculator.CalculateSatisfOfCombidict(map_nOption_dAmount);
     std::cout << "dSatisfTotal "<< dSatisfTotal << std::endl;
 
+
     //TODO... hacer el test de Test_SatisfactionCalculator
     std::cout << "TODO... hacer el test de Test_SatisfactionCalculator" << std::endl;
 

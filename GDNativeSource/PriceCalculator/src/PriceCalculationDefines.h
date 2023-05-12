@@ -1,9 +1,10 @@
 #include <set>
 #include <map>
 
-const int c_nOptCandy = 1;
-const int c_nOptChocolate = 2;
-const int c_nOptNut = 3;
+
+const int c_nProdCandy = 1;
+const int c_nProdChocolate = 2;
+const int c_nProdNut = 3;
 
 const int c_nOptTypSavings = 1;
 const int c_nOptTypConsumption = 2;
@@ -19,6 +20,31 @@ const int c_nCompCombSweets = 1;
 
 const int c_nSuppCombConsumption = 1;
 const int c_nSuppCombSavings = 2;
+
+
+const std::set<int> c_setProducts = {
+c_nProdCandy,
+c_nProdChocolate,
+c_nProdNut
+};
+
+const std::map<int, std::set<int> > c_mapProduct_setOptions = {
+{c_nProdCandy,{c_nOptCandySavings,c_nOptCandyConsumption}},
+{c_nProdChocolate,{c_nOptChocolateSavings,c_nOptChocolateConsumption}},
+{c_nProdNut,{c_nOptNutSavings,c_nOptNutConsumption}},
+};
+
+//Esto debería sacarse a partir de lo anterior
+const std::map<int, int > c_mapOption_Product = {
+
+{c_nOptCandySavings,c_nProdCandy},
+{c_nOptChocolateSavings,c_nProdChocolate},
+{c_nOptNutSavings,c_nProdNut},
+{c_nOptCandyConsumption,c_nProdCandy},
+{c_nOptChocolateConsumption,c_nProdChocolate},
+{c_nOptNutConsumption,c_nProdNut }
+
+};
 
 
 const std::set<int> c_setOptions = {

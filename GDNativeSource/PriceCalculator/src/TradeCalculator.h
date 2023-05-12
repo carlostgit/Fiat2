@@ -2,7 +2,9 @@
 #define CTRADECALCULATOR_H
 
 #include <map>
+#include <memory>
 
+class CSatisfactionCalculator;
 
 class CTradeCalculator
 {
@@ -16,6 +18,8 @@ class CTradeCalculator
     protected:
 
     private:
+
+        std::unique_ptr<CSatisfactionCalculator> m_pSatisfactionCalculator;
 };
 
 #endif // CTRADECALCULATOR_H

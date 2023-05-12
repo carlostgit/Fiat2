@@ -899,3 +899,14 @@
 1526080222 d:\codeblocks20_03\codeblocks-20.03-32bit-mingw-32bit-nosetup\mingw\i686-w64-mingw32\include\sec_api\tchar_s.h
 	<tchar.h>
 
+1668206464 source:c:\carlos\godot\proyectos\fiat2\gdnativesource\fiat2gdnativetester\main.cpp
+	"../Market/market.h"
+	<Windows.h>
+	<tchar.h>
+	<libloaderapi.h>
+	<wchar.h>
+	<iostream>
+
+1668206464 c:\carlos\godot\proyectos\fiat2\gdnativesource\market\market.h
+	<windows.h>
+

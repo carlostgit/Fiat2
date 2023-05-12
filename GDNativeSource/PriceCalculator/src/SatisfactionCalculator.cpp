@@ -208,6 +208,78 @@ double CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<int,double> 
 
 }
 
+std::map<int,double> CSatisfactionCalculator::CalculateProductdictFromOptiondict(std::map<int,double> mapOptiondictArg )
+{
+    std::map<int,double> mapProductdict;
+
+    for(auto & pairOptionAmount:mapOptiondictArg)
+    {
+        int nOption = pairOptionAmount.first;
+        double dAmount = pairOptionAmount.second;
+
+        if (c_mapOption_Product.end()!=c_mapOption_Product.find(nOption))
+        {
+            int nProduct = c_mapOption_Product.at(nOption);
+
+            if (mapProductdict.end()!=mapProductdict.find(nProduct))
+            {
+                mapProductdict[nProduct] = dAmount + mapProductdict.at(nProduct);
+            }
+            else
+            {
+                mapProductdict[nProduct]=dAmount;
+            }
+        }
+    }
+
+    return mapProductdict;
+}
+
+/*
+func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictionary:
+	var product_dict:Dictionary = {}
+	for option in option_dict_arg:
+		if _option_product_dict.has(option):
+			var product = _option_product_dict[option]
+			if (product_dict.has(product)):
+				product_dict[product] += option_dict_arg[option]
+			else:
+				product_dict[product] = option_dict_arg[option]
+
+		else:
+	#	No sé si está bien que pueda haber products entre las options
+			if PriceCalculationGlobals._products.has(option):
+				if (product_dict.has(option)):
+					product_dict[option] += option_dict_arg[option]
+				else:
+					product_dict[option] = option_dict_arg[option]
+
+	return product_dict
+*/
+
+
+/*
+func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictionary:
+	var product_dict:Dictionary = {}
+	for option in option_dict_arg:
+		if _option_product_dict.has(option):
+			var product = _option_product_dict[option]
+			if (product_dict.has(product)):
+				product_dict[product] += option_dict_arg[option]
+			else:
+				product_dict[product] = option_dict_arg[option]
+
+		else:
+	#	No sé si está bien que pueda haber products entre las options
+			if PriceCalculationGlobals._products.has(option):
+				if (product_dict.has(option)):
+					product_dict[option] += option_dict_arg[option]
+				else:
+					product_dict[option] = option_dict_arg[option]
+
+	return product_dict
+*/
+
 /*
 func _calculate_satisf_of_combidict_from_individual_options(combidict_arg:Dictionary) -> float:
 
