@@ -1,7 +1,7 @@
 #include <gdnative_api_struct.gen.h>
 #include <string.h>
 #include "MarketTest.h"
-
+#include <stdio.h>
 //Prueba con libreria Market.dll
 #include "../../Market/market.h"
 //tipo del método
@@ -142,7 +142,7 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
 // identifier in case multiple objects are instantiated.
 GDCALLINGCONV void *simple_constructor(godot_object *p_instance, void *p_method_data) {
 	user_data_struct *user_data = api->godot_alloc(sizeof(user_data_struct));
-	strcpy(user_data->data, "Hellow frome SimpleMod!");
+	strcpy_s(user_data->data, sizeof(user_data_struct), "Hellow frome SimpleMod!");
 
 	return user_data;
 }
@@ -451,7 +451,8 @@ godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *
     HMODULE hDll = LoadLibrary("Marketd.dll");
     if (!hDll || hDll == INVALID_HANDLE_VALUE) {
         printf("unable to load libraray\n");
-        wchar_t wchar_caca[20] = L"unable to load libraray";
+        //wchar_t wchar_caca[20] = L"unable to load libraray";
+        wchar_t wchar_caca[24] = L"unable to load libraray";
         godot_int godint_caca_length = wcslen(wchar_caca);
         godot_string godstring_caca;
         api->godot_string_new_with_wide_string(&godstring_caca, &wchar_caca, godint_caca_length);
