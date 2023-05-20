@@ -8,3 +8,6 @@ debug/
 Debug/
 release/
 Release/
+.vs/
+.import/
+godot-headers/
