@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    CTester oTester;
+    pca::CTester oTester;
 
     oTester.Test_SatisfactionCurve();
 

@@ -3,8 +3,10 @@
 
 #include <map>
 
-class CPerson
+namespace pca
 {
+    class CPerson
+    {
     public:
         CPerson();
         virtual ~CPerson();
@@ -16,8 +18,8 @@ class CPerson
 
     private:
 
-        std::map<int,double> m_mapOwnedProd_Amount;
+        std::map<int, double> m_mapOwnedProd_Amount;
 
-};
-
+    };
+}
 #endif // CPERSON_H

@@ -5,15 +5,19 @@
 #include <memory>
 
 
-class CPerson;
-class CPrices;
 
-class CPriceCalculator
+namespace pca
 {
+    class CPerson;
+    class CPrices;
+
+    class CPriceCalculator
+    {
     public:
         CPriceCalculator();
         virtual ~CPriceCalculator();
 
+        static int GetTestPrice();
 
     protected:
 
@@ -24,6 +28,7 @@ class CPriceCalculator
         std::vector<std::unique_ptr<CPerson> > m_vpPersons;
         std::unique_ptr<CPrices> m_pPrices;
 
-};
+    };
+}
 
 #endif // CPRICECALCULATOR_H

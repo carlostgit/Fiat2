@@ -3,8 +3,10 @@
 
 #include <map>
 
-class CPrices
+namespace pca
 {
+    class CPrices
+    {
     public:
         CPrices();
         virtual ~CPrices();
@@ -15,7 +17,8 @@ class CPrices
 
     private:
 
-        std::map<int,double> m_mapProd_Price;
-};
+        std::map<int, double> m_mapProd_Price;
+    };
+}
 
 #endif // CPRICES_H

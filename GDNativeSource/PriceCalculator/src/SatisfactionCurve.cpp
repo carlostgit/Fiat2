@@ -1,17 +1,17 @@
 #include "SatisfactionCurve.h"
 
-CSatisfactionCurve::CSatisfactionCurve()
+pca::CSatisfactionCurve::CSatisfactionCurve()
 {
     //ctor
 }
 
-CSatisfactionCurve::~CSatisfactionCurve()
+pca::CSatisfactionCurve::~CSatisfactionCurve()
 {
     //dtor
 }
 
 
-double CSatisfactionCurve::GetDiminishingReturnsFactor(double dQuantity)
+double pca::CSatisfactionCurve::GetDiminishingReturnsFactor(double dQuantity)
 {
     //#Voy a llamar al termino "1-(1/(x+1))" Diminishing Returns Factor
     //#Esta ecuación tendría un máximo en 1, y tendría pendiente 1 en 0
@@ -27,7 +27,7 @@ double CSatisfactionCurve::GetDiminishingReturnsFactor(double dQuantity)
 	return dResult;
 }
 
-double CSatisfactionCurve::CalculateSatifaction(double dQuantity)
+double pca::CSatisfactionCurve::CalculateSatifaction(double dQuantity)
 {
 
 	double dRetSatisf = 0.0;

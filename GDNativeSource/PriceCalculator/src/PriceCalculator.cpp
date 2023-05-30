@@ -3,7 +3,7 @@
 #include "Prices.h"
 
 
-CPriceCalculator::CPriceCalculator()
+pca::CPriceCalculator::CPriceCalculator()
 {
     //ctor
 
@@ -15,7 +15,12 @@ CPriceCalculator::CPriceCalculator()
     //m_vpPersons.push_back(std::unique_ptr<CPerson>(new CPerson()));
 }
 
-CPriceCalculator::~CPriceCalculator()
+pca::CPriceCalculator::~CPriceCalculator()
 {
     //dtor
+}
+
+int pca::CPriceCalculator::GetTestPrice()
+{
+    return 8;
 }

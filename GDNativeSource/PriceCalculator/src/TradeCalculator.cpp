@@ -5,19 +5,19 @@
 #include "PriceCalculationDefines.h"
 #include "SatisfactionCalculator.h"
 
-CTradeCalculator::CTradeCalculator()
+pca::CTradeCalculator::CTradeCalculator()
 {
     //ctor
 }
 
-CTradeCalculator::~CTradeCalculator()
+pca::CTradeCalculator::~CTradeCalculator()
 {
     //dtor
 }
 
 
 //TODO: Pasar este método a C++
-std::map<int,double> CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<int,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
+std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<int,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
 {
     std::map<int,double> mapCombidictCombidict;
 

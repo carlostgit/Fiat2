@@ -1,16 +1,16 @@
 #include "Prices.h"
 
-CPrices::CPrices()
+pca::CPrices::CPrices()
 {
     //ctor
 }
 
-CPrices::~CPrices()
+pca::CPrices::~CPrices()
 {
     //dtor
 }
 
-void CPrices::IncreasePrice(int nProductId, double dAmount)
+void pca::CPrices::IncreasePrice(int nProductId, double dAmount)
 {
     if(m_mapProd_Price.end()==m_mapProd_Price.find(nProductId))
     {
@@ -23,7 +23,7 @@ void CPrices::IncreasePrice(int nProductId, double dAmount)
 
 }
 
-void CPrices::DecreasePrice(int nProductId, double dAmount)
+void pca::CPrices::DecreasePrice(int nProductId, double dAmount)
 {
     IncreasePrice(nProductId,-dAmount);
 }

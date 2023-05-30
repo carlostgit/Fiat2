@@ -6,19 +6,19 @@
 #include "TradeCalculator.h"
 
 
-CTester::CTester()
+pca::CTester::CTester()
 {
     //ctor
 
     std::cout << "Creating CTester" << std::endl;
 }
 
-CTester::~CTester()
+pca::CTester::~CTester()
 {
     //dtor
 }
 
-CTester::Test_SatisfactionCurve()
+int pca::CTester::Test_SatisfactionCurve()
 {
     std::cout << "Starting Test_SatisfactionCurve" << std::endl;
 
@@ -31,9 +31,11 @@ CTester::Test_SatisfactionCurve()
     }
 
     std::cout << "Test_SatisfactionCurve finished" << std::endl;
+    
+    return 0;
 }
 
-CTester::Test_SatisfactionCalculator()
+int pca::CTester::Test_SatisfactionCalculator()
 {
     std::cout << "Starting Test_SatisfactionCalculator" << std::endl;
 
@@ -70,5 +72,6 @@ CTester::Test_SatisfactionCalculator()
        std::cout << "Amount: "<< pair_Op_Am.second<< std::endl;
     }
 
+    return 0;
 }
 

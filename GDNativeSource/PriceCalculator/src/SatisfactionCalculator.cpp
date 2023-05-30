@@ -4,24 +4,24 @@
 
 #include <memory>
 
-CSatisfactionCalculator::CSatisfactionCalculator()
+pca::CSatisfactionCalculator::CSatisfactionCalculator()
 {
     //ctor
     DefaultInitialization();
 }
 
-CSatisfactionCalculator::~CSatisfactionCalculator()
+pca::CSatisfactionCalculator::~CSatisfactionCalculator()
 {
     //dtor
 }
 
-void CSatisfactionCalculator::DefaultInitialization()
+void pca::CSatisfactionCalculator::DefaultInitialization()
 {
     //Default init for options:
     //m_Option_SatisfactionCurveb
     for (auto & nOpt:c_setOptions)
     {
-        std::unique_ptr<CSatisfactionCurve> satisfOfOpt = std::make_unique<CSatisfactionCurve>();
+        std::unique_ptr<pca::CSatisfactionCurve> satisfOfOpt = std::make_unique<pca::CSatisfactionCurve>();
         m_Option_SatisfactionCurve[nOpt] = std::move(satisfOfOpt);
     }
 
@@ -58,7 +58,7 @@ void CSatisfactionCalculator::DefaultInitialization()
 }
 
 //_calculate_satifaction_of_opt_supplementary_combo
-double CSatisfactionCalculator::CalculateSatifactionOfOptSupplementaryCombo(int nCombo, double dAmount)
+double pca::CSatisfactionCalculator::CalculateSatifactionOfOptSupplementaryCombo(int nCombo, double dAmount)
 {
 
 
@@ -78,7 +78,7 @@ double CSatisfactionCalculator::CalculateSatifactionOfOptSupplementaryCombo(int 
 }
 
 //_calculate_satisf_of_combidict_from_supplementary_combos
-double CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<int,double> mapOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<int,double> mapOption_dAmount)
 {
 
 //#	Satisfacción de los supplementary combos
@@ -113,7 +113,7 @@ double CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementaryCombo
 }
 
 //_calculate_satifaction_of_opt_complementary_combo
-double CSatisfactionCalculator::CalculateSatifactionOfOptComplementaryCombo(int nCombo, double dAmount)
+double pca::CSatisfactionCalculator::CalculateSatifactionOfOptComplementaryCombo(int nCombo, double dAmount)
 {
 	if (c_mapComplementaryCombo_setOptions.end() == c_mapComplementaryCombo_setOptions.find(nCombo))
 		return 0.0;
@@ -132,7 +132,7 @@ double CSatisfactionCalculator::CalculateSatifactionOfOptComplementaryCombo(int 
 
 
 //_calculate_satisf_of_combidict_from_complementary_combos
-double CSatisfactionCalculator::CalculateSatisfOfCombidictFromComplementaryCombos(std::map<int,double> mapOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromComplementaryCombos(std::map<int,double> mapOption_dAmount)
 {
     //#var _complementary_combos:Dictionary = {"sweets_consumption":["chocolate_consumption","candy_consumption"]}
 
@@ -161,7 +161,7 @@ double CSatisfactionCalculator::CalculateSatisfOfCombidictFromComplementaryCombo
 
 
 //calculate_satifaction_of_option
-double CSatisfactionCalculator::CalculateSatifactionOfOption(int nOption, double dQuantity)
+double pca::CSatisfactionCalculator::CalculateSatifactionOfOption(int nOption, double dQuantity)
 {
 	if (c_setOptions.end()==c_setOptions.find(nOption))
 		return 0.0;
@@ -176,7 +176,7 @@ double CSatisfactionCalculator::CalculateSatifactionOfOption(int nOption, double
 }
 
 //_calculate_satisf_of_combidict_from_individual_options
-double CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOptions(std::map<int,double> map_nOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOptions(std::map<int,double> map_nOption_dAmount)
 {
     double dSatisfOfOptIndividually = 0.0;
     for (auto & nOption: c_setOptions)
@@ -194,7 +194,7 @@ double CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOptions(
 
 
 //func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
-double CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<int,double> map_nOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<int,double> map_nOption_dAmount)
 {
     double dSatisfOfOptIndividually = CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
 
@@ -208,7 +208,7 @@ double CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<int,double> 
 
 }
 
-std::map<int,double> CSatisfactionCalculator::CalculateProductdictFromOptiondict(std::map<int,double> mapOptiondictArg )
+std::map<int,double> pca::CSatisfactionCalculator::CalculateProductdictFromOptiondict(std::map<int,double> mapOptiondictArg )
 {
     std::map<int,double> mapProductdict;
 

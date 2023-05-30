@@ -1,19 +1,21 @@
 #ifndef TESTER_H
 #define TESTER_H
 
-
-class CTester
+namespace pca
 {
+    class CTester
+    {
     public:
         CTester();
         virtual ~CTester();
 
-        Test_SatisfactionCurve();
-        Test_SatisfactionCalculator();
+        int Test_SatisfactionCurve();
+        int Test_SatisfactionCalculator();
 
     protected:
 
     private:
-};
+    };
+}
 
 #endif // TESTER_H

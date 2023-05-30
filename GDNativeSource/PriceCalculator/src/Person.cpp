@@ -1,16 +1,16 @@
 #include "Person.h"
 
-CPerson::CPerson()
+pca::CPerson::CPerson()
 {
     //ctor
 }
 
-CPerson::~CPerson()
+pca::CPerson::~CPerson()
 {
     //dtor
 }
 
-void CPerson::AddProductAmount(int nProductId, double dAmount)
+void pca::CPerson::AddProductAmount(int nProductId, double dAmount)
 {
     if(m_mapOwnedProd_Amount.end()==m_mapOwnedProd_Amount.find(nProductId))
     {
@@ -22,7 +22,7 @@ void CPerson::AddProductAmount(int nProductId, double dAmount)
     }
 }
 
-void CPerson::RemoveProductAmount(int nProductId, double dAmount)
+void pca::CPerson::RemoveProductAmount(int nProductId, double dAmount)
 {
     AddProductAmount(nProductId, -dAmount);
 }
