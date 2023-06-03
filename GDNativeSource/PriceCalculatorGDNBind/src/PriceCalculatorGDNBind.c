@@ -1,6 +1,6 @@
 #include <gdnative_api_struct.gen.h>
 #include <string.h>
-#include "MarketTest.h"
+#include "BindToCPP.h"
 #include <stdio.h>
 //Prueba con libreria Market.dll
 #include "../../Market/market.h"

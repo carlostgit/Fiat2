@@ -1,13 +1,25 @@
 // PriceCalculatorTester.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
+//Includes para la librería estática
 #include "../../PriceCalculator/src/PriceCalculator.h"
 #include "../../PriceCalculator/src/Tester.h"
+//
+
+//includes para la librería dinámica DLL
+#include "../../PriceCalculatorDLL/PriceCalculatorDLL/PriceCalculatorDLL.h"
+//
+
+//include necesario para cargar librarías en ejecución "explicit linking"
+#include "windows.h"
+#include "libloaderapi.h"
+//
 
 #include <iostream>
 
 int main()
 {
-
+    //////////////////////////////////
+    //Prueba con la librería estática:
     pca::CTester oTester;
 
     oTester.Test_SatisfactionCurve();
@@ -17,8 +29,64 @@ int main()
     //std::cout << "Hello world!" << std::endl;
     //return 0;
 
-    std::cout << "Hello World!\n";
+    std::cout << "Hello World con la librería estática!\n";
     std::cout << pca::CPriceCalculator::GetTestPrice() << std::endl;
+
+
+    //////////////////////////////////
+    //Prueba con la librería linkada en compilación:
+    std::cout << "Hello World con la librería dinámica cargada en compilacion!\n";
+    std::cout << GetTestPriceFromDLL() << std::endl;
+
+
+    //////////////////////////////////
+    //Prueba linkando la librería dinámica en ejecución "explicit linking":
+
+    //Si se usa una librería dinámica en GODOT, he comprobado q carga la librería solo si la pongo en el exe de godot
+    std::wstring libraryName = L"PriceCalculatorDLL.dll";
+    //HMODULE hDll = LoadLibrary(TEXT("PriceCalculatorDLL.dll"));
+    HMODULE hDll = LoadLibrary(libraryName.c_str());
+    if (!hDll || hDll == INVALID_HANDLE_VALUE) {
+        std::wcout << "Unable to load library " << libraryName.c_str() <<L" with 'explicit linking'!\n";
+        std::cout << "Saliendo del programa por el fallo al cargar la libreria" << std::endl;
+        return 0;
+    }
+
+    std::wcout << L"Library " << libraryName.c_str() << L" loaded\n";
+
+    std::string nombreMetodo = "GetTestPriceFromDLL";
+    long(*functionPtr)();
+    functionPtr = (long(*)())(GetProcAddress(hDll, nombreMetodo.c_str()));
+    
+    std::string nombreMetodo2 = "GetTestPriceFromDLL2";
+    fpGetTestPriceFromDLL2 functionPtr2 = nullptr;
+    functionPtr2 = (fpGetTestPriceFromDLL2)(GetProcAddress(hDll, nombreMetodo2.c_str()));
+    
+
+    if (functionPtr)
+    {
+        std::wcout << "Hello World con la librería dinámica " << libraryName.c_str() << " linkada en ejecución!\n";
+        std::cout << "Llamando al método: " << nombreMetodo << std::endl;
+        std::cout << functionPtr() << std::endl;
+    }
+    else
+    {
+        std::cout << "No se ha encontrado el metodo " << nombreMetodo;
+        std::wcout << " en la libreria " << libraryName << std::endl;
+    }
+
+    if(functionPtr2)
+    {
+        std::cout << "Llamando al método: " << nombreMetodo2 << std::endl;
+        std::cout << functionPtr2(10) << std::endl;
+    }
+    else
+    {
+        std::cout << "No se ha encontrado el metodo " << nombreMetodo2;
+        std::wcout << " en la libreria " << libraryName << std::endl;
+    }
+    
+    return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

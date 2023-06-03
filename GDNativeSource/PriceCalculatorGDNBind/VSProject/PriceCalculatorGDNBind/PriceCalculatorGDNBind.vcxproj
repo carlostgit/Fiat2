@@ -153,11 +153,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\MarketTest.h" />
+    <ClInclude Include="..\..\src\BindToCPP.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\MarketTest.cpp" />
+    <ClCompile Include="..\..\src\BindToCPP.cpp" />
     <ClCompile Include="..\..\src\PriceCalculatorGDNBind.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\PriceCalculator\VSProject\PriceCalculator\PriceCalculator.vcxproj">
+      <Project>{9665ed63-3192-4013-80f0-e5d2dad13615}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

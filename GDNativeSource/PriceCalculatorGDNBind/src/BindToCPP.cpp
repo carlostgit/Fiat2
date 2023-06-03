@@ -1,4 +1,5 @@
-#include "MarketTest.h"
+#include "BindToCPP.h"
+#include "../../PriceCalculator/src/PriceCalculator.h"
 
 #include <map>
 
@@ -10,12 +11,10 @@ void(*m_setPrice)(int nProduct, double dAmount)=0;
 extern "C" double market_calculationTest(int i)
 {
     double dI = static_cast<double>(i);
-    dI += 1.5;
+    dI += pca::CPriceCalculator::GetTestPrice();
 
     return dI;
 }
-
-
 
 extern "C" void market_addPriceForProduct(int nProductId, double dPrice)
 {
