@@ -19,6 +19,7 @@ namespace pca
         virtual ~CSatisfactionCalculator();
 
         std::map<int, double> CalculateProductdictFromOptiondict(std::map<int, double> mapOptiondictArg);
+        double CalculateSatisfOfCombidict(std::map<int, double> map_nOption_dAmount);
 
     protected:
         double CalculateSatisfOfCombidictFromIndividualOptions(std::map<int, double> map_nOption_dAmount);
@@ -27,7 +28,7 @@ namespace pca
         double CalculateSatifactionOfOptComplementaryCombo(int nCombo, double dAmount);
         double CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<int, double> mapOption_dAmount);
         double CalculateSatifactionOfOptSupplementaryCombo(int nCombo, double dAmount);
-        double CalculateSatisfOfCombidict(std::map<int, double> map_nOption_dAmount);
+        
 
         void DefaultInitialization();
 

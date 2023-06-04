@@ -8,11 +8,13 @@
 namespace pca
 {
     class CSatisfactionCalculator;
+    class CPrices;
 
     class CTradeCalculator
     {
     public:
-        CTradeCalculator();
+        CTradeCalculator(CSatisfactionCalculator* pSatisfactionCalculatorRef, CPrices* pPricesRef);
+
         virtual ~CTradeCalculator();
 
         //func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):
@@ -22,7 +24,9 @@ namespace pca
 
     private:
 
-        std::unique_ptr<CSatisfactionCalculator> m_pSatisfactionCalculator;
+        CSatisfactionCalculator* m_pSatisfactionCalculatorRef = nullptr;
+        CPrices* m_pPricesRef = nullptr;
+
     };
 
 }

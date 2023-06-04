@@ -16,6 +16,8 @@ namespace pca
 
     protected:
 
+        void InitDefaultAmounts();
+
     private:
 
         std::map<int, double> m_mapOwnedProd_Amount;

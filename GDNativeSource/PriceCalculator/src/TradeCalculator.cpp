@@ -4,10 +4,15 @@
 #include <set>
 #include "PriceCalculationDefines.h"
 #include "SatisfactionCalculator.h"
+#include "Prices.h"
+#include <assert.h>
 
-pca::CTradeCalculator::CTradeCalculator()
+
+pca::CTradeCalculator::CTradeCalculator(CSatisfactionCalculator* pSatisfactionCalculatorRef, CPrices* pPricesRef)
 {
     //ctor
+    m_pSatisfactionCalculatorRef = pSatisfactionCalculatorRef;
+    m_pPricesRef = pPricesRef;
 }
 
 pca::CTradeCalculator::~CTradeCalculator()
@@ -19,20 +24,162 @@ pca::CTradeCalculator::~CTradeCalculator()
 //TODO: Pasar este método a C++
 std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<int,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
 {
-    std::map<int,double> mapCombidictCombidict;
+
+    if (nullptr == m_pSatisfactionCalculatorRef || nullptr == m_pPricesRef)
+    {
+        assert(""=="Falta m_pSatisfactionCalculatorRef");
+        assert(""=="Falta m_pPricesRef");
+        return mapCurrentCombidict;
+    }
 
     double dBudgetStepLength = dBudgetStepArg;
-
     std::set<int> setOptions = c_setOptions;
-
     std::map<int, double> mapCombination = mapCurrentCombidict;
+    std::map<int, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
 
-    std::map<int, double> mapProductDict = m_pSatisfactionCalculator->CalculateProductdictFromOptiondict(mapCombination);
-    //var productdict = _satisfaction_calculator.calculate_productdict_from_optiondict(combination)
+    double dCostOfArgCombination = m_pPricesRef->CalculateCombidictPrice(mapProductDict);    
+    double dLeftMoney = dBudgetArg - dCostOfArgCombination;
 
-    std::cout << "TODO: AdjustBestCombidict" << std::endl;
+    double dBestPreviousSatisfaction = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapCombination);
 
-    return mapCombidictCombidict;
+    //Si el presupuesto no llega para la combinación actual, eliminamos elementos que sean relativamente caros y poco satisfactorios
+    while (dLeftMoney < 0.0)
+    {
+        bool bChangeMade = false;
+        //		Eliminaré productos en orden de menor reducción de satisfacción
+        double dBestDecrementOfSatisfaction = dBestPreviousSatisfaction;
+        std::map<int, double> mapBestTryingCombination = mapCombination;
+
+        for (auto& nOptionToRemove : c_setOptions)
+        {
+            long nProductToRemove = c_mapOption_Product.at(nOptionToRemove);
+            std::map<int, double> mapTryingCombinationRemovingProduct = mapCombination;
+            double dRemoveProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nProductToRemove);
+            if (mapTryingCombinationRemovingProduct.end() == mapTryingCombinationRemovingProduct.find(nOptionToRemove))
+            {
+                //Igual habría que poner aquí un continue
+                mapTryingCombinationRemovingProduct[nOptionToRemove] = 0.0;
+            }
+
+            mapTryingCombinationRemovingProduct[nOptionToRemove] -= dRemoveProductStep;
+
+            if (mapTryingCombinationRemovingProduct[nOptionToRemove] < 0.0)
+            {
+                continue;
+            }
+
+            double dSatisfactionOfTryingCombination = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapTryingCombinationRemovingProduct);
+            double dCurentDecrementOfSatisfaction = dBestPreviousSatisfaction - dSatisfactionOfTryingCombination;
+
+            if (dCurentDecrementOfSatisfaction <= dBestDecrementOfSatisfaction)
+            {
+                mapBestTryingCombination = mapTryingCombinationRemovingProduct;
+                bChangeMade = true;
+                dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
+            }
+        }
+
+        if (true == bChangeMade)
+        {
+            mapCombination = mapBestTryingCombination;
+            double dCurrentLeftMoney = dLeftMoney + dBudgetStepLength;
+            dLeftMoney = dCurrentLeftMoney;
+        }
+
+        if (false == bChangeMade)
+        {
+            std::cout << "Exited adjust_best_combidict because no option to remove found" << std::endl;
+            break;
+        }
+    }
+
+    if (dLeftMoney >= 0)
+    {
+//#		    Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
+        long nCount = 0.0;
+        while (true)
+        {
+            nCount += 1.0;
+            if (nCount> nMaxStepArg)
+            {
+                std::cout << "Exited adjust_best_combidict because too many iterations are being used" << std::endl;
+                break;
+            }
+
+            bool bChangeMade = false;
+            for (auto& nNewOption : c_setOptions)
+            {
+                long nNewProduct = c_mapOption_Product.at(nNewOption);
+                double nNewProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nNewOption);
+
+                std::map<int, double> mapTryingCombinationAddingProduct = mapCombination;
+                if (mapTryingCombinationAddingProduct.end() == mapTryingCombinationAddingProduct.find(nNewProduct))
+                {
+                    mapTryingCombinationAddingProduct[nNewProduct] = 0.0;
+                }
+
+                mapTryingCombinationAddingProduct[nNewProduct] += nNewProductStep;
+                double dCurrentLeftMoney = dLeftMoney - dBudgetStepLength;
+                if (dCurrentLeftMoney < 0.0)
+                {
+                    for (auto& nOldOption : c_setOptions)
+                    {
+                        if (nNewOption != nOldOption)
+                        {
+                            long nOldProduct = c_mapOption_Product.at(nOldOption);                                                                    
+                            double dOldProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nOldProduct);
+                            if (mapCombination[nOldOption]>=dOldProductStep)
+                            {
+                                std::map<int, double> mapTryingCombinationSwappingProducts = mapTryingCombinationAddingProduct;
+                                if (mapTryingCombinationSwappingProducts.end() == mapTryingCombinationSwappingProducts.find(nOldOption))
+                                {
+                                    mapTryingCombinationSwappingProducts[nOldOption] = 0.0;
+                                }
+
+                                mapTryingCombinationSwappingProducts[nOldOption] -= dOldProductStep;
+                                dCurrentLeftMoney = dLeftMoney;
+
+                                double dSatisfactionOfTryingCombination = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapTryingCombinationSwappingProducts);
+                                double dIncrementOfSatisfaction = dSatisfactionOfTryingCombination - dBestPreviousSatisfaction;
+ 
+                                if (dIncrementOfSatisfaction > 0.0)
+                                {
+                                    mapCombination = mapTryingCombinationSwappingProducts;
+                                    bChangeMade = true;
+                                    dLeftMoney = dCurrentLeftMoney;
+                                    dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
+                                    break;
+                                }
+
+
+
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    double dSatisfactionOfTryingCombination = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapTryingCombinationAddingProduct);
+                    double dIncrementOfSatisfaction = dSatisfactionOfTryingCombination - dBestPreviousSatisfaction;
+
+                    if (dIncrementOfSatisfaction > 0.0)
+                    {
+                        mapCombination = mapTryingCombinationAddingProduct;
+                        bChangeMade = true;
+                        dLeftMoney = dCurrentLeftMoney;
+                        dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
+                    }
+                }
+            }
+
+            if (false == bChangeMade)
+            {
+                break;
+            }
+        }
+    }
+
+    return mapCombination;
 }
 
 //func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):

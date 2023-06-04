@@ -4,6 +4,7 @@
 #include "SatisfactionCurve.h"
 #include "SatisfactionCalculator.h"
 #include "TradeCalculator.h"
+#include "Prices.h"
 
 
 pca::CTester::CTester()
@@ -44,8 +45,8 @@ int pca::CTester::Test_SatisfactionCalculator()
     for(auto & nOption:c_setOptions)
     {
         map_nOption_dAmount[nOption] = 1.0;
-
     }
+
     std::cout << "Prueba..." << std::endl;
     double dSatisfFormIndivOptions = oSatCalculator.CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
     std::cout << "dSatisfFormIndivOptions: "<< dSatisfFormIndivOptions << std::endl;
@@ -56,14 +57,15 @@ int pca::CTester::Test_SatisfactionCalculator()
     double dSatisfTotal = oSatCalculator.CalculateSatisfOfCombidict(map_nOption_dAmount);
     std::cout << "dSatisfTotal "<< dSatisfTotal << std::endl;
 
-
     //TODO... hacer el test de Test_SatisfactionCalculator
     std::cout << "TODO... hacer el test de Test_SatisfactionCalculator" << std::endl;
 
     std::cout << "Test_SatisfactionCalculator finished" << std::endl;
-    ;
-
-    CTradeCalculator oTradeCalculator;
+    
+    CPrices oPrices;
+    CSatisfactionCalculator oSatisfactionCalculator;
+    CTradeCalculator oTradeCalculator(&oSatisfactionCalculator, &oPrices);
+    
     std::cout << "Probando AdjustBestCombidict..." << std::endl;
     std::map<int,double> mapOpAmmAdjusted = oTradeCalculator.AdjustBestCombidict(10.0, map_nOption_dAmount,1.0,100);
     for (auto & pair_Op_Am:mapOpAmmAdjusted)

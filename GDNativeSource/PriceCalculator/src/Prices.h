@@ -8,12 +8,19 @@ namespace pca
     class CPrices
     {
     public:
-        CPrices();
+        CPrices();        
         virtual ~CPrices();
 
-    protected:
         void IncreasePrice(int nProductId, double dPrice);
         void DecreasePrice(int nProductId, double dPrice);
+
+        //calculate_combidict_price(productdict)
+        double CalculateCombidictPrice(std::map<int, double> mapProd_Amount);
+        double GetPriceOfProduct(long nProd);
+
+    protected:
+        
+        void InitDefaultPrices();
 
     private:
 
