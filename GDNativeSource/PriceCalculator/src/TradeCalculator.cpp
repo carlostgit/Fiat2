@@ -7,6 +7,7 @@
 #include "Prices.h"
 #include <assert.h>
 
+const bool c_traces = true;
 
 pca::CTradeCalculator::CTradeCalculator(CSatisfactionCalculator* pSatisfactionCalculatorRef, CPrices* pPricesRef)
 {
@@ -24,6 +25,12 @@ pca::CTradeCalculator::~CTradeCalculator()
 //TODO: Pasar este método a C++
 std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<int,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
 {
+    //TODO: Hacer una clase que permita imprimir bien el contenido de elementos como std::map<int,double> mapCurrentCombidict
+
+    std::cout << "Start of AdjustBestCombidict" << std::endl;
+
+    std::cout << "dBudgetArg: " << dBudgetArg << " dBudgetStepArg: " << dBudgetStepArg << " nMaxStepArg: " << nMaxStepArg << std::endl;
+
 
     if (nullptr == m_pSatisfactionCalculatorRef || nullptr == m_pPricesRef)
     {
@@ -41,6 +48,9 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
     double dLeftMoney = dBudgetArg - dCostOfArgCombination;
 
     double dBestPreviousSatisfaction = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapCombination);
+
+    std::cout << "Starting with dLeftMoney: " << dLeftMoney << std::endl;
+    std::cout << "Starting with Satisfaction: " << dBestPreviousSatisfaction << std::endl;
 
     //Si el presupuesto no llega para la combinación actual, eliminamos elementos que sean relativamente caros y poco satisfactorios
     while (dLeftMoney < 0.0)
@@ -84,6 +94,9 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
             mapCombination = mapBestTryingCombination;
             double dCurrentLeftMoney = dLeftMoney + dBudgetStepLength;
             dLeftMoney = dCurrentLeftMoney;
+
+            std::cout << "Element eliminated. dLeftMoney: " << dLeftMoney << std::endl;
+            std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
         }
 
         if (false == bChangeMade)
@@ -95,7 +108,7 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
 
     if (dLeftMoney >= 0)
     {
-//#		    Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
+//#		Si ya no se puede añadir ningún producto, puede que quede dinero para intercambiar productos
         long nCount = 0.0;
         while (true)
         {
@@ -110,16 +123,17 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
             for (auto& nNewOption : c_setOptions)
             {
                 long nNewProduct = c_mapOption_Product.at(nNewOption);
-                double nNewProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nNewOption);
+                double nNewProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nNewProduct);
 
                 std::map<int, double> mapTryingCombinationAddingProduct = mapCombination;
-                if (mapTryingCombinationAddingProduct.end() == mapTryingCombinationAddingProduct.find(nNewProduct))
+                if (mapTryingCombinationAddingProduct.end() == mapTryingCombinationAddingProduct.find(nNewOption))
                 {
-                    mapTryingCombinationAddingProduct[nNewProduct] = 0.0;
+                    mapTryingCombinationAddingProduct[nNewOption] = 0.0;
                 }
 
-                mapTryingCombinationAddingProduct[nNewProduct] += nNewProductStep;
+                mapTryingCombinationAddingProduct[nNewOption] += nNewProductStep;
                 double dCurrentLeftMoney = dLeftMoney - dBudgetStepLength;
+                
                 if (dCurrentLeftMoney < 0.0)
                 {
                     for (auto& nOldOption : c_setOptions)
@@ -148,6 +162,9 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
                                     bChangeMade = true;
                                     dLeftMoney = dCurrentLeftMoney;
                                     dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
+
+                                    std::cout << "Product swapped. dLeftMoney: " << dLeftMoney << std::endl;
+                                    std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
                                     break;
                                 }
 
@@ -168,12 +185,16 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
                         bChangeMade = true;
                         dLeftMoney = dCurrentLeftMoney;
                         dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
+
+                        std::cout << "Product added. dLeftMoney: " << dLeftMoney << std::endl;
+                        std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
                     }
                 }
             }
 
             if (false == bChangeMade)
             {
+                std::cout << "No option found. Exiting" << std::endl;
                 break;
             }
         }

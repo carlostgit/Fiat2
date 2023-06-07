@@ -17,7 +17,7 @@ pca::CPrices::~CPrices()
 void pca::CPrices::InitDefaultPrices()
 {
     //Inicializo los precios a 1.0
-    for (auto& nOption : c_setOptions)
+    for (auto& nOption : c_setProducts)
     {
         m_mapProd_Price[nOption] = 1.0;
     }
@@ -55,7 +55,7 @@ double pca::CPrices::CalculateCombidictPrice(std::map<int, double> mapProd_Amoun
         }
         else
         {
-            double dAmount = pairProd_Amount[nProd];
+            double dAmount = pairProd_Amount.second;
             double dPrice = this->m_mapProd_Price[nProd];
 
             dTotalPrice += dAmount*dPrice;

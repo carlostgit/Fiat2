@@ -4,24 +4,25 @@
 namespace pca
 {
 
+
     const int c_nProdCandy = 1;
     const int c_nProdChocolate = 2;
     const int c_nProdNut = 3;
 
-    const int c_nOptTypSavings = 1;
-    const int c_nOptTypConsumption = 2;
+    const int c_nOptTypSavings = 4;
+    const int c_nOptTypConsumption = 5;
 
-    const int c_nOptCandySavings = 1;
-    const int c_nOptChocolateSavings = 2;
-    const int c_nOptNutSavings = 3;
-    const int c_nOptCandyConsumption = 4;
-    const int c_nOptChocolateConsumption = 5;
-    const int c_nOptNutConsumption = 6;
+    const int c_nOptCandySavings = 6;
+    const int c_nOptChocolateSavings = 7;
+    const int c_nOptNutSavings = 8;
+    const int c_nOptCandyConsumption = 9;
+    const int c_nOptChocolateConsumption = 10;
+    const int c_nOptNutConsumption = 11;
 
-    const int c_nCompCombSweets = 1;
+    const int c_nCompCombSweets = 12;
 
-    const int c_nSuppCombConsumption = 1;
-    const int c_nSuppCombSavings = 2;
+    const int c_nSuppCombConsumption = 13;
+    const int c_nSuppCombSavings = 14;
 
 
     const std::set<int> c_setProducts = {
