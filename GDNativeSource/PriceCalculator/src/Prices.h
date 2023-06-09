@@ -1,6 +1,8 @@
 #ifndef CPRICES_H
 #define CPRICES_H
 
+#include "PriceCalculationDefines.h"
+
 #include <map>
 
 namespace pca
@@ -11,12 +13,12 @@ namespace pca
         CPrices();        
         virtual ~CPrices();
 
-        void IncreasePrice(int nProductId, double dPrice);
-        void DecreasePrice(int nProductId, double dPrice);
+        void IncreasePrice(eProd nProductId, double dPrice);
+        void DecreasePrice(eProd nProductId, double dPrice);
 
         //calculate_combidict_price(productdict)
-        double CalculateCombidictPrice(std::map<int, double> mapProd_Amount);
-        double GetPriceOfProduct(long nProd);
+        double CalculateCombidictPrice(std::map<eProd, double> mapProd_Amount);
+        double GetPriceOfProduct(eProd nProd);
 
     protected:
         
@@ -24,7 +26,7 @@ namespace pca
 
     private:
 
-        std::map<int, double> m_mapProd_Price;
+        std::map<eProd, double> m_mapProd_Price;
     };
 }
 

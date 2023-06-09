@@ -23,7 +23,7 @@ void pca::CPrices::InitDefaultPrices()
     }
 }
 
-void pca::CPrices::IncreasePrice(int nProductId, double dAmount)
+void pca::CPrices::IncreasePrice(eProd nProductId, double dAmount)
 {
     if(m_mapProd_Price.end()==m_mapProd_Price.find(nProductId))
     {
@@ -36,18 +36,18 @@ void pca::CPrices::IncreasePrice(int nProductId, double dAmount)
 
 }
 
-void pca::CPrices::DecreasePrice(int nProductId, double dAmount)
+void pca::CPrices::DecreasePrice(eProd nProductId, double dAmount)
 {
     IncreasePrice(nProductId,-dAmount);
 }
 
-double pca::CPrices::CalculateCombidictPrice(std::map<int, double> mapProd_Amount)
+double pca::CPrices::CalculateCombidictPrice(std::map<eProd, double> mapProd_Amount)
 {
     double dTotalPrice = 0.0;
 
     for (auto& pairProd_Amount : mapProd_Amount)
     {
-        long nProd = pairProd_Amount.first;
+        eProd nProd = pairProd_Amount.first;
 
         if (m_mapProd_Price.end() == m_mapProd_Price.find(nProd))
         {
@@ -65,7 +65,7 @@ double pca::CPrices::CalculateCombidictPrice(std::map<int, double> mapProd_Amoun
     return dTotalPrice;
 }
 
-double pca::CPrices::GetPriceOfProduct(long nProd)
+double pca::CPrices::GetPriceOfProduct(eProd nProd)
 {
     if (m_mapProd_Price.end() == m_mapProd_Price.find(nProd))
     {

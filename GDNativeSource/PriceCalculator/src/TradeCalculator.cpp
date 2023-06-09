@@ -23,7 +23,8 @@ pca::CTradeCalculator::~CTradeCalculator()
 
 
 //TODO: Pasar este método a C++
-std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<int,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
+//Habrá que cambiar este método para que quede claro que la combinación que se ajusta es de opciones
+std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<eOpt,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
 {
     //TODO: Hacer una clase que permita imprimir bien el contenido de elementos como std::map<int,double> mapCurrentCombidict
 
@@ -40,9 +41,9 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
     }
 
     double dBudgetStepLength = dBudgetStepArg;
-    std::set<int> setOptions = c_setOptions;
-    std::map<int, double> mapCombination = mapCurrentCombidict;
-    std::map<int, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
+    std::set<eOpt> setOptions = c_setOptions;
+    std::map<eOpt, double> mapCombination = mapCurrentCombidict;
+    std::map<eProd, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
 
     double dCostOfArgCombination = m_pPricesRef->CalculateCombidictPrice(mapProductDict);    
     double dLeftMoney = dBudgetArg - dCostOfArgCombination;
@@ -58,12 +59,12 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
         bool bChangeMade = false;
         //		Eliminaré productos en orden de menor reducción de satisfacción
         double dBestDecrementOfSatisfaction = dBestPreviousSatisfaction;
-        std::map<int, double> mapBestTryingCombination = mapCombination;
+        std::map<eOpt, double> mapBestTryingCombination = mapCombination;
 
         for (auto& nOptionToRemove : c_setOptions)
         {
-            long nProductToRemove = c_mapOption_Product.at(nOptionToRemove);
-            std::map<int, double> mapTryingCombinationRemovingProduct = mapCombination;
+            eProd nProductToRemove = c_mapOption_Product.at(nOptionToRemove);
+            std::map<eOpt, double> mapTryingCombinationRemovingProduct = mapCombination;
             double dRemoveProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nProductToRemove);
             if (mapTryingCombinationRemovingProduct.end() == mapTryingCombinationRemovingProduct.find(nOptionToRemove))
             {
@@ -122,10 +123,10 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
             bool bChangeMade = false;
             for (auto& nNewOption : c_setOptions)
             {
-                long nNewProduct = c_mapOption_Product.at(nNewOption);
+                eProd nNewProduct = c_mapOption_Product.at(nNewOption);
                 double nNewProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nNewProduct);
 
-                std::map<int, double> mapTryingCombinationAddingProduct = mapCombination;
+                std::map<eOpt, double> mapTryingCombinationAddingProduct = mapCombination;
                 if (mapTryingCombinationAddingProduct.end() == mapTryingCombinationAddingProduct.find(nNewOption))
                 {
                     mapTryingCombinationAddingProduct[nNewOption] = 0.0;
@@ -140,11 +141,11 @@ std::map<int,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetAr
                     {
                         if (nNewOption != nOldOption)
                         {
-                            long nOldProduct = c_mapOption_Product.at(nOldOption);                                                                    
+                            eProd nOldProduct = c_mapOption_Product.at(nOldOption);                                                                    
                             double dOldProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nOldProduct);
                             if (mapCombination[nOldOption]>=dOldProductStep)
                             {
-                                std::map<int, double> mapTryingCombinationSwappingProducts = mapTryingCombinationAddingProduct;
+                                std::map<eOpt, double> mapTryingCombinationSwappingProducts = mapTryingCombinationAddingProduct;
                                 if (mapTryingCombinationSwappingProducts.end() == mapTryingCombinationSwappingProducts.find(nOldOption))
                                 {
                                     mapTryingCombinationSwappingProducts[nOldOption] = 0.0;

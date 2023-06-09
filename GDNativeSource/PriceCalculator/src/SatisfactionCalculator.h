@@ -1,6 +1,8 @@
 #ifndef CSATISFACTIONCALCULATOR_H
 #define CSATISFACTIONCALCULATOR_H
 
+#include "PriceCalculationDefines.h"
+
 #include <map>
 #include <vector>
 #include <set>
@@ -18,16 +20,16 @@ namespace pca
         CSatisfactionCalculator();
         virtual ~CSatisfactionCalculator();
 
-        std::map<int, double> CalculateProductdictFromOptiondict(std::map<int, double> mapOptiondictArg);
-        double CalculateSatisfOfCombidict(std::map<int, double> map_nOption_dAmount);
+        std::map<pca::eProd, double> CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg);
+        double CalculateSatisfOfCombidict(std::map<eOpt, double> map_nOption_dAmount);
 
     protected:
-        double CalculateSatisfOfCombidictFromIndividualOptions(std::map<int, double> map_nOption_dAmount);
-        double CalculateSatifactionOfOption(int nOption, double dQuantity);
-        double CalculateSatisfOfCombidictFromComplementaryCombos(std::map<int, double> mapOption_dAmount);
-        double CalculateSatifactionOfOptComplementaryCombo(int nCombo, double dAmount);
-        double CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<int, double> mapOption_dAmount);
-        double CalculateSatifactionOfOptSupplementaryCombo(int nCombo, double dAmount);
+        double CalculateSatisfOfCombidictFromIndividualOptions(std::map<eOpt, double> map_nOption_dAmount);
+        double CalculateSatifactionOfOption(eOpt nOption, double dQuantity);
+        double CalculateSatisfOfCombidictFromComplementaryCombos(std::map<eOpt, double> mapOption_dAmount);
+        double CalculateSatifactionOfOptComplementaryCombo(eCompComb nCombo, double dAmount);
+        double CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<eOpt, double> mapOption_dAmount);
+        double CalculateSatifactionOfOptSupplementaryCombo(eSuppComb nCombo, double dAmount);
         
 
         void DefaultInitialization();
@@ -35,13 +37,13 @@ namespace pca
     private:
         //std::vector<long> m_vOptions; //Igual se puede sustituir esto por otra cosa
         //std::set<long> m_setOptions;//TODO: sustituir por lo de PriceCalculationDefines
-        std::map<int, std::unique_ptr<CSatisfactionCurve> > m_Option_SatisfactionCurve;
+        std::map<eOpt, std::unique_ptr<CSatisfactionCurve> > m_Option_SatisfactionCurve;
 
         //std::map<long, std::set<long> > m_mapComplementaryCombo_setOptions;
-        std::map<int, std::unique_ptr<CSatisfactionCurve> > m_mapComplementaryCombo_pSatisfCurve;
+        std::map<eCompComb, std::unique_ptr<CSatisfactionCurve> > m_mapComplementaryCombo_pSatisfCurve;
 
-        std::map<int, std::map<int, double> > m_mapSupplementaryCombo_mapOption_dWeight;
-        std::map<int, std::unique_ptr<CSatisfactionCurve> > m_mapSupplementaryCombo_pSatisfCurve;
+        std::map<eSuppComb, std::map<eOpt, double> > m_mapSupplementaryCombo_mapOption_dWeight;
+        std::map<eSuppComb, std::unique_ptr<CSatisfactionCurve> > m_mapSupplementaryCombo_pSatisfCurve;
 
         int m_nId = 0;
 

@@ -41,7 +41,7 @@ int pca::CTester::Test_SatisfactionCalculator()
     std::cout << "Starting Test_SatisfactionCalculator" << std::endl;
 
     CSatisfactionCalculator oSatCalculator;
-    std::map<int,double> map_nOption_dAmount;
+    std::map<eOpt,double> map_nOption_dAmount;
     for(auto & nOption:c_setOptions)
     {
         map_nOption_dAmount[nOption] = 1.0;
@@ -67,7 +67,7 @@ int pca::CTester::Test_SatisfactionCalculator()
     CTradeCalculator oTradeCalculator(&oSatisfactionCalculator, &oPrices);
     
     std::cout << "Probando AdjustBestCombidict..." << std::endl;
-    std::map<int,double> mapOpAmmAdjusted = oTradeCalculator.AdjustBestCombidict(10.0, map_nOption_dAmount,1.0,100);
+    std::map<eOpt,double> mapOpAmmAdjusted = oTradeCalculator.AdjustBestCombidict(10.0, map_nOption_dAmount,1.0,100);
     for (auto & pair_Op_Am:mapOpAmmAdjusted)
     {
        std::cout << "Option: "<< pair_Op_Am.first << std::endl;
