@@ -4,7 +4,7 @@
 
 #include <set>
 #include <map>
-
+#include <string>
 
 namespace pca
 {
@@ -118,6 +118,32 @@ namespace pca
         {c_nSuppCombConsumption, c_setGroupConsumption},
         {c_nSuppCombSavings, c_setGroupSavings}
     };
+
+    const std::map<pca::eProd, std::string> c_mapProd_Name = {
+        {eProdCandy,"candy"},
+        {eProdChocolate,"chocolate"},
+        {eProdNut,"nut"}
+    };
+
+    const std::map<pca::eOpt,std::string> c_mapOption_Name = {
+        {eOptCandySavings,"candy savings"},
+        {eOptChocolateSavings,"chocolate savings"},
+        {eOptNutSavings,"nut savings"},
+        {eOptCandyConsumption,"candy consumption"},
+        {eOptChocolateConsumption,"chocolate consumption"},
+        {eOptNutConsumption,"nut consumption"}
+    };
+
+
+    const std::map<pca::eCompComb, std::string > c_mapComplementaryCombo_Name = {
+        {eCompCombSweets, "sweets"}
+    };
+
+    const std::map<pca::eSuppComb, std::string > c_mapSupplementaryCombo_Name = {
+        {c_nSuppCombConsumption, "consumption"},
+        {c_nSuppCombSavings, "savings"}
+    };
+
 
 }
 

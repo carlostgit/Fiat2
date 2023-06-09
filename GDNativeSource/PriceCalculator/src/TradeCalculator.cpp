@@ -5,6 +5,7 @@
 #include "PriceCalculationDefines.h"
 #include "SatisfactionCalculator.h"
 #include "Prices.h"
+#include "Utils.h"
 #include <assert.h>
 
 const bool c_traces = true;
@@ -98,6 +99,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
 
             std::cout << "Element eliminated. dLeftMoney: " << dLeftMoney << std::endl;
             std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
+            CUtils::PrintOptions(mapCombination);
         }
 
         if (false == bChangeMade)
@@ -166,6 +168,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
 
                                     std::cout << "Product swapped. dLeftMoney: " << dLeftMoney << std::endl;
                                     std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
+                                    CUtils::PrintOptions(mapCombination);
                                     break;
                                 }
 
@@ -189,6 +192,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
 
                         std::cout << "Product added. dLeftMoney: " << dLeftMoney << std::endl;
                         std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
+                        CUtils::PrintOptions(mapCombination);
                     }
                 }
             }

@@ -27,6 +27,7 @@
     <ClCompile Include="..\..\src\SatisfactionCurve.cpp" />
     <ClCompile Include="..\..\src\Tester.cpp" />
     <ClCompile Include="..\..\src\TradeCalculator.cpp" />
+    <ClCompile Include="..\..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Person.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="..\..\src\SatisfactionCurve.h" />
     <ClInclude Include="..\..\src\Tester.h" />
     <ClInclude Include="..\..\src\TradeCalculator.h" />
+    <ClInclude Include="..\..\src\Utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
