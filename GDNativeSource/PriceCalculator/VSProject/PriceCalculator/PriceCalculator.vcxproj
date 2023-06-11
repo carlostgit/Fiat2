@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\main.cpp" />
+    <ClCompile Include="..\..\src\Market.cpp" />
     <ClCompile Include="..\..\src\Person.cpp" />
     <ClCompile Include="..\..\src\PriceCalculator.cpp" />
     <ClCompile Include="..\..\src\Prices.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="..\..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\Market.h" />
     <ClInclude Include="..\..\src\Person.h" />
     <ClInclude Include="..\..\src\PriceCalculationDefines.h" />
     <ClInclude Include="..\..\src\PriceCalculator.h" />

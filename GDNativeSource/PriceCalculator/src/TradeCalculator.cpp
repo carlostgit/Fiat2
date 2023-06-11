@@ -8,7 +8,7 @@
 #include "Utils.h"
 #include <assert.h>
 
-const bool c_traces = true;
+const bool c_traces = false;
 
 pca::CTradeCalculator::CTradeCalculator(CSatisfactionCalculator* pSatisfactionCalculatorRef, CPrices* pPricesRef)
 {
@@ -25,25 +25,25 @@ pca::CTradeCalculator::~CTradeCalculator()
 
 //TODO: Pasar este método a C++
 //Habrá que cambiar este método para que quede claro que la combinación que se ajusta es de opciones
-std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<eOpt,double> mapCurrentCombidict, double dBudgetStepArg, int nMaxStepArg)
+std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<eOpt,double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
 {
     //TODO: Hacer una clase que permita imprimir bien el contenido de elementos como std::map<int,double> mapCurrentCombidict
 
-    std::cout << "Start of AdjustBestCombidict" << std::endl;
+    if (c_traces) std::cout << "Start of AdjustBestCombidict" << std::endl;
 
-    std::cout << "dBudgetArg: " << dBudgetArg << " dBudgetStepArg: " << dBudgetStepArg << " nMaxStepArg: " << nMaxStepArg << std::endl;
+    if (c_traces) std::cout << "dBudgetArg: " << dBudgetArg << " dBudgetStepArg: " << dBudgetStepArg << " nMaxStepArg: " << nMaxStepArg << std::endl;
 
 
     if (nullptr == m_pSatisfactionCalculatorRef || nullptr == m_pPricesRef)
     {
         assert(""=="Falta m_pSatisfactionCalculatorRef");
         assert(""=="Falta m_pPricesRef");
-        return mapCurrentCombidict;
+        return mapCurrentCombidictArg;
     }
 
     double dBudgetStepLength = dBudgetStepArg;
     std::set<eOpt> setOptions = c_setOptions;
-    std::map<eOpt, double> mapCombination = mapCurrentCombidict;
+    std::map<eOpt, double> mapCombination = mapCurrentCombidictArg;
     std::map<eProd, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
 
     double dCostOfArgCombination = m_pPricesRef->CalculateCombidictPrice(mapProductDict);    
@@ -51,8 +51,8 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
 
     double dBestPreviousSatisfaction = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapCombination);
 
-    std::cout << "Starting with dLeftMoney: " << dLeftMoney << std::endl;
-    std::cout << "Starting with Satisfaction: " << dBestPreviousSatisfaction << std::endl;
+    if (c_traces) std::cout << "Starting with dLeftMoney: " << dLeftMoney << std::endl;
+    if (c_traces) std::cout << "Starting with Satisfaction: " << dBestPreviousSatisfaction << std::endl;
 
     //Si el presupuesto no llega para la combinación actual, eliminamos elementos que sean relativamente caros y poco satisfactorios
     while (dLeftMoney < 0.0)
@@ -97,14 +97,14 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
             double dCurrentLeftMoney = dLeftMoney + dBudgetStepLength;
             dLeftMoney = dCurrentLeftMoney;
 
-            std::cout << "Element eliminated. dLeftMoney: " << dLeftMoney << std::endl;
-            std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
+            if (c_traces) std::cout << "Element eliminated. dLeftMoney: " << dLeftMoney << std::endl;
+            if (c_traces) std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
             CUtils::PrintOptions(mapCombination);
         }
 
         if (false == bChangeMade)
         {
-            std::cout << "Exited adjust_best_combidict because no option to remove found" << std::endl;
+            if (c_traces) std::cout << "Exited adjust_best_combidict because no option to remove found" << std::endl;
             break;
         }
     }
@@ -118,7 +118,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
             nCount += 1.0;
             if (nCount> nMaxStepArg)
             {
-                std::cout << "Exited adjust_best_combidict because too many iterations are being used" << std::endl;
+                if (c_traces) std::cout << "Exited adjust_best_combidict because too many iterations are being used" << std::endl;
                 break;
             }
 
@@ -166,8 +166,8 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
                                     dLeftMoney = dCurrentLeftMoney;
                                     dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
 
-                                    std::cout << "Product swapped. dLeftMoney: " << dLeftMoney << std::endl;
-                                    std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
+                                    if (c_traces) std::cout << "Product swapped. dLeftMoney: " << dLeftMoney << std::endl;
+                                    if (c_traces) std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
                                     CUtils::PrintOptions(mapCombination);
                                     break;
                                 }
@@ -190,8 +190,8 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
                         dLeftMoney = dCurrentLeftMoney;
                         dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
 
-                        std::cout << "Product added. dLeftMoney: " << dLeftMoney << std::endl;
-                        std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
+                        if (c_traces) std::cout << "Product added. dLeftMoney: " << dLeftMoney << std::endl;
+                        if (c_traces) std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
                         CUtils::PrintOptions(mapCombination);
                     }
                 }
@@ -199,7 +199,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
 
             if (false == bChangeMade)
             {
-                std::cout << "No option found. Exiting" << std::endl;
+                if (c_traces) std::cout << "No option found. Exiting" << std::endl;
                 break;
             }
         }
@@ -207,6 +207,55 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
 
     return mapCombination;
 }
+
+std::map<pca::eOpt, double> pca::CTradeCalculator::AdjustBestCombidictChangingStep(double dBudgetArg, std::map<eOpt, double> mapCurrentCombidictArg, double dInitBudgetStepArg, double dTargetBudgetStepArg, int nMaxStepArg)
+{
+    //var max_step_param : int = max_step_arg
+    double dCurrentBudgetStep = dInitBudgetStepArg;
+    std::map<eOpt, double> mapCurrentBestCombidict = mapCurrentCombidictArg;
+    while (dCurrentBudgetStep > dTargetBudgetStepArg)
+    {
+        mapCurrentBestCombidict = AdjustBestCombidict(dBudgetArg, mapCurrentBestCombidict, dCurrentBudgetStep, nMaxStepArg);
+        dCurrentBudgetStep = dCurrentBudgetStep / 2.0;
+    }
+
+    return mapCurrentBestCombidict;
+}
+
+std::map<pca::eOpt, double> pca::CTradeCalculator::ImproveCombination(std::map<eProd, double> mapOwnedCombidictArg, std::map<eOpt, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps)
+{
+    double dBudget = m_pPricesRef->CalculateCombidictPrice(mapOwnedCombidictArg);
+    double dInitBudgetStep = dBudget * 8.0;
+    
+    std::map<pca::eOpt, double> mapBestCombidict = AdjustBestCombidictChangingStep(dBudget, mapCurrentBestCombidictArg, dInitBudgetStep, dBudgetStep, nMaxNumSteps);
+
+    return mapBestCombidict;
+}
+
+
+
+//func improve_combination(trade_calc_arg:TradeCalculator, owned_combidict_arg : Dictionary, current_best_combidict_arg : Dictionary, budget_step : float, max_num_steps : int)->Dictionary:
+//
+//  var budget : float = Prices.calculate_combidict_price(owned_combidict_arg)
+//  var init_budget_step = budget_step * 8
+//  var best_combidict : Dictionary = trade_calc_arg.adjust_best_combidict_changing_step(budget, current_best_combidict_arg, init_budget_step, budget_step, max_num_steps)
+//  #			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
+//  return best_combidict
+
+
+
+
+//func adjust_best_combidict_changing_step(budget_arg:float, current_combidict_arg : Dictionary, init_budget_step_arg : float, target_budget_step_arg : float, max_step_arg : int) :
+//    var max_step_param : int = max_step_arg
+//    var current_budget_step : float = init_budget_step_arg
+//    var current_best_combidict : Dictionary = current_combidict_arg
+//    while current_budget_step > target_budget_step_arg:
+//        current_best_combidict = adjust_best_combidict(budget_arg, current_best_combidict, current_budget_step, max_step_param)
+//        current_budget_step = current_budget_step / 2.0
+//
+//    return current_best_combidict
+
+
 
 //func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):
 //#	TDOO: Hacer un método que llame a este método con pasos decrecientes en tamaño
