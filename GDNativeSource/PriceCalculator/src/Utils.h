@@ -5,6 +5,8 @@
 
 namespace pca
 {
+    class CPerson;
+
     class CUtils
     {
     public:
@@ -12,6 +14,8 @@ namespace pca
         virtual ~CUtils();
 
         static void PrintOptions(std::map<eOpt, double> mapOpt_Amount);
+
+        static void PrintPersonOptions(CPerson* pPerson);
 
     protected:
 

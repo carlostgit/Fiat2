@@ -26,13 +26,35 @@ namespace pca
         //    var max_num_steps = 5
         //    adjust_best_combination_for_person_with_max_num_steps(person_arg, budget_step, max_num_steps)
 
+        std::map<pca::eOpt, double> GetCurrentOpt_Amount(){
+            return this->m_mapCurrentOpt_Amount;
+        }
 
+        std::map<pca::eProd, double> GetOwnedProd_Amount() {
+            return this->m_mapOwnedProd_Amount;
+        }
+
+        long GetId() {
+            return this->m_nId;
+        }
+
+        void SetName(std::string sName) {
+            this->m_sName = sName;
+        }
+
+        std::string GetName() {
+            return this->m_sName;
+        }
 
     protected:
 
         void InitDefaultAmounts();
 
     private:
+
+        static long ms_nId;
+        long m_nId = 0;
+        std::string m_sName = "No name";
 
         std::map<pca::eProd, double> m_mapOwnedProd_Amount;
         std::map<pca::eOpt, double> m_mapCurrentOpt_Amount;
