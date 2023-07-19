@@ -25,6 +25,13 @@ namespace pca
             return m_dMaximumSatisf;
         };
 
+        void IncreasePreferenceAt0(double dExtraPreferenceAt0) {
+            m_dPreferenceAt0 += dExtraPreferenceAt0;
+        }
+
+        void IncreaseMaximumSatisf(double dExtraMaxSatisf) {
+            m_dMaximumSatisf += dExtraMaxSatisf;
+        }
 
     protected:
         double GetDiminishingReturnsFactor(double dQuantity);

@@ -20,8 +20,16 @@ namespace pca
         CSatisfactionCalculator();
         virtual ~CSatisfactionCalculator();
 
-        std::map<pca::eProd, double> CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg);
+        //std::map<pca::eProd, double> CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg);
         double CalculateSatisfOfCombidict(std::map<eOpt, double> map_nOption_dAmount);
+
+        void SetPreferenceAt0(eOpt nOpt, double dPrefAt0);
+        void SetMaximumSatisf(eOpt nOpt, double dMaxSatisf);
+        void SetPreferenceAt0(eCompComb nCompComb, double dPrefAt0);
+        void SetMaximumSatisf(eCompComb nCompComb, double dMaxSatisf);
+        void SetPreferenceAt0(eSuppComb nSuppComb, double dPrefAt0);
+        void SetMaximumSatisf(eSuppComb nSuppComb, double dMaxSatisf);
+
 
     protected:
         double CalculateSatisfOfCombidictFromIndividualOptions(std::map<eOpt, double> map_nOption_dAmount);
@@ -42,7 +50,7 @@ namespace pca
         //std::map<long, std::set<long> > m_mapComplementaryCombo_setOptions;
         std::map<eCompComb, std::unique_ptr<CSatisfactionCurve> > m_mapComplementaryCombo_pSatisfCurve;
 
-        std::map<eSuppComb, std::map<eOpt, double> > m_mapSupplementaryCombo_mapOption_dWeight;
+        //std::map<eSuppComb, std::map<eOpt, double> > m_mapSupplementaryCombo_mapOption_dWeight;
         std::map<eSuppComb, std::unique_ptr<CSatisfactionCurve> > m_mapSupplementaryCombo_pSatisfCurve;
 
         int m_nId = 0;

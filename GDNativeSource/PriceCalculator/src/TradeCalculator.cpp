@@ -44,7 +44,8 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
     double dBudgetStepLength = dBudgetStepArg;
     std::set<eOpt> setOptions = c_setOptions;
     std::map<eOpt, double> mapCombination = mapCurrentCombidictArg;
-    std::map<eProd, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
+    //std::map<eProd, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
+    std::map<eProd, double> mapProductDict = CUtils::CalculateProductdictFromOptiondict(mapCombination);
 
     double dCostOfArgCombination = m_pPricesRef->CalculateCombidictPrice(mapProductDict);    
     double dLeftMoney = dBudgetArg - dCostOfArgCombination;

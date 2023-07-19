@@ -37,4 +37,30 @@ void pca::CUtils::PrintPersonOptions(CPerson* pPerson)
     std::cout << std::endl;
 }
 
+std::map<pca::eProd, double> pca::CUtils::CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg)
+{
+    std::map<eProd, double> mapProductdict;
+
+    for (auto& pairOptionAmount : mapOptiondictArg)
+    {
+        eOpt nOption = pairOptionAmount.first;
+        double dAmount = pairOptionAmount.second;
+
+        if (c_mapOption_Product.end() != c_mapOption_Product.find(nOption))
+        {
+            eProd nProduct = c_mapOption_Product.at(nOption);
+
+            if (mapProductdict.end() != mapProductdict.find(nProduct))
+            {
+                mapProductdict[nProduct] = dAmount + mapProductdict.at(nProduct);
+            }
+            else
+            {
+                mapProductdict[nProduct] = dAmount;
+            }
+        }
+    }
+
+    return mapProductdict;
+}
 

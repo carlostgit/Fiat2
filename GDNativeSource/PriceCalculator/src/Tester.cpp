@@ -88,7 +88,7 @@ int pca::CTester::Test_SatisfactionCalculator()
     {
         CMarket oMarket;
         CPrices oPrices;
-        CSatisfactionCalculator oSatisfactionCalculator_1;
+        CSatisfactionCalculator oSatisfactionCalculator_1;        
         CTradeCalculator oTradeCalculator_1(&oSatisfactionCalculator_1, &oPrices);
         CSatisfactionCalculator oSatisfactionCalculator_2;
         CTradeCalculator oTradeCalculator_2(&oSatisfactionCalculator_2, &oPrices);

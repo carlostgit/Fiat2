@@ -45,16 +45,14 @@ void pca::CSatisfactionCalculator::DefaultInitialization()
 
         //Default weight for each option
         //m_mapSupplementaryCombo_mapOption_dWeight
-        std::set<eOpt> setOptions = pairCombo_setOptions.second;
-        std::map<eOpt,double> mapOption_dWeight;
-        for (auto & nOption: setOptions)
-        {
-            mapOption_dWeight[nOption] = 1.0; //Por defecto, el peso es 1 para todas las opciones
-        }
-        m_mapSupplementaryCombo_mapOption_dWeight[nCombo] = mapOption_dWeight;
+        //std::set<eOpt> setOptions = pairCombo_setOptions.second;
+        //std::map<eOpt,double> mapOption_dWeight;
+        //for (auto & nOption: setOptions)
+        //{
+        //    mapOption_dWeight[nOption] = 1.0; //Por defecto, el peso es 1 para todas las opciones
+        //}
+        //m_mapSupplementaryCombo_mapOption_dWeight[nCombo] = mapOption_dWeight;
     }
-
-
 }
 
 //_calculate_satifaction_of_opt_supplementary_combo
@@ -62,7 +60,7 @@ double pca::CSatisfactionCalculator::CalculateSatifactionOfOptSupplementaryCombo
 {
 
 
-	if (m_mapSupplementaryCombo_mapOption_dWeight.end()==this->m_mapSupplementaryCombo_mapOption_dWeight.find(nCombo))
+	if (c_mapSupplementaryCombo_mapOption_dWeight.end()==c_mapSupplementaryCombo_mapOption_dWeight.find(nCombo))
 		return 0.0;
 
 	if (m_mapSupplementaryCombo_pSatisfCurve.end()==this->m_mapSupplementaryCombo_pSatisfCurve.find(nCombo))
@@ -87,11 +85,11 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementary
 //#														}
 //#										}
 	double dSatisfOfCombi = 0.0;
-	for (auto & pair_Combo_mapOption_dWeight:this->m_mapSupplementaryCombo_mapOption_dWeight)
+	for (auto & pair_Combo_mapOption_dWeight:c_mapSupplementaryCombo_mapOption_dWeight)
     {
         eSuppComb nCombo = pair_Combo_mapOption_dWeight.first;
         double dAmountOfSuppCombo = 0.0;
-		std::map<eOpt,double> mapOption_dWeight = this->m_mapSupplementaryCombo_mapOption_dWeight.at(nCombo);
+		std::map<eOpt,double> mapOption_dWeight = c_mapSupplementaryCombo_mapOption_dWeight.at(nCombo);
 		for (auto & pairOption_dWeight: mapOption_dWeight)
         {
             eOpt nOption = pairOption_dWeight.first;
@@ -208,32 +206,87 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<eOpt,do
 
 }
 
-std::map<pca::eProd,double> pca::CSatisfactionCalculator::CalculateProductdictFromOptiondict(std::map<eOpt,double> mapOptiondictArg )
+void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::eOpt nOpt, double dPrefAt0)
 {
-    std::map<eProd,double> mapProductdict;
-
-    for(auto & pairOptionAmount:mapOptiondictArg)
-    {
-        eOpt nOption = pairOptionAmount.first;
-        double dAmount = pairOptionAmount.second;
-
-        if (c_mapOption_Product.end()!=c_mapOption_Product.find(nOption))
-        {
-            eProd nProduct = c_mapOption_Product.at(nOption);
-
-            if (mapProductdict.end()!=mapProductdict.find(nProduct))
-            {
-                mapProductdict[nProduct] = dAmount + mapProductdict.at(nProduct);
-            }
-            else
-            {
-                mapProductdict[nProduct]=dAmount;
-            }
-        }
-    }
-
-    return mapProductdict;
+	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(nOpt))
+	{
+		auto pSatisfCurve = m_Option_SatisfactionCurve.at(nOpt).get();
+		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
+	}
 }
+
+void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::eOpt nOpt, double dMaxSatisf)
+{
+	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(nOpt))
+	{
+		auto pSatisfCurve = m_Option_SatisfactionCurve.at(nOpt).get();
+		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);
+	}
+}
+
+void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::eCompComb nCompComb, double dPrefAt0)
+{
+	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(nCompComb))
+	{
+		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(nCompComb).get();
+		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
+	}
+}
+
+void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::eCompComb nCompComb, double dMaxSatisf)
+{
+	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(nCompComb))
+	{
+		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(nCompComb).get();
+		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);
+	}
+}
+
+void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::eSuppComb nSuppComb, double dPrefAt0)
+{
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(nSuppComb))
+	{
+		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(nSuppComb).get();
+		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
+	}
+}
+
+void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::eSuppComb nSuppComb, double dMaxSatisf)
+{
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(nSuppComb))
+	{
+		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(nSuppComb).get();
+		pSatisfCurve->SetMaximumSatisf(nSuppComb);
+	}
+}
+
+//
+//std::map<pca::eProd,double> pca::CSatisfactionCalculator::CalculateProductdictFromOptiondict(std::map<eOpt,double> mapOptiondictArg )
+//{
+//    std::map<eProd,double> mapProductdict;
+//
+//    for(auto & pairOptionAmount:mapOptiondictArg)
+//    {
+//        eOpt nOption = pairOptionAmount.first;
+//        double dAmount = pairOptionAmount.second;
+//
+//        if (c_mapOption_Product.end()!=c_mapOption_Product.find(nOption))
+//        {
+//            eProd nProduct = c_mapOption_Product.at(nOption);
+//
+//            if (mapProductdict.end()!=mapProductdict.find(nProduct))
+//            {
+//                mapProductdict[nProduct] = dAmount + mapProductdict.at(nProduct);
+//            }
+//            else
+//            {
+//                mapProductdict[nProduct]=dAmount;
+//            }
+//        }
+//    }
+//
+//    return mapProductdict;
+//}
 
 /*
 func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictionary:

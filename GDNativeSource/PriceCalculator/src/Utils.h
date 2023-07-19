@@ -17,6 +17,8 @@ namespace pca
 
         static void PrintPersonOptions(CPerson* pPerson);
 
+        static std::map<pca::eProd, double> CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg);
+
     protected:
 
     private:

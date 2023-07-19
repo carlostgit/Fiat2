@@ -83,7 +83,6 @@ namespace pca
 
     };
 
-
     const std::set<pca::eOpt> c_setOptions = {
     eOptCandySavings,
     eOptChocolateSavings,
@@ -134,7 +133,6 @@ namespace pca
         {eOptNutConsumption,"nut consumption"}
     };
 
-
     const std::map<pca::eCompComb, std::string > c_mapComplementaryCombo_Name = {
         {eCompCombSweets, "sweets"}
     };
@@ -144,6 +142,24 @@ namespace pca
         {c_nSuppCombSavings, "savings"}
     };
 
+    //std::set<eOpt> setOptions = pairCombo_setOptions.second;
+    //std::map<eOpt, double> mapOption_dWeight;
+    //for (auto& nOption : setOptions)
+    //{
+    //    mapOption_dWeight[nOption] = 1.0; //Por defecto, el peso es 1 para todas las opciones
+    //}
+    //m_mapSupplementaryCombo_mapOption_dWeight[nCombo] = mapOption_dWeight;
+
+    const std::map<eSuppComb, std::map<eOpt, double> > c_mapSupplementaryCombo_mapOption_dWeight = {
+        {c_nSuppCombConsumption, {{eOptCandyConsumption, 1.0},
+                                 {eOptChocolateConsumption, 1.0},
+                                 {eOptNutConsumption, 1.0}}
+        },
+        {c_nSuppCombSavings, {{eOptCandySavings, 1.0},
+                                 {eOptChocolateSavings, 1.0},
+                                 {eOptNutSavings, 1.0}}
+        }        
+    };
 
 }
 
