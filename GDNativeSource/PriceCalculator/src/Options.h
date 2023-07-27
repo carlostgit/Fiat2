@@ -18,13 +18,10 @@ namespace pca
 
         void AddOption(std::unique_ptr<pca::COption> upOption);
         
-
     protected:
-
 
     private:
         std::set<std::unique_ptr<pca::COption>> m_setOptions;
-
     };
 }
 #endif // COPTIONS_H

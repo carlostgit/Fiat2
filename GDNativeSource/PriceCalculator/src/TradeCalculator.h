@@ -15,7 +15,7 @@ namespace pca
     class CTradeCalculator
     {
     public:
-        CTradeCalculator(CSatisfactionCalculator* pSatisfactionCalculatorRef, CPrices* pPricesRef);
+        CTradeCalculator(std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator, CPrices* pPricesRef);
 
         virtual ~CTradeCalculator();
 
@@ -28,7 +28,7 @@ namespace pca
 
     private:
 
-        CSatisfactionCalculator* m_pSatisfactionCalculatorRef = nullptr;
+        std::unique_ptr<CSatisfactionCalculator> m_upSatisfactionCalculator;
         CPrices* m_pPricesRef = nullptr;
 
     };

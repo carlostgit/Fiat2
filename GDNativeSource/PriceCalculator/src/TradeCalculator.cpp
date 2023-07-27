@@ -10,10 +10,10 @@
 
 const bool c_traces = false;
 
-pca::CTradeCalculator::CTradeCalculator(CSatisfactionCalculator* pSatisfactionCalculatorRef, CPrices* pPricesRef)
+pca::CTradeCalculator::CTradeCalculator(std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator, CPrices* pPricesRef)
 {
     //ctor
-    m_pSatisfactionCalculatorRef = pSatisfactionCalculatorRef;
+    m_upSatisfactionCalculator = std::move(upSatisfactionCalculator);
     m_pPricesRef = pPricesRef;
 }
 
@@ -34,7 +34,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
     if (c_traces) std::cout << "dBudgetArg: " << dBudgetArg << " dBudgetStepArg: " << dBudgetStepArg << " nMaxStepArg: " << nMaxStepArg << std::endl;
 
 
-    if (nullptr == m_pSatisfactionCalculatorRef || nullptr == m_pPricesRef)
+    if (nullptr == m_upSatisfactionCalculator || nullptr == m_pPricesRef)
     {
         assert(""=="Falta m_pSatisfactionCalculatorRef");
         assert(""=="Falta m_pPricesRef");
@@ -50,7 +50,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
     double dCostOfArgCombination = m_pPricesRef->CalculateCombidictPrice(mapProductDict);    
     double dLeftMoney = dBudgetArg - dCostOfArgCombination;
 
-    double dBestPreviousSatisfaction = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapCombination);
+    double dBestPreviousSatisfaction = m_upSatisfactionCalculator->CalculateSatisfOfCombidict(mapCombination);
 
     if (c_traces) std::cout << "Starting with dLeftMoney: " << dLeftMoney << std::endl;
     if (c_traces) std::cout << "Starting with Satisfaction: " << dBestPreviousSatisfaction << std::endl;
@@ -81,7 +81,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
                 continue;
             }
 
-            double dSatisfactionOfTryingCombination = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapTryingCombinationRemovingProduct);
+            double dSatisfactionOfTryingCombination = m_upSatisfactionCalculator->CalculateSatisfOfCombidict(mapTryingCombinationRemovingProduct);
             double dCurentDecrementOfSatisfaction = dBestPreviousSatisfaction - dSatisfactionOfTryingCombination;
 
             if (dCurentDecrementOfSatisfaction <= dBestDecrementOfSatisfaction)
@@ -157,7 +157,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
                                 mapTryingCombinationSwappingProducts[nOldOption] -= dOldProductStep;
                                 dCurrentLeftMoney = dLeftMoney;
 
-                                double dSatisfactionOfTryingCombination = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapTryingCombinationSwappingProducts);
+                                double dSatisfactionOfTryingCombination = m_upSatisfactionCalculator->CalculateSatisfOfCombidict(mapTryingCombinationSwappingProducts);
                                 double dIncrementOfSatisfaction = dSatisfactionOfTryingCombination - dBestPreviousSatisfaction;
  
                                 if (dIncrementOfSatisfaction > 0.0)
@@ -181,7 +181,7 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
                 }
                 else
                 {
-                    double dSatisfactionOfTryingCombination = m_pSatisfactionCalculatorRef->CalculateSatisfOfCombidict(mapTryingCombinationAddingProduct);
+                    double dSatisfactionOfTryingCombination = m_upSatisfactionCalculator->CalculateSatisfOfCombidict(mapTryingCombinationAddingProduct);
                     double dIncrementOfSatisfaction = dSatisfactionOfTryingCombination - dBestPreviousSatisfaction;
 
                     if (dIncrementOfSatisfaction > 0.0)

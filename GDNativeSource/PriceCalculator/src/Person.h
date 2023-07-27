@@ -3,6 +3,7 @@
 
 #include "PriceCalculationDefines.h"
 #include <map>
+#include <memory>
 
 namespace pca
 {
@@ -13,7 +14,7 @@ namespace pca
     class CPerson
     {
     public:
-        CPerson(CPrices* pPricesRef, CMarket* pMarketRef, CTradeCalculator* pTradCalculatorRef);
+        CPerson(CPrices* pPricesRef, CMarket* pMarketRef, std::unique_ptr<CTradeCalculator> upTradCalculator);
         virtual ~CPerson();
 
         void AddProductAmount(eProd nProductId, double dAmount);
@@ -61,7 +62,7 @@ namespace pca
 
         CPrices* m_pPricesRef = nullptr;
         CMarket* m_pMarketRef = nullptr;
-        CTradeCalculator* m_pTradeCalculatorRef = nullptr;
+        std::unique_ptr<CTradeCalculator> m_upTradeCalculator;
 
     };
 }

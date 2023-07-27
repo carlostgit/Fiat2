@@ -7,14 +7,14 @@
 
 long pca::CPerson::ms_nId = 0;
 
-pca::CPerson::CPerson(CPrices* pPricesRef, CMarket* pMarketRef, CTradeCalculator* pTradeCalculatorRef)
+pca::CPerson::CPerson(CPrices* pPricesRef, CMarket* pMarketRef, std::unique_ptr<CTradeCalculator> upTradeCalculator)
 {
     ms_nId++;
     m_nId = ms_nId;
 
     m_pPricesRef = pPricesRef;
     m_pMarketRef = pMarketRef;
-    m_pTradeCalculatorRef = pTradeCalculatorRef;
+    m_upTradeCalculator = std::move(upTradeCalculator);
 
     //ctor
     InitDefaultAmounts();
@@ -65,7 +65,7 @@ void pca::CPerson::AdjustBestCombinationForPerson()
 std::map<pca::eOpt, double> pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumStepsArg)
 {
     m_pPricesRef->CalculateCombidictPrice(m_mapOwnedProd_Amount);
-    std::map<pca::eOpt, double> mapBestCombidict = m_pTradeCalculatorRef->ImproveCombination(m_mapOwnedProd_Amount, m_mapCurrentOpt_Amount, dBudgetStepArg, nMaxNumStepsArg);
+    std::map<pca::eOpt, double> mapBestCombidict = m_upTradeCalculator->ImproveCombination(m_mapOwnedProd_Amount, m_mapCurrentOpt_Amount, dBudgetStepArg, nMaxNumStepsArg);
 
     this->m_mapCurrentOpt_Amount = mapBestCombidict;
 

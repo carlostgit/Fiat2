@@ -4,6 +4,7 @@
 #include "PriceCalculationDefines.h"
 #include "Person.h"
 #include <vector>
+#include <memory>
 
 namespace pca
 {
@@ -13,7 +14,7 @@ namespace pca
         CMarket();
         virtual ~CMarket();
 
-        void AddPersonRef(CPerson* pPersonRef);
+        void AddPerson(std::unique_ptr<CPerson> upPerson);
 
         void AdjustBestCombinations(double dBudgetStep, int nMaxNumSteps);
 
@@ -22,7 +23,7 @@ namespace pca
 
     private:
 
-        std::vector<pca::CPerson*> m_vPersonRefs;
+        std::vector<std::unique_ptr<pca::CPerson>> m_vPersons;
 
     };
 }

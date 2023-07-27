@@ -15,14 +15,14 @@ pca::CMarket::~CMarket()
     //dtor
 }
 
-void pca::CMarket::AddPersonRef(CPerson* pPersonRef)
+void pca::CMarket::AddPerson(std::unique_ptr<CPerson> upPerson)
 {
-    m_vPersonRefs.push_back(pPersonRef);
+    m_vPersons.push_back(std::move(upPerson));
 }
 
 void pca::CMarket::AdjustBestCombinations(double dBudgetStep, int nMaxNumSteps)
 {
-    for (auto& personRef : m_vPersonRefs)
+    for (auto& personRef : m_vPersons)
     {
         personRef->AdjustBestCombinationForPersonWithMaxNumSteps(dBudgetStep, nMaxNumSteps);
     }
