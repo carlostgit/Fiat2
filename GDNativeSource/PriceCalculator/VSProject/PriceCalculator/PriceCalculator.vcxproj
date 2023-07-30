@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\ComplCombo.cpp" />
+    <ClCompile Include="..\..\src\ComplCombos.cpp" />
     <ClCompile Include="..\..\src\main.cpp" />
     <ClCompile Include="..\..\src\Market.cpp" />
     <ClCompile Include="..\..\src\Option.cpp" />
@@ -28,13 +30,18 @@
     <ClCompile Include="..\..\src\Prices.cpp" />
     <ClCompile Include="..\..\src\Product.cpp" />
     <ClCompile Include="..\..\src\Products.cpp" />
+    <ClCompile Include="..\..\src\Reality.cpp" />
     <ClCompile Include="..\..\src\SatisfactionCalculator.cpp" />
     <ClCompile Include="..\..\src\SatisfactionCurve.cpp" />
+    <ClCompile Include="..\..\src\SupplCombo.cpp" />
+    <ClCompile Include="..\..\src\SupplCombos.cpp" />
     <ClCompile Include="..\..\src\Tester.cpp" />
     <ClCompile Include="..\..\src\TradeCalculator.cpp" />
     <ClCompile Include="..\..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\ComplCombo.h" />
+    <ClInclude Include="..\..\src\ComplCombos.h" />
     <ClInclude Include="..\..\src\Market.h" />
     <ClInclude Include="..\..\src\Option.h" />
     <ClInclude Include="..\..\src\Options.h" />
@@ -44,8 +51,11 @@
     <ClInclude Include="..\..\src\Prices.h" />
     <ClInclude Include="..\..\src\Product.h" />
     <ClInclude Include="..\..\src\Products.h" />
+    <ClInclude Include="..\..\src\Reality.h" />
     <ClInclude Include="..\..\src\SatisfactionCalculator.h" />
     <ClInclude Include="..\..\src\SatisfactionCurve.h" />
+    <ClInclude Include="..\..\src\SupplCombo.h" />
+    <ClInclude Include="..\..\src\SupplCombos.h" />
     <ClInclude Include="..\..\src\Tester.h" />
     <ClInclude Include="..\..\src\TradeCalculator.h" />
     <ClInclude Include="..\..\src\Utils.h" />

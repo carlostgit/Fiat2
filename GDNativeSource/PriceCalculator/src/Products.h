@@ -5,16 +5,18 @@
 #include <string>
 #include <set>
 
+#include "Product.h"
+
 namespace pca
 {
-    class CProduct;
+    //class CProduct;
 
     class CProducts
     {
     public:
         CProducts() {}
         CProducts(std::initializer_list< std::string> productNameListInit);
-        virtual ~CProducts() {}
+        virtual ~CProducts();
 
         void AddProduct(std::unique_ptr<pca::CProduct> upProduct);
 

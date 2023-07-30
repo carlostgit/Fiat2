@@ -1,7 +1,12 @@
 #include "Products.h"
 
-#include "Product.h"
+//#include "Product.h"
 #include <string>
+
+pca::CProducts::~CProducts()
+{
+
+}
 
 pca::CProducts::CProducts(std::initializer_list< std::string> productNameListInit)
 {

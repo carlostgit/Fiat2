@@ -5,9 +5,11 @@
 #include <memory>
 #include <string>
 
+#include "Option.h"
+
 namespace pca
 {
-    class COption;
+    //class COption;
 
     class COptions
     {
