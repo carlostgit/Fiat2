@@ -2,6 +2,7 @@
 #define CREALITY_H
 
 #include <memory>
+#include <vector>
 
 namespace pca
 {
@@ -10,23 +11,31 @@ namespace pca
     class CComplCombos;
     class CSupplCombos;
 
+    class CProduct;
+    class COption;
+
     class CReality
     {
     public:
-        CReality() {};
+        CReality();
         virtual ~CReality() {}
 
+        void InitDefaultProductsAndOptions();
 
+    protected:
 
-    };
+        std::vector<pca::CProduct*> GetProducts();
+        std::vector<pca::COption*> GetOptions();
 
-    std::unique_ptr<CProducts> m_upProducts;
-    std::unique_ptr<COptions> m_upOptions;
-    std::unique_ptr<CComplCombos> m_upComplCombos;
-    std::unique_ptr<CSupplCombos> m_upSupplCombos;
+    protected:
 
+        std::unique_ptr<CProducts> m_upProducts;
+        std::unique_ptr<COptions> m_upOptions;
+        std::unique_ptr<CComplCombos> m_upComplCombos;
+        std::unique_ptr<CSupplCombos> m_upSupplCombos;
+
+    };    
 }
-
 
 #endif //CREALITY_H
 

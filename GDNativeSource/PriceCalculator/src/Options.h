@@ -4,6 +4,7 @@
 #include <set>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "Option.h"
 
@@ -19,6 +20,9 @@ namespace pca
         virtual ~COptions() {}
 
         void AddOption(std::unique_ptr<pca::COption> upOption);
+        std::vector<pca::COption*> GetOptions();
+
+        pca::COption* GetOption(std::string sOptionName);
         
     protected:
 

@@ -10,8 +10,91 @@
 #include "ComplCombos.h"
 #include "SupplCombos.h"
 
+pca::CReality::CReality()
+{
+    InitDefaultProductsAndOptions();
+}
+
+void pca::CReality::InitDefaultProductsAndOptions()
+{
+    //Products
+    //std::unique_ptr<CProducts> m_upProducts;
+    std::unique_ptr<CProducts> upProducts(new CProducts({ "candy","chocolate","nut"}));
+    m_upProducts = std::move(upProducts);
+
+    //Options
+    //std::unique_ptr<COptions> m_upOptions;
+    std::unique_ptr<COptions> upOptions(new COptions({ "candy savings", "chocolate savings", "nut savings", 
+        "candy consumption", "chocolate consumption", "nut consumption" }));
+    m_upOptions = std::move(upOptions);
+
+    //ComplCombos
+    std::map<std::string, std::set<std::string>> mapComplComboName_OptionNames({
+        { "sweets" , { "candy", "chocolate"} }
+        }
+    );
+
+    for (auto& pairComplName_OptionNames : mapComplComboName_OptionNames)
+    {
+        std::string sComplComboName = pairComplName_OptionNames.first;
+        std::unique_ptr<CComplCombo> upComplCombo(new CComplCombo(sComplComboName));
+        std::set<std::string> setOptionNames;
+        for (auto& optionName : setOptionNames)
+        {
+            COption* pOptionRef = m_upOptions->GetOption(optionName);
+            upComplCombo->AddOption(pOptionRef);
+        }
+
+        m_upComplCombos->AddComplCombo(std::move(upComplCombo));
+    }
+
+    //SupplCombos
+    const std::map<std::string, std::map<std::string, double> > mapSupplementaryComboName_mapOptionName_dWeight = {
+        {"consumption", {{"candy consumption", 1.0},
+                         {"chocolate consumption", 1.0},
+                         {"nut consumption", 1.0}}
+        },
+        {"savings", {{"candy savings", 1.0},
+                     {"chocolate savings", 1.0},
+                     {"nut savings", 1.0}}
+        }        
+    };
+
+
+    for (auto& pairSupplName_mapOptionName_dWeight : mapSupplementaryComboName_mapOptionName_dWeight)
+    {
+        std::string sSupplComboName = pairSupplName_mapOptionName_dWeight.first;
+        std::unique_ptr<CSupplCombo> upSupplCombo(new CSupplCombo(sSupplComboName));
+        std::map<std::string, double> mapOptionName_dWeight;
+        for (auto& pairOptionName_dWeight: mapOptionName_dWeight)
+        {
+            std::string optionName = pairOptionName_dWeight.first;
+            double dWeight = pairOptionName_dWeight.second;
+            COption* pOptionRef = m_upOptions->GetOption(optionName);
+            upSupplCombo->AddOptionAndWeight(pOptionRef, dWeight);
+        }
+
+        m_upSupplCombos->AddSupplCombo(std::move(upSupplCombo));
+    }
+
+}
+
+
+std::vector<pca::CProduct*> pca::CReality::GetProducts()
+{
+   
+    return m_upProducts->GetProducts();
+}
+
+std::vector<pca::COption*> pca::CReality::GetOptions()
+{
+    return m_upOptions->GetOptions();
+}
+
+
 //pca::CReality::~CReality() 
 //{
+//
 //}
     ////TODO. Cambiar esto por enumeradores. O crear clases (Clase CProduct etc...)
 

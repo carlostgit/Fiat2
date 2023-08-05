@@ -4,6 +4,8 @@
 #include <memory>
 #include <string>
 #include <set>
+#include <vector>
+
 
 #include "Product.h"
 
@@ -19,6 +21,7 @@ namespace pca
         virtual ~CProducts();
 
         void AddProduct(std::unique_ptr<pca::CProduct> upProduct);
+        std::vector<pca::CProduct*> GetProducts();
 
     protected:
 

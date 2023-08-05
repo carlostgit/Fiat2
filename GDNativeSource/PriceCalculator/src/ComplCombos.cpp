@@ -1,13 +1,13 @@
 #include "ComplCombos.h"
 
 #include "ComplCombo.h"
-#include <string>
 
-pca::CComplCombos::CComplCombos(std::initializer_list< std::string> complComboNameListInit)
+
+pca::CComplCombos::CComplCombos(std::map<std::string, std::set<COption*> >  mapOfComplCombos)
 {
-	for (auto& name : complComboNameListInit)
+	for (auto& pairNameOptions : mapOfComplCombos)
 	{
-		std::unique_ptr<pca::CComplCombo> upComplCombo(new pca::CComplCombo(name));
+		std::unique_ptr<pca::CComplCombo> upComplCombo(new pca::CComplCombo(pairNameOptions.first, pairNameOptions.second));
 		m_setComplCombos.insert(std::move(upComplCombo));
 	}
 }

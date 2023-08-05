@@ -13,6 +13,7 @@ namespace pca
     public:
         CSupplCombo();
         CSupplCombo(std::string sName);
+        CSupplCombo(std::string sName, std::map<pca::COption*, double> mapOptionWeight);
         virtual ~CSupplCombo() {}
 
         long GetID() { return m_nID; }
@@ -23,7 +24,7 @@ namespace pca
             m_mapOption_Weight[pOptionRef] = dWeight;
         }
 
-        void AddOptionsAndWeights(std::initializer_list< std::pair<pca::COption*, double>> optionWeightNameListInit);        
+        void AddOptionsAndWeights(std::map<pca::COption*, double> mapOptionWeight);
 
     protected:
 

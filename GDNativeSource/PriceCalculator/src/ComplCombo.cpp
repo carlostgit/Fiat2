@@ -14,9 +14,21 @@ pca::CComplCombo::CComplCombo(std::string sName)
 	m_sName = sName;
 }
 
-void pca::CComplCombo::AddOptions(std::initializer_list< pca::COption*> optionNameListInit)
+pca::CComplCombo::CComplCombo(std::string sName, std::set< pca::COption*> setOptions)
 {
-	for (auto& option : optionNameListInit)
+	m_nCount++;
+	m_nID = m_nCount;
+	m_sName = sName;
+
+	for (auto& option : setOptions)
+	{
+		m_setOptions.insert(option);
+	}
+}
+
+void pca::CComplCombo::AddOptions(std::set< pca::COption*> setOptions)
+{
+	for (auto& option : setOptions)
 	{
 		m_setOptions.insert(option);
 	}

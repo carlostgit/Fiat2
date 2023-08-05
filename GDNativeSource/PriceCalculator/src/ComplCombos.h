@@ -1,21 +1,25 @@
 #ifndef CCOMPLCOMBOS_H
 #define CCOMPLCOMBOS_H
 
+
+#include "ComplCombo.h"
 #include <memory>
 #include <string>
 #include <set>
-
-#include "ComplCombo.h"
+#include <map>
 
 namespace pca
 {
     //class CComplCombo;
+    class COption;
 
     class CComplCombos
     {
+        
+
     public:
         CComplCombos() {}
-        CComplCombos(std::initializer_list< std::string> complComboNameListInit);
+        CComplCombos(std::map<std::string,std::set<COption*> > mapOfComplCombos);
         virtual ~CComplCombos() {}
 
         void AddComplCombo(std::unique_ptr<pca::CComplCombo> upComplCombo);

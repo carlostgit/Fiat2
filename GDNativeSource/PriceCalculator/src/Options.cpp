@@ -15,3 +15,25 @@ void pca::COptions::AddOption(std::unique_ptr<pca::COption> upOption)
 {
 	m_setOptions.insert(std::move(upOption));
 }
+
+pca::COption* pca::COptions::GetOption(std::string sOptionName)
+{
+	for (auto& option : m_setOptions)
+	{
+		if (sOptionName == option->GetName())
+			return option.get();
+	}
+
+	return nullptr;
+}
+
+std::vector<pca::COption*> pca::COptions::GetOptions()
+{
+	std::vector<pca::COption*> vOptions;
+	for (auto& upOption : m_setOptions)
+	{
+		vOptions.push_back(upOption.get());
+	}
+
+	return vOptions;
+}

@@ -14,10 +14,25 @@ pca::CSupplCombo::CSupplCombo(std::string sName)
 	m_sName = sName;
 }
 
-void pca::CSupplCombo::AddOptionsAndWeights(std::initializer_list< std::pair<pca::COption*, double>> optionWeightNameListInit)
+
+pca::CSupplCombo::CSupplCombo(std::string sName, std::map<pca::COption*, double> mapOptionWeight)
 {
-	for (auto& pairOptWeight : optionWeightNameListInit)
+	m_nCount++;
+	m_nID = m_nCount;
+	m_sName = sName;
+
+	for (auto& pairOptWeight : mapOptionWeight)
+	{
+		m_mapOption_Weight[pairOptWeight.first] = pairOptWeight.second;
+	}
+
+}
+
+void pca::CSupplCombo::AddOptionsAndWeights(std::map<pca::COption*, double> mapOptionWeight)
+{
+	for (auto& pairOptWeight : mapOptionWeight)
 	{
 		m_mapOption_Weight[pairOptWeight.first] = pairOptWeight.second;
 	}
 }
+

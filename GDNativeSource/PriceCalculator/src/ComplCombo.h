@@ -5,7 +5,6 @@
 #include <set>
 
 
-
 namespace pca
 {
     class COption;
@@ -15,6 +14,7 @@ namespace pca
     public:
         CComplCombo();
         CComplCombo(std::string sName);
+        CComplCombo(std::string sName, std::set< pca::COption*> setOptions);
         virtual ~CComplCombo() {}
 
         long GetID() { return m_nID; }
@@ -25,7 +25,7 @@ namespace pca
             m_setOptions.insert(pOptionRef);
         }
 
-        void AddOptions(std::initializer_list< pca::COption*> optionNameListInit);
+        void AddOptions(std::set< pca::COption*> setOptions);
 
     protected:
 
