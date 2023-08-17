@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <set>
+#include <vector>
 
 namespace pca
 {
@@ -17,6 +18,7 @@ namespace pca
         virtual ~CSupplCombos() {}
 
         void AddSupplCombo(std::unique_ptr<pca::CSupplCombo> upSupplCombo);
+        std::vector<pca::CSupplCombo*> GetSupplCombos();
 
     protected:
 

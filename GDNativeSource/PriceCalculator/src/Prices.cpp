@@ -1,5 +1,6 @@
 #include "Prices.h"
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
+#include "Reality.h"
 #include <assert.h>
 
 pca::CPrices::CPrices()
@@ -17,46 +18,47 @@ pca::CPrices::~CPrices()
 void pca::CPrices::InitDefaultPrices()
 {
     //Inicializo los precios a 1.0
-    for (auto& nOption : c_setProducts)
+    //for (auto& nOption : c_setProducts)
+    for (auto& nOption : pca::CReality::GetProducts())
     {
         m_mapProd_Price[nOption] = 1.0;
     }
 }
 
-void pca::CPrices::IncreasePrice(eProd nProductId, double dAmount)
+void pca::CPrices::IncreasePrice(CProduct* pProductRef, double dAmount)
 {
-    if(m_mapProd_Price.end()==m_mapProd_Price.find(nProductId))
+    if(m_mapProd_Price.end()==m_mapProd_Price.find(pProductRef))
     {
-        m_mapProd_Price[nProductId]=dAmount;
+        m_mapProd_Price[pProductRef]=dAmount;
     }
     else
     {
-        m_mapProd_Price[nProductId] += dAmount;
+        m_mapProd_Price[pProductRef] += dAmount;
     }
 
 }
 
-void pca::CPrices::DecreasePrice(eProd nProductId, double dAmount)
+void pca::CPrices::DecreasePrice(CProduct* pProductRef, double dAmount)
 {
-    IncreasePrice(nProductId,-dAmount);
+    IncreasePrice(pProductRef,-dAmount);
 }
 
-double pca::CPrices::CalculateCombidictPrice(std::map<eProd, double> mapProd_Amount)
+double pca::CPrices::CalculateCombidictPrice(std::map<CProduct*, double> mapProd_Amount)
 {
     double dTotalPrice = 0.0;
 
     for (auto& pairProd_Amount : mapProd_Amount)
     {
-        eProd nProd = pairProd_Amount.first;
+        CProduct* pProd = pairProd_Amount.first;
 
-        if (m_mapProd_Price.end() == m_mapProd_Price.find(nProd))
+        if (m_mapProd_Price.end() == m_mapProd_Price.find(pProd))
         {
             assert("" == "Producto sin precio en pca::CPrices::CalculateCombidictPrice");
         }
         else
         {
             double dAmount = pairProd_Amount.second;
-            double dPrice = this->m_mapProd_Price[nProd];
+            double dPrice = this->m_mapProd_Price[pProd];
 
             dTotalPrice += dAmount*dPrice;
         }
@@ -65,16 +67,16 @@ double pca::CPrices::CalculateCombidictPrice(std::map<eProd, double> mapProd_Amo
     return dTotalPrice;
 }
 
-double pca::CPrices::GetPriceOfProduct(eProd nProd)
+double pca::CPrices::GetPriceOfProduct(CProduct* pProdRef)
 {
-    if (m_mapProd_Price.end() == m_mapProd_Price.find(nProd))
+    if (m_mapProd_Price.end() == m_mapProd_Price.find(pProdRef))
     {
         assert("" == "Producto sin precio en pca::CPrices::CalculateCombidictPrice");
         return 0.0;
     }
     else
     {        
-        double dPrice = this->m_mapProd_Price[nProd];
+        double dPrice = this->m_mapProd_Price[pProdRef];
         return dPrice;
     }
 }

@@ -26,6 +26,10 @@ namespace pca
 
         void AddOptionsAndWeights(std::map<pca::COption*, double> mapOptionWeight);
 
+        std::map<pca::COption*, double> GetOptionsAndWeights() {
+            return m_mapOption_Weight;
+        }
+
     protected:
 
     private:

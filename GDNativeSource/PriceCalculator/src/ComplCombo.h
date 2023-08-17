@@ -27,6 +27,10 @@ namespace pca
 
         void AddOptions(std::set< pca::COption*> setOptions);
 
+        std::set<pca::COption*> GetOptions() {
+            return m_setOptions;
+        }
+
     protected:
 
     private:

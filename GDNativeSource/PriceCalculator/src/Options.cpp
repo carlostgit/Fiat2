@@ -2,6 +2,8 @@
 //#include "Option.h"
 #include <string>
 
+
+
 pca::COptions::COptions(std::initializer_list< std::string> optionNameListInit)
 {
 	for (auto & name:optionNameListInit)
@@ -9,6 +11,19 @@ pca::COptions::COptions(std::initializer_list< std::string> optionNameListInit)
 		std::unique_ptr<pca::COption> upOption(new pca::COption(name));
 		m_setOptions.insert(std::move(upOption));	
 	}
+}
+pca::COptions::COptions(std::initializer_list< std::pair<std::string,CProduct*> > optionNameListInit)
+{
+	for (auto& pairOptionName_ProductRef : optionNameListInit)
+	{
+		std::unique_ptr<pca::COption> upOption(new pca::COption(pairOptionName_ProductRef.first, pairOptionName_ProductRef.second));
+		m_setOptions.insert(std::move(upOption));
+	}
+}
+
+pca::COptions::~COptions()
+{
+
 }
 
 void pca::COptions::AddOption(std::unique_ptr<pca::COption> upOption)

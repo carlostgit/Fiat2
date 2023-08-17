@@ -16,3 +16,14 @@ void pca::CComplCombos::AddComplCombo(std::unique_ptr<pca::CComplCombo> upComplC
 {
 	m_setComplCombos.insert(std::move(upComplCombo));
 }
+
+std::vector<pca::CComplCombo*> pca::CComplCombos::GetComplCombos()
+{
+	std::vector<pca::CComplCombo*> vComplCombos;
+	for (auto& upComplCombo : m_setComplCombos)
+	{
+		vComplCombos.push_back(upComplCombo.get());
+	}
+
+	return vComplCombos;
+}

@@ -1,7 +1,7 @@
 #ifndef MARKET_H
 #define MARKET_H
 
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
 #include "Person.h"
 #include <vector>
 #include <memory>

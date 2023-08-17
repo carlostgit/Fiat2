@@ -10,6 +10,14 @@
 #include "ComplCombos.h"
 #include "SupplCombos.h"
 
+#include <assert.h>
+
+std::unique_ptr<pca::CProducts> pca::CReality::m_upProducts = std::unique_ptr<CProducts>();
+std::unique_ptr<pca::COptions> pca::CReality::m_upOptions = std::unique_ptr<pca::COptions>();
+std::unique_ptr<pca::CComplCombos> pca::CReality::m_upComplCombos = std::unique_ptr<pca::CComplCombos>();
+std::unique_ptr<pca::CSupplCombos> pca::CReality::m_upSupplCombos = std::unique_ptr<pca::CSupplCombos>();
+
+
 pca::CReality::CReality()
 {
     InitDefaultProductsAndOptions();
@@ -18,14 +26,39 @@ pca::CReality::CReality()
 void pca::CReality::InitDefaultProductsAndOptions()
 {
     //Products
-    //std::unique_ptr<CProducts> m_upProducts;
     std::unique_ptr<CProducts> upProducts(new CProducts({ "candy","chocolate","nut"}));
     m_upProducts = std::move(upProducts);
 
+    //Options and products
+    std::map<std::string, std::string> mapOptionName_ProductName{
+        {"candy savings", "candy"},
+        {"chocolate savings", "chocolate"},
+        {"nut savings", "nut"},
+        {"candy consumption", "candy"},
+        {"chocolate consumption", "chocolate"},
+        {"nut consumption", "nut"},
+    };
+
     //Options
-    //std::unique_ptr<COptions> m_upOptions;
-    std::unique_ptr<COptions> upOptions(new COptions({ "candy savings", "chocolate savings", "nut savings", 
-        "candy consumption", "chocolate consumption", "nut consumption" }));
+    std::unique_ptr<COptions> upOptions(new COptions());
+    for (auto& pairOptionName_ProductName : mapOptionName_ProductName)
+    {
+        std::string sOptionName = pairOptionName_ProductName.first;
+        std::string sProductName = pairOptionName_ProductName.second;
+
+        CProduct* pProduct = m_upProducts.get()->GetProduct(sProductName);
+
+        if (pProduct)
+        {
+            std::unique_ptr<COption> upOption(new COption(sOptionName, pProduct));
+            upOptions.get()->AddOption(std::move(upOption));
+        }
+        else
+        {
+            assert("" == "error en CReality::InitDefaultProductsAndOptions, añadiendo Option");
+        }
+    }
+
     m_upOptions = std::move(upOptions);
 
     //ComplCombos
@@ -34,6 +67,8 @@ void pca::CReality::InitDefaultProductsAndOptions()
         }
     );
 
+    std::unique_ptr<pca::CComplCombos> upComplCombos(new pca::CComplCombos());
+    m_upComplCombos = move(upComplCombos);
     for (auto& pairComplName_OptionNames : mapComplComboName_OptionNames)
     {
         std::string sComplComboName = pairComplName_OptionNames.first;
@@ -44,7 +79,7 @@ void pca::CReality::InitDefaultProductsAndOptions()
             COption* pOptionRef = m_upOptions->GetOption(optionName);
             upComplCombo->AddOption(pOptionRef);
         }
-
+        
         m_upComplCombos->AddComplCombo(std::move(upComplCombo));
     }
 
@@ -60,7 +95,8 @@ void pca::CReality::InitDefaultProductsAndOptions()
         }        
     };
 
-
+    std::unique_ptr<pca::CSupplCombos> upSupplCombos(new pca::CSupplCombos());
+    m_upSupplCombos = std::move(upSupplCombos);
     for (auto& pairSupplName_mapOptionName_dWeight : mapSupplementaryComboName_mapOptionName_dWeight)
     {
         std::string sSupplComboName = pairSupplName_mapOptionName_dWeight.first;
@@ -76,19 +112,26 @@ void pca::CReality::InitDefaultProductsAndOptions()
 
         m_upSupplCombos->AddSupplCombo(std::move(upSupplCombo));
     }
-
 }
-
 
 std::vector<pca::CProduct*> pca::CReality::GetProducts()
 {
-   
     return m_upProducts->GetProducts();
 }
 
 std::vector<pca::COption*> pca::CReality::GetOptions()
 {
     return m_upOptions->GetOptions();
+}
+
+std::vector<pca::CComplCombo*> pca::CReality::GetComplCombos()
+{
+    return m_upComplCombos->GetComplCombos();
+}
+
+std::vector<pca::CSupplCombo*> pca::CReality::GetSupplCombos()
+{
+    return m_upSupplCombos->GetSupplCombos();
 }
 
 

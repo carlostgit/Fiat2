@@ -2,6 +2,7 @@
 
 #include "SupplCombo.h"
 #include <string>
+#include <vector>
 
 pca::CSupplCombos::CSupplCombos(std::initializer_list< std::string> supplComboNameListInit)
 {
@@ -16,3 +17,16 @@ void pca::CSupplCombos::AddSupplCombo(std::unique_ptr<pca::CSupplCombo> upSupplC
 {
 	m_setSupplCombos.insert(std::move(upSupplCombo));
 }
+
+
+std::vector<pca::CSupplCombo*> pca::CSupplCombos::GetSupplCombos()
+{
+	std::vector<pca::CSupplCombo*> vSupplCombos;
+	for (auto& upSupplCombo : m_setSupplCombos)
+	{
+		vSupplCombos.push_back(upSupplCombo.get());
+	}
+
+	return vSupplCombos;
+}
+

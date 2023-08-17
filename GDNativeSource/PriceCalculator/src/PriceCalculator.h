@@ -12,6 +12,7 @@ namespace pca
 {
     class CPerson;
     class CPrices;
+    class CMarket;
 
     class CPriceCalculator
     {

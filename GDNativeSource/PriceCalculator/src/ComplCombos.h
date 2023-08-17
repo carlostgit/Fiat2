@@ -7,6 +7,7 @@
 #include <string>
 #include <set>
 #include <map>
+#include <vector>
 
 namespace pca
 {
@@ -23,6 +24,8 @@ namespace pca
         virtual ~CComplCombos() {}
 
         void AddComplCombo(std::unique_ptr<pca::CComplCombo> upComplCombo);
+
+        std::vector<pca::CComplCombo*> GetComplCombos();
 
     protected:
 

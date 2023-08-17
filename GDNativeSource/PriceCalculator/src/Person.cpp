@@ -1,8 +1,10 @@
 #include "Person.h"
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
+#include "Reality.h"
 #include "Prices.h"
 #include "Market.h"
 #include "TradeCalculator.h"
+#include <iostream>
 
 
 long pca::CPerson::ms_nId = 0;
@@ -11,6 +13,8 @@ pca::CPerson::CPerson(CPrices* pPricesRef, CMarket* pMarketRef, std::unique_ptr<
 {
     ms_nId++;
     m_nId = ms_nId;
+
+    m_sName = "Person "+std::to_string(ms_nId);
 
     m_pPricesRef = pPricesRef;
     m_pMarketRef = pMarketRef;
@@ -27,27 +31,28 @@ pca::CPerson::~CPerson()
 
 void pca::CPerson::InitDefaultAmounts()
 {
-    for (auto& nProduct : c_setProducts)
+    //for (auto& nProduct : c_setProducts)
+    for (auto& nProduct : pca::CReality::GetProducts())
     {
         m_mapOwnedProd_Amount[nProduct] = 0.0;
     }
 }
 
-void pca::CPerson::AddProductAmount(eProd nProductId, double dAmount)
+void pca::CPerson::AddProductAmount(CProduct* pProductRef, double dAmount)
 {
-    if(m_mapOwnedProd_Amount.end()==m_mapOwnedProd_Amount.find(nProductId))
+    if(m_mapOwnedProd_Amount.end()==m_mapOwnedProd_Amount.find(pProductRef))
     {
-        m_mapOwnedProd_Amount[nProductId]=dAmount;
+        m_mapOwnedProd_Amount[pProductRef]=dAmount;
     }
     else
     {
-        m_mapOwnedProd_Amount[nProductId] += dAmount;
+        m_mapOwnedProd_Amount[pProductRef] += dAmount;
     }
 }
 
-void pca::CPerson::RemoveProductAmount(eProd nProductId, double dAmount)
+void pca::CPerson::RemoveProductAmount(CProduct* pProductRef, double dAmount)
 {
-    AddProductAmount(nProductId, -dAmount);
+    AddProductAmount(pProductRef, -dAmount);
 }
 
 void pca::CPerson::AdjustBestCombinationForPerson()
@@ -62,10 +67,10 @@ void pca::CPerson::AdjustBestCombinationForPerson()
 //    adjust_best_combination_for_person_with_max_num_steps(person_arg, budget_step, max_num_steps)
 
 
-std::map<pca::eOpt, double> pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumStepsArg)
+std::map<pca::COption*, double> pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumStepsArg)
 {
     m_pPricesRef->CalculateCombidictPrice(m_mapOwnedProd_Amount);
-    std::map<pca::eOpt, double> mapBestCombidict = m_upTradeCalculator->ImproveCombination(m_mapOwnedProd_Amount, m_mapCurrentOpt_Amount, dBudgetStepArg, nMaxNumStepsArg);
+    std::map<pca::COption*, double> mapBestCombidict = m_upTradeCalculator->ImproveCombination(m_mapOwnedProd_Amount, m_mapCurrentOpt_Amount, dBudgetStepArg, nMaxNumStepsArg);
 
     this->m_mapCurrentOpt_Amount = mapBestCombidict;
 

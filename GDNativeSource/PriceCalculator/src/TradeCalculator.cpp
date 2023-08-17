@@ -2,10 +2,12 @@
 
 #include <iostream>
 #include <set>
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
+#include "Reality.h"
 #include "SatisfactionCalculator.h"
 #include "Prices.h"
 #include "Utils.h"
+#include "Option.h"
 #include <assert.h>
 
 const bool c_traces = false;
@@ -25,7 +27,7 @@ pca::CTradeCalculator::~CTradeCalculator()
 
 //TODO: Pasar este método a C++
 //Habrá que cambiar este método para que quede claro que la combinación que se ajusta es de opciones
-std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<eOpt,double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
+std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<COption*,double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
 {
     //TODO: Hacer una clase que permita imprimir bien el contenido de elementos como std::map<int,double> mapCurrentCombidict
 
@@ -42,12 +44,13 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
     }
 
     double dBudgetStepLength = dBudgetStepArg;
-    std::set<eOpt> setOptions = c_setOptions;
-    std::map<eOpt, double> mapCombination = mapCurrentCombidictArg;
+    //std::set<eOpt> setOptions = c_setOptions;
+    std::vector<COption*> vOptions = pca::CReality::GetOptions();
+    std::map<COption*, double> mapCombination = mapCurrentCombidictArg;
     //std::map<eProd, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
-    std::map<eProd, double> mapProductDict = CUtils::CalculateProductdictFromOptiondict(mapCombination);
+    std::map<CProduct*, double> mapProductDict = CUtils::CalculateProductdictFromOptiondict(mapCombination);
 
-    double dCostOfArgCombination = m_pPricesRef->CalculateCombidictPrice(mapProductDict);    
+    double dCostOfArgCombination = m_pPricesRef->CalculateCombidictPrice(mapProductDict);
     double dLeftMoney = dBudgetArg - dCostOfArgCombination;
 
     double dBestPreviousSatisfaction = m_upSatisfactionCalculator->CalculateSatisfOfCombidict(mapCombination);
@@ -61,22 +64,24 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
         bool bChangeMade = false;
         //		Eliminaré productos en orden de menor reducción de satisfacción
         double dBestDecrementOfSatisfaction = dBestPreviousSatisfaction;
-        std::map<eOpt, double> mapBestTryingCombination = mapCombination;
+        std::map<COption*, double> mapBestTryingCombination = mapCombination;
 
-        for (auto& nOptionToRemove : c_setOptions)
+        //for (auto& nOptionToRemove : c_setOptions)
+        for (auto & pOptionToRemove : vOptions)
         {
-            eProd nProductToRemove = c_mapOption_Product.at(nOptionToRemove);
-            std::map<eOpt, double> mapTryingCombinationRemovingProduct = mapCombination;
-            double dRemoveProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nProductToRemove);
-            if (mapTryingCombinationRemovingProduct.end() == mapTryingCombinationRemovingProduct.find(nOptionToRemove))
+            //CProduct* pProductToRemove = c_mapOption_Product.at(pOptionToRemove);
+            CProduct* pProductToRemove = pOptionToRemove->GetProduct();
+            std::map<COption*, double> mapTryingCombinationRemovingProduct = mapCombination;
+            double dRemoveProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(pOptionToRemove->GetProduct());
+            if (mapTryingCombinationRemovingProduct.end() == mapTryingCombinationRemovingProduct.find(pOptionToRemove))
             {
                 //Igual habría que poner aquí un continue
-                mapTryingCombinationRemovingProduct[nOptionToRemove] = 0.0;
+                mapTryingCombinationRemovingProduct[pOptionToRemove] = 0.0;
             }
 
-            mapTryingCombinationRemovingProduct[nOptionToRemove] -= dRemoveProductStep;
+            mapTryingCombinationRemovingProduct[pOptionToRemove] -= dRemoveProductStep;
 
-            if (mapTryingCombinationRemovingProduct[nOptionToRemove] < 0.0)
+            if (mapTryingCombinationRemovingProduct[pOptionToRemove] < 0.0)
             {
                 continue;
             }
@@ -124,37 +129,42 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
             }
 
             bool bChangeMade = false;
-            for (auto& nNewOption : c_setOptions)
+            //for (auto& nNewOption : c_setOptions)
+            for (auto& pNewOption : CReality::GetOptions())
             {
-                eProd nNewProduct = c_mapOption_Product.at(nNewOption);
-                double nNewProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nNewProduct);
 
-                std::map<eOpt, double> mapTryingCombinationAddingProduct = mapCombination;
-                if (mapTryingCombinationAddingProduct.end() == mapTryingCombinationAddingProduct.find(nNewOption))
+                //CProduct* pNewProduct = c_mapOption_Product.at(pNewOption);
+                CProduct* pNewProduct = pNewOption->GetProduct();
+                double nNewProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(pNewProduct);
+
+                std::map<COption*, double> mapTryingCombinationAddingProduct = mapCombination;
+                if (mapTryingCombinationAddingProduct.end() == mapTryingCombinationAddingProduct.find(pNewOption))
                 {
-                    mapTryingCombinationAddingProduct[nNewOption] = 0.0;
+                    mapTryingCombinationAddingProduct[pNewOption] = 0.0;
                 }
 
-                mapTryingCombinationAddingProduct[nNewOption] += nNewProductStep;
+                mapTryingCombinationAddingProduct[pNewOption] += nNewProductStep;
                 double dCurrentLeftMoney = dLeftMoney - dBudgetStepLength;
                 
                 if (dCurrentLeftMoney < 0.0)
                 {
-                    for (auto& nOldOption : c_setOptions)
+                    //for (auto& nOldOption : c_setOptions)
+                    for (auto& pOldOption : CReality::GetOptions())
                     {
-                        if (nNewOption != nOldOption)
+                        if (pNewOption != pOldOption)
                         {
-                            eProd nOldProduct = c_mapOption_Product.at(nOldOption);                                                                    
-                            double dOldProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(nOldProduct);
-                            if (mapCombination[nOldOption]>=dOldProductStep)
+                            //CProduct* pOldProduct = c_mapOption_Product.at(pOldOption);
+                            CProduct* pOldProduct = pOldOption->GetProduct();
+                            double dOldProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(pOldProduct);
+                            if (mapCombination[pOldOption]>=dOldProductStep)
                             {
-                                std::map<eOpt, double> mapTryingCombinationSwappingProducts = mapTryingCombinationAddingProduct;
-                                if (mapTryingCombinationSwappingProducts.end() == mapTryingCombinationSwappingProducts.find(nOldOption))
+                                std::map<COption*, double> mapTryingCombinationSwappingProducts = mapTryingCombinationAddingProduct;
+                                if (mapTryingCombinationSwappingProducts.end() == mapTryingCombinationSwappingProducts.find(pOldOption))
                                 {
-                                    mapTryingCombinationSwappingProducts[nOldOption] = 0.0;
+                                    mapTryingCombinationSwappingProducts[pOldOption] = 0.0;
                                 }
 
-                                mapTryingCombinationSwappingProducts[nOldOption] -= dOldProductStep;
+                                mapTryingCombinationSwappingProducts[pOldOption] -= dOldProductStep;
                                 dCurrentLeftMoney = dLeftMoney;
 
                                 double dSatisfactionOfTryingCombination = m_upSatisfactionCalculator->CalculateSatisfOfCombidict(mapTryingCombinationSwappingProducts);
@@ -209,11 +219,11 @@ std::map<pca::eOpt,double> pca::CTradeCalculator::AdjustBestCombidict(double dBu
     return mapCombination;
 }
 
-std::map<pca::eOpt, double> pca::CTradeCalculator::AdjustBestCombidictChangingStep(double dBudgetArg, std::map<eOpt, double> mapCurrentCombidictArg, double dInitBudgetStepArg, double dTargetBudgetStepArg, int nMaxStepArg)
+std::map<pca::COption*, double> pca::CTradeCalculator::AdjustBestCombidictChangingStep(double dBudgetArg, std::map<COption*, double> mapCurrentCombidictArg, double dInitBudgetStepArg, double dTargetBudgetStepArg, int nMaxStepArg)
 {
     //var max_step_param : int = max_step_arg
     double dCurrentBudgetStep = dInitBudgetStepArg;
-    std::map<eOpt, double> mapCurrentBestCombidict = mapCurrentCombidictArg;
+    std::map<COption*, double> mapCurrentBestCombidict = mapCurrentCombidictArg;
     while (dCurrentBudgetStep > dTargetBudgetStepArg)
     {
         mapCurrentBestCombidict = AdjustBestCombidict(dBudgetArg, mapCurrentBestCombidict, dCurrentBudgetStep, nMaxStepArg);
@@ -223,12 +233,12 @@ std::map<pca::eOpt, double> pca::CTradeCalculator::AdjustBestCombidictChangingSt
     return mapCurrentBestCombidict;
 }
 
-std::map<pca::eOpt, double> pca::CTradeCalculator::ImproveCombination(std::map<eProd, double> mapOwnedCombidictArg, std::map<eOpt, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps)
+std::map<pca::COption*, double> pca::CTradeCalculator::ImproveCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps)
 {
     double dBudget = m_pPricesRef->CalculateCombidictPrice(mapOwnedCombidictArg);
     double dInitBudgetStep = dBudget * 8.0;
     
-    std::map<pca::eOpt, double> mapBestCombidict = AdjustBestCombidictChangingStep(dBudget, mapCurrentBestCombidictArg, dInitBudgetStep, dBudgetStep, nMaxNumSteps);
+    std::map<pca::COption*, double> mapBestCombidict = AdjustBestCombidictChangingStep(dBudget, mapCurrentBestCombidictArg, dInitBudgetStep, dBudgetStep, nMaxNumSteps);
 
     return mapBestCombidict;
 }

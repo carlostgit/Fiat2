@@ -32,3 +32,15 @@ std::vector<pca::CProduct*> pca::CProducts::GetProducts()
 
 	return vProducts;
 }
+
+pca::CProduct* pca::CProducts::GetProduct(std::string sName)
+{
+	for (auto& upProduct : m_setProducts)
+	{
+		if (upProduct.get()->GetName() == sName)
+		{
+			return upProduct.get();
+		}
+	}
+	return nullptr;
+}

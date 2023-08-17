@@ -1,6 +1,7 @@
 #include "PriceCalculator.h"
 #include "Person.h"
 #include "Prices.h"
+#include "Market.h"
 
 
 pca::CPriceCalculator::CPriceCalculator()

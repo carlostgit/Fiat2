@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include "Person.h"
+#include "Option.h"
+#include "Reality.h"
 
 pca::CUtils::CUtils()
 {
@@ -14,12 +16,15 @@ pca::CUtils::~CUtils()
     //dtor
 }
 
-void pca::CUtils::PrintOptions(std::map<eOpt, double> mapOpt_Amount)
+void pca::CUtils::PrintOptions(std::map<pca::COption*, double> mapOpt_Amount)
 {
     std::cout << "Option amounts: " << std::endl;
     for (auto& pairOpt_Amount : mapOpt_Amount)
     {
-        std::cout << " '" << std::left << std::setw(10) << c_mapOption_Name.at(pairOpt_Amount.first).substr(0, 10) << "':'" << pairOpt_Amount.second<<"'";
+        COption* pOption = pairOpt_Amount.first;
+
+        //std::cout << " '" << std::left << std::setw(10) << c_mapOption_Name.at(pairOpt_Amount.first).substr(0, 10) << "':'" << pairOpt_Amount.second<<"'";
+        std::cout << " '" << std::left << std::setw(10) << pOption->GetName().substr(0, 10) << "':'" << pairOpt_Amount.second << "'";
     }
     std::cout << std::endl;
 }
@@ -32,31 +37,35 @@ void pca::CUtils::PrintPersonOptions(CPerson* pPerson)
     std::cout << "Option amounts: " << std::endl;
     for (auto& pairOpt_Amount : mapOpt_Amount)
     {
-        std::cout << " '" << std::left << std::setw(10) << c_mapOption_Name.at(pairOpt_Amount.first).substr(0, 10) << "':'" << pairOpt_Amount.second << "'";
+        //std::cout << " '" << std::left << std::setw(10) << c_mapOption_Name.at(pairOpt_Amount.first).substr(0, 10) << "':'" << pairOpt_Amount.second << "'";
+        COption* pOption = pairOpt_Amount.first;
+        std::cout << " '" << std::left << std::setw(10) << pOption->GetName().substr(0, 10) << "':'" << pairOpt_Amount.second << "'";
     }
     std::cout << std::endl;
 }
 
-std::map<pca::eProd, double> pca::CUtils::CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg)
+std::map<pca::CProduct*, double> pca::CUtils::CalculateProductdictFromOptiondict(std::map<COption*, double> mapOptiondictArg)
 {
-    std::map<eProd, double> mapProductdict;
+    std::map<CProduct*, double> mapProductdict;
 
     for (auto& pairOptionAmount : mapOptiondictArg)
     {
-        eOpt nOption = pairOptionAmount.first;
+        COption* pOption = pairOptionAmount.first;
         double dAmount = pairOptionAmount.second;
 
-        if (c_mapOption_Product.end() != c_mapOption_Product.find(nOption))
+        //if (c_mapOption_Product.end() != c_mapOption_Product.find(pOption))
         {
-            eProd nProduct = c_mapOption_Product.at(nOption);
+            //CProduct* pProduct = c_mapOption_Product.at(pOption);
 
-            if (mapProductdict.end() != mapProductdict.find(nProduct))
+            CProduct* pProduct = pOption->GetProduct();
+
+            if (mapProductdict.end() != mapProductdict.find(pProduct))
             {
-                mapProductdict[nProduct] = dAmount + mapProductdict.at(nProduct);
+                mapProductdict[pProduct] = dAmount + mapProductdict.at(pProduct);
             }
             else
             {
-                mapProductdict[nProduct] = dAmount;
+                mapProductdict[pProduct] = dAmount;
             }
         }
     }

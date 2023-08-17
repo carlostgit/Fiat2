@@ -1,11 +1,13 @@
 #include "Tester.h"
 #include <iostream>
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
+#include "Reality.h"
 #include "SatisfactionCurve.h"
 #include "SatisfactionCalculator.h"
 #include "TradeCalculator.h"
 #include "Prices.h"
 #include "Market.h"
+#include "Option.h"
 #include "Utils.h"
 
 
@@ -43,9 +45,11 @@ int pca::CTester::Test_SatisfactionCalculator()
 {
     std::cout << "Starting Test_SatisfactionCalculator" << std::endl;
     {
+        CReality::InitDefaultProductsAndOptions();
         CSatisfactionCalculator oSatCalculator;
-        std::map<eOpt, double> map_nOption_dAmount;
-        for (auto& nOption : c_setOptions)
+        std::map<COption*, double> map_nOption_dAmount;
+        //for (auto& nOption : c_setOptions)
+        for (auto& nOption : pca::CReality::GetOptions())
         {
             map_nOption_dAmount[nOption] = 1.0;
         }
@@ -67,16 +71,17 @@ int pca::CTester::Test_SatisfactionCalculator()
         CPrices oPrices;
         std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator);
         CTradeCalculator oTradeCalculator(std::move(upSatisfactionCalculator), &oPrices);
-        std::map<eOpt, double> map_nOption_dAmount;
-        for (auto& nOption : c_setOptions)
+        std::map<COption*, double> map_nOption_dAmount;
+        //for (auto& nOption : c_setOptions)
+        for (auto& nOption : pca::CReality::GetOptions())
         {
             map_nOption_dAmount[nOption] = 1.0;
         }
         std::cout << "Probando AdjustBestCombidict..." << std::endl;
-        std::map<eOpt, double> mapOpAmmAdjusted = oTradeCalculator.AdjustBestCombidict(10.0, map_nOption_dAmount, 1.0, 100);
+        std::map<COption*, double> mapOpAmmAdjusted = oTradeCalculator.AdjustBestCombidict(10.0, map_nOption_dAmount, 1.0, 100);
         for (auto& pair_Op_Am : mapOpAmmAdjusted)
         {
-            std::cout << "Option: " << pair_Op_Am.first << std::endl;
+            std::cout << "Option: " << pair_Op_Am.first->GetName() << std::endl;
             std::cout << "Amount: " << pair_Op_Am.second << std::endl;
         }
     }
@@ -99,12 +104,13 @@ int pca::CTester::Test_SatisfactionCalculator()
         std::unique_ptr<CPerson> upPerson_2(new CPerson(&oPrices, &oMarket, std::move(upTradeCalculator_2)));
         std::unique_ptr<CPerson> upPerson_3(new CPerson(&oPrices, &oMarket, std::move(upTradeCalculator_3)));
 
-        std::map<eProd, double> mapProd_Amm;
-        for (auto& nProd : c_setProducts)
+        std::map<CProduct*, double> mapProd_Amm;
+        //for (auto& nProd : c_setProducts)
+        for (auto& pProd : pca::CReality::GetProducts())
         {
-            upPerson_1->AddProductAmount(nProd, 1.0);
-            upPerson_2->AddProductAmount(nProd, 1.0);
-            upPerson_3->AddProductAmount(nProd, 1.0);
+            upPerson_1->AddProductAmount(pProd, 1.0);
+            upPerson_2->AddProductAmount(pProd, 1.0);
+            upPerson_3->AddProductAmount(pProd, 1.0);
         }
 
         CPerson* pPerson_1_Ref = upPerson_1.get();

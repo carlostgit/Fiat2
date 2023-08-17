@@ -23,6 +23,8 @@ namespace pca
         void AddProduct(std::unique_ptr<pca::CProduct> upProduct);
         std::vector<pca::CProduct*> GetProducts();
 
+        pca::CProduct* GetProduct(std::string sName);
+
     protected:
 
     private:

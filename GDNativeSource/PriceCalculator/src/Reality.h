@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 
+
 namespace pca
 {
     class CProducts;
@@ -13,26 +14,36 @@ namespace pca
 
     class CProduct;
     class COption;
+    class CComplCombo;
+    class CSupplCombo;
 
     class CReality
     {
     public:
-        CReality();
+        
         virtual ~CReality() {}
 
-        void InitDefaultProductsAndOptions();
+        static void InitDefaultProductsAndOptions();
+
+        static std::vector<pca::CProduct*> GetProducts();
+        static std::vector<pca::COption*> GetOptions();
+
+        static std::vector<pca::CComplCombo*> GetComplCombos();
+        static std::vector<pca::CSupplCombo*> GetSupplCombos();
+
 
     protected:
 
-        std::vector<pca::CProduct*> GetProducts();
-        std::vector<pca::COption*> GetOptions();
-
+        
     protected:
 
-        std::unique_ptr<CProducts> m_upProducts;
-        std::unique_ptr<COptions> m_upOptions;
-        std::unique_ptr<CComplCombos> m_upComplCombos;
-        std::unique_ptr<CSupplCombos> m_upSupplCombos;
+        static std::unique_ptr<CProducts> m_upProducts;
+        static std::unique_ptr<COptions> m_upOptions;
+        static std::unique_ptr<CComplCombos> m_upComplCombos;
+        static std::unique_ptr<CSupplCombos> m_upSupplCombos;
+
+    private:
+        CReality();
 
     };    
 }

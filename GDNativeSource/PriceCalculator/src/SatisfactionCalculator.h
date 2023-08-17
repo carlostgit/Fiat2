@@ -1,7 +1,7 @@
 #ifndef CSATISFACTIONCALCULATOR_H
 #define CSATISFACTIONCALCULATOR_H
 
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
 
 #include <map>
 #include <vector>
@@ -11,6 +11,9 @@
 namespace pca
 {
     class CSatisfactionCurve;
+    class COption;
+    class CComplCombo;
+    class CSupplCombo;
 
     class CSatisfactionCalculator
     {
@@ -21,23 +24,23 @@ namespace pca
         virtual ~CSatisfactionCalculator();
 
         //std::map<pca::eProd, double> CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg);
-        double CalculateSatisfOfCombidict(std::map<eOpt, double> map_nOption_dAmount);
-
-        void SetPreferenceAt0(eOpt nOpt, double dPrefAt0);
-        void SetMaximumSatisf(eOpt nOpt, double dMaxSatisf);
-        void SetPreferenceAt0(eCompComb nCompComb, double dPrefAt0);
-        void SetMaximumSatisf(eCompComb nCompComb, double dMaxSatisf);
-        void SetPreferenceAt0(eSuppComb nSuppComb, double dPrefAt0);
-        void SetMaximumSatisf(eSuppComb nSuppComb, double dMaxSatisf);
+        double CalculateSatisfOfCombidict(std::map<COption*, double> map_nOption_dAmount);
+        
+        void SetPreferenceAt0(COption* pOpt, double dPrefAt0);
+        void SetMaximumSatisf(COption* pOpt, double dMaxSatisf);
+        void SetPreferenceAt0(CComplCombo* pCompComb, double dPrefAt0);
+        void SetMaximumSatisf(CComplCombo* pCompComb, double dMaxSatisf);
+        void SetPreferenceAt0(CSupplCombo* pSuppComb, double dPrefAt0);
+        void SetMaximumSatisf(CSupplCombo* pSuppComb, double dMaxSatisf);
 
 
     protected:
-        double CalculateSatisfOfCombidictFromIndividualOptions(std::map<eOpt, double> map_nOption_dAmount);
-        double CalculateSatifactionOfOption(eOpt nOption, double dQuantity);
-        double CalculateSatisfOfCombidictFromComplementaryCombos(std::map<eOpt, double> mapOption_dAmount);
-        double CalculateSatifactionOfOptComplementaryCombo(eCompComb nCombo, double dAmount);
-        double CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<eOpt, double> mapOption_dAmount);
-        double CalculateSatifactionOfOptSupplementaryCombo(eSuppComb nCombo, double dAmount);
+        double CalculateSatisfOfCombidictFromIndividualOptions(std::map<COption*, double> map_pOption_dAmount);
+        double CalculateSatifactionOfOption(COption* pOption, double dQuantity);
+        double CalculateSatisfOfCombidictFromComplementaryCombos(std::map<COption*, double> mapOption_dAmount);
+        double CalculateSatifactionOfOptComplementaryCombo(CComplCombo* pCombo, double dAmount);
+        double CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<COption*, double> mapOption_dAmount);
+        double CalculateSatifactionOfOptSupplementaryCombo(CSupplCombo* pCombo, double dAmount);
         
 
         void DefaultInitialization();
@@ -45,13 +48,13 @@ namespace pca
     private:
         //std::vector<long> m_vOptions; //Igual se puede sustituir esto por otra cosa
         //std::set<long> m_setOptions;//TODO: sustituir por lo de PriceCalculationDefines
-        std::map<eOpt, std::unique_ptr<CSatisfactionCurve> > m_Option_SatisfactionCurve;
+        std::map<COption*, std::unique_ptr<CSatisfactionCurve> > m_Option_SatisfactionCurve;
 
         //std::map<long, std::set<long> > m_mapComplementaryCombo_setOptions;
-        std::map<eCompComb, std::unique_ptr<CSatisfactionCurve> > m_mapComplementaryCombo_pSatisfCurve;
+        std::map<CComplCombo*, std::unique_ptr<CSatisfactionCurve> > m_mapComplementaryCombo_pSatisfCurve;
 
         //std::map<eSuppComb, std::map<eOpt, double> > m_mapSupplementaryCombo_mapOption_dWeight;
-        std::map<eSuppComb, std::unique_ptr<CSatisfactionCurve> > m_mapSupplementaryCombo_pSatisfCurve;
+        std::map<CSupplCombo*, std::unique_ptr<CSatisfactionCurve> > m_mapSupplementaryCombo_pSatisfCurve;
 
         int m_nId = 0;
 

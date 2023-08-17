@@ -1,7 +1,7 @@
 #ifndef CTRADECALCULATOR_H
 #define CTRADECALCULATOR_H
 
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
 
 #include <map>
 #include <memory>
@@ -11,6 +11,8 @@ namespace pca
 {
     class CSatisfactionCalculator;
     class CPrices;
+    class COption;
+    class CProduct;
 
     class CTradeCalculator
     {
@@ -20,9 +22,9 @@ namespace pca
         virtual ~CTradeCalculator();
 
         //func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):
-        std::map<pca::eOpt, double> AdjustBestCombidict(double dBudgetArg, std::map<eOpt, double> map_nOption_dAmount, double dBudgetStepArg, int nMaxStepArg);
-        std::map<pca::eOpt, double> AdjustBestCombidictChangingStep(double dBudgetArg, std::map<eOpt, double> mapCurrentCombidict, double dInitBudgetStepArg, double dTargetBudgetStepArg, int nMaxStepArg);
-        std::map<pca::eOpt, double> ImproveCombination(std::map<eProd, double> mapOwnedCombidictArg, std::map<eOpt, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps);
+        std::map<pca::COption*, double> AdjustBestCombidict(double dBudgetArg, std::map<COption*, double> map_nOption_dAmount, double dBudgetStepArg, int nMaxStepArg);
+        std::map<pca::COption*, double> AdjustBestCombidictChangingStep(double dBudgetArg, std::map<COption*, double> mapCurrentCombidict, double dInitBudgetStepArg, double dTargetBudgetStepArg, int nMaxStepArg);
+        std::map<pca::COption*, double> ImproveCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps);
 
     protected:
 

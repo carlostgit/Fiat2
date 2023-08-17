@@ -1,6 +1,9 @@
 #include "SatisfactionCalculator.h"
 #include "SatisfactionCurve.h"
-#include "PriceCalculationDefines.h"
+//#include "PriceCalculationDefines.h"
+#include "Reality.h"
+#include "SupplCombo.h"
+#include "ComplCombo.h"
 
 #include <memory>
 
@@ -19,29 +22,39 @@ void pca::CSatisfactionCalculator::DefaultInitialization()
 {
     //Default init for options:
     //m_Option_SatisfactionCurveb
-    for (auto & nOpt:c_setOptions)
+	//for (auto& nOpt : c_setOptions)
+    for (auto & pOpt:CReality::GetOptions())
     {
         std::unique_ptr<pca::CSatisfactionCurve> satisfOfOpt = std::make_unique<pca::CSatisfactionCurve>();
-        m_Option_SatisfactionCurve[nOpt] = std::move(satisfOfOpt);
+        m_Option_SatisfactionCurve[pOpt] = std::move(satisfOfOpt);
     }
 
     //Default init for complementary combos
     //m_mapComplementaryCombo_pSatisfCurve
-    for (auto & pairCombo_setOptions:c_mapComplementaryCombo_setOptions)
+    //for (auto & pairCombo_setOptions:c_mapComplementaryCombo_setOptions)
+	for (auto& pCombos : CReality::GetComplCombos())
     {
-        eCompComb nCombo = pairCombo_setOptions.first;
+        //eCompComb nCombo = pairCombo_setOptions.first;
+		
         std::unique_ptr<CSatisfactionCurve> satisfOfOpt = std::make_unique<CSatisfactionCurve>();
-        m_mapComplementaryCombo_pSatisfCurve[nCombo] = std::move(satisfOfOpt);
+        m_mapComplementaryCombo_pSatisfCurve[pCombos] = std::move(satisfOfOpt);
     }
 
     //Default init for supplementary combos
     //m_mapSupplementaryCombo_pSatisfCurve
     //m_mapSupplementaryCombo_mapOption_dWeight
-    for (auto & pairCombo_setOptions:c_mapSupplementaryCombo_setOptions)
-    {
-        eSuppComb nCombo = pairCombo_setOptions.first;
+
+	for (auto & pSuppCombo:CReality::GetSupplCombos())
+	{
+	//}
+ //   for (auto & pairCombo_setOptions:c_mapSupplementaryCombo_setOptions)
+ //   {
+		std::map<pca::COption*, double> mapOptionsAndWeights = pSuppCombo->GetOptionsAndWeights();
+
+        //eSuppComb nCombo = pairCombo_setOptions.first;
         std::unique_ptr<CSatisfactionCurve> satisfOfOpt = std::make_unique<CSatisfactionCurve>();
-        m_mapSupplementaryCombo_pSatisfCurve[nCombo] = std::move(satisfOfOpt);
+        //m_mapSupplementaryCombo_pSatisfCurve[nCombo] = std::move(satisfOfOpt);
+		m_mapSupplementaryCombo_pSatisfCurve[pSuppCombo] = std::move(satisfOfOpt);
 
         //Default weight for each option
         //m_mapSupplementaryCombo_mapOption_dWeight
@@ -56,117 +69,132 @@ void pca::CSatisfactionCalculator::DefaultInitialization()
 }
 
 //_calculate_satifaction_of_opt_supplementary_combo
-double pca::CSatisfactionCalculator::CalculateSatifactionOfOptSupplementaryCombo(eSuppComb nCombo, double dAmount)
+double pca::CSatisfactionCalculator::CalculateSatifactionOfOptSupplementaryCombo(CSupplCombo* pSuppCombo, double dAmount)
 {
+	//todo
 
+	//std::map<COption*,double> mapSuppCombo_dWeight = pSuppCombo->GetOptionsAndWeights();
 
-	if (c_mapSupplementaryCombo_mapOption_dWeight.end()==c_mapSupplementaryCombo_mapOption_dWeight.find(nCombo))
+	//if (c_mapSupplementaryCombo_mapOption_dWeight.end()==c_mapSupplementaryCombo_mapOption_dWeight.find(nCombo))
+	//	return 0.0;
+
+	if (m_mapSupplementaryCombo_pSatisfCurve.end()==this->m_mapSupplementaryCombo_pSatisfCurve.find(pSuppCombo))
 		return 0.0;
-
-	if (m_mapSupplementaryCombo_pSatisfCurve.end()==this->m_mapSupplementaryCombo_pSatisfCurve.find(nCombo))
-		return 0.0;
-
 
 	double dRetSatisf = 0.0;
 
-	CSatisfactionCurve* pSatisfactionCurve = (this->m_mapSupplementaryCombo_pSatisfCurve.at(nCombo)).get();
+	CSatisfactionCurve* pSatisfactionCurve = (this->m_mapSupplementaryCombo_pSatisfCurve.at(pSuppCombo)).get();
 	dRetSatisf = pSatisfactionCurve->CalculateSatifaction(dAmount);
 
 	return dRetSatisf;
 }
 
 //_calculate_satisf_of_combidict_from_supplementary_combos
-double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<eOpt,double> mapOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<COption*,double> mapOption_dAmount)
 {
-
 //#	Satisfacción de los supplementary combos
 //#var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1,
 //#															"chocolate_savings":1.0
 //#														}
-//#										}
+//#	}
+
+	//std::map<COption*,double> mapSuppCombo_dWeight = pSuppCombo->GetOptionsAndWeights();
+
 	double dSatisfOfCombi = 0.0;
-	for (auto & pair_Combo_mapOption_dWeight:c_mapSupplementaryCombo_mapOption_dWeight)
+	for (auto& pSupplCombo : pca::CReality::GetSupplCombos())
+	//for (auto & pair_Combo_mapOption_dWeight:c_mapSupplementaryCombo_mapOption_dWeight)
     {
-        eSuppComb nCombo = pair_Combo_mapOption_dWeight.first;
+        //eSuppComb nCombo = pair_Combo_mapOption_dWeight.first;
+
         double dAmountOfSuppCombo = 0.0;
-		std::map<eOpt,double> mapOption_dWeight = c_mapSupplementaryCombo_mapOption_dWeight.at(nCombo);
+		//std::map<eOpt,double> mapOption_dWeight = c_mapSupplementaryCombo_mapOption_dWeight.at(nCombo);
+		std::map<COption*, double> mapOption_dWeight = pSupplCombo->GetOptionsAndWeights();
+
 		for (auto & pairOption_dWeight: mapOption_dWeight)
         {
-            eOpt nOption = pairOption_dWeight.first;
+            //eOpt nOption = pairOption_dWeight.first;
+			COption* pOption = pairOption_dWeight.first;
             double dWeight = pairOption_dWeight.second;
 			double dAmountOfOption = 0.0;
-			if (mapOption_dAmount.end()!=mapOption_dAmount.find(nOption))
+			if (mapOption_dAmount.end()!=mapOption_dAmount.find(pOption))
             {
-                dAmountOfOption = mapOption_dAmount.at(nOption);
+                dAmountOfOption = mapOption_dAmount.at(pOption);
             }
 
 			double dWeightedAmountOfOption = dWeight*dAmountOfOption;
 			dAmountOfSuppCombo += dWeightedAmountOfOption;
         }
 
-		dSatisfOfCombi += this->CalculateSatifactionOfOptSupplementaryCombo(nCombo,dAmountOfSuppCombo);
+		dSatisfOfCombi += this->CalculateSatifactionOfOptSupplementaryCombo(pSupplCombo,dAmountOfSuppCombo);
     }
 
 	return dSatisfOfCombi;
 }
 
 //_calculate_satifaction_of_opt_complementary_combo
-double pca::CSatisfactionCalculator::CalculateSatifactionOfOptComplementaryCombo(eCompComb nCombo, double dAmount)
+double pca::CSatisfactionCalculator::CalculateSatifactionOfOptComplementaryCombo(CComplCombo* pCombo, double dAmount)
 {
-	if (c_mapComplementaryCombo_setOptions.end() == c_mapComplementaryCombo_setOptions.find(nCombo))
-		return 0.0;
+	//if (c_mapComplementaryCombo_setOptions.end() == c_mapComplementaryCombo_setOptions.find(nCombo))
+	//	return 0.0;
 
-	if (this->m_mapComplementaryCombo_pSatisfCurve.end() == this->m_mapComplementaryCombo_pSatisfCurve.find(nCombo))
+	if (this->m_mapComplementaryCombo_pSatisfCurve.end() == this->m_mapComplementaryCombo_pSatisfCurve.find(pCombo))
 		return 0.0;
 
 
 	double dRetSatisf = 0.0;
 
-	CSatisfactionCurve* pSatisfactionCurve = (this->m_mapComplementaryCombo_pSatisfCurve.at(nCombo)).get();
+	CSatisfactionCurve* pSatisfactionCurve = (this->m_mapComplementaryCombo_pSatisfCurve.at(pCombo)).get();
 	dRetSatisf = pSatisfactionCurve->CalculateSatifaction(dAmount);
 
 	return dRetSatisf;
 }
 
-
 //_calculate_satisf_of_combidict_from_complementary_combos
-double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromComplementaryCombos(std::map<eOpt,double> mapOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromComplementaryCombos(std::map<COption*,double> mapOption_dAmount)
 {
     //#var _complementary_combos:Dictionary = {"sweets_consumption":["chocolate_consumption","candy_consumption"]}
 
 	double dSatisfOfCombi = 0.0;
-	for ( auto & pairCombo_Options :c_mapComplementaryCombo_setOptions)
+
+	//for ( auto & pairCombo_Options :c_mapComplementaryCombo_setOptions)
+	for(auto & pComplCombo:pca::CReality::GetComplCombos())
     {
-        std::set<eOpt> setOptions = pairCombo_Options.second;
+        //std::set<eOpt> setOptions = pairCombo_Options.second;		
+		//pairCombo_Options
+
+		//std::set<COption*> setOptions = pairCombo_Options.second;
+		std::set<COption*> setOptions = pComplCombo->GetOptions();
+		
 		double dAmountOfCombi = 0.0;
 		int nCount = 0;
-		for (auto & nOption :setOptions)
+		for (auto & pOption :setOptions)
         {
 			double dAmountOfOption = 0.0;
-			if (mapOption_dAmount.end() != mapOption_dAmount.find(nOption))
-				dAmountOfOption = mapOption_dAmount.at(nOption);
+			if (mapOption_dAmount.end() != mapOption_dAmount.find(pOption))
+				dAmountOfOption = mapOption_dAmount.at(pOption);
 			if (dAmountOfOption < dAmountOfCombi || 0 == nCount)
 				dAmountOfCombi = dAmountOfOption;
 			if (dAmountOfOption == 0)
 				break;
 			nCount += 1;
         }
-        eCompComb nCombo = pairCombo_Options.first;
-		dSatisfOfCombi += this->CalculateSatifactionOfOptComplementaryCombo(nCombo,dAmountOfCombi);
+        //eCompComb nCombo = pairCombo_Options.first;
+		//CComplCombo* pComplCombo = pairCombo_Options.first;
+		dSatisfOfCombi += this->CalculateSatifactionOfOptComplementaryCombo(pComplCombo,dAmountOfCombi);
     }
 	return dSatisfOfCombi;
 }
 
 
 //calculate_satifaction_of_option
-double pca::CSatisfactionCalculator::CalculateSatifactionOfOption(eOpt nOption, double dQuantity)
+double pca::CSatisfactionCalculator::CalculateSatifactionOfOption(COption* pOption, double dQuantity)
 {
-	if (c_setOptions.end()==c_setOptions.find(nOption))
-		return 0.0;
+	//if (c_setOptions.end()==c_setOptions.find(nOption))
+	//	return 0.0;
 
 	double dRetSatisf = 0.0;
 
-	CSatisfactionCurve* pOptionSatisfactionCurve = (this->m_Option_SatisfactionCurve[nOption]).get();
+	CSatisfactionCurve* pOptionSatisfactionCurve = (this->m_Option_SatisfactionCurve[pOption]).get();
 
 	dRetSatisf = pOptionSatisfactionCurve->CalculateSatifaction(dQuantity);
 
@@ -174,16 +202,17 @@ double pca::CSatisfactionCalculator::CalculateSatifactionOfOption(eOpt nOption, 
 }
 
 //_calculate_satisf_of_combidict_from_individual_options
-double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOptions(std::map<eOpt,double> map_nOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOptions(std::map<COption*,double> map_nOption_dAmount)
 {
     double dSatisfOfOptIndividually = 0.0;
-    for (auto & nOption: c_setOptions)
+    //for (auto & nOption: c_setOptions)
+	for (auto& pOption : pca::CReality::GetOptions())
     {
-        if(map_nOption_dAmount.end() != map_nOption_dAmount.find(nOption))
+        if(map_nOption_dAmount.end() != map_nOption_dAmount.find(pOption))
         {
-            double dAmountOfOption = map_nOption_dAmount.at(nOption);
+            double dAmountOfOption = map_nOption_dAmount.at(pOption);
 
-            dSatisfOfOptIndividually += this->CalculateSatifactionOfOption(nOption,dAmountOfOption);
+            dSatisfOfOptIndividually += this->CalculateSatifactionOfOption(pOption,dAmountOfOption);
         }
     }
 
@@ -192,7 +221,7 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOpt
 
 
 //func calculate_satisf_of_combidict(combidict_arg:Dictionary) -> float:
-double pca::CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<eOpt,double> map_nOption_dAmount)
+double pca::CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<COption*,double> map_nOption_dAmount)
 {
     double dSatisfOfOptIndividually = CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
 
@@ -206,59 +235,63 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<eOpt,do
 
 }
 
-void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::eOpt nOpt, double dPrefAt0)
+void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::COption* pOpt, double dPrefAt0)
 {
-	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(nOpt))
+	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(pOpt))
 	{
-		auto pSatisfCurve = m_Option_SatisfactionCurve.at(nOpt).get();
+		auto pSatisfCurve = m_Option_SatisfactionCurve.at(pOpt).get();
 		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
 	}
 }
 
-void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::eOpt nOpt, double dMaxSatisf)
+void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::COption* pOpt, double dMaxSatisf)
 {
-	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(nOpt))
+	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(pOpt))
 	{
-		auto pSatisfCurve = m_Option_SatisfactionCurve.at(nOpt).get();
+		auto pSatisfCurve = m_Option_SatisfactionCurve.at(pOpt).get();
 		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);
 	}
 }
 
-void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::eCompComb nCompComb, double dPrefAt0)
+void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::CComplCombo* pCompComb, double dPrefAt0)
 {
-	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(nCompComb))
+	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
 	{
-		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(nCompComb).get();
+		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(pCompComb).get();
 		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
 	}
 }
 
-void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::eCompComb nCompComb, double dMaxSatisf)
+void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::CComplCombo* pCompComb, double dMaxSatisf)
 {
-	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(nCompComb))
+	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
 	{
-		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(nCompComb).get();
+		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(pCompComb).get();
 		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);
 	}
 }
 
-void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::eSuppComb nSuppComb, double dPrefAt0)
+void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::CSupplCombo* pSuppComb, double dPrefAt0)
 {
-	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(nSuppComb))
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
 	{
-		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(nSuppComb).get();
+		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(pSuppComb).get();
 		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
 	}
 }
 
-void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::eSuppComb nSuppComb, double dMaxSatisf)
+void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::CSupplCombo* pSuppComb, double dMaxSatisf)
 {
-	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(nSuppComb))
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
 	{
-		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(nSuppComb).get();
-		pSatisfCurve->SetMaximumSatisf(nSuppComb);
+		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(pSuppComb).get();
+		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);
 	}
 }
+
+
+
+
 
 //
 //std::map<pca::eProd,double> pca::CSatisfactionCalculator::CalculateProductdictFromOptiondict(std::map<eOpt,double> mapOptiondictArg )
