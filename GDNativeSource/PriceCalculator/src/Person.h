@@ -23,6 +23,12 @@ namespace pca
         void AddProductAmount(CProduct* pProductRef, double dAmount);
         void RemoveProductAmount(CProduct* pProductRef, double dAmount);
 
+        void AddProducts(std::map<pca::CProduct*, double> mapProductAmount);
+        void SubtractProducts(std::map<pca::CProduct*, double> mapProductAmount);
+
+        std::map<pca::CProduct*, double> GetSavedProductsFromOptions(const std::map<pca::COption*, double> & mapOptionAmount);
+        std::map<pca::CProduct*, double> GetConsumedProductsFromOptions(const std::map<pca::COption*, double>& mapOptionAmount);
+
         void AdjustBestCombinationForPerson();
         std::map<pca::COption*, double> AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumSteps);
         //func adjust_best_combination_for_person(person_arg:String) :
@@ -30,7 +36,7 @@ namespace pca
         //    var max_num_steps = 5
         //    adjust_best_combination_for_person_with_max_num_steps(person_arg, budget_step, max_num_steps)
 
-        std::map<pca::COption*, double> GetCurrentOpt_Amount(){
+        std::map<pca::COption*, double> GetCurrentOpt_Amount() {
             return this->m_mapCurrentOpt_Amount;
         }
 

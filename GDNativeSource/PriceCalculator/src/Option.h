@@ -12,7 +12,7 @@ namespace pca
     public:
         COption();
         COption(std::string sName);
-        COption(std::string sName, pca::CProduct* pProduct);
+        COption(std::string sName, pca::CProduct* pProduct, bool bSaving = false);
         virtual ~COption() {}
 
         long GetID() { return m_nID; }
@@ -27,6 +27,10 @@ namespace pca
             return m_pProduct;
         }
 
+        bool IsSaving() {
+            return m_bSaving;
+        }
+
     protected:
         
     private:
@@ -35,6 +39,8 @@ namespace pca
         std::string m_sName = "";
 
         pca::CProduct* m_pProduct = nullptr;
+
+        bool m_bSaving = false;
 
     };
 }

@@ -45,7 +45,7 @@ int pca::CTester::Test_SatisfactionCalculator()
 {
     std::cout << "Starting Test_SatisfactionCalculator" << std::endl;
     {
-        CReality::InitDefaultProductsAndOptions();
+        CReality::Init();
         CSatisfactionCalculator oSatCalculator;
         std::map<COption*, double> map_nOption_dAmount;
         //for (auto& nOption : c_setOptions)
@@ -123,12 +123,14 @@ int pca::CTester::Test_SatisfactionCalculator()
         double dStep = 1.0;
         double dMaxNumSteps = 10;
 
+        std::cout << "Person options before Adjust:" << std::endl;
         CUtils::PrintPersonOptions(pPerson_1_Ref);
         CUtils::PrintPersonOptions(pPerson_2_Ref);
         CUtils::PrintPersonOptions(pPerson_3_Ref);
 
         oMarket.AdjustBestCombinations(dStep, dMaxNumSteps);
 
+        std::cout << "Person options after Adjust:" << std::endl;
         CUtils::PrintPersonOptions(pPerson_1_Ref);
         CUtils::PrintPersonOptions(pPerson_2_Ref);
         CUtils::PrintPersonOptions(pPerson_3_Ref);

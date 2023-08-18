@@ -2,8 +2,6 @@
 //#include "Option.h"
 #include <string>
 
-
-
 pca::COptions::COptions(std::initializer_list< std::string> optionNameListInit)
 {
 	for (auto & name:optionNameListInit)

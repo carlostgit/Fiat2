@@ -14,10 +14,11 @@ pca::COption::COption(std::string sName)
 	m_sName = sName;
 }
 
-pca::COption::COption(std::string sName, pca::CProduct* pProduct)
+pca::COption::COption(std::string sName, pca::CProduct* pProduct, bool bSaving)
 {
 	m_nCount++;
 	m_nID = m_nCount;
 	m_sName = sName;
 	m_pProduct = pProduct;
+	m_bSaving = bSaving;
 }

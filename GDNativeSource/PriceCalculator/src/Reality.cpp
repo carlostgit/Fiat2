@@ -18,9 +18,18 @@ std::unique_ptr<pca::CComplCombos> pca::CReality::m_upComplCombos = std::unique_
 std::unique_ptr<pca::CSupplCombos> pca::CReality::m_upSupplCombos = std::unique_ptr<pca::CSupplCombos>();
 
 
-pca::CReality::CReality()
+
+void pca::CReality::Init()
 {
     InitDefaultProductsAndOptions();
+}
+
+void pca::CReality::Clear()
+{
+    m_upProducts.reset();
+    m_upOptions.reset();
+    m_upComplCombos.reset();
+    m_upSupplCombos.reset();
 }
 
 void pca::CReality::InitDefaultProductsAndOptions()

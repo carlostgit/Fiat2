@@ -4,6 +4,9 @@
 #include "Prices.h"
 #include "Market.h"
 #include "TradeCalculator.h"
+#include "Utils.h"
+#include "Product.h"
+#include "Option.h"
 #include <iostream>
 
 
@@ -55,6 +58,16 @@ void pca::CPerson::RemoveProductAmount(CProduct* pProductRef, double dAmount)
     AddProductAmount(pProductRef, -dAmount);
 }
 
+void pca::CPerson::AddProducts(std::map<pca::CProduct*, double> mapProductAmount)
+{
+    m_mapOwnedProd_Amount = CUtils::SumProducts(m_mapOwnedProd_Amount, mapProductAmount);
+}
+
+void pca::CPerson::SubtractProducts(std::map<pca::CProduct*, double> mapProductAmount)
+{
+    m_mapOwnedProd_Amount = CUtils::SubtractProducts(m_mapOwnedProd_Amount, mapProductAmount);
+}
+
 void pca::CPerson::AdjustBestCombinationForPerson()
 {
     double dBudgetStep = 0.01;
@@ -75,6 +88,48 @@ std::map<pca::COption*, double> pca::CPerson::AdjustBestCombinationForPersonWith
     this->m_mapCurrentOpt_Amount = mapBestCombidict;
 
     return mapBestCombidict;
+}
+
+std::map<pca::CProduct*, double> pca::CPerson::GetSavedProductsFromOptions(const std::map<pca::COption*, double> & mapOptionAmount)
+{
+    std::map<pca::CProduct*, double> mapsumProductAmount;
+
+    for (auto& pairOptionAmount : mapOptionAmount)
+    {
+        auto pOption = pairOptionAmount.first;
+        if (pOption->IsSaving())
+        {
+            auto pProduct = pOption->GetProduct();
+            if (pProduct)
+            {
+                double dAmount = pairOptionAmount.second;
+                mapsumProductAmount[pProduct] = dAmount;
+            }                
+        }
+    }
+
+    return mapsumProductAmount;
+}
+
+std::map<pca::CProduct*, double> pca::CPerson::GetConsumedProductsFromOptions(const std::map<pca::COption*, double> & mapOptionAmount)
+{
+    std::map<pca::CProduct*, double> mapsumProductAmount;
+
+    for (auto& pairOptionAmount : mapOptionAmount)
+    {
+        auto pOption = pairOptionAmount.first;
+        if (false == pOption->IsSaving())
+        {
+            auto pProduct = pOption->GetProduct();
+            if (pProduct)
+            {
+                double dAmount = pairOptionAmount.second;
+                mapsumProductAmount[pProduct] = dAmount;
+            }
+        }
+    }
+
+    return mapsumProductAmount;
 }
 
 // 

@@ -22,6 +22,13 @@ namespace pca
 
         static std::map<pca::CProduct*, double> CalculateProductdictFromOptiondict(std::map<COption*, double> mapOptiondictArg);
 
+        static std::map<pca::CProduct*, double> SumProducts(const std::map<pca::CProduct*, double> & mapProductAmount_1, const std::map<pca::CProduct*, double> & mapProductAmount_2);
+        static std::map<pca::COption*, double> SumOptions(const std::map<pca::COption*, double> & mapOptionAmount_1, const std::map<pca::COption*, double> & mapOptionAmount_2);
+
+        static std::map<pca::CProduct*, double> SubtractProducts(const std::map<pca::CProduct*, double> & mapProductAmount_1, const std::map<pca::CProduct*, double> & mapProductAmount_2);
+        static std::map<pca::COption*, double> SubtractOptions(const std::map<pca::COption*, double> & mapOptionAmount_1, const std::map<pca::COption*, double> & mapOptionAmount_2);
+
+
     protected:
 
     private:
