@@ -56,6 +56,10 @@ namespace pca
             return this->m_sName;
         }
 
+        void CalculateTradeWithCurrentBestCombination();
+
+        std::map<pca::CProduct*, double> GetTrade();
+
     protected:
 
         void InitDefaultAmounts();
@@ -68,6 +72,8 @@ namespace pca
 
         std::map<pca::CProduct*, double> m_mapOwnedProd_Amount;
         std::map<pca::COption*, double> m_mapCurrentOpt_Amount;
+
+        std::map<pca::CProduct*, double> m_mapCurrentTradProd_Amount;
 
         CPrices* m_pPricesRef = nullptr;
         CMarket* m_pMarketRef = nullptr;

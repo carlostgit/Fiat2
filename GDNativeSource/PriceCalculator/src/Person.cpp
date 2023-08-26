@@ -132,6 +132,18 @@ std::map<pca::CProduct*, double> pca::CPerson::GetConsumedProductsFromOptions(co
     return mapsumProductAmount;
 }
 
+void pca::CPerson::CalculateTradeWithCurrentBestCombination()
+{
+    std::map<pca::CProduct*, double> mapCurrentDesiredProd_Amount;
+    mapCurrentDesiredProd_Amount = CUtils::CalculateProductdictFromOptiondict(m_mapCurrentOpt_Amount);
+    m_mapCurrentTradProd_Amount = CUtils::SubtractProducts(mapCurrentDesiredProd_Amount, m_mapOwnedProd_Amount);
+}
+
+std::map<pca::CProduct*, double> pca::CPerson::GetTrade()
+{
+    return m_mapCurrentTradProd_Amount;
+}
+
 // 
 //    func adjust_best_combination_for_person_with_max_num_steps(person_arg:String, budget_step : float, max_num_steps : int)->Dictionary:
 //    if _person_owned_dict.has(person_arg) :
