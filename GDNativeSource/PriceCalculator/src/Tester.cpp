@@ -1,5 +1,6 @@
 #include "Tester.h"
 #include <iostream>
+#include <chrono>
 //#include "PriceCalculationDefines.h"
 #include "Reality.h"
 #include "SatisfactionCurve.h"
@@ -9,6 +10,7 @@
 #include "Market.h"
 #include "Option.h"
 #include "Utils.h"
+
 
 
 
@@ -129,10 +131,17 @@ int pca::CTester::Test_SatisfactionCalculator()
                 
         CUtils::PrintPrices(oMarket.GetPricesRef());
 
+        //Voy a medir el tiempo de los siguientes cálculos:
+        auto start = std::chrono::high_resolution_clock::now();
+
         //double dStep = 1.0;
         //double dMaxNumSteps = 10;
         //oMarket.AdjustBestCombinations(dStep, dMaxNumSteps); //Es método protected, pero Tester es friend
         oMarket.CalculateNewPrices();
+
+        auto end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = end - start;
+        std::cout << "Tiempo de ejecución: " << elapsed.count() << " segundos" << std::endl;
 
         std::cout << "Person options after CalculateNewPrices:" << std::endl;
         CUtils::PrintPersonOptions(pPerson_1_Ref);
