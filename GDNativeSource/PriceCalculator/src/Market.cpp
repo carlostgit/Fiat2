@@ -5,16 +5,10 @@
 #include "Prices.h"
 #include "Reality.h"
 
-
 #include <iostream>
 #include <iomanip>
 
-//var _param_price_precission : float = 0.01
-//var _param_initial_price_change_step : float = 0.5 #Tiene que ser < 1
-//    var _param_max_steps_calculating_new_prices : int = 80
-//    var _param_product_step_for_best_combidict_calc : float = 5
-
-const long c_paramMaxStpesCalculatingNewPrices = 80;
+const long c_paramMaxStepsCalculatingNewPrices = 80;
 const double c_paramPricePrecission = 0.01;
 const double c_paramInitialPriceChangeStep = 0.5;
 const double c_paramProductStepForBestCombidictCalc= 5.0;
@@ -22,6 +16,8 @@ const double c_paramProductStepForBestCombidictCalc= 5.0;
 pca::CMarket::CMarket()
 {
     //ctor
+    m_upPrices = std::unique_ptr<CPrices>(new CPrices());
+    m_upPricesLogInfo = std::unique_ptr<CPricesLogInfo>(new CPricesLogInfo(m_upPrices.get()));
 
 }
 
@@ -90,7 +86,7 @@ void pca::CMarket::CalculateNewPrices()
 {
     bool bExit = false;
     long nCount = 0;
-    long nMaxCount = c_paramMaxStpesCalculatingNewPrices;
+    long nMaxCount = c_paramMaxStepsCalculatingNewPrices;
     double dParamPriceChangeStep = c_paramInitialPriceChangeStep; //Tiene que ser < 1
     double dParamPricePrecission = c_paramPricePrecission;
 
@@ -141,7 +137,6 @@ bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
                 double dNewPrice = dCurrentPrice + dCurrentPrice * dIncrement;
                 m_upPrices->SetPriceOfProduct(pProduct, dNewPrice);
                 bPriceChanged = true;
-
             }
         }
     }
@@ -149,7 +144,7 @@ bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
     return bPriceChanged;
 }
 
-std::map<CProduct*, double>  pca::CMarket::CalculateNewPricesIncrement(double dParamPriceChangeStepArg)
+std::map<pca::CProduct*, double>  pca::CMarket::CalculateNewPricesIncrement(double dParamPriceChangeStepArg)
 {
     //m_mapSumOfTrade
     std::map<CProduct*, double> mapNewPricesIncrements;
@@ -191,54 +186,11 @@ std::map<CProduct*, double>  pca::CMarket::CalculateNewPricesIncrement(double dP
         {
             double dAmount = pairProductAmount.second;
             CProduct* dProduct = pairProductAmount.first;
-            mapNewPricesIncrements[dProduct] = dParamPriceChangeStep * dAmount / dMaxAmountOfProductExcess;
-            
+            mapNewPricesIncrements[dProduct] = dParamPriceChangeStep * dAmount / dMaxAmountOfProductExcess;   
         }
-
     }
     
     return mapNewPricesIncrements;
-
 }
 
-//
-//func _calculate_new_prices_increment(param_price_change_step_arg:float) :
-//    #	var new_prices_increment : Dictionary = _sum_of_trade.duplicate() #Creo que esto sobra
-//    var new_prices_increment : Dictionary = {}
-//
-//    var sum_of_trade_and_excess_trade = Utils.sum_combidict(_sum_of_trade, _excess_products_dict)
-//
-//    var amount_of_currency_excess = 0.0
-//    #	for product in _sum_of_trade.keys() :
-//#		if product == Prices.get_currency():
-//    #			amount_of_currency_excess = _sum_of_trade[product]
-//
-//    if (sum_of_trade_and_excess_trade.has(Prices.get_currency())) :
-//        amount_of_currency_excess = sum_of_trade_and_excess_trade[Prices.get_currency()]
-//
-//        var excess_relative_to_currency : Dictionary = {}
-//        for product in sum_of_trade_and_excess_trade.keys() :
-//            var amount = sum_of_trade_and_excess_trade[product]
-//            excess_relative_to_currency[product] = amount - amount_of_currency_excess
-//            #	Añadimos el _excess_products_dict
-//
-//#		
-//
-//            var max_amount_of_product_excess = 0.0
-//            for product in excess_relative_to_currency.keys() :
-//                var amount = abs(excess_relative_to_currency[product])
-//                if amount > max_amount_of_product_excess:
-//max_amount_of_product_excess = amount
-//
-//var param_min_product_excess_to_change_price = 0.0
-//
-//#Este parámetro deberían pasarse por argumento al método calculate_new_prices_increment() :
-//    var param_price_change_step = param_price_change_step_arg
-//
-//    if (max_amount_of_product_excess > param_min_product_excess_to_change_price) :
-//        for product in excess_relative_to_currency.keys() :
-//            var amount = excess_relative_to_currency[product]
-//
-//            new_prices_increment[product] = param_price_change_step * amount / max_amount_of_product_excess
-//
-//            return new_prices_increment
+

@@ -19,10 +19,17 @@ void pca::CPrices::InitDefaultPrices()
 {
     //Inicializo los precios a 1.0
     //for (auto& nOption : c_setProducts)
-    for (auto& nOption : pca::CReality::GetProducts())
+    for (auto& pProduct : pca::CReality::GetProducts())
     {
-        m_mapProd_Price[nOption] = 1.0;
+        m_mapProd_Price[pProduct] = 1.0;
     }
+
+    for (auto& pProduct : pca::CReality::GetProducts())
+    {
+        SetCurrency(pProduct);
+        break;
+    }
+
 }
 
 void pca::CPrices::IncreasePrice(CProduct* pProductRef, double dAmount)
@@ -80,4 +87,16 @@ double pca::CPrices::GetPriceOfProduct(CProduct* pProdRef)
         return dPrice;
     }
 }
+
+void pca::CPrices::SetPriceOfProduct(CProduct* pProduct, double dAmount)
+{
+    m_mapProd_Price[pProduct] = dAmount;
+}
+
+void pca::CPrices::SetCurrency(CProduct* pProduct)
+{
+    m_pCurrency = pProduct;
+}
+
+
 

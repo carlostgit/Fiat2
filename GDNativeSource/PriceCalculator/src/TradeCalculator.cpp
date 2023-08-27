@@ -105,7 +105,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
 
             if (c_traces) std::cout << "Element eliminated. dLeftMoney: " << dLeftMoney << std::endl;
             if (c_traces) std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
-            CUtils::PrintOptions(mapCombination);
+            if (c_traces) CUtils::PrintOptions(mapCombination);
         }
 
         if (false == bChangeMade)
@@ -179,7 +179,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
 
                                     if (c_traces) std::cout << "Product swapped. dLeftMoney: " << dLeftMoney << std::endl;
                                     if (c_traces) std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
-                                    CUtils::PrintOptions(mapCombination);
+                                    if (c_traces) CUtils::PrintOptions(mapCombination);
                                     break;
                                 }
 
@@ -203,7 +203,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
 
                         if (c_traces) std::cout << "Product added. dLeftMoney: " << dLeftMoney << std::endl;
                         if (c_traces) std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
-                        CUtils::PrintOptions(mapCombination);
+                        if (c_traces) CUtils::PrintOptions(mapCombination);
                     }
                 }
             }

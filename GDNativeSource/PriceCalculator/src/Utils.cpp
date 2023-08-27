@@ -3,7 +3,10 @@
 #include <iomanip>
 #include "Person.h"
 #include "Option.h"
+#include "Product.h"
 #include "Reality.h"
+#include "Prices.h"
+
 
 pca::CUtils::CUtils()
 {
@@ -40,6 +43,17 @@ void pca::CUtils::PrintPersonOptions(CPerson* pPerson)
         //std::cout << " '" << std::left << std::setw(10) << c_mapOption_Name.at(pairOpt_Amount.first).substr(0, 10) << "':'" << pairOpt_Amount.second << "'";
         COption* pOption = pairOpt_Amount.first;
         std::cout << " '" << std::left << std::setw(10) << pOption->GetName().substr(0, 10) << "':'" << pairOpt_Amount.second << "'";
+    }
+    std::cout << std::endl;
+}
+
+void pca::CUtils::PrintPrices(CPrices* pPrices)
+{
+    std::cout << "Prices:" << std::endl;
+    
+    for (auto& pProduct : pca::CReality::GetProducts())
+    {        
+        std::cout << " '" << std::left << std::setw(10) << pProduct->GetName().substr(0, 10) << "':'" << pPrices->GetPriceOfProduct(pProduct) << "'";
     }
     std::cout << std::endl;
 }
@@ -84,7 +98,7 @@ std::map<pca::CProduct*, double> pca::CUtils::SumProducts(const std::map<pca::CP
         if(mapProductAmount_2.find(pProduct) != mapProductAmount_2.end())
         {
             double dAmount_2 = mapProductAmount_2.at(pProduct);
-            mapsumProductAmount.at(pProduct) = dAmount_1 + dAmount_2;
+            mapsumProductAmount[pProduct] = dAmount_1 + dAmount_2;
         }
         else
         {
@@ -117,11 +131,11 @@ std::map<pca::COption*, double> pca::CUtils::SumOptions(const std::map<pca::COpt
         if (mapOptionAmount_2.find(pOption) != mapOptionAmount_2.end())
         {
             double dAmount_2 = mapOptionAmount_2.at(pOption);
-            mapsumOptionAmount.at(pOption) = dAmount_1 + dAmount_2;
+            mapsumOptionAmount[pOption] = dAmount_1 + dAmount_2;
         }
         else
         {
-            mapsumOptionAmount.at(pOption) = dAmount_1;
+            mapsumOptionAmount[pOption] = dAmount_1;
         }
     }
 
@@ -150,7 +164,7 @@ std::map<pca::CProduct*, double> pca::CUtils::SubtractProducts(const std::map<pc
         if (mapProductAmount_2.find(pProduct) != mapProductAmount_2.end())
         {
             double dAmount_2 = mapProductAmount_2.at(pProduct);
-            mapsubtractProductAmount.at(pProduct) = dAmount_1 - dAmount_2;
+            mapsubtractProductAmount[pProduct] = dAmount_1 - dAmount_2;
         }
         else
         {
@@ -183,11 +197,11 @@ std::map<pca::COption*, double> pca::CUtils::SubtractOptions(const std::map<pca:
         if (mapOptionAmount_2.find(pOption) != mapOptionAmount_2.end())
         {
             double dAmount_2 = mapOptionAmount_2.at(pOption);
-            mapsubtractOptionAmount.at(pOption) = dAmount_1 - dAmount_2;
+            mapsubtractOptionAmount[pOption] = dAmount_1 - dAmount_2;
         }
         else
         {
-            mapsubtractOptionAmount.at(pOption) = dAmount_1;
+            mapsubtractOptionAmount[pOption] = dAmount_1;
         }
     }
 

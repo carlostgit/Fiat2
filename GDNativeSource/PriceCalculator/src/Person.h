@@ -17,7 +17,7 @@ namespace pca
     class CPerson
     {
     public:
-        CPerson(CPrices* pPricesRef, CMarket* pMarketRef, std::unique_ptr<CTradeCalculator> upTradCalculator);
+        CPerson(std::unique_ptr<CTradeCalculator> upTradCalculator);
         virtual ~CPerson();
 
         void AddProductAmount(CProduct* pProductRef, double dAmount);
@@ -75,8 +75,8 @@ namespace pca
 
         std::map<pca::CProduct*, double> m_mapCurrentTradProd_Amount;
 
-        CPrices* m_pPricesRef = nullptr;
-        CMarket* m_pMarketRef = nullptr;
+        //CPrices* m_pPricesRef = nullptr;
+        //CMarket* m_pMarketRef = nullptr;
         std::unique_ptr<CTradeCalculator> m_upTradeCalculator;
 
     };
