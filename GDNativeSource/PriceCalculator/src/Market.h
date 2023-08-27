@@ -11,9 +11,14 @@ namespace pca
     class CPrices;
     class CPricesLogInfo;
 
+    
+
     class CMarket
     {
     public:
+
+        friend class CTester;
+
         CMarket();
         virtual ~CMarket();
 

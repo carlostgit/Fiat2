@@ -119,9 +119,7 @@ int pca::CTester::Test_SatisfactionCalculator()
         oMarket.AddPerson(std::move(upPerson_1));
         oMarket.AddPerson(std::move(upPerson_2));
         oMarket.AddPerson(std::move(upPerson_3));
-        double dStep = 1.0;
-        double dMaxNumSteps = 10;
-
+        
         std::cout << "Person options before CalculateNewPrices:" << std::endl;
         CUtils::PrintPersonOptions(pPerson_1_Ref);
         CUtils::PrintPersonOptions(pPerson_2_Ref);
@@ -131,7 +129,9 @@ int pca::CTester::Test_SatisfactionCalculator()
                 
         CUtils::PrintPrices(oMarket.GetPricesRef());
 
-        //oMarket.AdjustBestCombinations(dStep, dMaxNumSteps);
+        //double dStep = 1.0;
+        //double dMaxNumSteps = 10;
+        //oMarket.AdjustBestCombinations(dStep, dMaxNumSteps); //Es método protected, pero Tester es friend
         oMarket.CalculateNewPrices();
 
         std::cout << "Person options after CalculateNewPrices:" << std::endl;
@@ -142,7 +142,6 @@ int pca::CTester::Test_SatisfactionCalculator()
         std::cout << "Prices after CalculateNewPrices:" << std::endl;
         CUtils::PrintPrices(oMarket.GetPricesRef());
 
-       
     }    
     
     std::cout << "Test Market finished" << std::endl;
