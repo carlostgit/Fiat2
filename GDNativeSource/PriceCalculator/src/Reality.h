@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <string>
 
 namespace pca
 {
@@ -24,6 +25,7 @@ namespace pca
         //virtual ~CReality() {}
 
         static void Init();
+        static void InitEmpty();
         static void Clear();
 
         static void InitDefaultProductsAndOptions();
@@ -33,6 +35,18 @@ namespace pca
 
         static std::vector<pca::CComplCombo*> GetComplCombos();
         static std::vector<pca::CSupplCombo*> GetSupplCombos();
+
+        //
+        static void CreateProduct(std::string sProduct);        
+        static void CreateOption(std::string sProduct, std::string sOption);        
+
+        static void CreateComplCombo(std::string sComplCombo);        
+        static void AddOptionToComplCombo(std::string sComplCombo, std::string sOption);
+
+        static void CreateSupplCombo(std::string sSupplCombo);
+        static void AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight);
+
+        //
 
     protected:
 

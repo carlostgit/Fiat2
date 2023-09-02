@@ -11,7 +11,6 @@
 
 namespace pca
 {
-    //class CComplCombo;
     class COption;
 
     class CComplCombos
@@ -26,6 +25,8 @@ namespace pca
         void AddComplCombo(std::unique_ptr<pca::CComplCombo> upComplCombo);
 
         std::vector<pca::CComplCombo*> GetComplCombos();
+
+        pca::CComplCombo* GetComplCombo(std::string sComplCombo);
 
     protected:
 

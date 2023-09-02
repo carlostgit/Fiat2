@@ -20,6 +20,8 @@ namespace pca
         void AddSupplCombo(std::unique_ptr<pca::CSupplCombo> upSupplCombo);
         std::vector<pca::CSupplCombo*> GetSupplCombos();
 
+        pca::CSupplCombo* GetSupplCombo(std::string sSupplCombo);
+
     protected:
 
     private:

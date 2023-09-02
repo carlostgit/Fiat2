@@ -30,3 +30,14 @@ std::vector<pca::CSupplCombo*> pca::CSupplCombos::GetSupplCombos()
 	return vSupplCombos;
 }
 
+pca::CSupplCombo* pca::CSupplCombos::GetSupplCombo(std::string sSupplCombo)
+{
+	for (auto& upSupplCombo : m_setSupplCombos)
+	{
+		if (sSupplCombo == upSupplCombo->GetName())
+			return upSupplCombo.get();
+	}
+
+	return nullptr;
+}
+

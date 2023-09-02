@@ -27,3 +27,14 @@ std::vector<pca::CComplCombo*> pca::CComplCombos::GetComplCombos()
 
 	return vComplCombos;
 }
+
+pca::CComplCombo* pca::CComplCombos::GetComplCombo(std::string sComplCombo)
+{
+	for (auto& upComplCombo : m_setComplCombos)
+	{		
+		if (sComplCombo == upComplCombo->GetName())
+			return upComplCombo.get();
+	}
+
+	return nullptr;
+}
