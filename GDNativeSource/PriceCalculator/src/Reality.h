@@ -38,15 +38,23 @@ namespace pca
 
         //
         static void CreateProduct(std::string sProduct);        
-        static void CreateOption(std::string sProduct, std::string sOption);        
+        static void CreateOption(std::string sProduct, std::string sOption);
+        static void CreateOption(CProduct* pProduct, std::string sOption);
 
         static void CreateComplCombo(std::string sComplCombo);        
         static void AddOptionToComplCombo(std::string sComplCombo, std::string sOption);
+        static void AddOptionToComplCombo(CComplCombo* pComplCombo, COption* pOption);
 
         static void CreateSupplCombo(std::string sSupplCombo);
         static void AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight);
+        static void AddOptionToSupplCombo(CSupplCombo* pSupplCombo, COption* pOption, double dWeight);
 
         //
+        static CProduct* GetProduct(std::string sProduct);
+        static COption* GetOption(std::string sOption);
+        static CComplCombo* GetComplCombo(std::string sComplCombo);
+        static CSupplCombo* GetSupplCombo(std::string sSupplCombo);
+
 
     protected:
 

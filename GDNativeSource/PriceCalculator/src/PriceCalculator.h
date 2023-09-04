@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 
 
@@ -20,8 +21,26 @@ namespace pca
         CPriceCalculator();
         virtual ~CPriceCalculator();
 
-
         static int GetTestPrice();
+
+        void CreateEmptyMarket();
+        void CreateProduct(std::string sProductName);
+        void SetCurrency(std::string sProductName);
+        void AddToProduct_CreateConsumptionOption(std::string sProduct ,std::string sOption);
+        void AddToMarket_CreatePerson(std::string sPerson);
+        void AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount);
+        void AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue);
+
+        void AdjustPrices();
+
+        bool IsProduct(std::string sProductName);
+        bool IsPerson(std::string sPersonName);
+        bool IsOption(std::string sOptionName);
+        std::string GetCurrency();
+
+        double GetPrice(std::string sProductName);
+        double GetProductAmount(std::string sProductName, std::string sPerson);
+        double GetOptionAmount(std::string sOptionName, std::string sPerson);
 
         /* 
         Idea de cómo se podría generar un escenario simple
@@ -31,10 +50,12 @@ namespace pca
         AddToProduct_CreateConsumptionOption("nut consumption")
 
         AddToMarket_CreateProduct("chocolate");
-        AddToProduct_CreateConsumptionOptionOfProduct("chocolate consumption")
+        AddToProduct_CreateConsumptionOption("chocolate consumption")
 
         AddToMarket_CreateProduct("candy");
-        AddToProduct_CreateConsumptionOptionOfProduct("candy consumption")
+        AddToProduct_CreateConsumptionOption("candy consumption")
+
+        AddToMarket_SetCurrency("nut")
 
         AddToMarket_CreatePerson("pepe")
         AddToPerson_SetProductAmount("nut", amount_of_nut)

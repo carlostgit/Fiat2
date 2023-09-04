@@ -17,6 +17,7 @@ namespace pca
     class CPerson
     {
     public:
+        CPerson(CPrices* pPricesRef, std::string sName);
         CPerson(std::unique_ptr<CTradeCalculator> upTradCalculator);
         virtual ~CPerson();
 

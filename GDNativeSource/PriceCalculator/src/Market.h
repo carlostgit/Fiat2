@@ -27,6 +27,7 @@ namespace pca
         }
 
         void AddPerson(std::unique_ptr<CPerson> upPerson);
+        void CreatePerson(std::string sName);
         void RemovePerson(std::string sPersonArg);
         void RemovePerson(long nId);        
 

@@ -31,6 +31,13 @@ void pca::CMarket::AddPerson(std::unique_ptr<CPerson> upPerson)
     m_vPersons.push_back(std::move(upPerson));
 }
 
+void pca::CMarket::CreatePerson(std::string sName)
+{
+    CPrices* pPricesRef = this->GetPricesRef();
+    std::unique_ptr<CPerson> upPerson(new CPerson(this->GetPricesRef(), sName));
+    m_vPersons.push_back(std::move(upPerson));
+}
+
 void pca::CMarket::AdjustBestCombinations(double dBudgetStep, int nMaxNumSteps)
 {
     for (auto& personRef : m_vPersons)

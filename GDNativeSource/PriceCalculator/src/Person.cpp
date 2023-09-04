@@ -4,6 +4,7 @@
 #include "Prices.h"
 #include "Market.h"
 #include "TradeCalculator.h"
+#include "SatisfactionCalculator.h"
 #include "Utils.h"
 #include "Product.h"
 #include "Option.h"
@@ -11,6 +12,25 @@
 
 
 long pca::CPerson::ms_nId = 0;
+
+pca::CPerson::CPerson(CPrices* pPricesRef, std::string sName)
+{
+    ms_nId++;
+    m_nId = ms_nId;
+
+    m_sName = sName;
+
+    //m_pMarketRef = pMarketRef;
+    //m_pPricesRef = pMarketRef->GetPrices();
+    std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator());
+    std::unique_ptr<pca::CTradeCalculator> upTradeCalculator(new CTradeCalculator(std::move(upSatisfactionCalculator), pPricesRef));
+
+    m_upTradeCalculator = std::move(upTradeCalculator);
+
+    //ctor
+    InitDefaultAmounts();
+}
+
 
 pca::CPerson::CPerson(std::unique_ptr<CTradeCalculator> upTradeCalculator)
 {

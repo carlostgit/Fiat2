@@ -157,6 +157,15 @@ void pca::CReality::CreateOption(std::string sProduct, std::string sOption)
     }
 }
 
+void pca::CReality::CreateOption(CProduct* pProduct, std::string sOption)
+{
+    if (pProduct)
+    {
+        std::unique_ptr<COption> upOption(new COption(sOption, pProduct));
+        m_upOptions->AddOption(std::move(upOption));
+    }
+}
+
 
 
 void pca::CReality::CreateComplCombo(std::string sComplCombo)
@@ -173,6 +182,14 @@ void pca::CReality::AddOptionToComplCombo(std::string sComplCombo, std::string s
 
     CComplCombo* pComplCombo = m_upComplCombos->GetComplCombo(sComplCombo);
 
+    if (pComplCombo && pOption)
+    {
+        pComplCombo->AddOption(pOption);
+    }
+}
+
+void pca::CReality::AddOptionToComplCombo(CComplCombo* pComplCombo, COption* pOption)
+{
     if (pComplCombo && pOption)
     {
         pComplCombo->AddOption(pOption);
@@ -199,6 +216,13 @@ void pca::CReality::AddOptionToSupplCombo(std::string sSupplCombo, std::string s
     }
 }
 
+void pca::CReality::AddOptionToSupplCombo(CSupplCombo* pSupplCombo, COption* pOption, double dWeight)
+{
+    if (pSupplCombo && pOption)
+    {
+        pSupplCombo->AddOptionAndWeight(pOption, dWeight);
+    }
+}
 
 std::vector<pca::CProduct*> pca::CReality::GetProducts()
 {
@@ -219,6 +243,27 @@ std::vector<pca::CSupplCombo*> pca::CReality::GetSupplCombos()
 {
     return m_upSupplCombos->GetSupplCombos();
 }
+
+pca::CProduct* pca::CReality::GetProduct(std::string sProduct)
+{
+    m_upProducts->GetProduct(sProduct);
+}
+
+pca::COption* pca::CReality::GetOption(std::string sOption)
+{
+    m_upOptions->GetOption(sOption);
+}
+
+pca::CComplCombo* pca::CReality::GetComplCombo(std::string sComplCombo)
+{
+    m_upComplCombos->GetComplCombo(sComplCombo);
+}
+
+pca::CSupplCombo* pca::CReality::GetSupplCombo(std::string sSupplCombo)
+{
+    m_upSupplCombos->GetSupplCombo(sSupplCombo);
+}
+
 
 
 //pca::CReality::~CReality() 
