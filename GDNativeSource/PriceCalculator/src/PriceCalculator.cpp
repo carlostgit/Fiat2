@@ -71,3 +71,15 @@ void pca::CPriceCalculator::AddToMarket_CreatePerson(std::string sPerson)
 {
     m_upMarket->CreatePerson(sPerson);
 }
+
+void pca::CPriceCalculator::AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount)
+{
+    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+    CProduct* pProductRef = CReality::GetProduct(sProduct);
+
+    if (pPersonRef && pProductRef)
+    {
+        pPersonRef->AddProductAmount(pProductRef, dAmount);
+    }
+}
+

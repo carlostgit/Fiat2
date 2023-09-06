@@ -73,7 +73,12 @@ void pca::CPerson::AddProductAmount(CProduct* pProductRef, double dAmount)
     }
 }
 
-void pca::CPerson::RemoveProductAmount(CProduct* pProductRef, double dAmount)
+void pca::CPerson::SetProductAmount(CProduct* pProductRef, double dAmount)
+{
+    m_mapOwnedProd_Amount[pProductRef] = dAmount;    
+}
+
+void pca::CPerson::SubtractProductAmount(CProduct* pProductRef, double dAmount)
 {
     AddProductAmount(pProductRef, -dAmount);
 }

@@ -22,7 +22,8 @@ namespace pca
         virtual ~CPerson();
 
         void AddProductAmount(CProduct* pProductRef, double dAmount);
-        void RemoveProductAmount(CProduct* pProductRef, double dAmount);
+        void SetProductAmount(CProduct* pProductRef, double dAmount);
+        void SubtractProductAmount(CProduct* pProductRef, double dAmount);
 
         void AddProducts(std::map<pca::CProduct*, double> mapProductAmount);
         void SubtractProducts(std::map<pca::CProduct*, double> mapProductAmount);

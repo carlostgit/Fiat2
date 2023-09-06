@@ -38,6 +38,19 @@ void pca::CMarket::CreatePerson(std::string sName)
     m_vPersons.push_back(std::move(upPerson));
 }
 
+pca::CPerson* pca::CMarket::GetPersonRef(std::string sName)
+{
+    for (auto& pPerson : m_vPersons)
+    {
+        if (pPerson->GetName() == sName)
+        {
+            return pPerson.get();
+        }
+    }
+
+    return nullptr;
+}
+
 void pca::CMarket::AdjustBestCombinations(double dBudgetStep, int nMaxNumSteps)
 {
     for (auto& personRef : m_vPersons)

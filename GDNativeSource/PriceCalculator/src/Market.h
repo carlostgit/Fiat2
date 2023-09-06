@@ -2,16 +2,18 @@
 #define MARKET_H
 
 //#include "PriceCalculationDefines.h"
-#include "Person.h"
+//#include "Person.h"
 #include <vector>
 #include <memory>
+#include <string>
+#include <map>
 
 namespace pca
 {
     class CPrices;
     class CPricesLogInfo;
-
-    
+    class CPerson;
+    class CProduct;
 
     class CMarket
     {
@@ -28,6 +30,7 @@ namespace pca
 
         void AddPerson(std::unique_ptr<CPerson> upPerson);
         void CreatePerson(std::string sName);
+        pca::CPerson* GetPersonRef(std::string sName);
         void RemovePerson(std::string sPersonArg);
         void RemovePerson(long nId);        
 

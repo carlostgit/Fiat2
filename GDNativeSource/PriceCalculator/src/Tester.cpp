@@ -10,6 +10,7 @@
 #include "Market.h"
 #include "Option.h"
 #include "Utils.h"
+#include "Person.h"
 
 
 
