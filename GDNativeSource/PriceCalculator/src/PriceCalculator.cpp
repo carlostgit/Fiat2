@@ -3,6 +3,9 @@
 #include "Prices.h"
 #include "Market.h"
 #include "Reality.h"
+#include "SatisfactionCurve.h"
+#include "SatisfactionCalculator.h"
+#include "TradeCalculator.h"
 
 
 
@@ -83,3 +86,15 @@ void pca::CPriceCalculator::AddToPerson_SetProductAmount(std::string sPerson, st
     }
 }
 
+void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue)
+{
+    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+    COption* pOptionRef = CReality::GetOption(sOption);
+
+    if (pPersonRef && pOptionRef)
+    {
+        pca::CSatisfactionCalculator* pSatCalculator = pPersonRef->GetTradeCalculatorRef()->GetSatisfactionCalculatorRef();
+        pSatCalculator->SetPreferenceAt0(pOptionRef, dValueAt0);
+        pSatCalculator->SetMaximumSatisf(pOptionRef, dMaxValue);        
+    }
+}

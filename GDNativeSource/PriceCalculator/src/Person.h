@@ -13,6 +13,7 @@ namespace pca
     class CTradeCalculator;
     class CProduct;
     class COption;
+    class CSatisfactionCalculator;
 
     class CPerson
     {
@@ -61,6 +62,10 @@ namespace pca
         void CalculateTradeWithCurrentBestCombination();
 
         std::map<pca::CProduct*, double> GetTrade();
+
+        pca::CTradeCalculator* GetTradeCalculatorRef();
+
+        pca::CSatisfactionCalculator* GetSatisfactionCalculatorRef();
 
     protected:
 

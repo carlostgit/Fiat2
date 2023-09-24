@@ -243,6 +243,10 @@ std::map<pca::COption*, double> pca::CTradeCalculator::ImproveCombination(std::m
     return mapBestCombidict;
 }
 
+pca::CSatisfactionCalculator* pca::CTradeCalculator::GetSatisfactionCalculatorRef()
+{
+    return m_upSatisfactionCalculator.get();
+}
 
 
 //func improve_combination(trade_calc_arg:TradeCalculator, owned_combidict_arg : Dictionary, current_best_combidict_arg : Dictionary, budget_step : float, max_num_steps : int)->Dictionary:

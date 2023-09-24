@@ -170,6 +170,17 @@ std::map<pca::CProduct*, double> pca::CPerson::GetTrade()
     return m_mapCurrentTradProd_Amount;
 }
 
+pca::CTradeCalculator* pca::CPerson::GetTradeCalculatorRef()
+{
+    return m_upTradeCalculator.get();
+}
+
+pca::CSatisfactionCalculator* pca::CPerson::GetSatisfactionCalculatorRef()
+{
+    m_upTradeCalculator->GetSatisfactionCalculatorRef();
+
+}
+
 // 
 //    func adjust_best_combination_for_person_with_max_num_steps(person_arg:String, budget_step : float, max_num_steps : int)->Dictionary:
 //    if _person_owned_dict.has(person_arg) :

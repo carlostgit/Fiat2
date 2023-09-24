@@ -26,6 +26,8 @@ namespace pca
         std::map<pca::COption*, double> AdjustBestCombidictChangingStep(double dBudgetArg, std::map<COption*, double> mapCurrentCombidict, double dInitBudgetStepArg, double dTargetBudgetStepArg, int nMaxStepArg);
         std::map<pca::COption*, double> ImproveCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps);
 
+        pca::CSatisfactionCalculator* GetSatisfactionCalculatorRef();
+
     protected:
 
     private:
