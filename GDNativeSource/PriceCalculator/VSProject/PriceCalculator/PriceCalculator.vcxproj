@@ -27,6 +27,7 @@
     <ClCompile Include="..\..\src\Options.cpp" />
     <ClCompile Include="..\..\src\Person.cpp" />
     <ClCompile Include="..\..\src\PriceCalculator.cpp" />
+    <ClCompile Include="..\..\src\PriceCalculatorStaticUser.cpp" />
     <ClCompile Include="..\..\src\Prices.cpp" />
     <ClCompile Include="..\..\src\PricesLogInfo.cpp" />
     <ClCompile Include="..\..\src\Product.cpp" />
@@ -50,6 +51,7 @@
     <ClInclude Include="..\..\src\Person.h" />
     <ClInclude Include="..\..\src\PriceCalculationDefines.h" />
     <ClInclude Include="..\..\src\PriceCalculator.h" />
+    <ClInclude Include="..\..\src\PriceCalculatorStaticUser.h" />
     <ClInclude Include="..\..\src\Prices.h" />
     <ClInclude Include="..\..\src\PricesLogInfo.h" />
     <ClInclude Include="..\..\src\Product.h" />

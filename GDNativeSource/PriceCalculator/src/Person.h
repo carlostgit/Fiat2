@@ -39,13 +39,17 @@ namespace pca
         //    var max_num_steps = 5
         //    adjust_best_combination_for_person_with_max_num_steps(person_arg, budget_step, max_num_steps)
 
-        std::map<pca::COption*, double> GetCurrentOpt_Amount() {
+        std::map<pca::COption*, double> GetMapCurrentOpt_Amount() {
             return this->m_mapCurrentOpt_Amount;
         }
 
-        std::map<pca::CProduct*, double> GetOwnedProd_Amount() {
+        std::map<pca::CProduct*, double> GetMapOwnedProd_Amount() {
             return this->m_mapOwnedProd_Amount;
         }
+
+        double GetCurrentOptAmount(pca::COption* pOptionRef);
+
+        double GetOwnedProdAmount(pca::CProduct* pProductRef);
 
         long GetId() {
             return this->m_nId;

@@ -1,6 +1,7 @@
 #include "PriceCalculator.h"
 #include "Person.h"
 #include "Prices.h"
+#include "Product.h"
 #include "Market.h"
 #include "Reality.h"
 #include "SatisfactionCurve.h"
@@ -34,7 +35,7 @@ int pca::CPriceCalculator::GetTestPrice()
 
 void pca::CPriceCalculator::CreateEmptyMarket()
 {
-
+    CReality::Init();
     std::unique_ptr<CMarket> upMarket(new CMarket());
     m_upMarket = std::move(upMarket);
 
@@ -48,6 +49,9 @@ void pca::CPriceCalculator::CreateProduct(std::string sProductName)
 
 void pca::CPriceCalculator::SetCurrency(std::string sProductName)
 {
+    if (nullptr == m_upMarket)
+        return;
+
     CPrices* pPricesRef = m_upMarket->GetPricesRef();
 
     CProduct* pProductRef = CReality::GetProduct(sProductName);
@@ -72,11 +76,15 @@ void pca::CPriceCalculator::AddToProduct_CreateConsumptionOption(std::string sPr
 
 void pca::CPriceCalculator::AddToMarket_CreatePerson(std::string sPerson)
 {
-    m_upMarket->CreatePerson(sPerson);
+    if (m_upMarket)
+        m_upMarket->CreatePerson(sPerson);
 }
 
 void pca::CPriceCalculator::AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount)
 {
+    if (nullptr == m_upMarket)
+        return;
+
     CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
     CProduct* pProductRef = CReality::GetProduct(sProduct);
 
@@ -88,6 +96,9 @@ void pca::CPriceCalculator::AddToPerson_SetProductAmount(std::string sPerson, st
 
 void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue)
 {
+    if (nullptr == m_upMarket)
+        return;
+
     CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
     COption* pOptionRef = CReality::GetOption(sOption);
 
@@ -97,4 +108,98 @@ void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForOption(std::strin
         pSatCalculator->SetPreferenceAt0(pOptionRef, dValueAt0);
         pSatCalculator->SetMaximumSatisf(pOptionRef, dMaxValue);        
     }
+}
+
+void pca::CPriceCalculator::AdjustPrices()
+{
+    if (m_upMarket)
+        m_upMarket->CalculateNewPrices();
+
+}
+bool pca::CPriceCalculator::IsProduct(std::string sProductName)
+{
+    CProduct* pProductRef = CReality::GetProduct(sProductName);
+
+    if (pProductRef)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool pca::CPriceCalculator::IsPerson(std::string sPersonName)
+{
+    if (nullptr == m_upMarket)
+        return false;
+
+    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPersonName);
+
+    if (pPersonRef)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+bool pca::CPriceCalculator::IsOption(std::string sOptionName)
+{
+    COption* pOptionRef = CReality::GetOption(sOptionName);
+
+    if (pOptionRef)
+    {
+        return true;
+    }
+
+    return false;
+}
+
+std::string pca::CPriceCalculator::GetCurrency()
+{
+    if (m_upMarket && m_upMarket->GetPricesRef() && m_upMarket->GetPricesRef()->GetCurrency())
+    {
+        return m_upMarket->GetPricesRef()->GetCurrency()->GetName();
+    }
+    return "";
+}
+
+double pca::CPriceCalculator::GetPrice(std::string sProductName)
+{
+    CProduct* pProductRef = CReality::GetProduct(sProductName);
+
+    if (m_upMarket && m_upMarket->GetPricesRef() && pProductRef)
+    {
+        return m_upMarket->GetPricesRef()->GetPriceOfProduct(pProductRef);
+    }
+
+    return 0.0;
+}
+
+double pca::CPriceCalculator::GetProductAmount(std::string sProductName, std::string sPerson)
+{
+    CProduct* pProductRef = CReality::GetProduct(sProductName);
+    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+
+    if (pPersonRef && pProductRef)
+    {
+        return pPersonRef->GetOwnedProdAmount(pProductRef);
+    }
+
+    return 0.0;
+
+}
+
+double pca::CPriceCalculator::GetOptionAmount(std::string sOptionName, std::string sPerson)
+{
+    COption* pOptionRef = CReality::GetOption(sOptionName);
+    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+
+    if (pPersonRef && pOptionRef)
+    {
+        return pPersonRef->GetCurrentOptAmount(pOptionRef);
+    }
+
+    return 0.0;
+
 }

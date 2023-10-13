@@ -177,8 +177,28 @@ pca::CTradeCalculator* pca::CPerson::GetTradeCalculatorRef()
 
 pca::CSatisfactionCalculator* pca::CPerson::GetSatisfactionCalculatorRef()
 {
-    m_upTradeCalculator->GetSatisfactionCalculatorRef();
+    return m_upTradeCalculator->GetSatisfactionCalculatorRef();
+}
 
+double pca::CPerson::GetCurrentOptAmount(pca::COption* pOptionRef)
+{
+    if (this->m_mapCurrentOpt_Amount.find(pOptionRef) == this->m_mapCurrentOpt_Amount.end())
+    {
+        return this->m_mapCurrentOpt_Amount.at(pOptionRef);
+    }
+
+    return 0.0;
+}
+
+
+double pca::CPerson::GetOwnedProdAmount(pca::CProduct* pProductRef)
+{
+    if (this->m_mapOwnedProd_Amount.find(pProductRef) == this->m_mapOwnedProd_Amount.end())
+    {
+        return this->m_mapOwnedProd_Amount.at(pProductRef);
+    }
+
+    return 0.0;
 }
 
 // 

@@ -246,22 +246,22 @@ std::vector<pca::CSupplCombo*> pca::CReality::GetSupplCombos()
 
 pca::CProduct* pca::CReality::GetProduct(std::string sProduct)
 {
-    m_upProducts->GetProduct(sProduct);
+    return m_upProducts->GetProduct(sProduct);
 }
 
 pca::COption* pca::CReality::GetOption(std::string sOption)
 {
-    m_upOptions->GetOption(sOption);
+    return m_upOptions->GetOption(sOption);
 }
 
 pca::CComplCombo* pca::CReality::GetComplCombo(std::string sComplCombo)
 {
-    m_upComplCombos->GetComplCombo(sComplCombo);
+    return m_upComplCombos->GetComplCombo(sComplCombo);
 }
 
 pca::CSupplCombo* pca::CReality::GetSupplCombo(std::string sSupplCombo)
 {
-    m_upSupplCombos->GetSupplCombo(sSupplCombo);
+    return m_upSupplCombos->GetSupplCombo(sSupplCombo);
 }
 
 

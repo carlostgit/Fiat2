@@ -3,6 +3,7 @@
 
 //includes para las llamadas a PriceCalculator
 #include "../../PriceCalculator/src/PriceCalculator.h"
+#include "../../PriceCalculator/src/PriceCalculatorStaticUser.h"
 #include "../../PriceCalculator/src/Tester.h"
 
 long GetTestPriceFromDLL()
@@ -24,4 +25,9 @@ long GetTestPriceFromDLL2(long nArg)
 	long nTestPrice = pca::CPriceCalculator::GetTestPrice();
 
 	return 7 + nArg + nTestPrice;
+}
+
+void CreateEmptyMarketFromDLL()
+{
+	pca::CPriceCalculatorStaticUser::CreateEmptyMarket();
 }

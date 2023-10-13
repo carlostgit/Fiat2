@@ -63,6 +63,11 @@ int main()
     functionPtr2 = (fpGetTestPriceFromDLL2)(GetProcAddress(hDll, nombreMetodo2.c_str()));
     
 
+    std::string nombreCreateEmptyMarket = "CreateEmptyMarketFromDLL";
+    fpCreateEmptyMarketFromDLL functionPtrCreateEmptyMarketFromDLL = nullptr;
+    functionPtrCreateEmptyMarketFromDLL = (fpCreateEmptyMarketFromDLL)(GetProcAddress(hDll, nombreCreateEmptyMarket.c_str()));
+
+
     if (functionPtr)
     {
         std::wcout << "Hello World con la librería dinámica " << libraryName.c_str() << " linkada en ejecución!\n";
@@ -85,7 +90,17 @@ int main()
         std::cout << "No se ha encontrado el metodo " << nombreMetodo2;
         std::wcout << " en la libreria " << libraryName << std::endl;
     }
-    
+
+    if (functionPtrCreateEmptyMarketFromDLL)
+    {
+        std::cout << "Llamando al método: " << nombreCreateEmptyMarket << std::endl;
+        functionPtrCreateEmptyMarketFromDLL();
+    }
+    else
+    {
+        std::cout << "No se ha encontrado el metodo " << nombreCreateEmptyMarket;
+        std::wcout << " en la libreria " << libraryName << std::endl;
+    }
     return 0;
 }
 

@@ -36,7 +36,7 @@ void pca::CUtils::PrintPersonOptions(CPerson* pPerson)
 {
     auto personName = pPerson->GetName();
     std::cout <<"Person '"<< pPerson->GetId() << "'  Person name: '" << personName << "'" << std::endl;
-    auto mapOpt_Amount = pPerson->GetCurrentOpt_Amount();
+    auto mapOpt_Amount = pPerson->GetMapCurrentOpt_Amount();
     std::cout << "Option amounts: " << std::endl;
     for (auto& pairOpt_Amount : mapOpt_Amount)
     {
