@@ -39,6 +39,12 @@ int main()
     std::cout << GetTestPriceFromDLL() << std::endl;
 
 
+    CreateEmptyMarketFromDLL();
+    CreateProductFromDLL("productoprueba");
+    std::cout << "IsProductFromDLL: " << IsProductFromDLL("productoprueba") << std::endl;
+
+
+
     //////////////////////////////////
     //Prueba linkando la librería dinámica en ejecución "explicit linking":
 
