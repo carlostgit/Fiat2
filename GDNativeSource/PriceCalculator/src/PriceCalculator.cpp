@@ -36,6 +36,7 @@ int pca::CPriceCalculator::GetTestPrice()
 void pca::CPriceCalculator::CreateEmptyMarket()
 {
     CReality::Init();
+    m_upMarket.reset();
     std::unique_ptr<CMarket> upMarket(new CMarket());
     m_upMarket = std::move(upMarket);
 

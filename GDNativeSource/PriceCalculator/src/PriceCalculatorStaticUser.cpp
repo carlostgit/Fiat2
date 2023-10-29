@@ -3,6 +3,11 @@
 
 pca::CPriceCalculator pca::CPriceCalculatorStaticUser::m_oPriceCalculator;
 
+pca::CPriceCalculatorStaticUser::~CPriceCalculatorStaticUser()
+{
+
+}
+
 void pca::CPriceCalculatorStaticUser::CreateEmptyMarket()
 {
 	m_oPriceCalculator.CreateEmptyMarket();

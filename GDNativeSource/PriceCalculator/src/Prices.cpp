@@ -90,6 +90,12 @@ double pca::CPrices::GetPriceOfProduct(CProduct* pProdRef)
 
 void pca::CPrices::SetPriceOfProduct(CProduct* pProduct, double dAmount)
 {
+    auto vProducts = pca::CReality::GetProducts();
+    if (vProducts.end() == std::find(vProducts.begin(), vProducts.end(), pProduct))
+    {
+        assert("" == "Este producto no existe!");
+    }
+
     m_mapProd_Price[pProduct] = dAmount;
 }
 

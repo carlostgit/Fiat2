@@ -40,8 +40,37 @@ int main()
 
 
     CreateEmptyMarketFromDLL();
-    CreateProductFromDLL("productoprueba");
-    std::cout << "IsProductFromDLL: " << IsProductFromDLL("productoprueba") << std::endl;
+    CreateProductFromDLL("nut");
+    CreateProductFromDLL("chocolate");
+    CreateProductFromDLL("candy");
+    SetCurrencyFromDLL("nut");
+    AddToProduct_CreateConsumptionOptionFromDLL("nut", "nut_consumption");
+    AddToProduct_CreateConsumptionOptionFromDLL("chocolate", "chocolate_consumption");
+    AddToProduct_CreateConsumptionOptionFromDLL("candy", "candy_consumption");
+    AddToMarket_CreatePersonFromDLL("Peter");
+    AddToMarket_CreatePersonFromDLL("George");
+    AddToPerson_SetProductAmountFromDLL("Peter", "nut", 1.0);
+    AddToPerson_SetProductAmountFromDLL("Peter", "chocolate", 1.0);
+    AddToPerson_SetProductAmountFromDLL("Peter", "candy", 1.0);
+    AddToPerson_SetProductAmountFromDLL("George", "nut", 1.0);
+    AddToPerson_SetProductAmountFromDLL("George", "chocolate", 1.0);
+    AddToPerson_SetProductAmountFromDLL("George", "candy", 1.0);
+    AddToPerson_SetSatisfactionCurveForOptionFromDLL("Peter", "nut_consumption", 1.0, 1.0);
+    AddToPerson_SetSatisfactionCurveForOptionFromDLL("Peter", "chocolate_consumption", 1.0, 1.0);
+    AddToPerson_SetSatisfactionCurveForOptionFromDLL("Peter", "candy_consumption", 1.0, 1.0);
+    AddToPerson_SetSatisfactionCurveForOptionFromDLL("George", "nut_consumption", 1.0, 1.0);
+    AddToPerson_SetSatisfactionCurveForOptionFromDLL("George", "chocolate_consumption", 1.0, 1.0);
+    AddToPerson_SetSatisfactionCurveForOptionFromDLL("George", "candy_consumption", 1.0, 1.0);
+    AdjustPricesFromDLL();
+    GetPriceFromDLL("nut");
+    GetPriceFromDLL("chocolate");
+    GetPriceFromDLL("candy");
+
+    std::cout << "Price nut: " << GetPriceFromDLL("nut") << std::endl;
+    std::cout << "Price chocolate: " << GetPriceFromDLL("chocolate") << std::endl;
+    std::cout << "Price candy: " << GetPriceFromDLL("candy") << std::endl;
+
+    //std::cout << "IsProductFromDLL: " << IsProductFromDLL("productoprueba") << std::endl;
 
 
 

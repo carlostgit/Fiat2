@@ -20,7 +20,7 @@ namespace pca
     {
     public:
         CPriceCalculatorStaticUser() {}
-        virtual ~CPriceCalculatorStaticUser() {}
+        virtual ~CPriceCalculatorStaticUser();
 
         static void CreateEmptyMarket();
         static void CreateProduct(std::string sProductName);

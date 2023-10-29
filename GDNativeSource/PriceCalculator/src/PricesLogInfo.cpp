@@ -3,6 +3,9 @@
 #include "ProductPriceAdjustmentInfo.h"
 #include "Prices.h"
 
+#include "Product.h"
+#include <iostream>
+
 pca::CPricesLogInfo::CPricesLogInfo(pca::CPrices* pPricesRef)
 {
 	m_pPricesRef = pPricesRef;
@@ -39,6 +42,16 @@ void pca::CPricesLogInfo::RegisterPrices()
 {
 	for (auto& pProduct : CReality::GetProducts())
 	{
+		//std::cout << "Adjusting product: " << pProduct->GetName() << std::endl;
+		//std::cout << "m_mapProduct_AdjustmentInfo: " << std::endl;
+		//for (auto& pairProd_adjustInfo : m_mapProduct_AdjustmentInfo)
+		//{
+		//	auto pProd = pairProd_adjustInfo.first;
+		//	std::cout << "Adjusting product: " << pProd->GetName() << std::endl;
+		//	auto pAdjustInfo = pairProd_adjustInfo.second.get();
+		//	std::cout << "Adjusting info: " << pAdjustInfo << std::endl;
+
+		//}
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
 
 		double dPrice = m_pPricesRef->GetPriceOfProduct(pProduct);
