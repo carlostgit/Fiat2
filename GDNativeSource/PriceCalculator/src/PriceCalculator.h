@@ -42,6 +42,10 @@ namespace pca
         double GetProductAmount(std::string sProductName, std::string sPerson);
         double GetOptionAmount(std::string sOptionName, std::string sPerson);
 
+        void PrintPricesEvolution();
+
+        double GetDesiredProdAmount(std::string sPerson, std::string sProductName);
+
         /* 
         Idea de cómo se podría generar un escenario simple
         CreateEmptyMarket();

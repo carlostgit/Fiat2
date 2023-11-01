@@ -10,6 +10,7 @@ namespace pca
     class COption;
     class CProduct;
     class CPrices;
+    class CMarket;
 
     class CUtils
     {
@@ -20,6 +21,7 @@ namespace pca
         static void PrintOptions(std::map<COption*, double> mapOpt_Amount);
         static void PrintPersonOptions(CPerson* pPerson);
         static void PrintPrices(CPrices* pPrices);
+        static void PrintPricesEvolution(CMarket* pMarket);
 
         static std::map<pca::CProduct*, double> CalculateProductdictFromOptiondict(std::map<COption*, double> mapOptiondictArg);
 
@@ -29,7 +31,7 @@ namespace pca
         static std::map<pca::CProduct*, double> SubtractProducts(const std::map<pca::CProduct*, double> & mapProductAmount_1, const std::map<pca::CProduct*, double> & mapProductAmount_2);
         static std::map<pca::COption*, double> SubtractOptions(const std::map<pca::COption*, double> & mapOptionAmount_1, const std::map<pca::COption*, double> & mapOptionAmount_2);
 
-
+        
 
     protected:
 

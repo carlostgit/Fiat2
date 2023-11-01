@@ -41,6 +41,10 @@ namespace pca
         static double GetProductAmount(std::string sProductName, std::string sPerson);
         static double GetOptionAmount(std::string sOptionName, std::string sPerson);
 
+        static void PrintPricesEvolution();
+
+        static double GetDesiredProdAmount(std::string sPerson, std::string sProductName);
+
     protected:
 
     private:

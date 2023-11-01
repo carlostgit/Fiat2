@@ -49,6 +49,8 @@ namespace pca
 
         double GetCurrentOptAmount(pca::COption* pOptionRef);
 
+        double GetDesiredProdAmount(pca::CProduct* pProduct);
+
         double GetOwnedProdAmount(pca::CProduct* pProductRef);
 
         long GetId() {

@@ -101,3 +101,14 @@ double GetOptionAmountFromDLL(std::string sOptionName, std::string sPerson)
 {
 	return pca::CPriceCalculatorStaticUser::GetOptionAmount(sOptionName, sPerson);
 }
+
+void PrintPricesEvolutionFromDLL()
+{
+	return pca::CPriceCalculatorStaticUser::PrintPricesEvolution();
+}
+
+double GetDesiredProdAmountFromDLL(std::string sPerson, pca::CProduct* pProduct)
+{
+	return GetDesiredProdAmountFromDLL(sPerson, pProduct);
+}
+

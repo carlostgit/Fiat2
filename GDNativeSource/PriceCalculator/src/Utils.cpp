@@ -6,6 +6,8 @@
 #include "Product.h"
 #include "Reality.h"
 #include "Prices.h"
+#include "Market.h"
+#include "PricesLogInfo.h"
 
 
 pca::CUtils::CUtils()
@@ -217,5 +219,22 @@ std::map<pca::COption*, double> pca::CUtils::SubtractOptions(const std::map<pca:
     }
 
     return mapsubtractOptionAmount;
+}
+
+void pca::CUtils::PrintPricesEvolution(CMarket* pMarket)
+{
+    pca::CPricesLogInfo* pPricesLogInfo = pMarket->GetPricesLogInfoRef();
+    auto mapProduct_Prices = pPricesLogInfo->GetProductAllPrices();
+    for (auto & pairProduct_Prices : mapProduct_Prices)
+    {
+        pca::CProduct* pProduct = pairProduct_Prices.first;
+        std::cout << std::endl;
+        std::cout << "Product: " << pProduct->GetName() << std::endl;
+        std::vector<double> vPrices = pairProduct_Prices.second;
+        for (auto& price : vPrices)
+        {
+            std::cout << " " << price;
+        }
+    }
 }
 

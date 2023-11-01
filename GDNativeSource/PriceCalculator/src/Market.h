@@ -36,6 +36,8 @@ namespace pca
 
         void CalculateNewPrices();
 
+        CPricesLogInfo* GetPricesLogInfoRef();
+
     protected:
         std::map<pca::CProduct*, double> CalculateNewPricesIncrement(double dParamPriceChangeStepArg);
 

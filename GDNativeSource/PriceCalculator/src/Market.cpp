@@ -4,14 +4,15 @@
 #include "PricesLogInfo.h"
 #include "Prices.h"
 #include "Reality.h"
+#include "Product.h"
 
 #include <iostream>
 #include <iomanip>
 
-const long c_paramMaxStepsCalculatingNewPrices = 80;
+const long c_paramMaxStepsCalculatingNewPrices = 100;
 const double c_paramPricePrecission = 0.01;
-const double c_paramInitialPriceChangeStep = 0.5;
-const double c_paramProductStepForBestCombidictCalc= 5.0;
+const double c_paramInitialPriceChangeStep = 0.1;
+const double c_paramProductStepForBestCombidictCalc= 0.1;
 
 pca::CMarket::CMarket()
 {
@@ -146,6 +147,26 @@ bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
     CalculateTradesWithCurrentBestCombinations();
     CalculateSumOfTrade();
     std::map<CProduct*,double> mapNewPricesIncrements = CalculateNewPricesIncrement(dParamPriceChangeStepArg);
+
+    //
+    //m_mapSumOfTrade
+    //for (auto& produt_trade : m_mapSumOfTrade)
+    //{
+    //    CProduct* pProduct = produt_trade.first;
+    //    double dTrade = produt_trade.second;
+
+    //    std::cout << "-" << pProduct->GetName() << " dTrade: " << dTrade << std::endl;
+    //}
+
+    //std::cout << "mapNewPricesIncrements: " << std::endl;
+    //for (auto& produt_price : mapNewPricesIncrements)
+    //{
+    //    CProduct* pProduct = produt_price.first;
+    //    double dIncrement = produt_price.second;
+
+    //    std::cout << "-" << pProduct->GetName() << " price increment: " << dIncrement << std::endl;
+    //}
+
     for (auto & pProduct:CReality::GetProducts() )
     {
         if (false == m_upPrices->IsCurrency(pProduct))
@@ -213,4 +234,8 @@ std::map<pca::CProduct*, double>  pca::CMarket::CalculateNewPricesIncrement(doub
     return mapNewPricesIncrements;
 }
 
+pca::CPricesLogInfo* pca::CMarket::GetPricesLogInfoRef()
+{
+    return m_upPricesLogInfo.get();
+}
 

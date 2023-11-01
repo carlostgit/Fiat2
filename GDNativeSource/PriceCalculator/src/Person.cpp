@@ -163,6 +163,27 @@ void pca::CPerson::CalculateTradeWithCurrentBestCombination()
     std::map<pca::CProduct*, double> mapCurrentDesiredProd_Amount;
     mapCurrentDesiredProd_Amount = CUtils::CalculateProductdictFromOptiondict(m_mapCurrentOpt_Amount);
     m_mapCurrentTradProd_Amount = CUtils::SubtractProducts(mapCurrentDesiredProd_Amount, m_mapOwnedProd_Amount);
+
+    ////mapCurrentDesiredProd_Amount
+    //std::cout << "mapCurrentDesiredProd_Amount of person: " << this->GetName() << std::endl;
+    //for (auto& pCurrent_DesiredProd : mapCurrentDesiredProd_Amount)
+    //{
+    //    pca::CProduct* pProduct = pCurrent_DesiredProd.first;
+    //    double dDesired = pCurrent_DesiredProd.second;
+    //    std::cout << "--" << pProduct->GetName() << ": desired: " << dDesired << std::endl;
+
+    //}
+
+    //m_mapCurrentTradProd_Amount
+    std::cout << "m_mapCurrentTradProd_Amount of person: " << this->GetName() << std::endl;
+    for (auto& pCurrent_CurrentTradProd : m_mapCurrentTradProd_Amount)
+    {
+        pca::CProduct* pProduct = pCurrent_CurrentTradProd.first;
+        double dCurrentTradeProd = pCurrent_CurrentTradProd.second;
+        std::cout << "--" << pProduct->GetName() << ": dCurrentTradeProd: " << dCurrentTradeProd << std::endl;
+
+    }
+
 }
 
 std::map<pca::CProduct*, double> pca::CPerson::GetTrade()
@@ -182,7 +203,7 @@ pca::CSatisfactionCalculator* pca::CPerson::GetSatisfactionCalculatorRef()
 
 double pca::CPerson::GetCurrentOptAmount(pca::COption* pOptionRef)
 {
-    if (this->m_mapCurrentOpt_Amount.find(pOptionRef) == this->m_mapCurrentOpt_Amount.end())
+    if (this->m_mapCurrentOpt_Amount.find(pOptionRef) != this->m_mapCurrentOpt_Amount.end())
     {
         return this->m_mapCurrentOpt_Amount.at(pOptionRef);
     }
@@ -190,16 +211,29 @@ double pca::CPerson::GetCurrentOptAmount(pca::COption* pOptionRef)
     return 0.0;
 }
 
-
 double pca::CPerson::GetOwnedProdAmount(pca::CProduct* pProductRef)
 {
-    if (this->m_mapOwnedProd_Amount.find(pProductRef) == this->m_mapOwnedProd_Amount.end())
+    if (this->m_mapOwnedProd_Amount.find(pProductRef) != this->m_mapOwnedProd_Amount.end())
     {
         return this->m_mapOwnedProd_Amount.at(pProductRef);
     }
 
     return 0.0;
 }
+
+double pca::CPerson::GetDesiredProdAmount(pca::CProduct* pProduct)
+{
+    std::map<pca::CProduct*, double> mapCurrentDesiredProd_Amount;
+    mapCurrentDesiredProd_Amount = CUtils::CalculateProductdictFromOptiondict(m_mapCurrentOpt_Amount);
+    
+    if (mapCurrentDesiredProd_Amount.end() != mapCurrentDesiredProd_Amount.find(pProduct))
+    {
+        return mapCurrentDesiredProd_Amount.at(pProduct);
+    }
+
+    return 0.0;
+}
+
 
 // 
 //    func adjust_best_combination_for_person_with_max_num_steps(person_arg:String, budget_step : float, max_num_steps : int)->Dictionary:

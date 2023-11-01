@@ -82,3 +82,15 @@ double pca::CPriceCalculatorStaticUser::GetOptionAmount(std::string sOptionName,
 {
 	return m_oPriceCalculator.GetOptionAmount(sOptionName, sPerson);
 }
+
+void pca::CPriceCalculatorStaticUser::PrintPricesEvolution()
+{
+	m_oPriceCalculator.PrintPricesEvolution();
+}
+
+double pca::CPriceCalculatorStaticUser::GetDesiredProdAmount(std::string sPerson, std::string sProductName)
+{
+	return m_oPriceCalculator.GetDesiredProdAmount(sPerson, sProductName);
+}
+
+

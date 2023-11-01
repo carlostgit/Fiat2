@@ -62,7 +62,11 @@ extern "C" PRICECALCULATORDLL_API double GetProductAmountFromDLL(std::string sPr
 typedef void(*fpGetOptionAmountFromDLL)();
 extern "C" PRICECALCULATORDLL_API double GetOptionAmountFromDLL(std::string sOptionName, std::string sPerson);
 
+typedef void(*fpPrintPricesEvolutionFromDLL)();
+extern "C" PRICECALCULATORDLL_API void PrintPricesEvolutionFromDLL();
 
+typedef void(*fpGetDesiredProdAmountFromDLL)();
+extern "C" PRICECALCULATORDLL_API double GetDesiredProdAmountFromDLL(std::string sPerson, pca::CProduct * pProduct);
 
 //void CreateEmptyMarket();
 //void CreateProduct(std::string sProductName);

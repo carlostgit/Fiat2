@@ -237,7 +237,7 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidict(std::map<COption
 
 void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::COption* pOpt, double dPrefAt0)
 {
-	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(pOpt))
+	if (m_Option_SatisfactionCurve.end() != m_Option_SatisfactionCurve.find(pOpt))
 	{
 		auto pSatisfCurve = m_Option_SatisfactionCurve.at(pOpt).get();
 		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
@@ -246,7 +246,7 @@ void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::COption* pOpt, double d
 
 void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::COption* pOpt, double dMaxSatisf)
 {
-	if (m_Option_SatisfactionCurve.end() == m_Option_SatisfactionCurve.find(pOpt))
+	if (m_Option_SatisfactionCurve.end() != m_Option_SatisfactionCurve.find(pOpt))
 	{
 		auto pSatisfCurve = m_Option_SatisfactionCurve.at(pOpt).get();
 		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);
@@ -255,7 +255,7 @@ void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::COption* pOpt, double d
 
 void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::CComplCombo* pCompComb, double dPrefAt0)
 {
-	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
+	if (m_mapComplementaryCombo_pSatisfCurve.end() != m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
 	{
 		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(pCompComb).get();
 		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
@@ -264,7 +264,7 @@ void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::CComplCombo* pCompComb,
 
 void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::CComplCombo* pCompComb, double dMaxSatisf)
 {
-	if (m_mapComplementaryCombo_pSatisfCurve.end() == m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
+	if (m_mapComplementaryCombo_pSatisfCurve.end() != m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
 	{
 		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(pCompComb).get();
 		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);
@@ -273,7 +273,7 @@ void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::CComplCombo* pCompComb,
 
 void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::CSupplCombo* pSuppComb, double dPrefAt0)
 {
-	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() != m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
 	{
 		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(pSuppComb).get();
 		pSatisfCurve->SetPreferenceAt0(dPrefAt0);
@@ -282,7 +282,7 @@ void pca::CSatisfactionCalculator::SetPreferenceAt0(pca::CSupplCombo* pSuppComb,
 
 void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::CSupplCombo* pSuppComb, double dMaxSatisf)
 {
-	if (m_mapSupplementaryCombo_pSatisfCurve.end() == m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() != m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
 	{
 		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(pSuppComb).get();
 		pSatisfCurve->SetMaximumSatisf(dMaxSatisf);

@@ -7,6 +7,7 @@
 #include "SatisfactionCurve.h"
 #include "SatisfactionCalculator.h"
 #include "TradeCalculator.h"
+#include "Utils.h"
 
 
 
@@ -59,7 +60,7 @@ void pca::CPriceCalculator::SetCurrency(std::string sProductName)
 
     if (pPricesRef && pProductRef)
     {
-        if (pPricesRef->IsCurrency(pProductRef))
+        if (false == pPricesRef->IsCurrency(pProductRef))
         {
             pPricesRef->SetCurrency(pProductRef);
         }
@@ -199,6 +200,25 @@ double pca::CPriceCalculator::GetOptionAmount(std::string sOptionName, std::stri
     if (pPersonRef && pOptionRef)
     {
         return pPersonRef->GetCurrentOptAmount(pOptionRef);
+    }
+
+    return 0.0;
+
+}
+
+void pca::CPriceCalculator::PrintPricesEvolution()
+{
+    CUtils::PrintPricesEvolution(m_upMarket.get());
+}
+
+double pca::CPriceCalculator::GetDesiredProdAmount(std::string sPerson, std::string sProductName)
+{
+    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+    CProduct* pProductRef = CReality::GetProduct(sProductName);
+
+    if (pPersonRef)
+    {
+        return pPersonRef->GetDesiredProdAmount(pProductRef);
     }
 
     return 0.0;
