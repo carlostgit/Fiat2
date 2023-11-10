@@ -112,3 +112,13 @@ double GetDesiredProdAmountFromDLL(std::string sPerson, pca::CProduct* pProduct)
 	return GetDesiredProdAmountFromDLL(sPerson, pProduct);
 }
 
+void PrintPersonOptionAdjustmentToFileFromDLL(std::string sPerson)
+{
+	PrintPersonOptionAdjustmentToFile(sPerson)
+}
+
+void PrintPersonOptionAdjustmentToFileFromDLL()
+{
+	PrintPersonOptionAdjustmentToFile();
+}
+

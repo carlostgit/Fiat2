@@ -105,7 +105,7 @@ void pca::CPerson::AdjustBestCombinationForPerson()
 //    adjust_best_combination_for_person_with_max_num_steps(person_arg, budget_step, max_num_steps)
 
 
-std::map<pca::COption*, double> pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumStepsArg)
+void pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumStepsArg)
 {
     //CPrices* pPrices = m_pMarketRef->GetPrices();
     //pPrices->CalculateCombidictPrice(m_mapOwnedProd_Amount);
@@ -113,7 +113,15 @@ std::map<pca::COption*, double> pca::CPerson::AdjustBestCombinationForPersonWith
 
     this->m_mapCurrentOpt_Amount = mapBestCombidict;
 
-    return mapBestCombidict;
+    //Register bestcombi
+    m_vLogBestOpt_Amount.push_back(mapBestCombidict);
+    
+    //return mapBestCombidict;
+}
+
+std::map<pca::COption*, double> pca::CPerson::CalculateImprovedCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStepArg, int nMaxNumStepsArg)
+{
+    return m_upTradeCalculator->ImproveCombination(mapOwnedCombidictArg, mapCurrentBestCombidictArg, dBudgetStepArg, nMaxNumStepsArg);
 }
 
 std::map<pca::CProduct*, double> pca::CPerson::GetSavedProductsFromOptions(const std::map<pca::COption*, double> & mapOptionAmount)
@@ -174,15 +182,15 @@ void pca::CPerson::CalculateTradeWithCurrentBestCombination()
 
     //}
 
-    //m_mapCurrentTradProd_Amount
-    std::cout << "m_mapCurrentTradProd_Amount of person: " << this->GetName() << std::endl;
-    for (auto& pCurrent_CurrentTradProd : m_mapCurrentTradProd_Amount)
-    {
-        pca::CProduct* pProduct = pCurrent_CurrentTradProd.first;
-        double dCurrentTradeProd = pCurrent_CurrentTradProd.second;
-        std::cout << "--" << pProduct->GetName() << ": dCurrentTradeProd: " << dCurrentTradeProd << std::endl;
+    ////m_mapCurrentTradProd_Amount
+    //std::cout << "m_mapCurrentTradProd_Amount of person: " << this->GetName() << std::endl;
+    //for (auto& pCurrent_CurrentTradProd : m_mapCurrentTradProd_Amount)
+    //{
+    //    pca::CProduct* pProduct = pCurrent_CurrentTradProd.first;
+    //    double dCurrentTradeProd = pCurrent_CurrentTradProd.second;
+    //    std::cout << "--" << pProduct->GetName() << ": dCurrentTradeProd: " << dCurrentTradeProd << std::endl;
 
-    }
+    //}
 
 }
 

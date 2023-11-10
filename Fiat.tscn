@@ -45,9 +45,6 @@ margin_top = 48.0
 margin_right = 875.0
 margin_bottom = 72.0
 text = "Give gov money"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="ConsumeButton" type="Button" parent="."]
 margin_left = 680.0
@@ -383,9 +380,6 @@ margin_left = -56.0
 margin_right = -6.0
 margin_bottom = 14.0
 text = "Tax rate"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Factory" parent="Government" instance=ExtResource( 13 )]
 position = Vector2( -64, 120 )

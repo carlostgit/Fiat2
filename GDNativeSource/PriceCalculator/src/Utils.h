@@ -23,6 +23,9 @@ namespace pca
         static void PrintPrices(CPrices* pPrices);
         static void PrintPricesEvolution(CMarket* pMarket);
 
+        static void PrintPersonsOptionAdjustmentToFile(CMarket* pMarket);
+        static void PrintPersonOptionAdjustmentToFile(CPerson* pPerson);
+
         static std::map<pca::CProduct*, double> CalculateProductdictFromOptiondict(std::map<COption*, double> mapOptiondictArg);
 
         static std::map<pca::CProduct*, double> SumProducts(const std::map<pca::CProduct*, double> & mapProductAmount_1, const std::map<pca::CProduct*, double> & mapProductAmount_2);

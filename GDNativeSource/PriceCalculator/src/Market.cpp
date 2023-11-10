@@ -9,10 +9,10 @@
 #include <iostream>
 #include <iomanip>
 
-const long c_paramMaxStepsCalculatingNewPrices = 100;
+const long c_paramMaxStepsCalculatingNewPrices = 200;
 const double c_paramPricePrecission = 0.01;
 const double c_paramInitialPriceChangeStep = 0.1;
-const double c_paramProductStepForBestCombidictCalc= 0.1;
+//const double c_paramProductStepForBestCombidictCalc= 0.1;
 
 pca::CMarket::CMarket()
 {
@@ -141,8 +141,8 @@ void pca::CMarket::CalculateNewPrices()
 bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
 {
     bool bPriceChanged = false;
-    double dBudgetStep = 0.01;
-    long nMaxNumSteps = 5;
+    double dBudgetStep = 0.1;
+    long nMaxNumSteps = 1000;
     AdjustBestCombinations(dBudgetStep, nMaxNumSteps);
     CalculateTradesWithCurrentBestCombinations();
     CalculateSumOfTrade();
@@ -239,3 +239,12 @@ pca::CPricesLogInfo* pca::CMarket::GetPricesLogInfoRef()
     return m_upPricesLogInfo.get();
 }
 
+std::vector<pca::CPerson*> pca::CMarket::GetPersons()
+{
+    std::vector<pca::CPerson*> vPersons;
+    for (auto& upPerson : m_vPersons)
+    {
+        vPersons.push_back(upPerson.get());
+    }
+    return vPersons;
+}

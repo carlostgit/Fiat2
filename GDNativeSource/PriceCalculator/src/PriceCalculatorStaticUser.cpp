@@ -93,4 +93,13 @@ double pca::CPriceCalculatorStaticUser::GetDesiredProdAmount(std::string sPerson
 	return m_oPriceCalculator.GetDesiredProdAmount(sPerson, sProductName);
 }
 
+void pca::CPriceCalculatorStaticUser::PrintPersonOptionAdjustmentToFile(std::string sPerson)
+{
+	m_oPriceCalculator.PrintPersonOptionAdjustmentToFile(sPerson);
+}
+
+void pca::CPriceCalculatorStaticUser::PrintPersonOptionAdjustmentToFile()
+{
+	m_oPriceCalculator.PrintPersonsOptionAdjustmentToFile();
+}
 

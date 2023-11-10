@@ -1,6 +1,8 @@
 #include "Utils.h"
 #include <iostream>
 #include <iomanip>
+#include <fstream>
+
 #include "Person.h"
 #include "Option.h"
 #include "Product.h"
@@ -8,6 +10,7 @@
 #include "Prices.h"
 #include "Market.h"
 #include "PricesLogInfo.h"
+#include "SatisfactionCalculator.h"
 
 
 pca::CUtils::CUtils()
@@ -20,6 +23,210 @@ pca::CUtils::~CUtils()
 {
     //dtor
 }
+
+void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
+{
+    std::string fileName = "log_market_adjustment.csv";
+    // Open a CSV file for writing
+    std::ofstream csvFile(fileName);
+
+    // Check if the file is open
+    if (!csvFile.is_open()) {
+        std::cerr << "Failed to create the CSV file." << std::endl;
+        return;
+    }
+
+    auto vOptions = CReality::GetOptions();
+
+    //todo: meter aquí los titulos de los precios de productos
+    auto vProducts = CReality::GetProducts();
+
+    
+    csvFile << "PriceChangeStep"; // Writing header row
+    csvFile << ",";
+
+    for (auto & pProduct:vProducts)
+    {
+        std::string sProductName = pProduct->GetName();
+        csvFile << "Price_" + sProductName; // Writing header row
+        csvFile << ",";
+    }
+    
+    auto vPersons = pMarket->GetPersons();
+
+    for (int i1=0;i1<vPersons.size();i1++)
+    //for (auto& pPerson : vPersons)
+    {
+        auto pPerson = vPersons[i1];
+
+        auto sPersonName = pPerson->GetName();
+
+        csvFile << "Satisfaction_" + sPersonName; // Writing header row
+        csvFile << ",";
+
+        for (int i = 0;i < vOptions.size();i++)
+        {
+            std::string optionName = vOptions[i]->GetName();
+
+            csvFile << optionName << "_" << sPersonName; // Writing header row
+    
+            csvFile << ",";
+            
+        }
+    }
+
+    csvFile << std::endl;
+
+    long nNumLog = 0;
+    if (false==vPersons.empty())
+        nNumLog = vPersons.front()->GetLogOfBestCombinations().size();
+
+    std::map<CProduct*,std::vector<double> > mapProd_vAmount = pMarket->GetPricesLogInfoRef()->GetProductAllPrices();
+
+    std::vector<double> vPriceChangeStepVector = pMarket->GetPricesLogInfoRef()->GetAllPriceChangeStepsVector();
+
+    
+
+    long nNumPrices = 0;
+    if (false == mapProd_vAmount.empty())
+        nNumPrices = mapProd_vAmount.begin()->second.size();
+
+    for (int i1 = 0;i1 < nNumLog;i1++)
+    {
+        double dPriceChangeStep = 0.0;
+        if (i1 < vPriceChangeStepVector.size())
+            dPriceChangeStep = vPriceChangeStepVector.at(i1);
+
+        csvFile << dPriceChangeStep; // Writing header row        
+        csvFile << ",";
+
+        for (auto& pProduct : vProducts)
+        {
+            double dProductAmount = 0;
+            if(mapProd_vAmount.end()==mapProd_vAmount.find(pProduct))
+            {
+                ;
+            }
+            else
+            {
+                std::vector<double> vProductAmount = mapProd_vAmount.at(pProduct);
+                if (i1 < vProductAmount.size())
+                    dProductAmount = vProductAmount.at(i1);
+            }
+
+            csvFile << dProductAmount; // Writing header row        
+            csvFile << ",";                     
+        }
+
+        for (auto& pPerson : vPersons)
+        {
+            auto sPersonName = pPerson->GetName();
+
+            auto vmapOptionsLog = pPerson->GetLogOfBestCombinations();
+
+            if (i1 >= vmapOptionsLog.size())
+                continue;
+
+            std::map<COption*,double> mapOption_Amount = vmapOptionsLog[i1];
+            //for (auto& mapOption_Amount : vmapOptionsLog)
+            //{
+            double dSatisfaction = pPerson->GetSatisfactionCalculatorRef()->CalculateSatisfOfCombidict(mapOption_Amount);
+            csvFile << dSatisfaction; // Writing header row        
+            csvFile << ",";
+
+            for (int i = 0;i < vOptions.size();i++)
+            {
+                auto pOption = vOptions[i];
+                std::string optionName = pOption->GetName();
+
+                if (mapOption_Amount.end() == mapOption_Amount.find(pOption))
+                    continue;
+
+                double dAmount = mapOption_Amount.at(pOption);
+
+
+                csvFile << dAmount; // Writing header row
+
+                
+                csvFile << ",";
+                                
+            }
+            //}
+        }
+
+        csvFile << std::endl;
+    }
+
+    csvFile.close();
+}
+
+void pca::CUtils::PrintPersonOptionAdjustmentToFile(CPerson* pPerson)
+{
+
+    auto personName = pPerson->GetName();
+
+    std::string fileName = "log_option_adjustment_" + personName + ".csv";
+    // Open a CSV file for writing
+    std::ofstream csvFile(fileName);
+
+    // Check if the file is open
+    if (!csvFile.is_open()) {
+        std::cerr << "Failed to create the CSV file." << std::endl;
+        return;
+    }
+
+    //
+
+    auto vOptions = CReality::GetOptions();
+
+    csvFile << "Satisfaction"; // Writing header row
+    csvFile << ",";
+
+    for (int i=0;i< vOptions.size();i++)
+    {
+        std::string optionName = vOptions[i]->GetName();
+
+        csvFile << optionName; // Writing header row
+
+        
+        csvFile << ",";
+        
+    }
+
+    csvFile << std::endl;
+
+    auto vmapOptionsLog = pPerson->GetLogOfBestCombinations();
+
+    for (auto& mapOption_Amount : vmapOptionsLog)
+    {
+        double dSatisfaction = pPerson->GetSatisfactionCalculatorRef()->CalculateSatisfOfCombidict(mapOption_Amount);
+        csvFile << dSatisfaction; // Writing header row        
+        csvFile << ",";
+
+        for (int i = 0;i < vOptions.size();i++)
+        {
+            auto pOption = vOptions[i];
+            std::string optionName = pOption->GetName();
+
+            if (mapOption_Amount.end() == mapOption_Amount.find(pOption))
+                continue;
+
+            double dAmount = mapOption_Amount.at(pOption);
+
+
+            csvFile << dAmount; // Writing header row
+
+            
+            csvFile << ",";
+            
+
+        }
+        csvFile << std::endl;
+    }
+
+    csvFile.close();
+}
+
 
 void pca::CUtils::PrintOptions(std::map<pca::COption*, double> mapOpt_Amount)
 {

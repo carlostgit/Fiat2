@@ -100,6 +100,41 @@ long pca::CProductPriceAdjustmentInfo::GetNumPriceBottoms()
     return m_vNumLastPriceBottoms.back();
 }
 
+//func _calculate_num_price_tops()->int:
+//
+//#		Estaría bien registrar esto, para poder verlo gráficamente
+//var num_max_price_tops : int = 0
+//var last_price : float = 0.0
+//var last_price_going_up : bool = true
+//var count : int = 0
+//for price in _last_prices :
+//if price > last_price:
+//last_price_going_up = true;
+//if price < last_price:
+//if last_price_going_up and count>1:
+//num_max_price_tops += 1
+//last_price_going_up = false;
+//last_price = price
+//count += 1
+//return num_max_price_tops
+//
+//
+//func _calculate_num_price_bottoms()->int:
+//var num_min_price_bottoms : int = 0
+//var last_price : float = 0.0
+//var last_price_going_up : bool = true
+//var count : int = 0
+//for price in _last_prices :
+//if price > last_price:
+//if false == last_price_going_up and count > 1:
+//num_min_price_bottoms += 1
+//last_price_going_up = true;
+//if price < last_price:
+//last_price_going_up = false;
+//last_price = price
+//count += 1
+//return num_min_price_bottoms
+
 long pca::CProductPriceAdjustmentInfo::CalculateNumPriceTops()
 {
     long nNumMaxPriceTops = 0;

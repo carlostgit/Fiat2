@@ -44,6 +44,8 @@ namespace pca
         static void PrintPricesEvolution();
 
         static double GetDesiredProdAmount(std::string sPerson, std::string sProductName);
+        static void PrintPersonOptionAdjustmentToFile(std::string sPerson);
+        static void PrintPersonOptionAdjustmentToFile();
 
     protected:
 

@@ -224,3 +224,20 @@ double pca::CPriceCalculator::GetDesiredProdAmount(std::string sPerson, std::str
     return 0.0;
 
 }
+
+void pca::CPriceCalculator::PrintPersonOptionAdjustmentToFile(std::string sPerson)
+{
+    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+
+    if (pPersonRef)
+    {
+        pca::CUtils::PrintPersonOptionAdjustmentToFile(pPersonRef);        
+    }
+}
+
+void pca::CPriceCalculator::PrintPersonsOptionAdjustmentToFile()
+{
+    if (m_upMarket)
+        pca::CUtils::PrintPersonsOptionAdjustmentToFile(m_upMarket.get());
+}
+

@@ -5,6 +5,7 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace pca
 {
@@ -33,7 +34,7 @@ namespace pca
         std::map<pca::CProduct*, double> GetConsumedProductsFromOptions(const std::map<pca::COption*, double>& mapOptionAmount);
 
         void AdjustBestCombinationForPerson();
-        std::map<pca::COption*, double> AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumSteps);
+        void AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumSteps);
         //func adjust_best_combination_for_person(person_arg:String) :
         //    var budget_step = 0.01
         //    var max_num_steps = 5
@@ -73,6 +74,13 @@ namespace pca
 
         pca::CSatisfactionCalculator* GetSatisfactionCalculatorRef();
 
+        std::map<pca::COption*, double> CalculateImprovedCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps);
+
+        std::vector < std::map<pca::COption*, double>> GetLogOfBestCombinations() {
+            return m_vLogBestOpt_Amount;
+        }
+
+
     protected:
 
         void InitDefaultAmounts();
@@ -91,6 +99,8 @@ namespace pca
         //CPrices* m_pPricesRef = nullptr;
         //CMarket* m_pMarketRef = nullptr;
         std::unique_ptr<CTradeCalculator> m_upTradeCalculator;
+
+        std::vector < std::map<pca::COption*, double>> m_vLogBestOpt_Amount;
 
     };
 }

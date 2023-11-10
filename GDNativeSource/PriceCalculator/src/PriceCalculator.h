@@ -45,7 +45,8 @@ namespace pca
         void PrintPricesEvolution();
 
         double GetDesiredProdAmount(std::string sPerson, std::string sProductName);
-
+        void PrintPersonOptionAdjustmentToFile(std::string sPerson);
+        void PrintPersonsOptionAdjustmentToFile();
         /* 
         Idea de cómo se podría generar un escenario simple
         CreateEmptyMarket();
