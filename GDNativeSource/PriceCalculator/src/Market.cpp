@@ -9,9 +9,18 @@
 #include <iostream>
 #include <iomanip>
 
+//Change prices algorithm params
 const long c_paramMaxStepsCalculatingNewPrices = 200;
 const double c_paramPricePrecission = 0.01;
-const double c_paramInitialPriceChangeStep = 0.1;
+const double c_paramInitialPriceChangeStep = 0.2;
+//
+
+//Adjusting best combination sub-algorithm params
+double c_paramTargetBudgetStepAdjustingBestCombination = 0.1;
+double c_paramInitBudgetStepAdjustingBestCombination = c_paramTargetBudgetStepAdjustingBestCombination * 8;
+long c_paramMaxNumStepsAdjustingBestCombination = 100;
+//
+
 //const double c_paramProductStepForBestCombidictCalc= 0.1;
 
 pca::CMarket::CMarket()
@@ -52,11 +61,11 @@ pca::CPerson* pca::CMarket::GetPersonRef(std::string sName)
     return nullptr;
 }
 
-void pca::CMarket::AdjustBestCombinations(double dBudgetStep, int nMaxNumSteps)
+void pca::CMarket::AdjustBestCombinations(double dInitBudgetStep, double dTargetBudgetStep, int nMaxNumSteps)
 {
     for (auto& personRef : m_vPersons)
     {
-        personRef->AdjustBestCombinationForPersonWithMaxNumSteps(dBudgetStep, nMaxNumSteps);
+        personRef->AdjustBestCombinationForPersonWithMaxNumSteps(dInitBudgetStep, dTargetBudgetStep, nMaxNumSteps);
     }
 }
 
@@ -96,6 +105,10 @@ void pca::CMarket::CalculateTradesWithCurrentBestCombinations()
 
 void pca::CMarket::CalculateSumOfTrade()
 {
+    //Hay que resetear m_mapSumOfTrade
+    m_mapSumOfTrade.clear();
+    //
+
     for (auto& upPerson : m_vPersons)
     {
         std::map<pca::CProduct*, double> mapTrade = upPerson->GetTrade();
@@ -141,9 +154,12 @@ void pca::CMarket::CalculateNewPrices()
 bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
 {
     bool bPriceChanged = false;
-    double dBudgetStep = 0.1;
-    long nMaxNumSteps = 1000;
-    AdjustBestCombinations(dBudgetStep, nMaxNumSteps);
+    
+    double dTargetBudgetStep = c_paramTargetBudgetStepAdjustingBestCombination;
+    double dInitBudgetStep = c_paramInitBudgetStepAdjustingBestCombination;
+    long nMaxNumSteps = c_paramMaxNumStepsAdjustingBestCombination;
+
+    AdjustBestCombinations(dInitBudgetStep, dTargetBudgetStep, nMaxNumSteps);
     CalculateTradesWithCurrentBestCombinations();
     CalculateSumOfTrade();
     std::map<CProduct*,double> mapNewPricesIncrements = CalculateNewPricesIncrement(dParamPriceChangeStepArg);

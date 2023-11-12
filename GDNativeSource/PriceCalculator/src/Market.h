@@ -48,7 +48,7 @@ namespace pca
         }
 
         bool ChangePrices(double dParamPriceChangeStepArg);
-        void AdjustBestCombinations(double dBudgetStep, int nMaxNumSteps);
+        void AdjustBestCombinations(double dInitBudgetStep, double dTargetBudgetStep, int nMaxNumSteps);
         void CalculateSumOfTrade();
         void CalculateTradesWithCurrentBestCombinations();
 

@@ -10,6 +10,10 @@
 #include "Option.h"
 #include <iostream>
 
+//const double c_paramTargetBudgetStep = 0.01;
+//const double c_paramInitBudgetStep = c_paramTargetBudgetStep * 8.0;
+//const int c_paramMaxNumStepsPerBudgetStep = 10;
+
 
 long pca::CPerson::ms_nId = 0;
 
@@ -93,23 +97,25 @@ void pca::CPerson::SubtractProducts(std::map<pca::CProduct*, double> mapProductA
     m_mapOwnedProd_Amount = CUtils::SubtractProducts(m_mapOwnedProd_Amount, mapProductAmount);
 }
 
-void pca::CPerson::AdjustBestCombinationForPerson()
-{
-    double dBudgetStep = 0.01;
-    int nMaxNumSteps = 5;
-    AdjustBestCombinationForPersonWithMaxNumSteps(dBudgetStep,nMaxNumSteps);
-}
+//void pca::CPerson::AdjustBestCombinationForPerson()
+//{
+//    double dTargetBudgetStep = c_paramTargetBudgetStep;
+//    double dInitBudgetStep = c_paramInitBudgetStep;
+//    int nMaxNumStepsPerBudgetStep = c_paramMaxNumStepsPerBudgetStep;
+//
+//    AdjustBestCombinationForPersonWithMaxNumSteps(dInitBudgetStep,dTargetBudgetStep, nMaxNumStepsPerBudgetStep);
+//}
 //func adjust_best_combination_for_person(person_arg:String) :
 //    var budget_step = 0.01
 //    var max_num_steps = 5
 //    adjust_best_combination_for_person_with_max_num_steps(person_arg, budget_step, max_num_steps)
 
 
-void pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumStepsArg)
+void pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dInitBudgetStepArg,double dTargetBudgetStepArg, int nMaxNumStepsArg)
 {
     //CPrices* pPrices = m_pMarketRef->GetPrices();
     //pPrices->CalculateCombidictPrice(m_mapOwnedProd_Amount);
-    std::map<pca::COption*, double> mapBestCombidict = m_upTradeCalculator->ImproveCombination(m_mapOwnedProd_Amount, m_mapCurrentOpt_Amount, dBudgetStepArg, nMaxNumStepsArg);
+    std::map<pca::COption*, double> mapBestCombidict = m_upTradeCalculator->ImproveCombination(m_mapOwnedProd_Amount, m_mapCurrentOpt_Amount, dInitBudgetStepArg, dTargetBudgetStepArg, nMaxNumStepsArg);
 
     this->m_mapCurrentOpt_Amount = mapBestCombidict;
 
@@ -119,10 +125,10 @@ void pca::CPerson::AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetS
     //return mapBestCombidict;
 }
 
-std::map<pca::COption*, double> pca::CPerson::CalculateImprovedCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStepArg, int nMaxNumStepsArg)
-{
-    return m_upTradeCalculator->ImproveCombination(mapOwnedCombidictArg, mapCurrentBestCombidictArg, dBudgetStepArg, nMaxNumStepsArg);
-}
+//std::map<pca::COption*, double> pca::CPerson::CalculateImprovedCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStepArg, int nMaxNumStepsArg)
+//{
+//    return m_upTradeCalculator->ImproveCombination(mapOwnedCombidictArg, mapCurrentBestCombidictArg, dBudgetStepArg, nMaxNumStepsArg);
+//}
 
 std::map<pca::CProduct*, double> pca::CPerson::GetSavedProductsFromOptions(const std::map<pca::COption*, double> & mapOptionAmount)
 {

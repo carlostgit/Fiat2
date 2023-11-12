@@ -33,8 +33,8 @@ namespace pca
         std::map<pca::CProduct*, double> GetSavedProductsFromOptions(const std::map<pca::COption*, double> & mapOptionAmount);
         std::map<pca::CProduct*, double> GetConsumedProductsFromOptions(const std::map<pca::COption*, double>& mapOptionAmount);
 
-        void AdjustBestCombinationForPerson();
-        void AdjustBestCombinationForPersonWithMaxNumSteps(double dBudgetStepArg, int nMaxNumSteps);
+        //void AdjustBestCombinationForPerson();        
+        void AdjustBestCombinationForPersonWithMaxNumSteps(double dInitBudgetStepArg, double dTargetBudgetStepArg, int nMaxNumStepsArg);
         //func adjust_best_combination_for_person(person_arg:String) :
         //    var budget_step = 0.01
         //    var max_num_steps = 5
@@ -74,7 +74,7 @@ namespace pca
 
         pca::CSatisfactionCalculator* GetSatisfactionCalculatorRef();
 
-        std::map<pca::COption*, double> CalculateImprovedCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps);
+        //std::map<pca::COption*, double> CalculateImprovedCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps);
 
         std::vector < std::map<pca::COption*, double>> GetLogOfBestCombinations() {
             return m_vLogBestOpt_Amount;

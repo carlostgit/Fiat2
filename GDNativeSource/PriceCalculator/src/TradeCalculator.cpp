@@ -233,12 +233,12 @@ std::map<pca::COption*, double> pca::CTradeCalculator::AdjustBestCombidictChangi
     return mapCurrentBestCombidict;
 }
 
-std::map<pca::COption*, double> pca::CTradeCalculator::ImproveCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dBudgetStep, int nMaxNumSteps)
+std::map<pca::COption*, double> pca::CTradeCalculator::ImproveCombination(std::map<CProduct*, double> mapOwnedCombidictArg, std::map<COption*, double> mapCurrentBestCombidictArg, double dInitBudgetStep, double dTargetBudgetStep, int nMaxNumSteps)
 {
     double dBudget = m_pPricesRef->CalculateCombidictPrice(mapOwnedCombidictArg);
-    double dInitBudgetStep = dBudget * 8.0;
+    //double dInitBudgetStep = dBudget * 8.0;
     
-    std::map<pca::COption*, double> mapBestCombidict = AdjustBestCombidictChangingStep(dBudget, mapCurrentBestCombidictArg, dInitBudgetStep, dBudgetStep, nMaxNumSteps);
+    std::map<pca::COption*, double> mapBestCombidict = AdjustBestCombidictChangingStep(dBudget, mapCurrentBestCombidictArg, dInitBudgetStep, dTargetBudgetStep, nMaxNumSteps);
 
     return mapBestCombidict;
 }
