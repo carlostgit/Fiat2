@@ -9,6 +9,8 @@
 #include "TradeCalculator.h"
 #include "Utils.h"
 
+#include <iostream>
+
 
 
 pca::CPriceCalculator::CPriceCalculator()
@@ -21,11 +23,14 @@ pca::CPriceCalculator::CPriceCalculator()
     //std::unique_ptr<CPerson> upNewPerson(new CPerson());
     //m_vpPersons.push_back(std::move(upNewPerson));
     //m_vpPersons.push_back(std::unique_ptr<CPerson>(new CPerson()));
+
+    std::cout << "Price Calculator constructor." << std::endl;
 }
 
 pca::CPriceCalculator::~CPriceCalculator()
 {
     //dtor
+    std::cout << "Price Calculator destructor." << std::endl;
 }
 
 int pca::CPriceCalculator::GetTestPrice()

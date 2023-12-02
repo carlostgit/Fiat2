@@ -10,6 +10,9 @@ pca::CPricesLogInfo::CPricesLogInfo(pca::CPrices* pPricesRef)
 {
 	m_pPricesRef = pPricesRef;
 
+	std::cout << "Initializing CPricesLogInfo with CReality::GetProducts" << std::endl;
+	std::cout << "ATENCION! CREO QUE ESTO ES UN BUG. Cada vez que se cambian los Products en CReality habría que actualizar esto" << std::endl;	
+
 	for (auto& pProduct : CReality::GetProducts())
 	{
 		std::unique_ptr<CProductPriceAdjustmentInfo> upProductPriceAdjustmentInfo(new CProductPriceAdjustmentInfo());
@@ -37,6 +40,7 @@ void pca::CPricesLogInfo::ResetLastPrices()
 		pProductPriceAdjustmentInfo->ResetLastPrices();
 	}
 }
+
 
 void pca::CPricesLogInfo::RegisterPrices()
 {
@@ -113,6 +117,7 @@ std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductAl
 	}
 	return mapProduct_vPrices;
 }
+
 
 std::vector<double> pca::CPricesLogInfo::GetAllPriceChangeStepsVector()
 {

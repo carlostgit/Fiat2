@@ -9,7 +9,7 @@ namespace pca
 {
     class CProduct;
     class CProductPriceAdjustmentInfo;
-    class CPrices;
+    class CPrices;    
 
     class CPricesLogInfo
     {
@@ -22,7 +22,7 @@ namespace pca
         void RegisterPrices();
         bool ArePricesEvolving();
         std::map<pca::CProduct*, std::vector<double> > GetProductPrices();
-        std::map<pca::CProduct*, std::vector<double> > GetProductAllPrices();
+        std::map<pca::CProduct*, std::vector<double> > GetProductAllPrices();        
         std::vector<double> GetAllPriceChangeStepsVector();
         std::map<pca::CProduct*, std::vector<long> > GetProductPriceTops();
         std::map<pca::CProduct*, std::vector<long> > GetProductPriceBottoms();

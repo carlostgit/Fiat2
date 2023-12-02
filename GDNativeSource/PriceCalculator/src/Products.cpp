@@ -3,13 +3,21 @@
 //#include "Product.h"
 #include <string>
 
+#include <iostream>
+
+pca::CProducts::CProducts()
+{
+	std::cout << "CProducts constructor" << std::endl;
+}
+
 pca::CProducts::~CProducts()
 {
-
+	std::cout << "CProducts destructor" << std::endl;
 }
 
 pca::CProducts::CProducts(std::initializer_list< std::string> productNameListInit)
 {
+	std::cout << "CProducts constructor with initializer_list" << std::endl;
 	for (auto& name : productNameListInit)
 	{
 		std::unique_ptr<pca::CProduct> upProduct(new pca::CProduct(name));

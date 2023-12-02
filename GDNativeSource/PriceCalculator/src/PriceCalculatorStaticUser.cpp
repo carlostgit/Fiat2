@@ -1,5 +1,6 @@
 
 #include "PriceCalculatorStaticUser.h"
+#include <iostream>
 
 pca::CPriceCalculator pca::CPriceCalculatorStaticUser::m_oPriceCalculator;
 
@@ -10,6 +11,7 @@ pca::CPriceCalculatorStaticUser::~CPriceCalculatorStaticUser()
 
 void pca::CPriceCalculatorStaticUser::CreateEmptyMarket()
 {
+	std::cout << "CreateEmptyMarket path: " << __FILE__ << std::endl;
 	m_oPriceCalculator.CreateEmptyMarket();
 }
 
@@ -101,5 +103,10 @@ void pca::CPriceCalculatorStaticUser::PrintPersonOptionAdjustmentToFile(std::str
 void pca::CPriceCalculatorStaticUser::PrintPersonOptionAdjustmentToFile()
 {
 	m_oPriceCalculator.PrintPersonsOptionAdjustmentToFile();
+}
+
+pca::CPriceCalculator* pca::CPriceCalculatorStaticUser::GetPriceCalculatorPtr()
+{
+	return &m_oPriceCalculator;
 }
 

@@ -39,6 +39,10 @@ namespace pca
         CPricesLogInfo* GetPricesLogInfoRef();
 
         std::vector<pca::CPerson*> GetPersons();
+        std::map<pca::CProduct*, double> GetSumOfTrade() { 
+            return m_mapSumOfTrade; 
+        }
+        
 
     protected:
         std::map<pca::CProduct*, double> CalculateNewPricesIncrement(double dParamPriceChangeStepArg);

@@ -36,7 +36,7 @@ namespace pca
         double m_dMaxPrice = 0.0;
         
         std::vector<double> m_vLastPrices;
-        std::vector<double> m_vAllPrices;
+        std::vector<double> m_vAllPrices;        
 
         std::vector<long> m_vNumLastPriceTops;
         std::vector<long> m_vNumLastPriceBottoms;

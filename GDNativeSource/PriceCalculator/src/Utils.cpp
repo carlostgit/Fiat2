@@ -73,6 +73,16 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
             csvFile << ",";
             
         }
+
+        for (int i = 0;i < vProducts.size();i++)
+        {
+            std::string productName = vProducts[i]->GetName();
+
+            csvFile << productName << "_" << sPersonName; // Writing header row
+
+            csvFile << ",";
+
+        }
     }
 
     csvFile << std::endl;
@@ -81,15 +91,15 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
     if (false==vPersons.empty())
         nNumLog = vPersons.front()->GetLogOfBestCombinations().size();
 
-    std::map<CProduct*,std::vector<double> > mapProd_vAmount = pMarket->GetPricesLogInfoRef()->GetProductAllPrices();
+    std::map<CProduct*,std::vector<double> > mapProd_vPriceAmount = pMarket->GetPricesLogInfoRef()->GetProductAllPrices();    
 
     std::vector<double> vPriceChangeStepVector = pMarket->GetPricesLogInfoRef()->GetAllPriceChangeStepsVector();
 
     
 
     long nNumPrices = 0;
-    if (false == mapProd_vAmount.empty())
-        nNumPrices = mapProd_vAmount.begin()->second.size();
+    if (false == mapProd_vPriceAmount.empty())
+        nNumPrices = mapProd_vPriceAmount.begin()->second.size();
 
     for (int i1 = 0;i1 < nNumLog;i1++)
     {
@@ -103,13 +113,13 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
         for (auto& pProduct : vProducts)
         {
             double dProductAmount = 0;
-            if(mapProd_vAmount.end()==mapProd_vAmount.find(pProduct))
+            if(mapProd_vPriceAmount.end()== mapProd_vPriceAmount.find(pProduct))
             {
                 ;
             }
             else
             {
-                std::vector<double> vProductAmount = mapProd_vAmount.at(pProduct);
+                std::vector<double> vProductAmount = mapProd_vPriceAmount.at(pProduct);
                 if (i1 < vProductAmount.size())
                     dProductAmount = vProductAmount.at(i1);
             }
@@ -144,13 +154,33 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
 
                 double dAmount = mapOption_Amount.at(pOption);
 
-
-                csvFile << dAmount; // Writing header row
-
+                csvFile << dAmount;
                 
-                csvFile << ",";
-                                
+                csvFile << ",";                                
             }
+
+            auto vmapTradeLog = pPerson->GetLogOfTrade();
+
+            if (i1 >= vmapTradeLog.size())
+                continue;
+
+            std::map<CProduct*, double> mapProduct_Amount = vmapTradeLog[i1];
+
+            for (int i = 0;i < vProducts.size();i++)
+            {
+                auto pProduct = vProducts[i];
+                std::string productName = pProduct->GetName();
+
+                if (mapProduct_Amount.end() == mapProduct_Amount.find(pProduct))
+                    continue;
+
+                auto dAmount = mapProduct_Amount.at(pProduct);
+
+                csvFile << dAmount;
+
+                csvFile << ",";
+            }
+
             //}
         }
 

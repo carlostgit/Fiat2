@@ -178,6 +178,9 @@ void pca::CPerson::CalculateTradeWithCurrentBestCombination()
     mapCurrentDesiredProd_Amount = CUtils::CalculateProductdictFromOptiondict(m_mapCurrentOpt_Amount);
     m_mapCurrentTradProd_Amount = CUtils::SubtractProducts(mapCurrentDesiredProd_Amount, m_mapOwnedProd_Amount);
 
+    //Register bestcombi
+    m_vLogTrade_Amount.push_back(m_mapCurrentTradProd_Amount);
+
     ////mapCurrentDesiredProd_Amount
     //std::cout << "mapCurrentDesiredProd_Amount of person: " << this->GetName() << std::endl;
     //for (auto& pCurrent_DesiredProd : mapCurrentDesiredProd_Amount)

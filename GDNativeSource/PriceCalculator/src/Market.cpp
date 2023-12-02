@@ -129,6 +129,7 @@ void pca::CMarket::CalculateNewPrices()
         nCount += 1;
         bool bPriceChanged = ChangePrices(dParamPriceChangeStep);
         m_upPricesLogInfo->RegisterPrices();
+        
         bool bPricesEvolving = m_upPricesLogInfo->ArePricesEvolving();
         m_upPricesLogInfo->AddPriceChangeStepToVector(dParamPriceChangeStep);
         if (false == bPricesEvolving)

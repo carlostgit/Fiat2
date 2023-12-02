@@ -80,6 +80,9 @@ namespace pca
             return m_vLogBestOpt_Amount;
         }
 
+        std::vector < std::map<pca::CProduct*, double>> GetLogOfTrade() {
+            return m_vLogTrade_Amount;
+        }
 
     protected:
 
@@ -101,6 +104,7 @@ namespace pca
         std::unique_ptr<CTradeCalculator> m_upTradeCalculator;
 
         std::vector < std::map<pca::COption*, double>> m_vLogBestOpt_Amount;
+        std::vector < std::map<pca::CProduct*, double>> m_vLogTrade_Amount;
 
     };
 }

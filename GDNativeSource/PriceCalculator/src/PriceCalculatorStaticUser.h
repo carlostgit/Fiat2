@@ -47,6 +47,8 @@ namespace pca
         static void PrintPersonOptionAdjustmentToFile(std::string sPerson);
         static void PrintPersonOptionAdjustmentToFile();
 
+        pca::CPriceCalculator* GetPriceCalculatorPtr();
+
     protected:
 
     private:

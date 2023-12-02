@@ -16,7 +16,7 @@ namespace pca
     class CProducts
     {
     public:
-        CProducts() {}
+        CProducts();
         CProducts(std::initializer_list< std::string> productNameListInit);
         virtual ~CProducts();
 

@@ -53,6 +53,7 @@ std::vector<double> pca::CProductPriceAdjustmentInfo::GetAllPrices()
     return m_vAllPrices;
 }
 
+
 void pca::CProductPriceAdjustmentInfo::ResetLastPrices()
 {
     m_vLastPrices.clear();
