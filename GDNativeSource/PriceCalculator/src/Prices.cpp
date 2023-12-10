@@ -1,10 +1,12 @@
 #include "Prices.h"
 //#include "PriceCalculationDefines.h"
 #include "Reality.h"
+#include "Market.h"
 #include <assert.h>
 
-pca::CPrices::CPrices()
+pca::CPrices::CPrices(pca::CMarket* pMarketRef)
 {
+    m_pMarketRef = pMarketRef;
     //ctor
     //TODO:
     InitDefaultPrices();
@@ -19,12 +21,14 @@ void pca::CPrices::InitDefaultPrices()
 {
     //Inicializo los precios a 1.0
     //for (auto& nOption : c_setProducts)
-    for (auto& pProduct : pca::CReality::GetProducts())
+    //for (auto& pProduct : pca::CReality::GetProducts())
+    for (auto& pProduct : m_pMarketRef->GetProducts())
     {
         m_mapProd_Price[pProduct] = 1.0;
     }
 
-    for (auto& pProduct : pca::CReality::GetProducts())
+    //for (auto& pProduct : pca::CReality::GetProducts())
+    for (auto& pProduct : m_pMarketRef->GetProducts())
     {
         SetCurrency(pProduct);
         break;
@@ -90,7 +94,8 @@ double pca::CPrices::GetPriceOfProduct(CProduct* pProdRef)
 
 void pca::CPrices::SetPriceOfProduct(CProduct* pProduct, double dAmount)
 {
-    auto vProducts = pca::CReality::GetProducts();
+    //auto vProducts = pca::CReality::GetProducts();
+    auto vProducts = m_pMarketRef->GetProducts();
     if (vProducts.end() == std::find(vProducts.begin(), vProducts.end(), pProduct))
     {
         assert("" == "Este producto no existe!");

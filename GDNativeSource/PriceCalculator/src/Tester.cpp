@@ -48,11 +48,14 @@ int pca::CTester::Test_SatisfactionCalculator()
 {
     std::cout << "Starting Test_SatisfactionCalculator" << std::endl;
     {
-        CReality::Init();
-        CSatisfactionCalculator oSatCalculator;
+        //CReality::Init();
+        CReality oReality;
+        CMarket oMarket(&oReality);        
+
+        CSatisfactionCalculator oSatCalculator(&oMarket);
         std::map<COption*, double> map_nOption_dAmount;
         //for (auto& nOption : c_setOptions)
-        for (auto& nOption : pca::CReality::GetOptions())
+        for (auto& nOption : oReality.GetOptions())
         {
             map_nOption_dAmount[nOption] = 1.0;
         }
@@ -71,12 +74,15 @@ int pca::CTester::Test_SatisfactionCalculator()
     
     std::cout << "Starting test TradeCalculator" << std::endl;
     {
-        CPrices oPrices;
-        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator);
-        CTradeCalculator oTradeCalculator(std::move(upSatisfactionCalculator), &oPrices);
+        CReality oReality;
+        CMarket oMarket(&oReality);
+
+        CPrices oPrices(&oMarket);
+        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator(&oMarket));
+        CTradeCalculator oTradeCalculator(std::move(upSatisfactionCalculator), &oPrices,&oMarket);
         std::map<COption*, double> map_nOption_dAmount;
         //for (auto& nOption : c_setOptions)
-        for (auto& nOption : pca::CReality::GetOptions())
+        for (auto& nOption : oReality.GetOptions())
         {
             map_nOption_dAmount[nOption] = 1.0;
         }
@@ -93,35 +99,39 @@ int pca::CTester::Test_SatisfactionCalculator()
     std::cout << "TODO test Market" << std::endl;
     std::cout << "Starting test Market" << std::endl;
     {
-        CMarket oMarket;
+        CReality oReality;
+        CMarket oMarket(&oReality);
  
-        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator_1(new CSatisfactionCalculator());
-        std::unique_ptr<CTradeCalculator> upTradeCalculator_1(new CTradeCalculator(std::move(upSatisfactionCalculator_1), oMarket.GetPricesRef()));
-        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator_2(new CSatisfactionCalculator());
-        std::unique_ptr<CTradeCalculator> upTradeCalculator_2(new CTradeCalculator(std::move(upSatisfactionCalculator_2), oMarket.GetPricesRef()));
-        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator_3(new CSatisfactionCalculator());
-        std::unique_ptr<CTradeCalculator> upTradeCalculator_3(new CTradeCalculator(std::move(upSatisfactionCalculator_3), oMarket.GetPricesRef()));
+        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator_1(new CSatisfactionCalculator(&oMarket));
+        std::unique_ptr<CTradeCalculator> upTradeCalculator_1(new CTradeCalculator(std::move(upSatisfactionCalculator_1), oMarket.GetPricesRef(), &oMarket));
+        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator_2(new CSatisfactionCalculator(&oMarket));
+        std::unique_ptr<CTradeCalculator> upTradeCalculator_2(new CTradeCalculator(std::move(upSatisfactionCalculator_2), oMarket.GetPricesRef(), &oMarket));
+        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator_3(new CSatisfactionCalculator(&oMarket));
+        std::unique_ptr<CTradeCalculator> upTradeCalculator_3(new CTradeCalculator(std::move(upSatisfactionCalculator_3), oMarket.GetPricesRef(), &oMarket));
 
-        std::unique_ptr<CPerson> upPerson_1(new CPerson(std::move(upTradeCalculator_1)));
-        std::unique_ptr<CPerson> upPerson_2(new CPerson(std::move(upTradeCalculator_2)));
-        std::unique_ptr<CPerson> upPerson_3(new CPerson(std::move(upTradeCalculator_3)));
+        //std::unique_ptr<CPerson> upPerson_1(new CPerson("Person 1", &oMarket));
+        //std::unique_ptr<CPerson> upPerson_2(new CPerson("Person 2", &oMarket));
+        //std::unique_ptr<CPerson> upPerson_3(new CPerson("Person 3", &oMarket));
+        pca::CPerson* pPerson_1_Ref = oMarket.CreatePerson("Person 1");
+        pca::CPerson* pPerson_2_Ref = oMarket.CreatePerson("Person 2");
+        pca::CPerson* pPerson_3_Ref = oMarket.CreatePerson("Person 3");
 
         std::map<CProduct*, double> mapProd_Amm;
         //for (auto& nProd : c_setProducts)
-        for (auto& pProd : pca::CReality::GetProducts())
+        for (auto& pProd : oReality.GetProducts())
         {
-            upPerson_1->AddProductAmount(pProd, 1.0);
-            upPerson_2->AddProductAmount(pProd, 1.0);
-            upPerson_3->AddProductAmount(pProd, 1.0);
+            pPerson_1_Ref->AddProductAmount(pProd, 1.0);
+            pPerson_2_Ref->AddProductAmount(pProd, 1.0);
+            pPerson_3_Ref->AddProductAmount(pProd, 1.0);
         }
 
-        CPerson* pPerson_1_Ref = upPerson_1.get();
-        CPerson* pPerson_2_Ref = upPerson_2.get();
-        CPerson* pPerson_3_Ref = upPerson_3.get();
+        //CPerson* pPerson_1_Ref = upPerson_1.get();
+        //CPerson* pPerson_2_Ref = upPerson_2.get();
+        //CPerson* pPerson_3_Ref = upPerson_3.get();
 
-        oMarket.AddPerson(std::move(upPerson_1));
-        oMarket.AddPerson(std::move(upPerson_2));
-        oMarket.AddPerson(std::move(upPerson_3));
+        //oMarket.AddPerson(std::move(upPerson_1));
+        //oMarket.AddPerson(std::move(upPerson_2));
+        //oMarket.AddPerson(std::move(upPerson_3));
         
         std::cout << "Person options before CalculateNewPrices:" << std::endl;
         CUtils::PrintPersonOptions(pPerson_1_Ref);

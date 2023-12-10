@@ -9,20 +9,14 @@
 #include "TradeCalculator.h"
 #include "Utils.h"
 
+#include <assert.h>
+
 #include <iostream>
 
 
 
 pca::CPriceCalculator::CPriceCalculator()
 {
-    //ctor
-
-    //std::vector<CPerson> myVector;
-    //myVector.push_back(CPerson());
-
-    //std::unique_ptr<CPerson> upNewPerson(new CPerson());
-    //m_vpPersons.push_back(std::move(upNewPerson));
-    //m_vpPersons.push_back(std::unique_ptr<CPerson>(new CPerson()));
 
     std::cout << "Price Calculator constructor." << std::endl;
 }
@@ -38,30 +32,39 @@ int pca::CPriceCalculator::GetTestPrice()
     return 8;
 }
 
-
 void pca::CPriceCalculator::CreateEmptyMarket()
 {
-    CReality::Init();
-    m_upMarket.reset();
-    std::unique_ptr<CMarket> upMarket(new CMarket());
-    m_upMarket = std::move(upMarket);
+    if (m_upReality)
+    {
+        std::unique_ptr<CMarket> upMarket(new CMarket(m_upReality.get()));
+        m_upReality.get()->AddMarket(upMarket);
+    }
+    else
+    {
+        assert("" == "Falta una realidad donde añadir este nuevo Market");
+    }
+}
 
-    CReality::InitEmpty();
+void pca::CPriceCalculator::CreateEmptyReality()
+{
+    m_upReality.reset();
+    std::unique_ptr<CReality> upReality(new CReality(false));
+    m_upReality = std::move(upReality);
 }
 
 void pca::CPriceCalculator::CreateProduct(std::string sProductName)
 {
-    CReality::CreateProduct(sProductName);
+    m_upReality->CreateProduct(sProductName);
 }
 
 void pca::CPriceCalculator::SetCurrency(std::string sProductName)
 {
-    if (nullptr == m_upMarket)
+    if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef())
         return;
 
-    CPrices* pPricesRef = m_upMarket->GetPricesRef();
+    CPrices* pPricesRef = m_upReality->GetLastMarketRef()->GetPricesRef();
 
-    CProduct* pProductRef = CReality::GetProduct(sProductName);
+    CProduct* pProductRef = m_upReality->GetProduct(sProductName);
 
     if (pPricesRef && pProductRef)
     {
@@ -74,26 +77,26 @@ void pca::CPriceCalculator::SetCurrency(std::string sProductName)
 
 void pca::CPriceCalculator::AddToProduct_CreateConsumptionOption(std::string sProduct, std::string sOption)
 {
-    CProduct* pProductRef = CReality::GetProduct(sProduct);
+    CProduct* pProductRef = m_upReality->GetProduct(sProduct);
     if (pProductRef)
     {
-        CReality::CreateOption(sProduct, sOption);
+        m_upReality->CreateOption(sProduct, sOption);
     }
 }
 
 void pca::CPriceCalculator::AddToMarket_CreatePerson(std::string sPerson)
 {
-    if (m_upMarket)
-        m_upMarket->CreatePerson(sPerson);
+    if (m_upReality->GetLastMarketRef())
+        m_upReality->GetLastMarketRef()->CreatePerson(sPerson);
 }
 
 void pca::CPriceCalculator::AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount)
 {
-    if (nullptr == m_upMarket)
+    if (nullptr == m_upReality->GetLastMarketRef())
         return;
 
-    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
-    CProduct* pProductRef = CReality::GetProduct(sProduct);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+    CProduct* pProductRef = m_upReality->GetProduct(sProduct);
 
     if (pPersonRef && pProductRef)
     {
@@ -103,11 +106,11 @@ void pca::CPriceCalculator::AddToPerson_SetProductAmount(std::string sPerson, st
 
 void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue)
 {
-    if (nullptr == m_upMarket)
+    if (nullptr == m_upReality->GetLastMarketRef())
         return;
 
-    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
-    COption* pOptionRef = CReality::GetOption(sOption);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+    COption* pOptionRef = m_upReality->GetOption(sOption);
 
     if (pPersonRef && pOptionRef)
     {
@@ -119,13 +122,13 @@ void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForOption(std::strin
 
 void pca::CPriceCalculator::AdjustPrices()
 {
-    if (m_upMarket)
-        m_upMarket->CalculateNewPrices();
+    if (m_upReality->GetLastMarketRef())
+        m_upReality->GetLastMarketRef()->CalculateNewPrices();
 
 }
 bool pca::CPriceCalculator::IsProduct(std::string sProductName)
 {
-    CProduct* pProductRef = CReality::GetProduct(sProductName);
+    CProduct* pProductRef = m_upReality->GetProduct(sProductName);
 
     if (pProductRef)
     {
@@ -137,10 +140,10 @@ bool pca::CPriceCalculator::IsProduct(std::string sProductName)
 
 bool pca::CPriceCalculator::IsPerson(std::string sPersonName)
 {
-    if (nullptr == m_upMarket)
+    if (m_upReality && nullptr == m_upReality->GetLastMarketRef())
         return false;
 
-    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPersonName);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPersonName);
 
     if (pPersonRef)
     {
@@ -152,7 +155,7 @@ bool pca::CPriceCalculator::IsPerson(std::string sPersonName)
 
 bool pca::CPriceCalculator::IsOption(std::string sOptionName)
 {
-    COption* pOptionRef = CReality::GetOption(sOptionName);
+    COption* pOptionRef = m_upReality->GetOption(sOptionName);
 
     if (pOptionRef)
     {
@@ -164,20 +167,20 @@ bool pca::CPriceCalculator::IsOption(std::string sOptionName)
 
 std::string pca::CPriceCalculator::GetCurrency()
 {
-    if (m_upMarket && m_upMarket->GetPricesRef() && m_upMarket->GetPricesRef()->GetCurrency())
+    if (m_upReality->GetLastMarketRef() && m_upReality->GetLastMarketRef()->GetPricesRef() && m_upReality->GetLastMarketRef()->GetPricesRef()->GetCurrency())
     {
-        return m_upMarket->GetPricesRef()->GetCurrency()->GetName();
+        return m_upReality->GetLastMarketRef()->GetPricesRef()->GetCurrency()->GetName();
     }
     return "";
 }
 
 double pca::CPriceCalculator::GetPrice(std::string sProductName)
 {
-    CProduct* pProductRef = CReality::GetProduct(sProductName);
+    CProduct* pProductRef = m_upReality->GetProduct(sProductName);
 
-    if (m_upMarket && m_upMarket->GetPricesRef() && pProductRef)
+    if (m_upReality->GetLastMarketRef() && m_upReality->GetLastMarketRef()->GetPricesRef() && pProductRef)
     {
-        return m_upMarket->GetPricesRef()->GetPriceOfProduct(pProductRef);
+        return m_upReality->GetLastMarketRef()->GetPricesRef()->GetPriceOfProduct(pProductRef);
     }
 
     return 0.0;
@@ -185,8 +188,8 @@ double pca::CPriceCalculator::GetPrice(std::string sProductName)
 
 double pca::CPriceCalculator::GetProductAmount(std::string sProductName, std::string sPerson)
 {
-    CProduct* pProductRef = CReality::GetProduct(sProductName);
-    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+    CProduct* pProductRef = m_upReality->GetProduct(sProductName);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
 
     if (pPersonRef && pProductRef)
     {
@@ -199,8 +202,8 @@ double pca::CPriceCalculator::GetProductAmount(std::string sProductName, std::st
 
 double pca::CPriceCalculator::GetOptionAmount(std::string sOptionName, std::string sPerson)
 {
-    COption* pOptionRef = CReality::GetOption(sOptionName);
-    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+    COption* pOptionRef = m_upReality->GetOption(sOptionName);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
 
     if (pPersonRef && pOptionRef)
     {
@@ -213,13 +216,13 @@ double pca::CPriceCalculator::GetOptionAmount(std::string sOptionName, std::stri
 
 void pca::CPriceCalculator::PrintPricesEvolution()
 {
-    CUtils::PrintPricesEvolution(m_upMarket.get());
+    CUtils::PrintPricesEvolution(m_upReality->GetLastMarketRef());
 }
 
 double pca::CPriceCalculator::GetDesiredProdAmount(std::string sPerson, std::string sProductName)
 {
-    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
-    CProduct* pProductRef = CReality::GetProduct(sProductName);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+    CProduct* pProductRef = m_upReality->GetProduct(sProductName);
 
     if (pPersonRef)
     {
@@ -232,7 +235,7 @@ double pca::CPriceCalculator::GetDesiredProdAmount(std::string sPerson, std::str
 
 void pca::CPriceCalculator::PrintPersonOptionAdjustmentToFile(std::string sPerson)
 {
-    CPerson* pPersonRef = m_upMarket->GetPersonRef(sPerson);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
 
     if (pPersonRef)
     {
@@ -242,7 +245,7 @@ void pca::CPriceCalculator::PrintPersonOptionAdjustmentToFile(std::string sPerso
 
 void pca::CPriceCalculator::PrintPersonsOptionAdjustmentToFile()
 {
-    if (m_upMarket)
-        pca::CUtils::PrintPersonsOptionAdjustmentToFile(m_upMarket.get());
+    if (m_upReality->GetLastMarketRef())
+        pca::CUtils::PrintPersonsOptionAdjustmentToFile(m_upReality->GetLastMarketRef());
 }
 

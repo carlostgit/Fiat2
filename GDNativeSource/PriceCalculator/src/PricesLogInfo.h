@@ -9,12 +9,13 @@ namespace pca
 {
     class CProduct;
     class CProductPriceAdjustmentInfo;
-    class CPrices;    
+    class CPrices;
+    class CMarket;
 
     class CPricesLogInfo
     {
     public:
-        CPricesLogInfo(pca::CPrices* pPricesRef);
+        CPricesLogInfo(pca::CMarket* pMarketRef);
         virtual ~CPricesLogInfo();
 
         void AddPriceChangeStepToVector(double dValueArg);
@@ -35,6 +36,7 @@ namespace pca
         std::vector<double> m_vPriceChangeStepsVector;
 
         pca::CPrices* m_pPricesRef = nullptr;
+        pca::CMarket* m_pMarketRef = nullptr;
  
     };
 }

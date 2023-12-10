@@ -23,6 +23,7 @@ namespace pca
         virtual ~CPriceCalculatorStaticUser();
 
         static void CreateEmptyMarket();
+        static void CreateEmptyReality();
         static void CreateProduct(std::string sProductName);
         static void SetCurrency(std::string sProductName);
         static void AddToProduct_CreateConsumptionOption(std::string sProduct ,std::string sOption);

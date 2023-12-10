@@ -4,10 +4,11 @@
 #include "Reality.h"
 #include "SupplCombo.h"
 #include "ComplCombo.h"
+#include "Market.h"
 
 #include <memory>
 
-pca::CSatisfactionCalculator::CSatisfactionCalculator()
+pca::CSatisfactionCalculator::CSatisfactionCalculator(pca::CMarket* pMarketRef):m_pMarketRef(pMarketRef)
 {
     //ctor
     DefaultInitialization();
@@ -23,7 +24,7 @@ void pca::CSatisfactionCalculator::DefaultInitialization()
     //Default init for options:
     //m_Option_SatisfactionCurveb
 	//for (auto& nOpt : c_setOptions)
-    for (auto & pOpt:CReality::GetOptions())
+    for (auto & pOpt:m_pMarketRef->GetOptions())
     {
         std::unique_ptr<pca::CSatisfactionCurve> satisfOfOpt = std::make_unique<pca::CSatisfactionCurve>();
         m_Option_SatisfactionCurve[pOpt] = std::move(satisfOfOpt);
@@ -32,7 +33,7 @@ void pca::CSatisfactionCalculator::DefaultInitialization()
     //Default init for complementary combos
     //m_mapComplementaryCombo_pSatisfCurve
     //for (auto & pairCombo_setOptions:c_mapComplementaryCombo_setOptions)
-	for (auto& pCombos : CReality::GetComplCombos())
+	for (auto& pCombos : m_pMarketRef->GetRealityRef()->GetComplCombos())
     {
         //eCompComb nCombo = pairCombo_setOptions.first;
 		
@@ -44,7 +45,7 @@ void pca::CSatisfactionCalculator::DefaultInitialization()
     //m_mapSupplementaryCombo_pSatisfCurve
     //m_mapSupplementaryCombo_mapOption_dWeight
 
-	for (auto & pSuppCombo:CReality::GetSupplCombos())
+	for (auto & pSuppCombo: m_pMarketRef->GetRealityRef()->GetSupplCombos())
 	{
 	//}
  //   for (auto & pairCombo_setOptions:c_mapSupplementaryCombo_setOptions)
@@ -101,7 +102,7 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementary
 	//std::map<COption*,double> mapSuppCombo_dWeight = pSuppCombo->GetOptionsAndWeights();
 
 	double dSatisfOfCombi = 0.0;
-	for (auto& pSupplCombo : pca::CReality::GetSupplCombos())
+	for (auto& pSupplCombo : m_pMarketRef->GetRealityRef()->GetSupplCombos())
 	//for (auto & pair_Combo_mapOption_dWeight:c_mapSupplementaryCombo_mapOption_dWeight)
     {
         //eSuppComb nCombo = pair_Combo_mapOption_dWeight.first;
@@ -157,7 +158,7 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromComplementary
 	double dSatisfOfCombi = 0.0;
 
 	//for ( auto & pairCombo_Options :c_mapComplementaryCombo_setOptions)
-	for(auto & pComplCombo:pca::CReality::GetComplCombos())
+	for(auto & pComplCombo: m_pMarketRef->GetRealityRef()->GetComplCombos())
     {
         //std::set<eOpt> setOptions = pairCombo_Options.second;		
 		//pairCombo_Options
@@ -206,7 +207,7 @@ double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromIndividualOpt
 {
     double dSatisfOfOptIndividually = 0.0;
     //for (auto & nOption: c_setOptions)
-	for (auto& pOption : pca::CReality::GetOptions())
+	for (auto& pOption : m_pMarketRef->GetRealityRef()->GetOptions())
     {
         if(map_nOption_dAmount.end() != map_nOption_dAmount.find(pOption))
         {

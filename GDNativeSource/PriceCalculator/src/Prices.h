@@ -9,11 +9,12 @@ namespace pca
 {
     class CProduct;
     class COption;
+    class CMarket;
 
     class CPrices
     {
     public:
-        CPrices();        
+        CPrices(pca::CMarket* pMarketRef);
         virtual ~CPrices();
 
         void IncreasePrice(CProduct* pProductRef, double dPrice);
@@ -35,6 +36,10 @@ namespace pca
                 return false;
         }
 
+        CMarket* GetMarketRef() {
+            return m_pMarketRef;
+        }
+
     protected:
         
         void InitDefaultPrices();
@@ -43,6 +48,8 @@ namespace pca
 
         std::map<CProduct*, double> m_mapProd_Price;
         CProduct* m_pCurrency = nullptr;
+
+        pca::CMarket* m_pMarketRef = nullptr;
     };
 }
 

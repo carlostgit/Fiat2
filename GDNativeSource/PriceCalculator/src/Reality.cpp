@@ -10,14 +10,28 @@
 #include "ComplCombos.h"
 #include "SupplCombos.h"
 
+#include "Market.h"
+
 #include <assert.h>
+//
+//std::unique_ptr<pca::CProducts> pca::CReality::m_upProducts =       std::unique_ptr<CProducts>();
+//std::unique_ptr<pca::COptions> pca::CReality::m_upOptions =         std::unique_ptr<pca::COptions>();
+//std::unique_ptr<pca::CComplCombos> pca::CReality::m_upComplCombos = std::unique_ptr<pca::CComplCombos>();
+//std::unique_ptr<pca::CSupplCombos> pca::CReality::m_upSupplCombos = std::unique_ptr<pca::CSupplCombos>();
 
-std::unique_ptr<pca::CProducts> pca::CReality::m_upProducts = std::unique_ptr<CProducts>();
-std::unique_ptr<pca::COptions> pca::CReality::m_upOptions = std::unique_ptr<pca::COptions>();
-std::unique_ptr<pca::CComplCombos> pca::CReality::m_upComplCombos = std::unique_ptr<pca::CComplCombos>();
-std::unique_ptr<pca::CSupplCombos> pca::CReality::m_upSupplCombos = std::unique_ptr<pca::CSupplCombos>();
 
+pca::CReality::CReality(bool bCreateDefaultProductsAndOptions)
+{
+    if (bCreateDefaultProductsAndOptions)
+        Init();
+    else
+        InitEmpty();
+}
 
+pca::CReality::~CReality()
+{
+
+}
 
 void pca::CReality::Init()
 {
@@ -51,6 +65,13 @@ void pca::CReality::Clear()
 
 void pca::CReality::InitDefaultProductsAndOptions()
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+        
+
     //Products
     std::unique_ptr<CProducts> upProducts(new CProducts({ "candy","chocolate","nut"}));
     m_upProducts = std::move(upProducts);
@@ -142,12 +163,24 @@ void pca::CReality::InitDefaultProductsAndOptions()
 
 void pca::CReality::CreateProduct(std::string sProduct)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     std::unique_ptr<CProduct> upProduct(new CProduct(sProduct));
     m_upProducts->AddProduct(std::move(upProduct));
 }
 
 void pca::CReality::CreateOption(std::string sProduct, std::string sOption)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     CProduct* pProduct = m_upProducts->GetProduct(sProduct);
 
     if (pProduct)
@@ -159,6 +192,12 @@ void pca::CReality::CreateOption(std::string sProduct, std::string sOption)
 
 void pca::CReality::CreateOption(CProduct* pProduct, std::string sOption)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     if (pProduct)
     {
         std::unique_ptr<COption> upOption(new COption(sOption, pProduct));
@@ -170,6 +209,12 @@ void pca::CReality::CreateOption(CProduct* pProduct, std::string sOption)
 
 void pca::CReality::CreateComplCombo(std::string sComplCombo)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     std::unique_ptr<CComplCombo> upComplCombo(new CComplCombo(sComplCombo));
     upComplCombo->SetName(sComplCombo);
 
@@ -178,6 +223,12 @@ void pca::CReality::CreateComplCombo(std::string sComplCombo)
 
 void pca::CReality::AddOptionToComplCombo(std::string sComplCombo, std::string sOption)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     COption* pOption = m_upOptions->GetOption(sOption);
 
     CComplCombo* pComplCombo = m_upComplCombos->GetComplCombo(sComplCombo);
@@ -190,6 +241,12 @@ void pca::CReality::AddOptionToComplCombo(std::string sComplCombo, std::string s
 
 void pca::CReality::AddOptionToComplCombo(CComplCombo* pComplCombo, COption* pOption)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     if (pComplCombo && pOption)
     {
         pComplCombo->AddOption(pOption);
@@ -198,6 +255,12 @@ void pca::CReality::AddOptionToComplCombo(CComplCombo* pComplCombo, COption* pOp
 
 void pca::CReality::CreateSupplCombo(std::string sSupplCombo)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     std::unique_ptr<CSupplCombo> upSupplCombo(new CSupplCombo(sSupplCombo));
     upSupplCombo->SetName(sSupplCombo);
 
@@ -206,6 +269,12 @@ void pca::CReality::CreateSupplCombo(std::string sSupplCombo)
 
 void pca::CReality::AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     COption* pOption = m_upOptions->GetOption(sOption);
 
     CSupplCombo* pSupplCombo = m_upSupplCombos->GetSupplCombo(sSupplCombo);
@@ -218,6 +287,12 @@ void pca::CReality::AddOptionToSupplCombo(std::string sSupplCombo, std::string s
 
 void pca::CReality::AddOptionToSupplCombo(CSupplCombo* pSupplCombo, COption* pOption, double dWeight)
 {
+    if (false == m_vupMerketRefs.empty())
+    {
+        assert("" == "This Reality is already being used!!");
+        return;
+    }
+
     if (pSupplCombo && pOption)
     {
         pSupplCombo->AddOptionAndWeight(pOption, dWeight);
@@ -264,160 +339,17 @@ pca::CSupplCombo* pca::CReality::GetSupplCombo(std::string sSupplCombo)
     return m_upSupplCombos->GetSupplCombo(sSupplCombo);
 }
 
+void pca::CReality::AddMarket(std::unique_ptr<pca::CMarket> &upMarket)
+{
+    this->m_vupMerketRefs.push_back(std::move(upMarket));
+}
 
-
-//pca::CReality::~CReality() 
-//{
-//
-//}
-    ////TODO. Cambiar esto por enumeradores. O crear clases (Clase CProduct etc...)
-
-    //enum eProd {
-    //    eProdCandy = 1,
-    //    eProdChocolate = 2,
-    //    eProdNut = 3,
-    //};
-    ////const int c_nProdCandy = 1;
-    ////const int c_nProdChocolate = 2;
-    ////const int c_nProdNut = 3;
-
-    //enum eOptTyp {
-    //    eOptTypSavings = 4,
-    //    eOptTypConsumption = 5
-    //};
-
-    ////const int eOptTypSavings = 4;
-    ////const int eOptTypConsumption = 5;
-    //
-    //enum eOpt {
-    //    eOptCandySavings = 6,
-    //    eOptChocolateSavings = 7,
-    //    eOptNutSavings = 8,
-    //    eOptCandyConsumption = 9,
-    //    eOptChocolateConsumption = 10,
-    //    eOptNutConsumption = 11
-    //};
-
-    ////const int eOptCandySavings = 6;
-    ////const int eOptChocolateSavings = 7;
-    ////const int eOptNutSavings = 8;
-    ////const int eOptCandyConsumption = 9;
-    ////const int eOptChocolateConsumption = 10;
-    ////const int eOptNutConsumption = 11;
-    //
-    //enum eCompComb {
-    //    eCompCombSweets = 12
-    //};
-
-    ////const int c_nCompCombSweets = 12;
-
-    //enum eSuppComb {
-    //    c_nSuppCombConsumption = 13,
-    //    c_nSuppCombSavings = 14
-    //};
-
-    ////const int c_nSuppCombConsumption = 13;
-    ////const int c_nSuppCombSavings = 14;
-
-
-    //const std::set<pca::eProd> c_setProducts = {
-    //eProdCandy,
-    //eProdChocolate,
-    //eProdNut
-    //};
-
-    //const std::map<pca::eProd, std::set<pca::eOpt> > c_mapProduct_setOptions = {
-    //{eProdCandy,{eOptCandySavings,eOptCandyConsumption}},
-    //{eProdChocolate,{eOptChocolateSavings,eOptChocolateConsumption}},
-    //{eProdNut,{eOptNutSavings,eOptNutConsumption}},
-    //};
-
-    ////Esto debería sacarse a partir de lo anterior
-    //const std::map<pca::eOpt, pca::eProd > c_mapOption_Product = {
-
-    //{eOptCandySavings,eProdCandy},
-    //{eOptChocolateSavings,eProdChocolate},
-    //{eOptNutSavings,eProdNut},
-    //{eOptCandyConsumption,eProdCandy},
-    //{eOptChocolateConsumption,eProdChocolate},
-    //{eOptNutConsumption,eProdNut }
-
-    //};
-
-    //const std::set<pca::eOpt> c_setOptions = {
-    //eOptCandySavings,
-    //eOptChocolateSavings,
-    //eOptNutSavings,
-    //eOptCandyConsumption,
-    //eOptChocolateConsumption,
-    //eOptNutConsumption
-    //};
-
-    //const std::set<pca::eOpt> c_setGroupSavings = {
-    //eOptCandySavings,
-    //eOptChocolateSavings,
-    //eOptNutSavings
-    //};
-
-    //const std::set<pca::eOpt> c_setGroupConsumption = {
-    //eOptCandyConsumption,
-    //eOptChocolateConsumption,
-    //eOptNutConsumption
-    //};
-
-    //const std::set<pca::eOpt> c_setGroupSweets = {
-    //eOptCandyConsumption,
-    //eOptChocolateConsumption,
-    //};
-
-    //const std::map<pca::eCompComb, std::set<pca::eOpt> > c_mapComplementaryCombo_setOptions = {
-    //    {eCompCombSweets, c_setGroupSweets}
-    //};
-
-    //const std::map<pca::eSuppComb, std::set<pca::eOpt> > c_mapSupplementaryCombo_setOptions = {
-    //    {c_nSuppCombConsumption, c_setGroupConsumption},
-    //    {c_nSuppCombSavings, c_setGroupSavings}
-    //};
-
-    //const std::map<pca::eProd, std::string> c_mapProd_Name = {
-    //    {eProdCandy,"candy"},
-    //    {eProdChocolate,"chocolate"},
-    //    {eProdNut,"nut"}
-    //};
-
-    //const std::map<pca::eOpt,std::string> c_mapOption_Name = {
-    //    {eOptCandySavings,"candy savings"},
-    //    {eOptChocolateSavings,"chocolate savings"},
-    //    {eOptNutSavings,"nut savings"},
-    //    {eOptCandyConsumption,"candy consumption"},
-    //    {eOptChocolateConsumption,"chocolate consumption"},
-    //    {eOptNutConsumption,"nut consumption"}
-    //};
-
-    //const std::map<pca::eCompComb, std::string > c_mapComplementaryCombo_Name = {
-    //    {eCompCombSweets, "sweets"}
-    //};
-
-    //const std::map<pca::eSuppComb, std::string > c_mapSupplementaryCombo_Name = {
-    //    {c_nSuppCombConsumption, "consumption"},
-    //    {c_nSuppCombSavings, "savings"}
-    //};
-
-    ////std::set<eOpt> setOptions = pairCombo_setOptions.second;
-    ////std::map<eOpt, double> mapOption_dWeight;
-    ////for (auto& nOption : setOptions)
-    ////{
-    ////    mapOption_dWeight[nOption] = 1.0; //Por defecto, el peso es 1 para todas las opciones
-    ////}
-    ////m_mapSupplementaryCombo_mapOption_dWeight[nCombo] = mapOption_dWeight;
-
-    //const std::map<eSuppComb, std::map<eOpt, double> > c_mapSupplementaryCombo_mapOption_dWeight = {
-    //    {c_nSuppCombConsumption, {{eOptCandyConsumption, 1.0},
-    //                             {eOptChocolateConsumption, 1.0},
-    //                             {eOptNutConsumption, 1.0}}
-    //    },
-    //    {c_nSuppCombSavings, {{eOptCandySavings, 1.0},
-    //                             {eOptChocolateSavings, 1.0},
-    //                             {eOptNutSavings, 1.0}}
-    //    }        
-    //};
+pca::CMarket* pca::CReality::GetLastMarketRef()
+{
+    if (this->m_vupMerketRefs.empty())
+        return nullptr;
+    else
+    {
+        return this->m_vupMerketRefs.back().get();
+    }
+}

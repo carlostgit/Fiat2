@@ -3,6 +3,7 @@
 
 //#include "PriceCalculationDefines.h"
 //#include "Person.h"
+#include "Reality.h"
 #include <vector>
 #include <memory>
 #include <string>
@@ -14,6 +15,8 @@ namespace pca
     class CPricesLogInfo;
     class CPerson;
     class CProduct;
+    class COption;
+    class CReality;
 
     class CMarket
     {
@@ -21,15 +24,15 @@ namespace pca
 
         friend class CTester;
 
-        CMarket();
+        CMarket(pca::CReality* pRealityRef);
         virtual ~CMarket();
 
         CPrices* GetPricesRef() {
             return m_upPrices.get();
         }
 
-        void AddPerson(std::unique_ptr<CPerson> upPerson);
-        void CreatePerson(std::string sName);
+        //void AddPerson(std::unique_ptr<CPerson> upPerson);
+        pca::CPerson* CreatePerson(std::string sName);
         pca::CPerson* GetPersonRef(std::string sName);
         void RemovePerson(std::string sPersonArg);
         void RemovePerson(long nId);        
@@ -42,7 +45,19 @@ namespace pca
         std::map<pca::CProduct*, double> GetSumOfTrade() { 
             return m_mapSumOfTrade; 
         }
+
+        pca::CReality* GetRealityRef() {
+            return m_pRealityRef;
+        }
         
+        std::vector<pca::CProduct*> GetProducts()
+        {
+            return m_pRealityRef->GetProducts();
+        }
+        std::vector<pca::COption*> GetOptions()
+        {
+            return m_pRealityRef->GetOptions();
+        }
 
     protected:
         std::map<pca::CProduct*, double> CalculateNewPricesIncrement(double dParamPriceChangeStepArg);
@@ -65,6 +80,7 @@ namespace pca
         std::unique_ptr<CPrices> m_upPrices;
         std::unique_ptr<CPricesLogInfo> m_upPricesLogInfo;
 
+        pca::CReality* m_pRealityRef = nullptr;
     };
 }
 

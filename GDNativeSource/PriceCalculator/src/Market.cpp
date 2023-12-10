@@ -23,12 +23,14 @@ long c_paramMaxNumStepsAdjustingBestCombination = 100;
 
 //const double c_paramProductStepForBestCombidictCalc= 0.1;
 
-pca::CMarket::CMarket()
+pca::CMarket::CMarket(pca::CReality* pRealityRef)
 {
+    m_pRealityRef = pRealityRef;
     //ctor
-    m_upPrices = std::unique_ptr<CPrices>(new CPrices());
-    m_upPricesLogInfo = std::unique_ptr<CPricesLogInfo>(new CPricesLogInfo(m_upPrices.get()));
+    m_upPrices = std::unique_ptr<CPrices>(new CPrices(this));
+    m_upPricesLogInfo = std::unique_ptr<CPricesLogInfo>(new CPricesLogInfo(this));
 
+    
 }
 
 pca::CMarket::~CMarket()
@@ -36,16 +38,19 @@ pca::CMarket::~CMarket()
     //dtor
 }
 
-void pca::CMarket::AddPerson(std::unique_ptr<CPerson> upPerson)
-{
-    m_vPersons.push_back(std::move(upPerson));
-}
+//void pca::CMarket::AddPerson(std::unique_ptr<CPerson> upPerson)
+//{
+//    m_vPersons.push_back(std::move(upPerson));
+//}
 
-void pca::CMarket::CreatePerson(std::string sName)
+pca::CPerson* pca::CMarket::CreatePerson(std::string sName)
 {
     CPrices* pPricesRef = this->GetPricesRef();
-    std::unique_ptr<CPerson> upPerson(new CPerson(this->GetPricesRef(), sName));
+    std::unique_ptr<CPerson> upPerson(new CPerson(sName,this));
+    pca::CPerson* pPersonRef = upPerson.get();
     m_vPersons.push_back(std::move(upPerson));
+    
+    return pPersonRef;
 }
 
 pca::CPerson* pca::CMarket::GetPersonRef(std::string sName)
@@ -184,7 +189,12 @@ bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
     //    std::cout << "-" << pProduct->GetName() << " price increment: " << dIncrement << std::endl;
     //}
 
-    for (auto & pProduct:CReality::GetProducts() )
+    //for (auto & pProduct:CReality::GetProducts() )
+
+    if (nullptr == m_pRealityRef)
+        abort();
+
+    for (auto& pProduct : m_pRealityRef->GetProducts())
     {
         if (false == m_upPrices->IsCurrency(pProduct))
         {

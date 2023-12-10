@@ -36,10 +36,10 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
         return;
     }
 
-    auto vOptions = CReality::GetOptions();
+    auto vOptions = pMarket->GetOptions();
 
     //todo: meter aquí los titulos de los precios de productos
-    auto vProducts = CReality::GetProducts();
+    auto vProducts = pMarket->GetProducts();
 
     
     csvFile << "PriceChangeStep"; // Writing header row
@@ -192,6 +192,7 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
 
 void pca::CUtils::PrintPersonOptionAdjustmentToFile(CPerson* pPerson)
 {
+    CMarket* pMarketRef = pPerson->GetMarketRef();
 
     auto personName = pPerson->GetName();
 
@@ -207,7 +208,7 @@ void pca::CUtils::PrintPersonOptionAdjustmentToFile(CPerson* pPerson)
 
     //
 
-    auto vOptions = CReality::GetOptions();
+    auto vOptions = pMarketRef->GetOptions();
 
     csvFile << "Satisfaction"; // Writing header row
     csvFile << ",";
@@ -288,9 +289,11 @@ void pca::CUtils::PrintPersonOptions(CPerson* pPerson)
 
 void pca::CUtils::PrintPrices(CPrices* pPrices)
 {
+    pca::CMarket* pMarketRef = pPrices->GetMarketRef();
+
     std::cout << "Prices:" << std::endl;
     
-    for (auto& pProduct : pca::CReality::GetProducts())
+    for (auto& pProduct : pMarketRef->GetProducts())
     {        
         std::cout << " '" << std::left << std::setw(10) << pProduct->GetName().substr(0, 10) << "':'" << pPrices->GetPriceOfProduct(pProduct) << "'";
     }

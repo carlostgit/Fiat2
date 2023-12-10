@@ -2,18 +2,19 @@
 #include "Reality.h"
 #include "ProductPriceAdjustmentInfo.h"
 #include "Prices.h"
+#include "Market.h"
 
 #include "Product.h"
 #include <iostream>
 
-pca::CPricesLogInfo::CPricesLogInfo(pca::CPrices* pPricesRef)
+pca::CPricesLogInfo::CPricesLogInfo(pca::CMarket* pMarketRef):m_pMarketRef(pMarketRef)
 {
-	m_pPricesRef = pPricesRef;
+	m_pPricesRef = pMarketRef->GetPricesRef();
 
 	std::cout << "Initializing CPricesLogInfo with CReality::GetProducts" << std::endl;
 	std::cout << "ATENCION! CREO QUE ESTO ES UN BUG. Cada vez que se cambian los Products en CReality habría que actualizar esto" << std::endl;	
 
-	for (auto& pProduct : CReality::GetProducts())
+	for (auto& pProduct : pMarketRef->GetProducts())
 	{
 		std::unique_ptr<CProductPriceAdjustmentInfo> upProductPriceAdjustmentInfo(new CProductPriceAdjustmentInfo());
 		m_mapProduct_AdjustmentInfo[pProduct] = std::move(upProductPriceAdjustmentInfo);
@@ -34,7 +35,7 @@ void pca::CPricesLogInfo::AddPriceChangeStepToVector(double dValueArg)
 void pca::CPricesLogInfo::ResetLastPrices()
 {
 
-	for (auto& pProduct : CReality::GetProducts())
+	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
 		pProductPriceAdjustmentInfo->ResetLastPrices();
@@ -44,7 +45,7 @@ void pca::CPricesLogInfo::ResetLastPrices()
 
 void pca::CPricesLogInfo::RegisterPrices()
 {
-	for (auto& pProduct : CReality::GetProducts())
+	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		//std::cout << "Adjusting product: " << pProduct->GetName() << std::endl;
 		//std::cout << "m_mapProduct_AdjustmentInfo: " << std::endl;
@@ -67,7 +68,7 @@ bool pca::CPricesLogInfo::ArePricesEvolving()
 {
 	bool bPricesEvolving = false;
 
-	for (auto& pProduct : pca::CReality::GetProducts())
+	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
 		if (pProductPriceAdjustmentInfo->GetPrices().size() > 1 and
@@ -97,7 +98,7 @@ bool pca::CPricesLogInfo::ArePricesEvolving()
 std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductPrices()
 {
 	std::map<pca::CProduct*, std::vector<double> > mapProduct_vPrices;
-	for (auto& pProduct : pca::CReality::GetProducts())
+	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
 		std::vector<double> vPrices = pProductPriceAdjustmentInfo->GetPrices();
@@ -109,7 +110,7 @@ std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductPr
 std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductAllPrices()
 {
 	std::map<pca::CProduct*, std::vector<double> > mapProduct_vPrices;
-	for (auto& pProduct : pca::CReality::GetProducts())
+	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
 		std::vector<double> vPrices = pProductPriceAdjustmentInfo->GetAllPrices();
@@ -127,7 +128,7 @@ std::vector<double> pca::CPricesLogInfo::GetAllPriceChangeStepsVector()
 std::map<pca::CProduct*, std::vector<long> > pca::CPricesLogInfo::GetProductPriceTops()
 {
 	std::map<pca::CProduct*, std::vector<long> > mapProduct_vPrices;
-	for (auto& pProduct : pca::CReality::GetProducts())
+	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
 		std::vector<long> vPrices = pProductPriceAdjustmentInfo->GetNumPriceTopsArray();
@@ -139,7 +140,7 @@ std::map<pca::CProduct*, std::vector<long> > pca::CPricesLogInfo::GetProductPric
 std::map<pca::CProduct*, std::vector<long> > pca::CPricesLogInfo::GetProductPriceBottoms()
 {
 	std::map<pca::CProduct*, std::vector<long> > mapProduct_vPrices;
-	for (auto& pProduct : pca::CReality::GetProducts())
+	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
 		std::vector<long> vPrices = pProductPriceAdjustmentInfo->GetNumPriceBottomsArray();

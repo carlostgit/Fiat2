@@ -14,13 +14,14 @@ namespace pca
     class COption;
     class CComplCombo;
     class CSupplCombo;
+    class CMarket;
 
     class CSatisfactionCalculator
     {
         friend class CTester;
 
     public:
-        CSatisfactionCalculator();
+        CSatisfactionCalculator(pca::CMarket* pMarketRef);
         virtual ~CSatisfactionCalculator();
 
         //std::map<pca::eProd, double> CalculateProductdictFromOptiondict(std::map<eOpt, double> mapOptiondictArg);
@@ -56,6 +57,7 @@ namespace pca
 
         int m_nId = 0;
 
+        CMarket* m_pMarketRef = nullptr;
 
         /*
         //Combos suplementarios y complementarios con su ponderación

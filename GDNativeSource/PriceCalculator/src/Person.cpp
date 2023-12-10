@@ -17,39 +17,40 @@
 
 long pca::CPerson::ms_nId = 0;
 
-pca::CPerson::CPerson(CPrices* pPricesRef, std::string sName)
+pca::CPerson::CPerson(std::string sName, pca::CMarket* pMarketRef)
 {
     ms_nId++;
-    m_nId = ms_nId;
+    m_nId = ms_nId;    
 
     m_sName = sName;
 
-    //m_pMarketRef = pMarketRef;
-    //m_pPricesRef = pMarketRef->GetPrices();
-    std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator());
-    std::unique_ptr<pca::CTradeCalculator> upTradeCalculator(new CTradeCalculator(std::move(upSatisfactionCalculator), pPricesRef));
-
-    m_upTradeCalculator = std::move(upTradeCalculator);
-
-    //ctor
-    InitDefaultAmounts();
-}
-
-
-pca::CPerson::CPerson(std::unique_ptr<CTradeCalculator> upTradeCalculator)
-{
-    ms_nId++;
-    m_nId = ms_nId;
-
-    m_sName = "Person "+std::to_string(ms_nId);
+    m_pMarketRef = pMarketRef;
     
-    //m_pMarketRef = pMarketRef;
     //m_pPricesRef = pMarketRef->GetPrices();
+    std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator(m_pMarketRef));
+    std::unique_ptr<pca::CTradeCalculator> upTradeCalculator(new CTradeCalculator(std::move(upSatisfactionCalculator), pMarketRef->GetPricesRef(), m_pMarketRef));
+
     m_upTradeCalculator = std::move(upTradeCalculator);
 
     //ctor
     InitDefaultAmounts();
 }
+
+
+//pca::CPerson::CPerson(std::unique_ptr<CTradeCalculator> upTradeCalculator)
+//{
+//    ms_nId++;
+//    m_nId = ms_nId;
+//
+//    m_sName = "Person "+std::to_string(ms_nId);
+//    
+//    //m_pMarketRef = pMarketRef;
+//    //m_pPricesRef = pMarketRef->GetPrices();
+//    m_upTradeCalculator = std::move(upTradeCalculator);
+//    
+//    //ctor
+//    InitDefaultAmounts();
+//}
 
 pca::CPerson::~CPerson()
 {
@@ -57,9 +58,9 @@ pca::CPerson::~CPerson()
 }
 
 void pca::CPerson::InitDefaultAmounts()
-{
-    //for (auto& nProduct : c_setProducts)
-    for (auto& nProduct : pca::CReality::GetProducts())
+{    
+    //for (auto& nProduct : pca::CReality::GetProducts())
+    for (auto& nProduct : this->m_pMarketRef->GetProducts())
     {
         m_mapOwnedProd_Amount[nProduct] = 0.0;
     }

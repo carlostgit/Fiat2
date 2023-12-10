@@ -13,11 +13,12 @@ namespace pca
     class CPrices;
     class COption;
     class CProduct;
+    class CMarket;
 
     class CTradeCalculator
     {
     public:
-        CTradeCalculator(std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator, CPrices* pPricesRef);
+        CTradeCalculator(std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator, CPrices* pPricesRef, CMarket* pMarketRef);
 
         virtual ~CTradeCalculator();
 
@@ -34,6 +35,7 @@ namespace pca
 
         std::unique_ptr<CSatisfactionCalculator> m_upSatisfactionCalculator;
         CPrices* m_pPricesRef = nullptr;
+        CMarket* m_pMarketRef = nullptr;
 
     };
 

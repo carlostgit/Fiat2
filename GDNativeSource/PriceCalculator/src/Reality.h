@@ -16,208 +16,62 @@ namespace pca
     class COption;
     class CComplCombo;
     class CSupplCombo;
+    class CMarket;
 
     class CReality
     {
     public:
 
-        CReality() = delete;
+        //CReality() = delete;
         //virtual ~CReality() {}
+        CReality(bool bCreateDefaultProductsAndOptions = true);
+        virtual ~CReality();
 
-        static void Init();
-        static void InitEmpty();
-        static void Clear();
+        void Init();
+        void InitEmpty();
+        void Clear();
 
-        static void InitDefaultProductsAndOptions();
+        void InitDefaultProductsAndOptions();
 
-        static std::vector<pca::CProduct*> GetProducts();
-        static std::vector<pca::COption*> GetOptions();
+        std::vector<pca::CProduct*> GetProducts();
+        std::vector<pca::COption*> GetOptions();
 
-        static std::vector<pca::CComplCombo*> GetComplCombos();
-        static std::vector<pca::CSupplCombo*> GetSupplCombos();
+        std::vector<pca::CComplCombo*> GetComplCombos();
+        std::vector<pca::CSupplCombo*> GetSupplCombos();
+
+        
+        void CreateProduct(std::string sProduct);        
+        void CreateOption(std::string sProduct, std::string sOption);
+        void CreateOption(CProduct* pProduct, std::string sOption);
+
+        void CreateComplCombo(std::string sComplCombo);        
+        void AddOptionToComplCombo(std::string sComplCombo, std::string sOption);
+        void AddOptionToComplCombo(CComplCombo* pComplCombo, COption* pOption);
+
+        void CreateSupplCombo(std::string sSupplCombo);
+        void AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight);
+        void AddOptionToSupplCombo(CSupplCombo* pSupplCombo, COption* pOption, double dWeight);
 
         //
-        static void CreateProduct(std::string sProduct);        
-        static void CreateOption(std::string sProduct, std::string sOption);
-        static void CreateOption(CProduct* pProduct, std::string sOption);
+        CProduct* GetProduct(std::string sProduct);
+        COption* GetOption(std::string sOption);
+        CComplCombo* GetComplCombo(std::string sComplCombo);
+        CSupplCombo* GetSupplCombo(std::string sSupplCombo);
 
-        static void CreateComplCombo(std::string sComplCombo);        
-        static void AddOptionToComplCombo(std::string sComplCombo, std::string sOption);
-        static void AddOptionToComplCombo(CComplCombo* pComplCombo, COption* pOption);
-
-        static void CreateSupplCombo(std::string sSupplCombo);
-        static void AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight);
-        static void AddOptionToSupplCombo(CSupplCombo* pSupplCombo, COption* pOption, double dWeight);
-
-        //
-        static CProduct* GetProduct(std::string sProduct);
-        static COption* GetOption(std::string sOption);
-        static CComplCombo* GetComplCombo(std::string sComplCombo);
-        static CSupplCombo* GetSupplCombo(std::string sSupplCombo);
-
+        void AddMarket(std::unique_ptr<pca::CMarket> &upMarket);
+        pca::CMarket* GetLastMarketRef();
 
     protected:
 
-        static std::unique_ptr<CProducts> m_upProducts;
-        static std::unique_ptr<COptions> m_upOptions;
-        static std::unique_ptr<CComplCombos> m_upComplCombos;
-        static std::unique_ptr<CSupplCombos> m_upSupplCombos;
+        std::unique_ptr<CProducts> m_upProducts         = std::unique_ptr<CProducts>();
+        std::unique_ptr<COptions> m_upOptions           = std::unique_ptr<pca::COptions>();
+        std::unique_ptr<CComplCombos> m_upComplCombos   = std::unique_ptr<pca::CComplCombos>();
+        std::unique_ptr<CSupplCombos> m_upSupplCombos   = std::unique_ptr<pca::CSupplCombos>();
+
+        std::vector< std::unique_ptr<pca::CMarket> > m_vupMerketRefs;
 
     };    
 }
 
 #endif //CREALITY_H
 
-    ////TODO. Cambiar esto por enumeradores. O crear clases (Clase CProduct etc...)
-
-    //enum eProd {
-    //    eProdCandy = 1,
-    //    eProdChocolate = 2,
-    //    eProdNut = 3,
-    //};
-    ////const int c_nProdCandy = 1;
-    ////const int c_nProdChocolate = 2;
-    ////const int c_nProdNut = 3;
-
-    //enum eOptTyp {
-    //    eOptTypSavings = 4,
-    //    eOptTypConsumption = 5
-    //};
-
-    ////const int eOptTypSavings = 4;
-    ////const int eOptTypConsumption = 5;
-    //
-    //enum eOpt {
-    //    eOptCandySavings = 6,
-    //    eOptChocolateSavings = 7,
-    //    eOptNutSavings = 8,
-    //    eOptCandyConsumption = 9,
-    //    eOptChocolateConsumption = 10,
-    //    eOptNutConsumption = 11
-    //};
-
-    ////const int eOptCandySavings = 6;
-    ////const int eOptChocolateSavings = 7;
-    ////const int eOptNutSavings = 8;
-    ////const int eOptCandyConsumption = 9;
-    ////const int eOptChocolateConsumption = 10;
-    ////const int eOptNutConsumption = 11;
-    //
-    //enum eCompComb {
-    //    eCompCombSweets = 12
-    //};
-
-    ////const int c_nCompCombSweets = 12;
-
-    //enum eSuppComb {
-    //    c_nSuppCombConsumption = 13,
-    //    c_nSuppCombSavings = 14
-    //};
-
-    ////const int c_nSuppCombConsumption = 13;
-    ////const int c_nSuppCombSavings = 14;
-
-
-    //const std::set<pca::eProd> c_setProducts = {
-    //eProdCandy,
-    //eProdChocolate,
-    //eProdNut
-    //};
-
-    //const std::map<pca::eProd, std::set<pca::eOpt> > c_mapProduct_setOptions = {
-    //{eProdCandy,{eOptCandySavings,eOptCandyConsumption}},
-    //{eProdChocolate,{eOptChocolateSavings,eOptChocolateConsumption}},
-    //{eProdNut,{eOptNutSavings,eOptNutConsumption}},
-    //};
-
-    ////Esto debería sacarse a partir de lo anterior
-    //const std::map<pca::eOpt, pca::eProd > c_mapOption_Product = {
-
-    //{eOptCandySavings,eProdCandy},
-    //{eOptChocolateSavings,eProdChocolate},
-    //{eOptNutSavings,eProdNut},
-    //{eOptCandyConsumption,eProdCandy},
-    //{eOptChocolateConsumption,eProdChocolate},
-    //{eOptNutConsumption,eProdNut }
-
-    //};
-
-    //const std::set<pca::eOpt> c_setOptions = {
-    //eOptCandySavings,
-    //eOptChocolateSavings,
-    //eOptNutSavings,
-    //eOptCandyConsumption,
-    //eOptChocolateConsumption,
-    //eOptNutConsumption
-    //};
-
-    //const std::set<pca::eOpt> c_setGroupSavings = {
-    //eOptCandySavings,
-    //eOptChocolateSavings,
-    //eOptNutSavings
-    //};
-
-    //const std::set<pca::eOpt> c_setGroupConsumption = {
-    //eOptCandyConsumption,
-    //eOptChocolateConsumption,
-    //eOptNutConsumption
-    //};
-
-    //const std::set<pca::eOpt> c_setGroupSweets = {
-    //eOptCandyConsumption,
-    //eOptChocolateConsumption,
-    //};
-
-    //const std::map<pca::eCompComb, std::set<pca::eOpt> > c_mapComplementaryCombo_setOptions = {
-    //    {eCompCombSweets, c_setGroupSweets}
-    //};
-
-    //const std::map<pca::eSuppComb, std::set<pca::eOpt> > c_mapSupplementaryCombo_setOptions = {
-    //    {c_nSuppCombConsumption, c_setGroupConsumption},
-    //    {c_nSuppCombSavings, c_setGroupSavings}
-    //};
-
-    //const std::map<pca::eProd, std::string> c_mapProd_Name = {
-    //    {eProdCandy,"candy"},
-    //    {eProdChocolate,"chocolate"},
-    //    {eProdNut,"nut"}
-    //};
-
-    //const std::map<pca::eOpt,std::string> c_mapOption_Name = {
-    //    {eOptCandySavings,"candy savings"},
-    //    {eOptChocolateSavings,"chocolate savings"},
-    //    {eOptNutSavings,"nut savings"},
-    //    {eOptCandyConsumption,"candy consumption"},
-    //    {eOptChocolateConsumption,"chocolate consumption"},
-    //    {eOptNutConsumption,"nut consumption"}
-    //};
-
-    //const std::map<pca::eCompComb, std::string > c_mapComplementaryCombo_Name = {
-    //    {eCompCombSweets, "sweets"}
-    //};
-
-    //const std::map<pca::eSuppComb, std::string > c_mapSupplementaryCombo_Name = {
-    //    {c_nSuppCombConsumption, "consumption"},
-    //    {c_nSuppCombSavings, "savings"}
-    //};
-
-    ////std::set<eOpt> setOptions = pairCombo_setOptions.second;
-    ////std::map<eOpt, double> mapOption_dWeight;
-    ////for (auto& nOption : setOptions)
-    ////{
-    ////    mapOption_dWeight[nOption] = 1.0; //Por defecto, el peso es 1 para todas las opciones
-    ////}
-    ////m_mapSupplementaryCombo_mapOption_dWeight[nCombo] = mapOption_dWeight;
-
-    //const std::map<eSuppComb, std::map<eOpt, double> > c_mapSupplementaryCombo_mapOption_dWeight = {
-    //    {c_nSuppCombConsumption, {{eOptCandyConsumption, 1.0},
-    //                             {eOptChocolateConsumption, 1.0},
-    //                             {eOptNutConsumption, 1.0}}
-    //    },
-    //    {c_nSuppCombSavings, {{eOptCandySavings, 1.0},
-    //                             {eOptChocolateSavings, 1.0},
-    //                             {eOptNutSavings, 1.0}}
-    //    }        
-    //};
-
-//}

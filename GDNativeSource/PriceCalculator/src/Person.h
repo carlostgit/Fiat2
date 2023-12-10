@@ -19,8 +19,8 @@ namespace pca
     class CPerson
     {
     public:
-        CPerson(CPrices* pPricesRef, std::string sName);
-        CPerson(std::unique_ptr<CTradeCalculator> upTradCalculator);
+        CPerson(std::string sName, pca::CMarket* pMarketRef);
+        //CPerson(std::unique_ptr<CTradeCalculator> upTradCalculator);
         virtual ~CPerson();
 
         void AddProductAmount(CProduct* pProductRef, double dAmount);
@@ -84,6 +84,10 @@ namespace pca
             return m_vLogTrade_Amount;
         }
 
+        pca::CMarket* GetMarketRef() {
+            return m_pMarketRef;
+        }
+
     protected:
 
         void InitDefaultAmounts();
@@ -105,6 +109,8 @@ namespace pca
 
         std::vector < std::map<pca::COption*, double>> m_vLogBestOpt_Amount;
         std::vector < std::map<pca::CProduct*, double>> m_vLogTrade_Amount;
+
+        pca::CMarket* m_pMarketRef = nullptr;
 
     };
 }

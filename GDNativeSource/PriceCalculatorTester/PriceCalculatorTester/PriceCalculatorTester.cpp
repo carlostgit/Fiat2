@@ -22,7 +22,7 @@ int main()
 {
 
     std::cout << "Prueba de crear una escena sin usar la dll!\n";
-    pca::CPriceCalculatorStaticUser::CreateEmptyMarket();
+    pca::CPriceCalculatorStaticUser::CreateEmptyReality();
     pca::CPriceCalculatorStaticUser::CreateProduct("nut");
     pca::CPriceCalculatorStaticUser::CreateProduct("chocolate");
     pca::CPriceCalculatorStaticUser::CreateProduct("candy");
@@ -30,6 +30,7 @@ int main()
     pca::CPriceCalculatorStaticUser::AddToProduct_CreateConsumptionOption("nut", "nut_consumption");
     pca::CPriceCalculatorStaticUser::AddToProduct_CreateConsumptionOption("chocolate", "chocolate_consumption");
     pca::CPriceCalculatorStaticUser::AddToProduct_CreateConsumptionOption("candy", "candy_consumption");
+    pca::CPriceCalculatorStaticUser::CreateEmptyMarket();
     pca::CPriceCalculatorStaticUser::AddToMarket_CreatePerson("Peter");
     pca::CPriceCalculatorStaticUser::AddToMarket_CreatePerson("George");
     pca::CPriceCalculatorStaticUser::AddToPerson_SetProductAmount("Peter", "nut", 1.0);

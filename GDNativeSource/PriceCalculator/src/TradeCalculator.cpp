@@ -8,15 +8,18 @@
 #include "Prices.h"
 #include "Utils.h"
 #include "Option.h"
+#include "Market.h"
+
 #include <assert.h>
 
 const bool c_traces = false;
 
-pca::CTradeCalculator::CTradeCalculator(std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator, CPrices* pPricesRef)
+pca::CTradeCalculator::CTradeCalculator(std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator, CPrices* pPricesRef, CMarket* pMarketRef)
 {
     //ctor
     m_upSatisfactionCalculator = std::move(upSatisfactionCalculator);
     m_pPricesRef = pPricesRef;
+    m_pMarketRef = pMarketRef;
 }
 
 pca::CTradeCalculator::~CTradeCalculator()
@@ -45,7 +48,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
 
     double dBudgetStepLength = dBudgetStepArg;
     //std::set<eOpt> setOptions = c_setOptions;
-    std::vector<COption*> vOptions = pca::CReality::GetOptions();
+    std::vector<COption*> vOptions = m_pMarketRef->GetOptions();
     std::map<COption*, double> mapCombination = mapCurrentCombidictArg;
     //std::map<eProd, double> mapProductDict = m_pSatisfactionCalculatorRef->CalculateProductdictFromOptiondict(mapCombination);
     std::map<CProduct*, double> mapProductDict = CUtils::CalculateProductdictFromOptiondict(mapCombination);
@@ -118,10 +121,10 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
     if (dLeftMoney >= 0)
     {
 //#		Si ya no se puede añadir ningún producto, puede que quede dinero para intercambiar productos
-        long nCount = 0.0;
+        long nCount = 0;
         while (true)
         {
-            nCount += 1.0;
+            nCount += 1;
             if (nCount> nMaxStepArg)
             {
                 if (c_traces) std::cout << "Exited adjust_best_combidict because too many iterations are being used" << std::endl;
@@ -130,7 +133,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
 
             bool bChangeMade = false;
             //for (auto& nNewOption : c_setOptions)
-            for (auto& pNewOption : CReality::GetOptions())
+            for (auto& pNewOption : m_pMarketRef->GetOptions())
             {
 
                 //CProduct* pNewProduct = c_mapOption_Product.at(pNewOption);
@@ -149,7 +152,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
                 if (dCurrentLeftMoney < 0.0)
                 {
                     //for (auto& nOldOption : c_setOptions)
-                    for (auto& pOldOption : CReality::GetOptions())
+                    for (auto& pOldOption : m_pMarketRef->GetOptions())
                     {
                         if (pNewOption != pOldOption)
                         {

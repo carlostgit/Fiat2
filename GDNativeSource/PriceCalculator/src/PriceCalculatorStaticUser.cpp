@@ -15,6 +15,12 @@ void pca::CPriceCalculatorStaticUser::CreateEmptyMarket()
 	m_oPriceCalculator.CreateEmptyMarket();
 }
 
+void pca::CPriceCalculatorStaticUser::CreateEmptyReality()
+{
+	std::cout << "CreateEmptyReality path: " << __FILE__ << std::endl;
+	m_oPriceCalculator.CreateEmptyReality();
+}
+
 void pca::CPriceCalculatorStaticUser::CreateProduct(std::string sProductName)
 {
 	m_oPriceCalculator.CreateProduct(sProductName);

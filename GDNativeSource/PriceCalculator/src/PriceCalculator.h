@@ -2,18 +2,18 @@
 #define CPRICECALCULATOR_H
 
 #include "Market.h"
+#include "Reality.h"
 
 #include <vector>
 #include <memory>
 #include <string>
-
-
 
 namespace pca
 {
     class CPerson;
     class CPrices;
     class CMarket;
+    class CReality;
 
     class CPriceCalculator
     {
@@ -24,6 +24,7 @@ namespace pca
         static int GetTestPrice();
 
         void CreateEmptyMarket();
+        void CreateEmptyReality();
         void CreateProduct(std::string sProductName);
         void SetCurrency(std::string sProductName);
         void AddToProduct_CreateConsumptionOption(std::string sProduct ,std::string sOption);
@@ -46,52 +47,15 @@ namespace pca
 
         double GetDesiredProdAmount(std::string sPerson, std::string sProductName);
         void PrintPersonOptionAdjustmentToFile(std::string sPerson);
-        void PrintPersonsOptionAdjustmentToFile();
-        /* 
-        Idea de cómo se podría generar un escenario simple
-        CreateEmptyMarket();
-
-        AddToMarket_CreateProduct("nut");
-        AddToProduct_CreateConsumptionOption("nut consumption")
-
-        AddToMarket_CreateProduct("chocolate");
-        AddToProduct_CreateConsumptionOption("chocolate consumption")
-
-        AddToMarket_CreateProduct("candy");
-        AddToProduct_CreateConsumptionOption("candy consumption")
-
-        AddToMarket_SetCurrency("nut")
-
-        AddToMarket_CreatePerson("pepe")
-        AddToPerson_SetProductAmount("nut", amount_of_nut)
-        AddToPerson_SetProductAmount("chocolate", amount_of_chocolate)
-        AddToPerson_SetProductAmount("candy", amount_of_candy)
-        AddToPerson_SetSatisfactionCurveForOption("nut consumption", valueAt0, maxValue)
-        AddToPerson_SetSatisfactionCurveForOption("chocolate consumption", valueAt0, maxValue)
-        AddToPerson_SetSatisfactionCurveForOption("candy consumption", valueAt0, maxValue)
-
-        AddToMarket_CreatePerson("juan")
-        AddToPerson_SetProductAmount("nut", amount_of_nut)
-        AddToPerson_SetProductAmount("chocolate", amount_of_chocolate)
-        AddToPerson_SetProductAmount("candy", amount_of_chocolate)
-        AddToPerson_SetSatisfactionCurveForOption("nut consumption", valueAt0, maxValue)
-        AddToPerson_SetSatisfactionCurveForOption("chocolate consumption", valueAt0, maxValue)
-        AddToPerson_SetSatisfactionCurveForOption("candy consumption", valueAt0, maxValue)
-        
-        AdjustPrices()
-        
-        */
-
-
+        void PrintPersonsOptionAdjustmentToFile();        
        
     protected:
 
     private:
         //Usar unique_ptr aquí requiere que las clases se incluyan en el cpp
         //para que el compilador sepa cómo destruir sus objetos
-
-        std::unique_ptr<CMarket> m_upMarket;
         
+        std::unique_ptr<CReality> m_upReality;        
 
     };
 }
