@@ -18,72 +18,128 @@
 
 #include <iostream>
 
+void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
+{
+    pPriceCalculator->CreateEmptyReality();
+    pPriceCalculator->CreateProduct("nut");
+    pPriceCalculator->CreateProduct("chocolate");
+    pPriceCalculator->CreateProduct("candy");
+    
+    pPriceCalculator->AddToProduct_CreateConsumptionOption("nut", "nut_consumption");
+    pPriceCalculator->AddToProduct_CreateConsumptionOption("chocolate", "chocolate_consumption");
+    pPriceCalculator->AddToProduct_CreateConsumptionOption("candy", "candy_consumption");
+    pPriceCalculator->CreateEmptyMarket();
+    pPriceCalculator->SetCurrency("nut");
+    pPriceCalculator->AddToMarket_CreatePerson("Peter");
+    pPriceCalculator->AddToMarket_CreatePerson("George");
+    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "nut", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "chocolate", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "candy", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("George", "nut", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("George", "chocolate", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("George", "candy", 1.0);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "nut_consumption", 1.0, 1.0);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "chocolate_consumption", 1.1, 1.1);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "candy_consumption", 2.2, 2.2);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "nut_consumption", 1.0, 1.0);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "chocolate_consumption", 10.5, 10.5);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "candy_consumption", 40.6, 40.6);
+
+
+    std::cout << "Amount nut Peter: " << pPriceCalculator->GetProductAmount("nut", "Peter") << std::endl;
+    std::cout << "Amount chocolate Peter: " << pPriceCalculator->GetProductAmount("chocolate", "Peter") << std::endl;
+    std::cout << "Amount candy Peter: " << pPriceCalculator->GetProductAmount("candy", "Peter") << std::endl;
+    std::cout << "Amount nut George: " << pPriceCalculator->GetProductAmount("nut", "George") << std::endl;
+    std::cout << "Amount chocolate George: " << pPriceCalculator->GetProductAmount("chocolate", "George") << std::endl;
+    std::cout << "Amount candy George: " << pPriceCalculator->GetProductAmount("candy", "George") << std::endl;
+
+    std::cout << "Amount nut_consumption Peter: " << pPriceCalculator->GetOptionAmount("nut_consumption", "Peter") << std::endl;
+    std::cout << "Amount chocolate_consumption Peter: " << pPriceCalculator->GetOptionAmount("chocolate_consumption", "Peter") << std::endl;
+    std::cout << "Amount candy_consumption Peter: " << pPriceCalculator->GetOptionAmount("candy_consumption", "Peter") << std::endl;
+    std::cout << "Amount nut_consumption George: " << pPriceCalculator->GetOptionAmount("nut_consumption", "George") << std::endl;
+    std::cout << "Amount chocolate_consumption George: " << pPriceCalculator->GetOptionAmount("chocolate_consumption", "George") << std::endl;
+    std::cout << "Amount candy_consumption George: " << pPriceCalculator->GetOptionAmount("candy_consumption", "George") << std::endl;
+
+    std::cout << "Desired nut amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "nut") << std::endl;
+    std::cout << "Desired chocolate amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "chocolate") << std::endl;
+    std::cout << "Desired candy amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "candy") << std::endl;
+    std::cout << "Desired nut amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "nut") << std::endl;
+    std::cout << "Desired chocolate amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "chocolate") << std::endl;
+    std::cout << "Desired candy amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "candy") << std::endl;
+
+
+    pPriceCalculator->AdjustPrices();
+
+    std::cout << "Price nut: " << pPriceCalculator->GetPrice("nut") << std::endl;
+    std::cout << "Price chocolate: " << pPriceCalculator->GetPrice("chocolate") << std::endl;
+    std::cout << "Price candy: " << pPriceCalculator->GetPrice("candy") << std::endl;
+
+    std::cout << "Amount nut Peter: " << pPriceCalculator->GetProductAmount("nut", "Peter") << std::endl;
+    std::cout << "Amount chocolate Peter: " << pPriceCalculator->GetProductAmount("chocolate", "Peter") << std::endl;
+    std::cout << "Amount candy Peter: " << pPriceCalculator->GetProductAmount("candy", "Peter") << std::endl;
+    std::cout << "Amount nut George: " << pPriceCalculator->GetProductAmount("nut", "George") << std::endl;
+    std::cout << "Amount chocolate George: " << pPriceCalculator->GetProductAmount("chocolate", "George") << std::endl;
+    std::cout << "Amount candy George: " << pPriceCalculator->GetProductAmount("candy", "George") << std::endl;
+
+    pPriceCalculator->PrintPersonOptionAdjustmentToFile("Peter");
+    pPriceCalculator->PrintPersonsOptionAdjustmentToFile();
+
+}
+
 int main()
 {
+    bool bTestSinDll = true;
+    if (bTestSinDll)
+    {
 
-    std::cout << "Prueba de crear una escena sin usar la dll!\n";
-    pca::CPriceCalculatorStaticUser::CreateEmptyReality();
-    pca::CPriceCalculatorStaticUser::CreateProduct("nut");
-    pca::CPriceCalculatorStaticUser::CreateProduct("chocolate");
-    pca::CPriceCalculatorStaticUser::CreateProduct("candy");
-    pca::CPriceCalculatorStaticUser::SetCurrency("nut");
-    pca::CPriceCalculatorStaticUser::AddToProduct_CreateConsumptionOption("nut", "nut_consumption");
-    pca::CPriceCalculatorStaticUser::AddToProduct_CreateConsumptionOption("chocolate", "chocolate_consumption");
-    pca::CPriceCalculatorStaticUser::AddToProduct_CreateConsumptionOption("candy", "candy_consumption");
-    pca::CPriceCalculatorStaticUser::CreateEmptyMarket();
-    pca::CPriceCalculatorStaticUser::AddToMarket_CreatePerson("Peter");
-    pca::CPriceCalculatorStaticUser::AddToMarket_CreatePerson("George");
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetProductAmount("Peter", "nut", 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetProductAmount("Peter", "chocolate", 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetProductAmount("Peter", "candy", 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetProductAmount("George", "nut", 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetProductAmount("George", "chocolate", 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetProductAmount("George", "candy", 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetSatisfactionCurveForOption("Peter", "nut_consumption", 1.0, 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetSatisfactionCurveForOption("Peter", "chocolate_consumption", 1.1, 1.1);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetSatisfactionCurveForOption("Peter", "candy_consumption", 2.2, 2.2);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetSatisfactionCurveForOption("George", "nut_consumption", 1.0, 1.0);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetSatisfactionCurveForOption("George", "chocolate_consumption", 10.5, 10.5);
-    pca::CPriceCalculatorStaticUser::AddToPerson_SetSatisfactionCurveForOption("George", "candy_consumption", 40.6, 40.6);
-   
-    std::cout << "Amount nut Peter: " << pca::CPriceCalculatorStaticUser::GetProductAmount("nut", "Peter") << std::endl;
-    std::cout << "Amount chocolate Peter: " << pca::CPriceCalculatorStaticUser::GetProductAmount("chocolate", "Peter") << std::endl;
-    std::cout << "Amount candy Peter: " << pca::CPriceCalculatorStaticUser::GetProductAmount("candy", "Peter") << std::endl;
-    std::cout << "Amount nut George: " << pca::CPriceCalculatorStaticUser::GetProductAmount("nut", "George") << std::endl;
-    std::cout << "Amount chocolate George: " << pca::CPriceCalculatorStaticUser::GetProductAmount("chocolate", "George") << std::endl;
-    std::cout << "Amount candy George: " << pca::CPriceCalculatorStaticUser::GetProductAmount("candy", "George") << std::endl;
+        std::cout << "Prueba de crear una escena sin usar la dll pero usando un puntero a CPriceCalculator!\n";
+        pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
+        LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+    }
+    else
+    {
 
-    std::cout << "Amount nut_consumption Peter: " << pca::CPriceCalculatorStaticUser::GetOptionAmount("nut_consumption", "Peter") << std::endl;
-    std::cout << "Amount chocolate_consumption Peter: " << pca::CPriceCalculatorStaticUser::GetOptionAmount("chocolate_consumption", "Peter") << std::endl;
-    std::cout << "Amount candy_consumption Peter: " << pca::CPriceCalculatorStaticUser::GetOptionAmount("candy_consumption", "Peter") << std::endl;
-    std::cout << "Amount nut_consumption George: " << pca::CPriceCalculatorStaticUser::GetOptionAmount("nut_consumption", "George") << std::endl;
-    std::cout << "Amount chocolate_consumption George: " << pca::CPriceCalculatorStaticUser::GetOptionAmount("chocolate_consumption", "George") << std::endl;
-    std::cout << "Amount candy_consumption George: " << pca::CPriceCalculatorStaticUser::GetOptionAmount("candy_consumption", "George") << std::endl;
+        ////////////////////////////////////
+        //Prueba linkando la librería dinámica en ejecución "explicit linking":
+        std::cout << "Prueba de crear una escena linkando la libreria dinamica en ejecucion (explicit linking)!\n";
 
-    std::cout << "Desired nut amount of Peter: " << pca::CPriceCalculatorStaticUser::GetDesiredProdAmount("Peter","nut") << std::endl;
-    std::cout << "Desired chocolate amount of Peter: " << pca::CPriceCalculatorStaticUser::GetDesiredProdAmount("Peter", "chocolate") << std::endl;
-    std::cout << "Desired candy amount of Peter: " << pca::CPriceCalculatorStaticUser::GetDesiredProdAmount("Peter", "candy") << std::endl;
-    std::cout << "Desired nut amount of George: " << pca::CPriceCalculatorStaticUser::GetDesiredProdAmount("George","nut") << std::endl;
-    std::cout << "Desired chocolate amount of George: " << pca::CPriceCalculatorStaticUser::GetDesiredProdAmount("George", "chocolate") << std::endl;
-    std::cout << "Desired candy amount of George: " << pca::CPriceCalculatorStaticUser::GetDesiredProdAmount("George", "candy") << std::endl;
-    //todo
-    //static std::map<pca::CProduct*, double> CalculateProductdictFromOptiondict(std::map<COption*, double> mapOptiondictArg);
+        //Si se usa una librería dinámica en GODOT, he comprobado q carga la librería solo si la pongo en el exe de godot
+            std::wstring libraryName = L"PriceCalculatorDLL.dll";
+            //HMODULE hDll = LoadLibrary(TEXT("PriceCalculatorDLL.dll"));
+            HMODULE hDll = LoadLibrary(libraryName.c_str());
+            if (!hDll || hDll == INVALID_HANDLE_VALUE) {
+                std::wcout << "Unable to load library " << libraryName.c_str() << L" with 'explicit linking'!\n";
+                std::cout << "Saliendo del programa por el fallo al cargar la libreria" << std::endl;
+                return 0;
+            }
 
-    pca::CPriceCalculatorStaticUser::AdjustPrices();
+            std::wcout << L"Library " << libraryName.c_str() << L" loaded\n";
 
-    std::cout << "Price nut: " << pca::CPriceCalculatorStaticUser::GetPrice("nut") << std::endl;
-    std::cout << "Price chocolate: " << pca::CPriceCalculatorStaticUser::GetPrice("chocolate") << std::endl;
-    std::cout << "Price candy: " << pca::CPriceCalculatorStaticUser::GetPrice("candy") << std::endl;
+            //typedef pca::CPriceCalculator* (*fpGetPriceCalculatorRefFromDLL2)();
+            //extern "C" PRICECALCULATORDLL_API pca::CPriceCalculator * GetPriceCalculatorRefFromDLL2();
 
-    std::cout << "Amount nut Peter: " << pca::CPriceCalculatorStaticUser::GetProductAmount("nut", "Peter") << std::endl;
-    std::cout << "Amount chocolate Peter: " << pca::CPriceCalculatorStaticUser::GetProductAmount("chocolate", "Peter") << std::endl;
-    std::cout << "Amount candy Peter: " << pca::CPriceCalculatorStaticUser::GetProductAmount("candy", "Peter") << std::endl;
-    std::cout << "Amount nut George: " << pca::CPriceCalculatorStaticUser::GetProductAmount("nut", "George") << std::endl;
-    std::cout << "Amount chocolate George: " << pca::CPriceCalculatorStaticUser::GetProductAmount("chocolate", "George") << std::endl;
-    std::cout << "Amount candy George: " << pca::CPriceCalculatorStaticUser::GetProductAmount("candy", "George") << std::endl;
+            std::string nombreMetodo = "GetPriceCalculatorRefFromDLL2";
+            pca::CPriceCalculator*(*fpGetPriceCalculatorRefFromDLL2)();
+            fpGetPriceCalculatorRefFromDLL2 = (pca::CPriceCalculator*(*)())(GetProcAddress(hDll, nombreMetodo.c_str()));
 
-    pca::CPriceCalculatorStaticUser::PrintPersonOptionAdjustmentToFile("Peter");
-    pca::CPriceCalculatorStaticUser::PrintPersonOptionAdjustmentToFile();
+            if (fpGetPriceCalculatorRefFromDLL2)
+            {
+
+                std::wcout << "Hello World con la librería dinámica " << libraryName.c_str() << " linkada en ejecución!\n";
+                std::cout << "Llamando al método: " << nombreMetodo << std::endl;                
+                pca::CPriceCalculator* pPriceCalculator = fpGetPriceCalculatorRefFromDLL2();
+                std::cout << "Dirección de memoria del objeto pPriceCalculator" << pPriceCalculator << std::endl;
+                std::cout << "Ejecutando LaunchPriceCalculatorDefaultTest(pPriceCalculator);" << std::endl;
+                LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+            }
+            else
+            {
+                std::cout << "No se ha encontrado el metodo " << nombreMetodo;
+                std::wcout << " en la libreria " << libraryName << std::endl;
+            }
+
+    }
+
 
     //////////////////////////////////
     //Prueba con la librería estática:
