@@ -2,8 +2,9 @@
 #include <string.h>
 #include "BindToCPP.h"
 #include <stdio.h>
+#include <windows.h>
 //Prueba con libreria Market.dll
-#include "../../Market/market.h"
+//#include "../../Market/market.h"
 //tipo del método
 //void DLL_EXPORT SomeFunction(const LPCSTR sometext);
 //DWORD(*Arithmetic)(DWORD, DWORD);
@@ -43,7 +44,8 @@ godot_variant simple_get_data2(godot_object *p_instance, void *p_method_data, vo
 godot_variant simple_set_and_get_data(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
 godot_variant simple_get_num_args(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
 godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
-godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
+//godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
+godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args);
 
 
 // `gdnative_init` is a function that initializes our dynamic library.
@@ -113,8 +115,11 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
     godot_instance_method get_and_set_dict = { NULL, NULL, NULL };
     get_and_set_dict.method = &simple_get_and_set_dict;
 
-    godot_instance_method calc_info_from_market_test = { NULL, NULL, NULL };
-    calc_info_from_market_test.method = &simple_calc_info_from_market_test;
+    //godot_instance_method calc_info_from_market_test = { NULL, NULL, NULL };
+    //calc_info_from_market_test.method = &simple_calc_info_from_market_test;
+
+    godot_instance_method calc_info_from_price_calculator_dll = { NULL, NULL, NULL };
+    calc_info_from_price_calculator_dll.method = &simple_calc_info_from_price_calculator_dll;
 
 	godot_method_attributes attributes = { GODOT_METHOD_RPC_MODE_DISABLED };
 
@@ -132,7 +137,8 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
 	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "set_and_get_data", attributes, set_and_get_data);
 	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_num_args", attributes, get_num_args);
 	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_and_set_dict", attributes, get_and_set_dict);
-	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_market_test", attributes, calc_info_from_market_test);
+	//nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_market_test", attributes, calc_info_from_market_test);
+    nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_price_calculator_dll", attributes, calc_info_from_price_calculator_dll);
 }
 
 // In our constructor, allocate memory for our structure and fill
@@ -431,48 +437,48 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
 
 
 
-godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args)
-{
-    godot_variant godvar_ret;
-
-    market_addPriceForProduct(2,34.6);
-    //Test de registro de callback
-    market_setCallbackMethodForPrices(&setDataFromMarket);
-    market_calculationTest(35);
-
-    double d_new_value = g_dDataFromMarket;
-    api->godot_variant_new_real(&godvar_ret, d_new_value);
-
-    //Pruebo a llamar a un método de Market.dll
-    //He comprobado, q carga la librería, solo si la pongo en el exe de godot
-    //Ejemplo con run-time inking. Creo que no es necesario compilar linkando
-    //con la librería estática
-    //HMODULE hDll = LoadLibrary(_T("Marketd.dll"));
-    HMODULE hDll = LoadLibrary("Marketd.dll");
-    if (!hDll || hDll == INVALID_HANDLE_VALUE) {
-        printf("unable to load libraray\n");
-        //wchar_t wchar_caca[20] = L"unable to load libraray";
-        wchar_t wchar_caca[24] = L"unable to load libraray";
-        godot_int godint_caca_length = wcslen(wchar_caca);
-        godot_string godstring_caca;
-        api->godot_string_new_with_wide_string(&godstring_caca, &wchar_caca, godint_caca_length);
-        api->godot_print(&godstring_caca);
-        return godvar_ret;
-    }
-
-    printf("Marketd.dll loaded\n");
-
-    void(*functionPtr)(const LPCSTR sometext);
-    functionPtr = (SomeF)(GetProcAddress(hDll, "SomeFunction"));
-    //Lo anterior queda más bonito, pero también se puede hacer
-    //como en la siguiente linea, sin usar el typdef
-    //functionPtr = (void(*)(const LPCSTR sometext))(GetProcAddress(hDll, "SomeFunction"));
-
-    functionPtr("Hello from run-time linked dll");
-    //Fin del ejemplo con run-time linking.
-
-	return godvar_ret;
-}
+//godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args)
+//{
+//    godot_variant godvar_ret;
+//
+//    market_addPriceForProduct(2,34.6);
+//    //Test de registro de callback
+//    market_setCallbackMethodForPrices(&setDataFromMarket);
+//    market_calculationTest(35);
+//
+//    double d_new_value = g_dDataFromMarket;
+//    api->godot_variant_new_real(&godvar_ret, d_new_value);
+//
+//    //Pruebo a llamar a un método de Market.dll
+//    //He comprobado, q carga la librería, solo si la pongo en el exe de godot
+//    //Ejemplo con run-time inking. Creo que no es necesario compilar linkando
+//    //con la librería estática
+//    //HMODULE hDll = LoadLibrary(_T("Marketd.dll"));
+//    HMODULE hDll = LoadLibrary("Marketd.dll");
+//    if (!hDll || hDll == INVALID_HANDLE_VALUE) {
+//        printf("unable to load libraray\n");
+//        //wchar_t wchar_caca[20] = L"unable to load libraray";
+//        wchar_t wchar_caca[24] = L"unable to load libraray";
+//        godot_int godint_caca_length = wcslen(wchar_caca);
+//        godot_string godstring_caca;
+//        api->godot_string_new_with_wide_string(&godstring_caca, &wchar_caca, godint_caca_length);
+//        api->godot_print(&godstring_caca);
+//        return godvar_ret;
+//    }
+//
+//    printf("Marketd.dll loaded\n");
+//
+//    void(*functionPtr)(const LPCSTR sometext);
+//    functionPtr = (SomeF)(GetProcAddress(hDll, "SomeFunction"));
+//    //Lo anterior queda más bonito, pero también se puede hacer
+//    //como en la siguiente linea, sin usar el typdef
+//    //functionPtr = (void(*)(const LPCSTR sometext))(GetProcAddress(hDll, "SomeFunction"));
+//
+//    functionPtr("Hello from run-time linked dll");
+//    //Fin del ejemplo con run-time linking.
+//
+//	return godvar_ret;
+//}
 
 //Metodo callback para que lo use MarketTest
 void setDataFromMarket(int nProduct, double dAmount)
@@ -482,3 +488,31 @@ void setDataFromMarket(int nProduct, double dAmount)
     g_dDataFromMarket = dAmount;
 }
 
+godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
+{
+    godot_variant godvar_ret;
+
+    //double d_new_value = g_
+   // api->godot_variant_new_real(&godvar_ret, d_new_value);
+
+    //int int_ret_from_price_calculator_dll = test_price_calculator_dll();
+
+    struct strProductAmount strRet;
+    test_price_calculator_dll_with_str(&strRet);
+
+    int int_ret_from_price_calculator_dll = strRet.nProductId;
+    double double_ret_from_price_calculator_dll = strRet.dAmount;
+
+    //wchar_t wchar_ret_from_price_calculator_dll[20];
+    //swprintf(wchar_ret_from_price_calculator_dll, "%d", int_ret_from_price_calculator_dll);
+
+    //godot_string godstring_to_print;
+    //godot_int godint_text_length = wcslen(wchar_ret_from_price_calculator_dll);
+    //api->godot_string_new_with_wide_string(&godstring_to_print, &wchar_ret_from_price_calculator_dll, godint_text_length);
+    //api->godot_print(&godstring_to_print);
+    
+    //api->godot_variant_new_int(&godvar_ret ,int_ret_from_price_calculator_dll);
+    api->godot_variant_new_real(&godvar_ret, double_ret_from_price_calculator_dll);
+
+    return godvar_ret;
+}

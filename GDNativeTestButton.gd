@@ -30,7 +30,8 @@ func _on_GDNativeTestButton_pressed():
 #	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
 	
 	$Label.text = ""
-	$Label2.text = "calc_info_from_market_test: "+ str(data.calc_info_from_market_test())
+	#$Label2.text = "calc_info_from_market_test: "+ str(data.calc_info_from_market_test())
+	$Label2.text = "calc_info_from_price_calculator_dll: "+ str(data.calc_info_from_price_calculator_dll())
 	
 	for text_key in text_dict_arg:
 		$Label.text += " Key: "+text_key
