@@ -503,14 +503,25 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
     int int_ret_from_price_calculator_dll = strRet.nProductId;
     double double_ret_from_price_calculator_dll = strRet.dAmount;
 
-    //wchar_t wchar_ret_from_price_calculator_dll[20];
-    //swprintf(wchar_ret_from_price_calculator_dll, "%d", int_ret_from_price_calculator_dll);
-
-    //godot_string godstring_to_print;
-    //godot_int godint_text_length = wcslen(wchar_ret_from_price_calculator_dll);
-    //api->godot_string_new_with_wide_string(&godstring_to_print, &wchar_ret_from_price_calculator_dll, godint_text_length);
-    //api->godot_print(&godstring_to_print);
+    {
+        wchar_t wchar_to_print[30] = L"Num arguments: ";
+        godot_int godint_to_print_length = wcslen(wchar_to_print);
+        godot_string godstring_to_print;
+        api->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print, godint_to_print_length);
+        //Supongo que estos strings se copian, y que da igual que luego destruya el wchar_cucu
+        api->godot_print(&godstring_to_print);
+    }
     
+    {
+        wchar_t wchar_to_print[20]; // Choose a buffer size that is large enough to hold your integer as a wide string
+        swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%d", p_num_args);
+        godot_int godint_to_print_length = wcslen(wchar_to_print);
+        godot_string godstring_to_print;
+        api->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print, godint_to_print_length);
+        //Supongo que estos strings se copian, y que da igual que luego destruya el wchar_cucu
+        api->godot_print(&godstring_to_print);
+    }
+
     //api->godot_variant_new_int(&godvar_ret ,int_ret_from_price_calculator_dll);
     api->godot_variant_new_real(&godvar_ret, double_ret_from_price_calculator_dll);
 
