@@ -2,17 +2,18 @@
 #include <string.h>
 #include "BindToCPP.h"
 #include <stdio.h>
-#include <windows.h>
+//#include <windows.h>
 //Prueba con libreria Market.dll
 //#include "../../Market/market.h"
 //tipo del método
 //void DLL_EXPORT SomeFunction(const LPCSTR sometext);
 //DWORD(*Arithmetic)(DWORD, DWORD);
 //void(*SomeFunction)(const LPCSTR sometext);
-typedef void(*SomeF)(const LPCSTR sometext);
+//typedef void(*SomeF)(const LPCSTR sometext);
 //
 
 //
+
 
 //Callback para pasarse como puntero como argumento del método
 // setCallbackMethodForPrices de MarketTest
@@ -32,8 +33,8 @@ typedef struct user_data_struct {
 // into the main Godot executable. In order for your module to have
 // access to these functions, GDNative provides your application with
 // a struct containing pointers to all these functions.
-const godot_gdnative_core_api_struct *api = NULL;
-const godot_gdnative_ext_nativescript_api_struct *nativescript_api = NULL;
+const godot_gdnative_core_api_struct *api2 = NULL; //CHer. Lo cambio de api a api2, pq si no, em++ daba problemas al compilarlo con los bindings
+const godot_gdnative_ext_nativescript_api_struct *nativescript_api2 = NULL; //CHer. Lo mismo aquí
 
 // These are forward declarations for the functions we'll be implementing
 // for our object. A constructor and destructor are both necessary.
@@ -52,7 +53,7 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
 // Godot will give it a pointer to a structure that contains various bits of
 // information we may find useful among which the pointers to our API structures.
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
-	api = p_options->api_struct;
+	api2 = p_options->api_struct;
 
 
 //    printf("Before libr_path:\n");
@@ -62,10 +63,10 @@ void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
 
 
 	// Find NativeScript extensions.
-	for (int i = 0; i < api->num_extensions; i++) {
-		switch (api->extensions[i]->type) {
+	for (int i = 0; i < api2->num_extensions; i++) {
+		switch (api2->extensions[i]->type) {
 			case GDNATIVE_EXT_NATIVESCRIPT: {
-				nativescript_api = (godot_gdnative_ext_nativescript_api_struct *)api->extensions[i];
+				nativescript_api2 = (godot_gdnative_ext_nativescript_api_struct *)api2->extensions[i];
 			}; break;
 			default:
 				break;
@@ -76,8 +77,8 @@ void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
 // `gdnative_terminate` which is called before the library is unloaded.
 // Godot will unload the library when no object uses it anymore.
 void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_options) {
-	api = NULL;
-	nativescript_api = NULL;
+	api2 = NULL;
+	nativescript_api2 = NULL;
 	//api12 = NULL;
 }
 
@@ -98,7 +99,7 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
 	//   this is not true inheritance but it's close enough.
 	// * Finally, the fourth and fifth parameters are descriptions
 	//   for our constructor and destructor, respectively.
-	nativescript_api->godot_nativescript_register_class(p_handle, "PRICECALCULATORGDNBIND", "Reference", create, destroy);
+	nativescript_api2->godot_nativescript_register_class(p_handle, "PRICECALCULATORGDNBIND", "Reference", create, destroy);
 
 	godot_instance_method get_data = { NULL, NULL, NULL };
 	get_data.method = &simple_get_data;
@@ -132,13 +133,13 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
 	//   `godot_headers/nativescript/godot_nativescript.h` for possible values).
 	// * The fifth and final parameter is a description of which function
 	//   to call when the method gets called.
-	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_data", attributes, get_data);
-	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_data2", attributes, get_data2);
-	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "set_and_get_data", attributes, set_and_get_data);
-	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_num_args", attributes, get_num_args);
-	nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_and_set_dict", attributes, get_and_set_dict);
+	nativescript_api2->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_data", attributes, get_data);
+	nativescript_api2->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_data2", attributes, get_data2);
+	nativescript_api2->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "set_and_get_data", attributes, set_and_get_data);
+	nativescript_api2->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_num_args", attributes, get_num_args);
+	nativescript_api2->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_and_set_dict", attributes, get_and_set_dict);
 	//nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_market_test", attributes, calc_info_from_market_test);
-    nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_price_calculator_dll", attributes, calc_info_from_price_calculator_dll);
+    nativescript_api2->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_price_calculator_dll", attributes, calc_info_from_price_calculator_dll);
 }
 
 // In our constructor, allocate memory for our structure and fill
@@ -147,16 +148,18 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
 // our new structure. This pointer will act as our instance
 // identifier in case multiple objects are instantiated.
 GDCALLINGCONV void *simple_constructor(godot_object *p_instance, void *p_method_data) {
-	user_data_struct *user_data = api->godot_alloc(sizeof(user_data_struct));
-	strcpy_s(user_data->data, sizeof(user_data_struct), "Hellow frome SimpleMod!");
-
+	user_data_struct *user_data = api2->godot_alloc(sizeof(user_data_struct));
+	//strcpy_s(user_data->data, sizeof(user_data_struct), "Hellow frome SimpleMod!");
+    //CHer: cambio lo anterior porque emscripten no soporta strcopy_s
+    strcpy(user_data->data, "Hellow frome SimpleMod!");
+    
 	return user_data;
 }
 
 // The destructor is called when Godot is done with our
 // object and we free our instances' member data.
 GDCALLINGCONV void simple_destructor(godot_object *p_instance, void *p_method_data, void *p_user_data) {
-	api->godot_free(p_user_data);
+	api2->godot_free(p_user_data);
 }
 
 // Data is always sent and returned as variants so in order to
@@ -168,10 +171,10 @@ godot_variant simple_get_data(godot_object *p_instance, void *p_method_data, voi
 	godot_variant ret;
 	user_data_struct *user_data = (user_data_struct *)p_user_data;
 
-	api->godot_string_new(&data);
-	api->godot_string_parse_utf8(&data, user_data->data);
-	api->godot_variant_new_string(&ret, &data);
-	api->godot_string_destroy(&data);
+	api2->godot_string_new(&data);
+	api2->godot_string_parse_utf8(&data, user_data->data);
+	api2->godot_variant_new_string(&ret, &data);
+	api2->godot_string_destroy(&data);
 
 	return ret;
 }
@@ -183,16 +186,16 @@ godot_variant simple_get_data2(godot_object *p_instance, void *p_method_data, vo
 
 	godot_variant ret;
 	//user_data_struct *user_data = (user_data_struct *)p_user_data;
-	api->godot_string_new(&data);
+	api2->godot_string_new(&data);
 	//api->godot_string_parse_utf8(&data, user_data->data);
 
 	//char mi_char_string[256] = "bla bla bla bla";
 
 	//api->godot_string_parse_utf8(&data, mi_char_string);
-	api->godot_string_parse_utf8(&data, "blab lab la blala ldalfjasj akd ald ld lajdjasj ");
+	api2->godot_string_parse_utf8(&data, "blab lab la blala ldalfjasj akd ald ld lajdjasj ");
 	//string miString = "simple_get_data2";
-	api->godot_variant_new_string(&ret, &data);
-	api->godot_string_destroy(&data);
+	api2->godot_variant_new_string(&ret, &data);
+	api2->godot_string_destroy(&data);
 
 	return ret;
 }
@@ -201,13 +204,13 @@ godot_variant simple_set_and_get_data(godot_object *p_instance, void *p_method_d
 {
     godot_variant ret;
 
-    godot_string myString = api->godot_variant_as_string(*p_args);
+    godot_string myString = api2->godot_variant_as_string(*p_args);
 
     godot_string myString2;
 
-    const wchar_t* myWchar_t = api->godot_string_wide_str(&myString);
+    const wchar_t* myWchar_t = api2->godot_string_wide_str(&myString);
 
-    godot_int length = api->godot_string_length(&myString);
+    godot_int length = api2->godot_string_length(&myString);
 
     wchar_t myStringPur[200] = L"myStringPur";
 
@@ -219,9 +222,9 @@ godot_variant simple_set_and_get_data(godot_object *p_instance, void *p_method_d
         myStringPur[i]=myWchar_t[i];
     }
 
-    api->godot_string_new_with_wide_string(&myString2, &myStringPur, length2);
+    api2->godot_string_new_with_wide_string(&myString2, &myStringPur, length2);
 
-    api->godot_variant_new_string(&ret, &myString2);
+    api2->godot_variant_new_string(&ret, &myString2);
 
 	return ret;
 }
@@ -230,9 +233,9 @@ godot_variant simple_get_num_args(godot_object *p_instance, void *p_method_data,
 {
     godot_variant ret;
 
-    godot_string myStringNumArgs = api->godot_string_num((double)p_num_args);
+    godot_string myStringNumArgs = api2->godot_string_num((double)p_num_args);
 
-    api->godot_variant_new_string(&ret, &myStringNumArgs);
+    api2->godot_variant_new_string(&ret, &myStringNumArgs);
 
 	return ret;
 }
@@ -264,10 +267,10 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
 //        printf("extension version mayor:%d, minor%d\n", api->extensions[iext]->version.major,api->extensions[iext]->version.minor);
 //    }
 
-    godot_dictionary godict_arg = api->godot_variant_as_dictionary(*p_args);
+    godot_dictionary godict_arg = api2->godot_variant_as_dictionary(*p_args);
 
     godot_dictionary godict_arg_copy;
-    api->godot_dictionary_new_copy(&godict_arg_copy, &godict_arg);
+    api2->godot_dictionary_new_copy(&godict_arg_copy, &godict_arg);
     //Esta copia sobraba. No funciona como se espera de una copia.
     //Si modifico arg_dict_copy, se modifica también el diccionario recibido como argumento
 
@@ -282,12 +285,12 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
     //la copia, ves que se modifica el original también
     godot_dictionary godict_arg_man_copy;
     {
-        api->godot_dictionary_new(&godict_arg_man_copy);
+        api2->godot_dictionary_new(&godict_arg_man_copy);
 
-        godot_array godarray_keys = api->godot_dictionary_keys(&godict_arg);
-        godot_array godarray_values = api->godot_dictionary_values(&godict_arg);
+        godot_array godarray_keys = api2->godot_dictionary_keys(&godict_arg);
+        godot_array godarray_values = api2->godot_dictionary_values(&godict_arg);
 
-        godot_int godint_size_of_array = api->godot_array_size(&godarray_keys);
+        godot_int godint_size_of_array = api2->godot_array_size(&godarray_keys);
 
         printf("Size of array: %d \n", godint_size_of_array);
 
@@ -298,29 +301,29 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
             //No sé qué tipo de copia se hace con los variant, si paso la referencia directamente
             //desde el diccionario origen
             godot_variant godvar_my_key;
-            godvar_my_key = api->godot_array_get(&godarray_keys,i);
-            godot_string godstring_key = api->godot_variant_as_string(&godvar_my_key);
-            api->godot_print(&godstring_key);
+            godvar_my_key = api2->godot_array_get(&godarray_keys,i);
+            godot_string godstring_key = api2->godot_variant_as_string(&godvar_my_key);
+            api2->godot_print(&godstring_key);
 
             godot_variant godvar_my_value;
-            godvar_my_value = api->godot_array_get(&godarray_values,i);
-            godot_string godstring_value = api->godot_variant_as_string(&godvar_my_value);
-            api->godot_print(&godstring_value);
+            godvar_my_value = api2->godot_array_get(&godarray_values,i);
+            godot_string godstring_value = api2->godot_variant_as_string(&godvar_my_value);
+            api2->godot_print(&godstring_value);
 
             godot_variant godvar_my_key2 = godvar_my_key;
             godot_variant godvar_my_value2 = godvar_my_value;
 
-            api->godot_variant_new_copy(&godvar_my_key2,&godvar_my_key);
-            godot_string godstring_key2 = api->godot_variant_as_string(&godvar_my_key2);
-            api->godot_variant_new_copy(&godvar_my_value2,&godvar_my_value);
-            godot_string godstring_value2 = api->godot_variant_as_string(&godvar_my_value2);
+            api2->godot_variant_new_copy(&godvar_my_key2,&godvar_my_key);
+            godot_string godstring_key2 = api2->godot_variant_as_string(&godvar_my_key2);
+            api2->godot_variant_new_copy(&godvar_my_value2,&godvar_my_value);
+            godot_string godstring_value2 = api2->godot_variant_as_string(&godvar_my_value2);
 
             printf("my key 2: ");
-            api->godot_print(&godstring_key2);
+            api2->godot_print(&godstring_key2);
             printf("my value 2:%d\n",godvar_my_value2);
-            api->godot_print(&godstring_value2);
+            api2->godot_print(&godstring_value2);
 
-            api->godot_dictionary_set(&godict_arg_man_copy, &godvar_my_key2, &godvar_my_value2);
+            api2->godot_dictionary_set(&godict_arg_man_copy, &godvar_my_key2, &godvar_my_value2);
             printf("after set");
 
         }
@@ -334,14 +337,14 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
         wchar_t wchar_cucu[10] = L"cucu";
         godot_int godint_cucu_length = wcslen(wchar_cucu);
         godot_string godstring_cucu;
-        api->godot_string_new_with_wide_string(&godstring_cucu, &wchar_cucu, godint_cucu_length);
+        api2->godot_string_new_with_wide_string(&godstring_cucu, &wchar_cucu, godint_cucu_length);
         //Supongo que estos strings se copian, y que da igual que luego destruya el wchar_cucu
-        api->godot_print(&godstring_cucu);
+        api2->godot_print(&godstring_cucu);
 
         godot_variant godvar_cucu;
-        api->godot_variant_new_string(&godvar_cucu,&godstring_cucu);
+        api2->godot_variant_new_string(&godvar_cucu,&godstring_cucu);
 
-        godot_bool bool_has_cucu = api->godot_dictionary_has(&godict_arg, &godvar_cucu);
+        godot_bool bool_has_cucu = api2->godot_dictionary_has(&godict_arg, &godvar_cucu);
         printf("bool_has_cucu %d \n",bool_has_cucu);
 
         if (bool_has_cucu)
@@ -349,10 +352,10 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
             double d_new_value_for_cucu = 84;
 
             godot_variant godvar_new_value_for_cucu;
-            api->godot_variant_new_real(&godvar_new_value_for_cucu, d_new_value_for_cucu);
+            api2->godot_variant_new_real(&godvar_new_value_for_cucu, d_new_value_for_cucu);
 
             //godot_variant value_of_cucu = api->godot_dictionary_get(&godict_arg_man_copy, &godvar_cucu);
-            api->godot_dictionary_set(&godict_arg_man_copy, &godvar_cucu, &godvar_new_value_for_cucu);
+            api2->godot_dictionary_set(&godict_arg_man_copy, &godvar_cucu, &godvar_new_value_for_cucu);
         }
     }
     //Fin de poner un 17 donde cucu
@@ -365,13 +368,13 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
         wchar_t wchar_caca[10] = L"caca";
         godot_int godint_caca_length = wcslen(wchar_caca);
         godot_string godstring_caca;
-        api->godot_string_new_with_wide_string(&godstring_caca, &wchar_caca, godint_caca_length);
-        api->godot_print(&godstring_caca);
+        api2->godot_string_new_with_wide_string(&godstring_caca, &wchar_caca, godint_caca_length);
+        api2->godot_print(&godstring_caca);
         godot_variant godvar_caca;
-        api->godot_variant_new_string(&godvar_caca,&godstring_caca);
+        api2->godot_variant_new_string(&godvar_caca,&godstring_caca);
 
 
-        godot_bool bool_has_caca = api->godot_dictionary_has(&godict_arg, &godvar_caca);
+        godot_bool bool_has_caca = api2->godot_dictionary_has(&godict_arg, &godvar_caca);
         printf("bool_has_caca %d \n",bool_has_caca);
 
         if (bool_has_caca)
@@ -380,44 +383,44 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
             wchar_t wchar_c[5] = L"c";
             godot_int godint_c_length = wcslen(wchar_c);
             godot_string godstring_c;
-            api->godot_string_new_with_wide_string(&godstring_c, &wchar_c, godint_c_length);
-            api->godot_print(&godstring_c);
+            api2->godot_string_new_with_wide_string(&godstring_c, &wchar_c, godint_c_length);
+            api2->godot_print(&godstring_c);
             godot_variant godvar_c;
-            api->godot_variant_new_string(&godvar_c,&godstring_c);
+            api2->godot_variant_new_string(&godvar_c,&godstring_c);
 
             //Obtener el array actual
-            godot_variant govar_old_array = api->godot_dictionary_get(&godict_arg,&godvar_caca);
+            godot_variant govar_old_array = api2->godot_dictionary_get(&godict_arg,&godvar_caca);
 
-            godot_array godarray_old_array =  api->godot_variant_as_array(&govar_old_array);
+            godot_array godarray_old_array =  api2->godot_variant_as_array(&govar_old_array);
 
             //voy a hacer una copia, para no alterar el antiguo array. Pq el tipo
             //de copia que he hecho de los diccionarios, es solo del puntero al array
 
             godot_array godarray_new_array;
-            api->godot_array_new(&godarray_new_array);
+            api2->godot_array_new(&godarray_new_array);
 
             godot_variant govar_new_array;
-            api->godot_variant_new_array(&govar_new_array,&godarray_new_array);
+            api2->godot_variant_new_array(&govar_new_array,&godarray_new_array);
 
             //Copio los viejos elementos
 
-            godot_int godint_old_array_size = api->godot_array_size(&godarray_old_array);
+            godot_int godint_old_array_size = api2->godot_array_size(&godarray_old_array);
             int i=0;
             for(i=0;i<godint_old_array_size;i++)
             {
                 //godot_variant *(*godot_array_operator_index)(godot_array *p_self, const godot_int p_idx);
 
-                godot_variant* pGovar_old_elem = api->godot_array_operator_index(&godarray_old_array,i);
+                godot_variant* pGovar_old_elem = api2->godot_array_operator_index(&godarray_old_array,i);
 
-                api->godot_array_append(&godarray_new_array, pGovar_old_elem);
+                api2->godot_array_append(&godarray_new_array, pGovar_old_elem);
             }
 
             //Añado el nuevo elemento
-            api->godot_array_append(&godarray_new_array, &godvar_c);
+            api2->godot_array_append(&godarray_new_array, &godvar_c);
 
 
             //Sustituyo en viejo array por el nuevo
-            api->godot_dictionary_set(&godict_arg_man_copy,&godvar_caca,&govar_new_array);
+            api2->godot_dictionary_set(&godict_arg_man_copy,&godvar_caca,&govar_new_array);
 
         }
 
@@ -426,7 +429,7 @@ godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_d
     //Fin de añader una c en el array que hay en el key caca
     //////
 
-    api->godot_variant_new_dictionary(&godvar_ret, &godict_arg_man_copy);
+    api2->godot_variant_new_dictionary(&godvar_ret, &godict_arg_man_copy);
 
 
 
@@ -488,42 +491,129 @@ void setDataFromMarket(int nProduct, double dAmount)
     g_dDataFromMarket = dAmount;
 }
 
+
+//////////////////////////////////////////////////////////////
+//Inicio de métodos para imprimir cosas en la consola de GODOT
+
+#define MAXSTRING 256
+
+void PrintInGodotConsole_Text_Size(wchar_t wchar_to_print[], size_t size)
+{ 
+    //Este método admite como máximo 256 caracteres    
+    wchar_t wchar_to_print2[MAXSTRING];
+    for (int i = 0;i < MAXSTRING;i++)
+    {
+        wchar_to_print2[i] = wchar_to_print[i];
+    }   
+
+    //int result = MessageBox(NULL, wchar_to_print, L"Message", MB_OK);
+    godot_int godint_to_print_length = wcslen(wchar_to_print2);
+
+    //wchar_t wchar_for_number_to_print[30];
+    //swprintf(wchar_for_number_to_print, sizeof(wchar_for_number_to_print) / sizeof(wchar_for_number_to_print[0]), L"%d", godint_to_print_length);
+    //MessageBox(NULL, wchar_for_number_to_print, L"Message", MB_OK);
+    godot_string godstring_to_print;
+    api2->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print2, godint_to_print_length);
+        
+    //MessageBox(NULL, wchar_to_print2, L"Message", MB_OK);
+    //MessageBox(NULL, api->godot_string_wide_str(&godstring_to_print), L"Message", MB_OK);
+
+    api2->godot_print(&godstring_to_print);
+}
+
+void PrintInGodotConsole_Text(wchar_t wchar_to_print[])
+{
+    PrintInGodotConsole_Text_Size(wchar_to_print, MAXSTRING); 
+}
+
+void PrintInGodotConsole_Int(int intNumber)
+{
+    wchar_t wchar_to_print[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
+    swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%d", intNumber);
+    int numberOfCharacters = wcslen(wchar_to_print);
+    PrintInGodotConsole_Text_Size(wchar_to_print,numberOfCharacters);
+}
+
+void PrintInGodotConsole_Double(double doubleNumber)
+{
+    wchar_t wchar_to_print[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
+    swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%f", doubleNumber);
+    int numberOfCharacters = wcslen(wchar_to_print);
+    PrintInGodotConsole_Text_Size(wchar_to_print, numberOfCharacters);
+}
+
+//Fin de métodos para imprimir cosas en la consola de GODOT
+//////////////////////////////////////////////////////////////
+
+
 godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
 {
     godot_variant godvar_ret;
 
-    //double d_new_value = g_
-   // api->godot_variant_new_real(&godvar_ret, d_new_value);
-
-    //int int_ret_from_price_calculator_dll = test_price_calculator_dll();
-
     struct strProductAmount strRet;
-    test_price_calculator_dll_with_str(&strRet);
+    int nPointerOfPriceCalculator_1 = test_price_calculator_dll_with_str(&strRet);
 
     int int_ret_from_price_calculator_dll = strRet.nProductId;
     double double_ret_from_price_calculator_dll = strRet.dAmount;
 
-    {
-        wchar_t wchar_to_print[30] = L"Num arguments: ";
-        godot_int godint_to_print_length = wcslen(wchar_to_print);
-        godot_string godstring_to_print;
-        api->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print, godint_to_print_length);
-        //Supongo que estos strings se copian, y que da igual que luego destruya el wchar_cucu
-        api->godot_print(&godstring_to_print);
-    }
-    
-    {
-        wchar_t wchar_to_print[20]; // Choose a buffer size that is large enough to hold your integer as a wide string
-        swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%d", p_num_args);
-        godot_int godint_to_print_length = wcslen(wchar_to_print);
-        godot_string godstring_to_print;
-        api->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print, godint_to_print_length);
-        //Supongo que estos strings se copian, y que da igual que luego destruya el wchar_cucu
-        api->godot_print(&godstring_to_print);
-    }
+    wchar_t wchar_pointer_1[MAXSTRING] = L"Pointer of PC 1:";
+    PrintInGodotConsole_Text(wchar_pointer_1);
+    PrintInGodotConsole_Int(nPointerOfPriceCalculator_1);
+
+    wchar_t wchar_num_args[MAXSTRING] = L"Num arguments:";
+    PrintInGodotConsole_Text(wchar_num_args);
+    PrintInGodotConsole_Int(p_num_args);
+    wchar_t wchar_prod_id[MAXSTRING]= L"Product id:";
+    PrintInGodotConsole_Text(wchar_prod_id);
+    PrintInGodotConsole_Int(int_ret_from_price_calculator_dll);
+    wchar_t wchar_prod_amount[MAXSTRING] = L"Product amount:";
+    PrintInGodotConsole_Text(wchar_prod_amount);
+    PrintInGodotConsole_Double(double_ret_from_price_calculator_dll);
+
+    int nPointerOfPriceCalculator_2 = test_price_calculator_dll_with_str(&strRet);
+    wchar_t wchar_pointer_2[MAXSTRING] = L"Pointer of PC 2:";
+    PrintInGodotConsole_Text(wchar_pointer_2);
+    PrintInGodotConsole_Int(nPointerOfPriceCalculator_2);
+
+
 
     //api->godot_variant_new_int(&godvar_ret ,int_ret_from_price_calculator_dll);
-    api->godot_variant_new_real(&godvar_ret, double_ret_from_price_calculator_dll);
+    api2->godot_variant_new_real(&godvar_ret, double_ret_from_price_calculator_dll);
 
     return godvar_ret;
 }
+
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+// 
+//    //Esto lo tengo solo para debugeo. Se usa poniendo la solución como de tipo ejecutable, en vez de librería dinámica
+//    // Your Windows GUI application code here
+//
+//    //printf("Hello world\n");
+//
+//    int result = MessageBox(NULL, L"Hello, World!", L"Message", MB_OK);
+//
+//    //wchar_t wchar_to_print[30] = L"Prueba de mensaje ";
+//    //MessageBox(NULL, wchar_to_print, L"Message", MB_OK);
+//    
+//    {
+//        struct strProductAmount strRet;
+//        int nPointerOfPriceCalculator_1 = test_price_calculator_dll_with_str(&strRet);
+//
+//        wchar_t wchar_PC[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
+//        swprintf(wchar_PC, sizeof(wchar_PC) / sizeof(wchar_PC[0]), L"%d", nPointerOfPriceCalculator_1);
+//        int numberOfCharacters = wcslen(wchar_PC);
+//        MessageBox(NULL, wchar_PC, L"Pointer of PC", MB_OK);
+//    }
+//
+//    {
+//        struct strProductAmount strRet2;
+//        int nPointerOfPriceCalculator_2 = test_price_calculator_dll_with_str(&strRet2);
+//
+//        wchar_t wchar_PC_2[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
+//        swprintf(wchar_PC_2, sizeof(wchar_PC_2) / sizeof(wchar_PC_2[0]), L"%d", nPointerOfPriceCalculator_2);
+//        int numberOfCharacters = wcslen(wchar_PC_2);
+//        MessageBox(NULL, wchar_PC_2, L"Pointer of PC 2", MB_OK);
+//    }
+//    
+//    return 0;
+//}

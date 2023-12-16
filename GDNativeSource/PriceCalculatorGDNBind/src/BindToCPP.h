@@ -28,7 +28,7 @@ void market_setCallbackMethodForPrices(setPriceFunc_t setPriceFunc);
 
 long test_price_calculator_dll();
 
-void test_price_calculator_dll_with_str(struct strProductAmount* strProdAmount);
+int test_price_calculator_dll_with_str(struct strProductAmount* strProdAmount);
 
 #ifdef __cplusplus
 }
