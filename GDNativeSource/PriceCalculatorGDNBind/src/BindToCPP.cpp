@@ -1,5 +1,9 @@
 #include "BindToCPP.h"
-//#include "../../PriceCalculator/src/PriceCalculator.h"
+#include "../../PriceCalculator/src/PriceCalculator.h"
+#include "../../PriceCalculator/src/PriceCalculatorStaticUser.h"
+
+//#include "../VSProject/PriceCalculatorGDNBind/Prueba.h"
+//#include "../VSProject/PriceCalculatorGDNBind/Prueba2.h"
 
 //#include "windows.h"
 //#include "libloaderapi.h"
@@ -129,7 +133,11 @@ extern "C" long test_price_calculator_dll()
 
 
 extern "C" int test_price_calculator_dll_with_str(struct strProductAmount* strProdAmount)
-{    
+{   
+    pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
+
+    return (int)pPriceCalculator;
+
     //strProdAmount->dAmount = 2.1;
     //strProdAmount->nProductId = 3;
 

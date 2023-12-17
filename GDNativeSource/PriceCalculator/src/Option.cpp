@@ -22,3 +22,9 @@ pca::COption::COption(std::string sName, pca::CProduct* pProduct, bool bSaving)
 	m_pProduct = pProduct;
 	m_bSaving = bSaving;
 }
+
+pca::COption::~COption()
+{
+
+}
+

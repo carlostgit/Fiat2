@@ -63,10 +63,10 @@ namespace pca
 
     protected:
 
-        std::unique_ptr<CProducts> m_upProducts         = std::unique_ptr<CProducts>();
-        std::unique_ptr<COptions> m_upOptions           = std::unique_ptr<pca::COptions>();
-        std::unique_ptr<CComplCombos> m_upComplCombos   = std::unique_ptr<pca::CComplCombos>();
-        std::unique_ptr<CSupplCombos> m_upSupplCombos   = std::unique_ptr<pca::CSupplCombos>();
+        std::unique_ptr<CProducts> m_upProducts;
+        std::unique_ptr<COptions> m_upOptions;
+        std::unique_ptr<CComplCombos> m_upComplCombos;
+        std::unique_ptr<CSupplCombos> m_upSupplCombos;
 
         std::vector< std::unique_ptr<pca::CMarket> > m_vupMerketRefs;
 

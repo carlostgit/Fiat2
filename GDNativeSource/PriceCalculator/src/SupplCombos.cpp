@@ -13,6 +13,11 @@ pca::CSupplCombos::CSupplCombos(std::initializer_list< std::string> supplComboNa
 	}
 }
 
+pca::CSupplCombos::~CSupplCombos()
+{
+
+}
+
 void pca::CSupplCombos::AddSupplCombo(std::unique_ptr<pca::CSupplCombo> upSupplCombo)
 {
 	m_setSupplCombos.insert(std::move(upSupplCombo));

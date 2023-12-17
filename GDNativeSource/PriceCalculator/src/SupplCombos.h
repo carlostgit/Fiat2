@@ -15,7 +15,7 @@ namespace pca
     public:
         CSupplCombos() {}
         CSupplCombos(std::initializer_list< std::string> supplComboNameListInit);
-        virtual ~CSupplCombos() {}
+        virtual ~CSupplCombos();
 
         void AddSupplCombo(std::unique_ptr<pca::CSupplCombo> upSupplCombo);
         std::vector<pca::CSupplCombo*> GetSupplCombos();

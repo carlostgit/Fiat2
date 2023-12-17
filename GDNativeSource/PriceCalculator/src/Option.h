@@ -13,7 +13,7 @@ namespace pca
         COption();
         COption(std::string sName);
         COption(std::string sName, pca::CProduct* pProduct, bool bSaving = false);
-        virtual ~COption() {}
+        virtual ~COption();
 
         long GetID() { return m_nID; }
         std::string GetName() { return m_sName; }

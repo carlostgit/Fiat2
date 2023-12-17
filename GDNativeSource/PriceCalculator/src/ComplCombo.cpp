@@ -26,6 +26,10 @@ pca::CComplCombo::CComplCombo(std::string sName, std::set< pca::COption*> setOpt
 	}
 }
 
+pca::CComplCombo::~CComplCombo()
+{
+}
+
 void pca::CComplCombo::AddOptions(std::set< pca::COption*> setOptions)
 {
 	for (auto& option : setOptions)

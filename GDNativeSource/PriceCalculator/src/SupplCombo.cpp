@@ -28,6 +28,11 @@ pca::CSupplCombo::CSupplCombo(std::string sName, std::map<pca::COption*, double>
 
 }
 
+pca::CSupplCombo::~CSupplCombo()
+{
+
+}
+
 void pca::CSupplCombo::AddOptionsAndWeights(std::map<pca::COption*, double> mapOptionWeight)
 {
 	for (auto& pairOptWeight : mapOptionWeight)

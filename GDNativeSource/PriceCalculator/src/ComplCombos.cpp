@@ -12,6 +12,11 @@ pca::CComplCombos::CComplCombos(std::map<std::string, std::set<COption*> >  mapO
 	}
 }
 
+pca::CComplCombos::~CComplCombos()
+{
+
+}
+
 void pca::CComplCombos::AddComplCombo(std::unique_ptr<pca::CComplCombo> upComplCombo)
 {
 	m_setComplCombos.insert(std::move(upComplCombo));

@@ -15,7 +15,7 @@ namespace pca
         CComplCombo();
         CComplCombo(std::string sName);
         CComplCombo(std::string sName, std::set< pca::COption*> setOptions);
-        virtual ~CComplCombo() {}
+        virtual ~CComplCombo();
 
         long GetID() { return m_nID; }
         std::string GetName() { return m_sName; }

@@ -11,7 +11,7 @@ namespace pca
     public:
         CProduct();
         CProduct(std::string sName);
-        virtual ~CProduct() {}
+        virtual ~CProduct();
 
         long GetID() { return m_nID; }
         std::string GetName() { return m_sName; }

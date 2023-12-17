@@ -14,7 +14,7 @@ namespace pca
         CSupplCombo();
         CSupplCombo(std::string sName);
         CSupplCombo(std::string sName, std::map<pca::COption*, double> mapOptionWeight);
-        virtual ~CSupplCombo() {}
+        virtual ~CSupplCombo();
 
         long GetID() { return m_nID; }
         std::string GetName() { return m_sName; }

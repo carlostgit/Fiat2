@@ -14,3 +14,7 @@ pca::CProduct::CProduct(std::string sName)
 	m_sName = sName;
 }
 
+pca::CProduct::~CProduct()
+{
+
+}

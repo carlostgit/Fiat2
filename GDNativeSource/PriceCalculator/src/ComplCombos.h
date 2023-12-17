@@ -20,7 +20,7 @@ namespace pca
     public:
         CComplCombos() {}
         CComplCombos(std::map<std::string,std::set<COption*> > mapOfComplCombos);
-        virtual ~CComplCombos() {}
+        virtual ~CComplCombos();
 
         void AddComplCombo(std::unique_ptr<pca::CComplCombo> upComplCombo);
 
