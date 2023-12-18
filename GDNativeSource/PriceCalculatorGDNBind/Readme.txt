@@ -13,6 +13,9 @@ scons platform=javascript
 Con esto, en el momento de escribir estas líneas el comando de Emscripten que lanza scons es el siguiente:
 em++ -o bin/wasm/javascript/libPriceCalculatorGDNBind.wasm -s SIDE_MODULE=1 src/BindToCPP.bc src/PriceCalculatorGDNBind.bc -L/mnt/c/Carlos/GODOT/Proyectos/Fiat2/godotengine3_5/godot-cpp/bin -lgodot-cpp.javascript.debug.wasm
 
+Pero ese comando era suficiento solo antes de meter el proyecto de PriceCalculator. PriceCalculator tiene varios ficheros c++,
+con lo que la compilación cuando se incluye PriceCalculator queda con maás comandos em++.
+
 La compilación se realiza en Linux. Yo he usado el Ubuntu que te puedes descargar en el store the Windows, que usa el WSL2. Hace falta descargarse
 la versión adecuada de Emscripten se puede saber mirando el fichero:
 .github/workflows/javascript_builds.yml
@@ -32,6 +35,8 @@ El fichero SConstruct está configurado para que haga uso de esa librería.
 
 En la práctica, hasta ahora yo he conseguido también compilar a "WebAssembly" sin usar la librería de bindings. Para compilar se puede poner lo siguiente:
 em++ -o bin/wasm/javascript/libPriceCalculatorGDNBind.wasm -s SIDE_MODULE=1 src/BindToCPP.bc src/PriceCalculatorGDNBind.bc
+
+(Pero ese comando era suficiento solo antes de meter el proyecto de PriceCalculator.)
 
 O sea, quitando la parte que hace referencia a la librería de bindings.
 La parte del comando de Emscripten que hace referencia a esa librería es:

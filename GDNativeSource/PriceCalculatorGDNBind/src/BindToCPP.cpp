@@ -62,79 +62,88 @@ extern "C" long test_price_calculator_dll()
     return 2;
 }
 
-//void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
-//{
-//    pPriceCalculator->CreateEmptyReality();
-//    pPriceCalculator->CreateProduct("nut");
-//    pPriceCalculator->CreateProduct("chocolate");
-//    pPriceCalculator->CreateProduct("candy");
-//
-//    pPriceCalculator->AddToProduct_CreateConsumptionOption("nut", "nut_consumption");
-//    pPriceCalculator->AddToProduct_CreateConsumptionOption("chocolate", "chocolate_consumption");
-//    pPriceCalculator->AddToProduct_CreateConsumptionOption("candy", "candy_consumption");
-//    pPriceCalculator->CreateEmptyMarket();
-//    pPriceCalculator->SetCurrency("nut");
-//    pPriceCalculator->AddToMarket_CreatePerson("Peter");
-//    pPriceCalculator->AddToMarket_CreatePerson("George");
-//    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "nut", 1.0);
-//    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "chocolate", 1.0);
-//    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "candy", 1.0);
-//    pPriceCalculator->AddToPerson_SetProductAmount("George", "nut", 1.0);
-//    pPriceCalculator->AddToPerson_SetProductAmount("George", "chocolate", 1.0);
-//    pPriceCalculator->AddToPerson_SetProductAmount("George", "candy", 1.0);
-//    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "nut_consumption", 1.0, 1.0);
-//    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "chocolate_consumption", 1.1, 1.1);
-//    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "candy_consumption", 2.2, 2.2);
-//    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "nut_consumption", 1.0, 1.0);
-//    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "chocolate_consumption", 10.5, 10.5);
-//    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "candy_consumption", 40.6, 40.6);
-//
-//
-//    std::cout << "Amount nut Peter: " << pPriceCalculator->GetProductAmount("nut", "Peter") << std::endl;
-//    std::cout << "Amount chocolate Peter: " << pPriceCalculator->GetProductAmount("chocolate", "Peter") << std::endl;
-//    std::cout << "Amount candy Peter: " << pPriceCalculator->GetProductAmount("candy", "Peter") << std::endl;
-//    std::cout << "Amount nut George: " << pPriceCalculator->GetProductAmount("nut", "George") << std::endl;
-//    std::cout << "Amount chocolate George: " << pPriceCalculator->GetProductAmount("chocolate", "George") << std::endl;
-//    std::cout << "Amount candy George: " << pPriceCalculator->GetProductAmount("candy", "George") << std::endl;
-//
-//    std::cout << "Amount nut_consumption Peter: " << pPriceCalculator->GetOptionAmount("nut_consumption", "Peter") << std::endl;
-//    std::cout << "Amount chocolate_consumption Peter: " << pPriceCalculator->GetOptionAmount("chocolate_consumption", "Peter") << std::endl;
-//    std::cout << "Amount candy_consumption Peter: " << pPriceCalculator->GetOptionAmount("candy_consumption", "Peter") << std::endl;
-//    std::cout << "Amount nut_consumption George: " << pPriceCalculator->GetOptionAmount("nut_consumption", "George") << std::endl;
-//    std::cout << "Amount chocolate_consumption George: " << pPriceCalculator->GetOptionAmount("chocolate_consumption", "George") << std::endl;
-//    std::cout << "Amount candy_consumption George: " << pPriceCalculator->GetOptionAmount("candy_consumption", "George") << std::endl;
-//
-//    std::cout << "Desired nut amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "nut") << std::endl;
-//    std::cout << "Desired chocolate amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "chocolate") << std::endl;
-//    std::cout << "Desired candy amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "candy") << std::endl;
-//    std::cout << "Desired nut amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "nut") << std::endl;
-//    std::cout << "Desired chocolate amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "chocolate") << std::endl;
-//    std::cout << "Desired candy amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "candy") << std::endl;
-//
-//
-//    pPriceCalculator->AdjustPrices();
-//
-//    std::cout << "Price nut: " << pPriceCalculator->GetPrice("nut") << std::endl;
-//    std::cout << "Price chocolate: " << pPriceCalculator->GetPrice("chocolate") << std::endl;
-//    std::cout << "Price candy: " << pPriceCalculator->GetPrice("candy") << std::endl;
-//
-//    std::cout << "Amount nut Peter: " << pPriceCalculator->GetProductAmount("nut", "Peter") << std::endl;
-//    std::cout << "Amount chocolate Peter: " << pPriceCalculator->GetProductAmount("chocolate", "Peter") << std::endl;
-//    std::cout << "Amount candy Peter: " << pPriceCalculator->GetProductAmount("candy", "Peter") << std::endl;
-//    std::cout << "Amount nut George: " << pPriceCalculator->GetProductAmount("nut", "George") << std::endl;
-//    std::cout << "Amount chocolate George: " << pPriceCalculator->GetProductAmount("chocolate", "George") << std::endl;
-//    std::cout << "Amount candy George: " << pPriceCalculator->GetProductAmount("candy", "George") << std::endl;
-//
-//    pPriceCalculator->PrintPersonOptionAdjustmentToFile("Peter");
-//    pPriceCalculator->PrintPersonsOptionAdjustmentToFile();
-//
-//}
+void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
+{
+    pPriceCalculator->CreateEmptyReality();
+    pPriceCalculator->CreateProduct("nut");
+    pPriceCalculator->CreateProduct("chocolate");
+    pPriceCalculator->CreateProduct("candy");
+
+    pPriceCalculator->AddToProduct_CreateConsumptionOption("nut", "nut_consumption");
+    pPriceCalculator->AddToProduct_CreateConsumptionOption("chocolate", "chocolate_consumption");
+    pPriceCalculator->AddToProduct_CreateConsumptionOption("candy", "candy_consumption");
+    pPriceCalculator->CreateEmptyMarket();
+    pPriceCalculator->SetCurrency("nut");
+    pPriceCalculator->AddToMarket_CreatePerson("Peter");
+    pPriceCalculator->AddToMarket_CreatePerson("George");
+    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "nut", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "chocolate", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("Peter", "candy", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("George", "nut", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("George", "chocolate", 1.0);
+    pPriceCalculator->AddToPerson_SetProductAmount("George", "candy", 1.0);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "nut_consumption", 1.0, 1.0);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "chocolate_consumption", 1.1, 1.1);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("Peter", "candy_consumption", 2.2, 2.2);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "nut_consumption", 1.0, 1.0);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "chocolate_consumption", 10.5, 10.5);
+    pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption("George", "candy_consumption", 40.6, 40.6);
+
+
+    std::cout << "Amount nut Peter: " << pPriceCalculator->GetProductAmount("nut", "Peter") << std::endl;
+    std::cout << "Amount chocolate Peter: " << pPriceCalculator->GetProductAmount("chocolate", "Peter") << std::endl;
+    std::cout << "Amount candy Peter: " << pPriceCalculator->GetProductAmount("candy", "Peter") << std::endl;
+    std::cout << "Amount nut George: " << pPriceCalculator->GetProductAmount("nut", "George") << std::endl;
+    std::cout << "Amount chocolate George: " << pPriceCalculator->GetProductAmount("chocolate", "George") << std::endl;
+    std::cout << "Amount candy George: " << pPriceCalculator->GetProductAmount("candy", "George") << std::endl;
+
+    std::cout << "Amount nut_consumption Peter: " << pPriceCalculator->GetOptionAmount("nut_consumption", "Peter") << std::endl;
+    std::cout << "Amount chocolate_consumption Peter: " << pPriceCalculator->GetOptionAmount("chocolate_consumption", "Peter") << std::endl;
+    std::cout << "Amount candy_consumption Peter: " << pPriceCalculator->GetOptionAmount("candy_consumption", "Peter") << std::endl;
+    std::cout << "Amount nut_consumption George: " << pPriceCalculator->GetOptionAmount("nut_consumption", "George") << std::endl;
+    std::cout << "Amount chocolate_consumption George: " << pPriceCalculator->GetOptionAmount("chocolate_consumption", "George") << std::endl;
+    std::cout << "Amount candy_consumption George: " << pPriceCalculator->GetOptionAmount("candy_consumption", "George") << std::endl;
+
+    std::cout << "Desired nut amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "nut") << std::endl;
+    std::cout << "Desired chocolate amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "chocolate") << std::endl;
+    std::cout << "Desired candy amount of Peter: " << pPriceCalculator->GetDesiredProdAmount("Peter", "candy") << std::endl;
+    std::cout << "Desired nut amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "nut") << std::endl;
+    std::cout << "Desired chocolate amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "chocolate") << std::endl;
+    std::cout << "Desired candy amount of George: " << pPriceCalculator->GetDesiredProdAmount("George", "candy") << std::endl;
+
+
+    pPriceCalculator->AdjustPrices();
+
+    std::cout << "Price nut: " << pPriceCalculator->GetPrice("nut") << std::endl;
+    std::cout << "Price chocolate: " << pPriceCalculator->GetPrice("chocolate") << std::endl;
+    std::cout << "Price candy: " << pPriceCalculator->GetPrice("candy") << std::endl;
+
+    std::cout << "Amount nut Peter: " << pPriceCalculator->GetProductAmount("nut", "Peter") << std::endl;
+    std::cout << "Amount chocolate Peter: " << pPriceCalculator->GetProductAmount("chocolate", "Peter") << std::endl;
+    std::cout << "Amount candy Peter: " << pPriceCalculator->GetProductAmount("candy", "Peter") << std::endl;
+    std::cout << "Amount nut George: " << pPriceCalculator->GetProductAmount("nut", "George") << std::endl;
+    std::cout << "Amount chocolate George: " << pPriceCalculator->GetProductAmount("chocolate", "George") << std::endl;
+    std::cout << "Amount candy George: " << pPriceCalculator->GetProductAmount("candy", "George") << std::endl;
+
+    pPriceCalculator->PrintPersonOptionAdjustmentToFile("Peter");
+    pPriceCalculator->PrintPersonsOptionAdjustmentToFile();
+
+}
 
 
 
 extern "C" int test_price_calculator_dll_with_str(struct strProductAmount* strProdAmount)
 {   
     pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
+
+    if (pPriceCalculator)
+    {
+        LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+
+        double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
+
+        strProdAmount->dAmount = dAmount;
+    }
 
     return (int)pPriceCalculator;
 

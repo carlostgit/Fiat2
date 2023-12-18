@@ -576,6 +576,38 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
     PrintInGodotConsole_Text(wchar_pointer_2);
     PrintInGodotConsole_Int(nPointerOfPriceCalculator_2);
 
+    //Voy a intentar sacar la información de los argumentos
+    //p_num_args
+    //var text_dict_arg:Dictionary = {"Persons": ["Peter","George"], "Products":["nut","chocolate","candy"], "Consumption":["nut_consumption","chocolate_consumption","candy_consumption"]}
+    for (int i = 0;i < p_num_args;i++)
+    {
+        godot_dictionary godict_arg = api2->godot_variant_as_dictionary(p_args[i]);
+
+        godot_array godarray_keys = api2->godot_dictionary_keys(&godict_arg);
+        godot_array godarray_values = api2->godot_dictionary_values(&godict_arg);
+
+        godot_int godint_size_of_array = api2->godot_array_size(&godarray_keys);
+
+        printf("Size of array: %d \n", godint_size_of_array);
+
+        int i = 0;
+        for (i = 0;i < godint_size_of_array;i++)
+        {
+            //No sé si hace falta copiar los strings como lo hago aquí
+            //No sé qué tipo de copia se hace con los variant, si paso la referencia directamente
+            //desde el diccionario origen
+            godot_variant godvar_my_key;
+            godvar_my_key = api2->godot_array_get(&godarray_keys, i);
+            godot_string godstring_key = api2->godot_variant_as_string(&godvar_my_key);
+            api2->godot_print(&godstring_key);
+
+            godot_variant godvar_my_value;
+            godvar_my_value = api2->godot_array_get(&godarray_values, i);
+            godot_string godstring_value = api2->godot_variant_as_string(&godvar_my_value);
+            api2->godot_print(&godstring_value);
+
+        }
+    }
 
 
     //api->godot_variant_new_int(&godvar_ret ,int_ret_from_price_calculator_dll);
