@@ -10,9 +10,28 @@
 
 #include <map>
 #include <iostream>
+#include <set>
+
+//para transformar el wchar
+#include <locale>
+#include <codecvt>
 
 std::map<int,double> g_map_Product_Price;
 std::map<int,std::map<int,double> > g_map_Person_mapProdAmount;
+
+std::set<std::string> g_setPersons;
+std::set<std::string> g_setProducts;
+std::set<std::string> g_setConsumptionOptions;
+std::set<std::string> g_setSavingOptions;
+std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
+std::map<std::string, std::string> g_mapOptionProduct;
+
+//var text_dict_arg:Dictionary = {"Persons": ["Peter","George"], 
+//    "Products": ["nut", "chocolate", "candy"] ,
+//        "Consumption" : ["nut_consumption", "chocolate_consumption", "candy_consumption"] ,
+//        "Owned" : {"nut":1, "chocolate" : 2, "candy" : 3}
+//}
+
 
 void(*m_setPrice)(int nProduct, double dAmount)=0;
 
@@ -61,6 +80,62 @@ extern "C" long test_price_calculator_dll()
 {
     return 2;
 }
+
+
+void LaunchPriceCalculatorLoadedScenario(pca::CPriceCalculator* pPriceCalculator)
+{
+    pPriceCalculator->CreateEmptyReality();
+    for (auto& product : g_setProducts)
+    {
+        pPriceCalculator->CreateProduct(product);
+    }
+
+    for (auto& pairOptionProduct : g_mapOptionProduct)
+    {
+        pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
+    }
+
+    pPriceCalculator->CreateEmptyMarket();
+
+    //TODO: añadir la configuración de esto
+    pPriceCalculator->SetCurrency(*g_setProducts.begin());
+
+    for (auto& person : g_setPersons)
+    {
+        pPriceCalculator->AddToMarket_CreatePerson(person);
+    }
+
+    for (auto& pairperson_prodamounts : g_mapPerson_ProdAmount)
+    {
+        std::string person = pairperson_prodamounts.first;
+        std::map<std::string, double> mapProd_Amount = pairperson_prodamounts.second;
+
+        for (auto& pairProd_Amount : mapProd_Amount)
+        {
+            std::string product = pairProd_Amount.first;
+            double dAmount = pairProd_Amount.second;
+
+            pPriceCalculator->AddToPerson_SetProductAmount(person, product, dAmount);
+        }        
+    }
+
+    for (auto& person : g_setPersons)
+    {        
+        std::set<std::string> setOptions = g_setConsumptionOptions;
+        setOptions.insert(g_setSavingOptions.begin(), g_setSavingOptions.end());
+
+        for (auto& option : setOptions)
+        {
+            //TODO: añadir la configuración de esto
+            double dValueAt0 = 1;
+            double dMaxValue = 10;
+
+            pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(person, option, dValueAt0, dMaxValue);
+        }
+    }
+
+}
+
 
 void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
 {
@@ -130,15 +205,14 @@ void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
 
 }
 
-
-
-extern "C" int test_price_calculator_dll_with_str(struct strProductAmount* strProdAmount)
+extern "C" int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount)
 {   
     pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
 
     if (pPriceCalculator)
     {
-        LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+        //LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+        LaunchPriceCalculatorLoadedScenario(pPriceCalculator);
 
         double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
 
@@ -187,3 +261,108 @@ extern "C" int test_price_calculator_dll_with_str(struct strProductAmount* strPr
 
     return 0;
 }
+
+//extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)
+extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrProdAmount)
+{
+    pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
+
+    if (pPriceCalculator)
+    {
+        //LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+        LaunchPriceCalculatorLoadedScenario(pPriceCalculator);
+
+        //TODO. Devolver aquí resultados a GODOT, por el argumento pstrScenarioInfo
+        //o de alguna otra manera mejor
+        //double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
+        
+    }
+
+    return (int)pPriceCalculator;
+
+}
+
+extern "C" void add_person(wchar_t wc_person[256], int n_size)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str(wc_person);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sPerson = converter.to_bytes(wide_str);
+
+    g_setPersons.insert(sPerson);
+}
+
+extern "C" void add_product(wchar_t wc_product[256], int n_size)
+{    
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str(wc_product);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sProduct = converter.to_bytes(wide_str);
+
+    g_setProducts.insert(sProduct);
+}
+
+extern "C" void add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str(wc_consumption_option);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sConsumptionOption = converter.to_bytes(wide_str);
+
+    g_setConsumptionOptions.insert(sConsumptionOption);
+}
+
+extern "C" void add_saving_option(wchar_t wc_saving_option[256], int n_size)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str(wc_saving_option);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sSavingOption = converter.to_bytes(wide_str);
+
+    g_setSavingOptions.insert(sSavingOption);
+}
+
+extern "C" void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
+{    
+    std::map<std::string,double> mapProdAmount;
+
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sProduct = converter.to_bytes(wc_product);
+
+    mapProdAmount[sProduct] = dAmount;        
+    std::string sPerson = converter.to_bytes(wc_person);
+
+    if(g_mapPerson_ProdAmount.end() == g_mapPerson_ProdAmount.find(sPerson))
+        g_mapPerson_ProdAmount[sPerson] = mapProdAmount;
+    else
+    {
+        g_mapPerson_ProdAmount[sPerson][sProduct] = dAmount;
+    }
+}
+
+void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_option(wc_option);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sOption = converter.to_bytes(wide_str_option);
+
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_product(wc_product);
+
+    // Convert std::wstring to std::string    
+    std::string sProduct = converter.to_bytes(wide_str_product);
+
+    g_mapOptionProduct[sOption] = sProduct;
+}
+

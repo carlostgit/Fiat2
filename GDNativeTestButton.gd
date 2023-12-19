@@ -25,7 +25,17 @@ func _on_GDNativeTestButton_pressed():
 	#$Label.text = "get_num_args = " + data.get_num_args(5,3)
 #	$Label2.text = "set_data = " + data.set_and_get_data("Kuku")
 	
-	var text_dict_arg:Dictionary = {"Persons": ["Peter","George"], "Products":["nut","chocolate","candy"], "Consumption":["nut_consumption","chocolate_consumption","candy_consumption"]}
+	var text_dict_arg:Dictionary = {"Persons": ["Peter","George"], 
+	"Products":["nut","chocolate","candy"], 
+	"Consumption":["nut_consumption","chocolate_consumption","candy_consumption"],
+	"Owned": {
+			"Peter":
+					{"nut":1,"chocolate":2,"candy":3},
+			"George":
+					{"nut":4,"chocolate":5,"candy":6}
+		},
+	"OptionProduct":{"nut_consumption":"nut","chocolate_consumption":"chocolate","candy_consumption":"candy"}
+	}
 	
 	var text_dict_arg2:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 	
