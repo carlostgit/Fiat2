@@ -735,21 +735,29 @@ void ProcessScenarioOptionProduct(godot_dictionary* pgodict_option_product_arg, 
     }
 }
 
+void ProcessScenarioCurrency(godot_string* pgostring_currency_arg, const godot_gdnative_core_api_struct* api_arg)
+{
+    godot_string gostring_currency = (*pgostring_currency_arg);
+    const wchar_t* pwc_currency = api_arg->godot_string_wide_str(&gostring_currency);
+    add_currency(pwc_currency, 256);
+}
 
 //Método para procesar la información del escenario que viene en un diccionario desde GODOT
 void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg)
 {
-//    var text_dict_arg : Dictionary = { "Persons": ["Peter","George"] ,
-//"Products" : ["nut","chocolate","candy"] ,
-//"Consumption" : ["nut_consumption","chocolate_consumption","candy_consumption"] ,
-//"Owned" : {
-//        "Peter":
-//                {"nut":1,"chocolate" : 2,"candy" : 3},
-//        "George" :
-//                {"nut":4,"chocolate" : 5,"candy" : 6}
-//    },
-//"OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"}
-//    }
+    //var text_dict_arg : Dictionary = {
+    //    "Persons": ["Peter","George"] ,
+    //    "Products" : ["nut","chocolate","candy"] ,
+    //    "Consumption" : ["nut_consumption","chocolate_consumption","candy_consumption"] ,
+    //    "Owned" : {
+    //        "Peter":
+    //                {"nut":1,"chocolate" : 2,"candy" : 3},
+    //        "George" :
+    //                {"nut":4,"chocolate" : 5,"candy" : 6}
+    //    },
+    //    "OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"},
+    //    "Currency" : "nut"
+    //}
 
     //godot_dictionary godict_arg = api2->godot_variant_as_dictionary(p_args[i]);
     godot_dictionary godict_scenario_info = (*pgodict_scenario_info_arg);
@@ -764,7 +772,6 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
     int i = 0;
     for (i = 0;i < godint_size_of_array;i++)
     {
-
         //No sé si hace falta copiar los strings como lo hago aquí
         //No sé qué tipo de copia se hace con los variant, si paso la referencia directamente
         //desde el diccionario origen
@@ -785,6 +792,7 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
         const wchar_t wc_saving[] = L"Saving";
         const wchar_t wc_owned[] = L"Owned";
         const wchar_t wc_option_product[] = L"OptionProduct";
+        const wchar_t wc_currency[] = L"Currency";
         
         if (wcscmp(pwc_key, wc_persons) == 0)
         {                        
@@ -816,8 +824,11 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
             godot_dictionary godict_option_product = api_arg->godot_variant_as_dictionary(&godvar_my_value);
             ProcessScenarioOptionProduct(&godict_option_product, api_arg);
         }
-        
-
+        else if (wcscmp(pwc_key, wc_currency) == 0)
+        {
+            godot_string gostring_currency = api_arg->godot_variant_as_string(&godvar_my_value);
+            ProcessScenarioCurrency(&gostring_currency, api_arg);
+        }
     }
 }
 
@@ -859,12 +870,11 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
         {
             godot_dictionary godict_arg = api2->godot_variant_as_dictionary(p_args[0]);
             ProcessScenarioInfo(&godict_arg, api2);
-        }
-       
+        }       
     }
     //strScenarioInfo strScenarioInfo;
     //calculate_prices_with_price_calculator(&strScenarioInfo);
-    struct strScenarioInfo strScenarioInfo;
+    struct strScenarioInfo strScenarioInfo = createScenarioInfoStruct();
     calculate_prices_with_price_calculator(&strScenarioInfo);
 
     wchar_t wchar_sizeofscenarioinfostruct[MAXSTRING] = L"sizeof(strProdAmount):";

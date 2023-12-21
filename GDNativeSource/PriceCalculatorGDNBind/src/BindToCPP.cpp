@@ -25,13 +25,85 @@ std::set<std::string> g_setConsumptionOptions;
 std::set<std::string> g_setSavingOptions;
 std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
 std::map<std::string, std::string> g_mapOptionProduct;
+std::string g_sCurrency;
 
-//var text_dict_arg:Dictionary = {"Persons": ["Peter","George"], 
-//    "Products": ["nut", "chocolate", "candy"] ,
-//        "Consumption" : ["nut_consumption", "chocolate_consumption", "candy_consumption"] ,
-//        "Owned" : {"nut":1, "chocolate" : 2, "candy" : 3}
-//}
+void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+{ 
+    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_persons[pstrScenarioInfo->n_num_of_persons].wc_name;
+    wcsncpy(pwc_name_in_struct, wc_name, size);
+    pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
 
+    pstrScenarioInfo->n_num_of_persons += 1;
+}
+
+void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+{
+    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_products[pstrScenarioInfo->n_num_of_products].wc_name;
+    wcsncpy(pwc_name_in_struct, wc_name, size);
+    pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
+
+    pstrScenarioInfo->n_num_of_products += 1;
+}
+
+void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+{
+    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_consumption_options[pstrScenarioInfo->n_num_of_consumption_options].wc_name;
+    wcsncpy(pwc_name_in_struct, wc_name, size);
+    pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
+
+    pstrScenarioInfo->n_num_of_consumption_options += 1;
+}
+
+void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+{
+    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_saving_options[pstrScenarioInfo->n_num_of_saving_options].wc_name;
+    wcsncpy(pwc_name_in_struct, wc_name, size);
+    pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
+
+    pstrScenarioInfo->n_num_of_saving_options += 1;
+}
+
+void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount)
+{
+    int person_index = pstrScenarioInfo->owned_things.n_num_persons;
+    int prod_amount_index = pstrScenarioInfo->owned_things.person_prod_amounts[person_index].n_num_prod_amounts;
+
+    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->owned_things.person_prod_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_product_name_in_struct = pstrScenarioInfo->owned_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].name_product.wc_name;
+    
+    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
+    pwc_person_name_in_struct[size_person - 1] = L'\0';  // Ensure null-termination
+
+    wcsncpy(pwc_product_name_in_struct, wc_product, size_product);
+    pwc_product_name_in_struct[size_product - 1] = L'\0';  // Ensure null-termination
+
+    pstrScenarioInfo->owned_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].dAmount = dAmount;
+    
+    pstrScenarioInfo->owned_things.n_num_persons += 1;
+    pstrScenarioInfo->owned_things.person_prod_amounts[person_index].n_num_prod_amounts += 1;
+}
+
+void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_product[256], int size, double dPrice)
+{    
+    int prod_price_index = pstrScenarioInfo->prices.n_num_prices;
+    
+    wchar_t* pwc_product_name_in_struct = pstrScenarioInfo->prices.prod_price[prod_price_index].name_product.wc_name;
+    
+    wcsncpy(pwc_product_name_in_struct, wc_product, size);
+    pwc_product_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
+
+    pstrScenarioInfo->prices.prod_price[prod_price_index].dAmount = dPrice;
+
+    pstrScenarioInfo->prices.n_num_prices += 1;    
+}
+
+void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo)
+{
+    memset(pstrScenarioInfo, 0, sizeof(strScenarioInfo));
+}
+
+//////////////////////////////////////////////////////
+//Prueba
 
 void(*m_setPrice)(int nProduct, double dAmount)=0;
 
@@ -81,6 +153,33 @@ extern "C" long test_price_calculator_dll()
     return 2;
 }
 
+//Fin de pruebas
+//////////////////////////////////////////////////////
+
+void LoadPriceCalculationResults(pca::CPriceCalculator* pPriceCalculator, struct strScenarioInfo* pstrScenarioInfo)
+{
+    int index = 0;
+
+    for (auto& product : g_setProducts)
+    {
+        double dPrice = pPriceCalculator->GetPrice(product);
+
+        std::string narrowStr = "Hello, wide string!";
+
+        // Convert narrow string to wide string
+        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+        std::wstring ws_product_name = converter.from_bytes(product);
+
+        wchar_t wc_not_const_price[256];
+        wcsncpy(wc_not_const_price, ws_product_name.c_str(), ws_product_name.size());
+
+        add_price_to_scenario_info(pstrScenarioInfo, wc_not_const_price, ws_product_name.size(), dPrice);
+    }
+
+    //TODO. Seguir aquí. Pero cambiar lo anterior, para hacerlo menos complicado
+    //Igual tengo que cambiar los métodos de la estructura, para que sean enteramente en c++
+    //aceptando std:string. El constructor de la estructura es el único que tiene que ser en c
+}
 
 void LaunchPriceCalculatorLoadedScenario(pca::CPriceCalculator* pPriceCalculator)
 {
@@ -96,9 +195,8 @@ void LaunchPriceCalculatorLoadedScenario(pca::CPriceCalculator* pPriceCalculator
     }
 
     pPriceCalculator->CreateEmptyMarket();
-
-    //TODO: añadir la configuración de esto
-    pPriceCalculator->SetCurrency(*g_setProducts.begin());
+   
+    pPriceCalculator->SetCurrency(g_sCurrency);
 
     for (auto& person : g_setPersons)
     {
@@ -263,7 +361,7 @@ extern "C" int test_price_calculator_dll_with_str(struct strProductAmount2* strP
 }
 
 //extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)
-extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrProdAmount)
+extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)
 {
     pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
 
@@ -275,6 +373,8 @@ extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* ps
         //TODO. Devolver aquí resultados a GODOT, por el argumento pstrScenarioInfo
         //o de alguna otra manera mejor
         //double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
+
+        LoadPriceCalculationResults(pPriceCalculator, pstrScenarioInfo);
         
     }
 
@@ -366,3 +466,14 @@ void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_pr
     g_mapOptionProduct[sOption] = sProduct;
 }
 
+void add_currency(wchar_t wc_currency[256], int n_size)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_currency(wc_currency);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sCurrency = converter.to_bytes(wide_str_currency);
+
+    g_sCurrency = sCurrency;
+}
