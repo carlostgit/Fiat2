@@ -832,6 +832,53 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
     }
 }
 
+
+void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg)
+{
+    //var text_dict_arg : Dictionary = {
+//    "Prices":
+//                {"nut":1.1,"chocolate" : 2.3,"candy" : 3.5},
+//    "Owned" : {
+//        "Peter":
+//                {"nut":1,"chocolate" : 2,"candy" : 3},
+//        "George" :
+//                {"nut":4,"chocolate" : 5,"candy" : 6}
+//    },
+//}
+
+    godot_dictionary godict_scenario_info = (*pgdict_results_scenario_info);
+
+    //godot_array godarray_keys = api_arg->godot_dictionary_keys(&godict_scenario_info);
+    //godot_array godarray_values = api_arg->godot_dictionary_values(&godict_scenario_info);
+
+    //godot_int godint_size_of_array = api_arg->godot_array_size(&godarray_keys);
+
+    //printf("Size of array: %d \n", godint_size_of_array);    
+
+    //Pruebo a salvar datos de los precios primero
+    int i = 0;
+    for (i = 0;i < pstr_scenario_info->prices.n_num_prices ;i++)
+    {
+
+        double dPrice = pstr_scenario_info->prices.prod_price[i].dAmount;
+        
+        wchar_t* pwchar_product_name = pstr_scenario_info->prices.prod_price[i].name_product.wc_name;
+        int size = wcslen(pwchar_product_name);
+        godot_string godstring_product_name;
+        api_arg->godot_string_new_with_wide_string(&godstring_product_name, pwchar_product_name,size);        
+        godot_variant godvar_product_name;
+        api_arg->godot_variant_new_string(&godvar_product_name, &godstring_product_name);
+                      
+        godot_real godreal_price = dPrice;
+        godot_variant godvar_product_price;
+        api_arg->godot_variant_new_real(&godvar_product_price, dPrice);
+
+        api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_product_name, &godvar_product_price);
+    }
+
+    //TODO
+}
+
 godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
 {
     godot_variant godvar_ret;
@@ -866,7 +913,7 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
 
     for (int i = 0;i < p_num_args;i++)
     {
-        if (i == 0) 
+        if (i == 0) //En el primer argumento recibo la información. Es el input
         {
             godot_dictionary godict_arg = api2->godot_variant_as_dictionary(p_args[0]);
             ProcessScenarioInfo(&godict_arg, api2);
@@ -880,6 +927,15 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
     wchar_t wchar_sizeofscenarioinfostruct[MAXSTRING] = L"sizeof(strProdAmount):";
     PrintInGodotConsole_Text(wchar_sizeofscenarioinfostruct);
     PrintInGodotConsole_Int(sizeof(strScenarioInfo));
+
+    for (int i = 0;i < p_num_args;i++)
+    {
+        if (i == 1) //En el segundo argumento devuelvo los resultados. Es el output
+        {
+            godot_dictionary godict_arg = api2->godot_variant_as_dictionary(p_args[i]);
+            SaveScenarioInfoResults(&strScenarioInfo, &godict_arg, api2);
+        }
+    }
 
     api2->godot_variant_new_real(&godvar_ret, 0.0);
 

@@ -24,6 +24,9 @@
     <ClInclude Include="Prueba2.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\BindToCPP_CPPHeader.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\BindToCPP.cpp">

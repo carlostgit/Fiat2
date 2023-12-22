@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\BindToCPP.h" />
+    <ClInclude Include="..\..\src\BindToCPP_CPPHeader.h" />
     <ClInclude Include="Prueba.h" />
     <ClInclude Include="Prueba2.h" />
   </ItemGroup>

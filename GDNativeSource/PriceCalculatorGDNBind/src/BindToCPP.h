@@ -67,13 +67,6 @@ struct strScenarioInfo createScenarioInfoStruct() {
     return newStruct;
 }
 
-void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
-void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_product[256], int size, double dPrice);
-void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo);
 
 //Fin de métodos para manipular la estructura
 
@@ -108,6 +101,17 @@ int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount);
 
 //Fin de código para pruebas
 /////////////////////////////
+
+//////////////////////////////////////////////////////
+//Métodos para manipular la estructura strScenarioInfo
+void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
+void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
+void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
+void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
+void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_product[256], int size, double dPrice);
+void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo);
+////////////////////////////////////////////////////////
 
 int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrProdAmount);
 

@@ -25,7 +25,7 @@ func _on_GDNativeTestButton_pressed():
 	#$Label.text = "get_num_args = " + data.get_num_args(5,3)
 #	$Label2.text = "set_data = " + data.set_and_get_data("Kuku")
 	
-	var text_dict_arg:Dictionary = {
+	var output_dict:Dictionary = {
 		"Persons": ["Peter","George"], 
 		"Products":["nut","chocolate","candy"], 
 		"Consumption":["nut_consumption","chocolate_consumption","candy_consumption"],
@@ -39,7 +39,7 @@ func _on_GDNativeTestButton_pressed():
 		"Currency":"nut"
 	}
 	
-	var text_dict_arg2:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
+	var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 	
 	#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
 #	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
@@ -47,13 +47,16 @@ func _on_GDNativeTestButton_pressed():
 	$Label.text = ""
 	$Label.text = "bla bla bla an5es de llamar a PriceCalculatorDll"
 	#$Label2.text = "calc_info_from_market_test: "+ str(data.calc_info_from_market_test())
-	$Label2.text = "calc_info_from_price_calculator_dll: "+ str(data.calc_info_from_price_calculator_dll(text_dict_arg,text_dict_arg2))
+	$Label2.text = "calc_info_from_price_calculator_dll: "+ str(data.calc_info_from_price_calculator_dll(output_dict,input_dict))
 	
 	$Label.text = "bla bla bla after calling"
 	
-	for text_key in text_dict_arg:
+	print("input dict:")
+	print(input_dict)
+	
+	for text_key in output_dict:
 		$Label.text += " Key: "+text_key
-		$Label.text += " Value: "+str(text_dict_arg[text_key])
+		$Label.text += " Value: "+str(output_dict[text_key])
 	
 #	for text_key in text_dict_answ:
 #		$Label2.text += " Key: "+text_key
