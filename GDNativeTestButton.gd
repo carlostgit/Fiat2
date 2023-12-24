@@ -39,7 +39,8 @@ func _on_GDNativeTestButton_pressed():
 		"Currency":"nut"
 	}
 	
-	var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
+	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
+	var input_dict:Dictionary = {}
 	
 	#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
 #	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
