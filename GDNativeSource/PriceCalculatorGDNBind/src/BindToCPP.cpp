@@ -179,6 +179,126 @@ void add_price_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, st
 
 }
 
+//Nuevos
+void add_traded_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount)
+{    
+    int prod_amount_index = pstrScenarioInfo->traded_things.person_prod_amounts[person_index].n_num_prod_amounts;
+
+    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->traded_things.person_prod_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_product_name_in_struct = pstrScenarioInfo->traded_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].name_product.wc_name;
+
+    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
+    wcsncpy(pwc_product_name_in_struct, wc_product, size_product);    
+
+    pstrScenarioInfo->traded_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].dAmount = dAmount;
+
+    if (pstrScenarioInfo->traded_things.n_num_persons < person_index + 1)
+    {
+        pstrScenarioInfo->traded_things.n_num_persons = person_index + 1;
+    }
+
+    pstrScenarioInfo->traded_things.person_prod_amounts[person_index].n_num_prod_amounts += 1;
+}
+
+void add_traded_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount)
+{
+    // Convert narrow string to wide string
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring ws_person_name = converter.from_bytes(sPerson);
+    std::wstring ws_product_name = converter.from_bytes(sProduct);
+
+    wchar_t array_wc_person_not_const[256];
+    wchar_t array_wc_product_not_const[256];
+    int size_person = ws_person_name.size();
+    int size_product = ws_product_name.size();
+    wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
+    wcsncpy(array_wc_product_not_const, ws_product_name.c_str(), size_product);
+
+    add_traded_thing_to_scenario_info(pstrScenarioInfo, person_index, array_wc_person_not_const, size_person, array_wc_product_not_const, size_product, dAmount);
+}
+
+void add_consumed_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
+{
+
+    int option_amount_index = pstrScenarioInfo->consumed_options.person_option_amounts[person_index].n_num_option_amounts;
+
+    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->consumed_options.person_option_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_option_name_in_struct = pstrScenarioInfo->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
+
+    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
+    wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
+
+    pstrScenarioInfo->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
+
+    if (pstrScenarioInfo->consumed_options.n_num_persons < person_index + 1)
+    {
+        pstrScenarioInfo->consumed_options.n_num_persons = person_index + 1;
+    }
+
+    pstrScenarioInfo->consumed_options.person_option_amounts[person_index].n_num_option_amounts += 1;
+
+}
+
+void add_consumed_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount)
+{
+
+    // Convert narrow string to wide string
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring ws_person_name = converter.from_bytes(sPerson);
+    std::wstring ws_option_name = converter.from_bytes(sOption);
+
+    wchar_t array_wc_person_not_const[256];
+    wchar_t array_wc_option_not_const[256];
+    int size_person = ws_person_name.size();
+    int size_option = ws_option_name.size();
+    wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
+    wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
+
+    add_consumed_option_to_scenario_info(pstrScenarioInfo, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
+
+}
+
+void add_saved_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
+{
+    int option_amount_index = pstrScenarioInfo->saved_options.person_option_amounts[person_index].n_num_option_amounts;
+
+    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->saved_options.person_option_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_option_name_in_struct = pstrScenarioInfo->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
+
+    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
+    wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
+
+    pstrScenarioInfo->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
+
+    if (pstrScenarioInfo->saved_options.n_num_persons < person_index + 1)
+    {
+        pstrScenarioInfo->saved_options.n_num_persons = person_index + 1;
+    }
+
+    pstrScenarioInfo->saved_options.person_option_amounts[person_index].n_num_option_amounts += 1;
+}
+
+void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount)
+{
+
+    // Convert narrow string to wide string
+    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+    std::wstring ws_person_name = converter.from_bytes(sPerson);
+    std::wstring ws_option_name = converter.from_bytes(sOption);
+
+    wchar_t array_wc_person_not_const[256];
+    wchar_t array_wc_option_not_const[256];
+    int size_person = ws_person_name.size();
+    int size_option = ws_option_name.size();
+    wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
+    wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
+
+    add_saved_option_to_scenario_info(pstrScenarioInfo, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
+}
+
+
+//
+
 void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo)
 {
     memset(pstrScenarioInfo, 0, sizeof(strScenarioInfo));
@@ -484,12 +604,14 @@ extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* ps
         //LaunchPriceCalculatorDefaultTest(pPriceCalculator);
         LaunchPriceCalculatorLoadedScenario(pPriceCalculator);
 
+        //Para debugearssssS
         //TODO. Devolver aquí resultados a GODOT, por el argumento pstrScenarioInfo
         //o de alguna otra manera mejor
-        double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
+        //double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
 
-        pPriceCalculator->PrintPricesEvolution();
-        pPriceCalculator->PrintPersonsOptionAdjustmentToFile();
+        //pPriceCalculator->PrintPricesEvolution();
+        //pPriceCalculator->PrintPersonsOptionAdjustmentToFile();
+        //
 
         LoadPriceCalculationResults(pPriceCalculator, pstrScenarioInfo);
         
@@ -594,3 +716,4 @@ void add_currency(wchar_t wc_currency[256], int n_size)
 
     g_sCurrency = sCurrency;
 }
+

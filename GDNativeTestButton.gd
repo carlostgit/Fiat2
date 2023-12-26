@@ -45,19 +45,20 @@ func _on_GDNativeTestButton_pressed():
 	#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
 #	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
 	
-	$Label.text = ""
-	$Label.text = "bla bla bla an5es de llamar a PriceCalculatorDll"
+	$OutputLabel.text = str(output_dict)
 	#$Label2.text = "calc_info_from_market_test: "+ str(data.calc_info_from_market_test())
-	$Label2.text = "calc_info_from_price_calculator_dll: "+ str(data.calc_info_from_price_calculator_dll(output_dict,input_dict))
+	$ReturnLabel.text = "calc_info_from_price_calculator_dll: "+ str(data.calc_info_from_price_calculator_dll(output_dict,input_dict))
 	
-	$Label.text = "bla bla bla after calling"
+	$InputLabel.text = str(input_dict)
 	
 	print("input dict:")
 	print(input_dict)
 	
-	for text_key in output_dict:
-		$Label.text += " Key: "+text_key
-		$Label.text += " Value: "+str(output_dict[text_key])
+	$InputTextEdit.text = str(input_dict)
+	
+#	for text_key in output_dict:
+#		$Label.text += " Key: "+text_key
+#		$Label.text += " Value: "+str(output_dict[text_key])
 	
 #	for text_key in text_dict_answ:
 #		$Label2.text += " Key: "+text_key

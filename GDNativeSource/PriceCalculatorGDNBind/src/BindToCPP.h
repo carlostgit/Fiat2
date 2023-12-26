@@ -16,6 +16,12 @@ struct strProductAmount
     double dAmount;
 };
 
+struct strOptionAmount
+{
+    struct strName name_option;
+    double dAmount;
+};
+
 struct strPersonProductAmounts
 {
     struct strName name_person;
@@ -23,10 +29,24 @@ struct strPersonProductAmounts
     struct strProductAmount prod_amounts[25];
 };
 
+struct strPersonOptionAmounts
+{
+    struct strName name_person;
+    int n_num_option_amounts;
+    struct strOptionAmount option_amounts[25];
+};
+
+
 struct strOwnedThings
 {
     int n_num_persons;
     struct strPersonProductAmounts person_prod_amounts[25];    
+};
+
+struct strTradedThings
+{
+    int n_num_persons;
+    struct strPersonProductAmounts person_prod_amounts[25];
 };
 
 struct strPrices
@@ -34,6 +54,19 @@ struct strPrices
     int n_num_prices;
     struct strProductAmount prod_price[25];
 };
+
+struct strConsumedOptions
+{
+    int n_num_persons;
+    struct strPersonOptionAmounts person_option_amounts[25];
+};
+
+struct strSavedOptions
+{
+    int n_num_persons;
+    struct strPersonOptionAmounts person_option_amounts[25];
+};
+
 
 struct strScenarioInfo
 {
@@ -57,6 +90,9 @@ struct strScenarioInfo
     struct strName name_saving_options[25];
     int n_num_of_saving_options;
     struct strOwnedThings owned_things;
+    struct strTradedThings traded_things; //new
+    struct strConsumedOptions consumed_options; //new
+    struct strSavedOptions saved_options; //new
     struct strPrices prices;
         
 };
@@ -108,8 +144,13 @@ void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar
 void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
 void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
 void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
 void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_product[256], int size, double dPrice);
+
+void add_traded_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+void add_consumed_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
+void add_saved_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
+
 void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo);
 ////////////////////////////////////////////////////////
 

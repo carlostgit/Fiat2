@@ -403,19 +403,35 @@ margin_bottom = 272.0
 text = "GDNative Test"
 script = ExtResource( 15 )
 
-[node name="Label" type="Label" parent="GDNativeTestButton"]
+[node name="OutputLabel" type="Label" parent="GDNativeTestButton"]
 margin_left = -104.0
 margin_top = 40.0
 margin_right = -40.0
 margin_bottom = 54.0
-text = "test"
+text = "Output Label"
 
-[node name="Label2" type="Label" parent="GDNativeTestButton"]
+[node name="InputLabel" type="Label" parent="GDNativeTestButton"]
 margin_left = -104.0
 margin_top = 64.0
-margin_right = -64.0
+margin_right = -32.0
 margin_bottom = 78.0
-text = "Test2"
+rect_pivot_offset = Vector2( 36, 7 )
+text = "Input Label"
+
+[node name="ReturnLabel" type="Label" parent="GDNativeTestButton"]
+margin_left = 155.0
+margin_top = 11.0
+margin_right = 227.0
+margin_bottom = 25.0
+rect_pivot_offset = Vector2( 36, 7 )
+text = "Return Label"
+
+[node name="InputTextEdit" type="TextEdit" parent="GDNativeTestButton"]
+margin_left = 266.0
+margin_top = -52.0
+margin_right = 483.0
+margin_bottom = 52.0
+text = "InputTextEdit"
 
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer2" method="_on_Fiat_signal_consumption_of_person_updated"]
