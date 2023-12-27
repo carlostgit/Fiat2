@@ -27,6 +27,15 @@
     <ClInclude Include="..\..\src\BindToCPP_CPPHeader.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\LoadingScenarioDictionaryFuncs.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\SavingResultsDictionaryFuncs.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\AuxFuncs.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\BindToCPP.cpp">
@@ -39,6 +48,15 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Prueba2.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\LoadingScenarioDictionaryFuncs.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SavingResultsDictionaryFuncs.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\AuxFuncs.c">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

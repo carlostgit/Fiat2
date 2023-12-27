@@ -1,6 +1,9 @@
 #include <gdnative_api_struct.gen.h>
 #include <string.h>
 #include "BindToCPP.h"
+#include "LoadingScenarioDictionaryFuncs.h"
+#include "SavingResultsDictionaryFuncs.h"
+#include "AuxFuncs.h"
 #include <stdio.h>
 
 //#include <windows.h>
@@ -36,13 +39,16 @@ typedef struct user_data_struct {
 } user_data_struct;
 
 
-#define MAXSTRING 256
+
 
 
 // GDNative supports a large collection of functions for calling back
 // into the main Godot executable. In order for your module to have
 // access to these functions, GDNative provides your application with
 // a struct containing pointers to all these functions.
+godot_gdnative_core_api_struct* api_for_auxfuncs = NULL;
+godot_gdnative_ext_nativescript_api_struct* nativescript_api_for_auxfuncs = NULL;
+
 const godot_gdnative_core_api_struct *api2 = NULL; //CHer. Lo cambio de api a api2, pq si no, em++ daba problemas al compilarlo con los bindings
 const godot_gdnative_ext_nativescript_api_struct *nativescript_api2 = NULL; //CHer. Lo mismo aquí
 
@@ -66,8 +72,8 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
 // information we may find useful among which the pointers to our API structures.
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
 	api2 = p_options->api_struct;
-
-
+    
+    
 //    printf("Before libr_path:\n");
 //    godot_string* libr_path = p_options->active_library_path;
 //    printf("after libr_path:\n");
@@ -84,6 +90,10 @@ void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
 				break;
 		};
 	};
+
+    api_for_auxfuncs = api2;
+    nativescript_api_for_auxfuncs = nativescript_api2;
+
 }
 
 // `gdnative_terminate` which is called before the library is unloaded.
@@ -92,6 +102,9 @@ void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_opt
 	api2 = NULL;
 	nativescript_api2 = NULL;
 	//api12 = NULL;
+
+    api_for_auxfuncs = NULL;
+    nativescript_api_for_auxfuncs = NULL;
 }
 
 // `nativescript_init` is the most important function. Godot calls
@@ -504,471 +517,18 @@ void setDataFromMarket(int nProduct, double dAmount)
 }
 
 
-//////////////////////////////////////////////////////////////
-//Inicio de métodos para imprimir cosas en la consola de GODOT
-
-
-
-void PrintInGodotConsole_Text_Size(wchar_t wchar_to_print[], size_t size)
-{ 
-    //Este método admite como máximo 256 caracteres    
-    wchar_t wchar_to_print2[MAXSTRING];
-    for (int i = 0;i < MAXSTRING;i++)
-    {
-        wchar_to_print2[i] = wchar_to_print[i];
-    }   
-
-    //int result = MessageBox(NULL, wchar_to_print, L"Message", MB_OK);
-    godot_int godint_to_print_length = wcslen(wchar_to_print2);
-
-    //wchar_t wchar_for_number_to_print[30];
-    //swprintf(wchar_for_number_to_print, sizeof(wchar_for_number_to_print) / sizeof(wchar_for_number_to_print[0]), L"%d", godint_to_print_length);
-    //MessageBox(NULL, wchar_for_number_to_print, L"Message", MB_OK);
-    godot_string godstring_to_print;
-    api2->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print2, godint_to_print_length);
-        
-    //MessageBox(NULL, wchar_to_print2, L"Message", MB_OK);
-    //MessageBox(NULL, api->godot_string_wide_str(&godstring_to_print), L"Message", MB_OK);
-
-    api2->godot_print(&godstring_to_print);
-}
-
-void PrintInGodotConsole_Text(wchar_t wchar_to_print[])
-{
-    PrintInGodotConsole_Text_Size(wchar_to_print, MAXSTRING); 
-}
-
-void PrintInGodotConsole_Int(int intNumber)
-{
-    wchar_t wchar_to_print[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
-    swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%d", intNumber);
-    int numberOfCharacters = wcslen(wchar_to_print);
-    PrintInGodotConsole_Text_Size(wchar_to_print,numberOfCharacters);
-}
-
-void PrintInGodotConsole_Double(double doubleNumber)
-{
-    wchar_t wchar_to_print[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
-    swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%f", doubleNumber);
-    int numberOfCharacters = wcslen(wchar_to_print);
-    PrintInGodotConsole_Text_Size(wchar_to_print, numberOfCharacters);
-}
-
-//Fin de métodos para imprimir cosas en la consola de GODOT
-//////////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////////////////
-//Inicio de métodos para procesar la información que llega desde GODOT
-
-void ProcessScenarioPersons(godot_array* pgodarray_persons_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_array godarray_persons = (*pgodarray_persons_arg);
-
-    godot_int godint_size_of_array = api_arg->godot_array_size(&godarray_persons);
-
-    printf("Size of array: %d \n", godint_size_of_array);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array;i++)
-    {
-        godot_variant godvar_person;
-        godvar_person = api_arg->godot_array_get(&godarray_persons, i);
-        
-        godot_string godstring_person = api_arg->godot_variant_as_string(&godvar_person);
-
-        wchar_t* wc_person = api_arg->godot_string_wide_str(&godstring_person);
-
-        add_person(wc_person, 256);
-    }
-}
-
-void ProcessScenarioProducts(godot_array* pgodarray_products_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_array godarray_products = (*pgodarray_products_arg);
-
-    godot_int godint_size_of_array = api_arg->godot_array_size(&godarray_products);
-
-    printf("Size of array: %d \n", godint_size_of_array);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array;i++)
-    {
-        godot_variant godvar_product;
-        godvar_product = api_arg->godot_array_get(&godarray_products, i);
-
-        godot_string godstring_product = api_arg->godot_variant_as_string(&godvar_product);
-
-        wchar_t* wc_product = api_arg->godot_string_wide_str(&godstring_product);
-
-        add_product(wc_product, 256);
-    }
-}
-
-void ProcessScenarioConsumption(godot_array* pgodarray_consumption_options_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_array godarray_consumption_options = (*pgodarray_consumption_options_arg);
-
-    godot_int godint_size_of_array = api_arg->godot_array_size(&godarray_consumption_options);
-
-    printf("Size of array: %d \n", godint_size_of_array);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array;i++)
-    {
-        godot_variant godvar_consumption_option;
-        godvar_consumption_option = api_arg->godot_array_get(&godarray_consumption_options, i);
-
-        godot_string godstring_consumption_option = api_arg->godot_variant_as_string(&godvar_consumption_option);
-
-        wchar_t* wc_consumption_option = api_arg->godot_string_wide_str(&godstring_consumption_option);
-
-        add_consumption_option(wc_consumption_option, 256);
-    }
-}
-
-void ProcessScenarioSaving(godot_array* pgodarray_saving_options_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_array godarray_saving_options = (*pgodarray_saving_options_arg);
-
-    godot_int godint_size_of_array = api_arg->godot_array_size(&godarray_saving_options);
-
-    printf("Size of array: %d \n", godint_size_of_array);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array;i++)
-    {
-        godot_variant godvar_saving_option;
-        godvar_saving_option = api_arg->godot_array_get(&godarray_saving_options, i);
-
-        godot_string godstring_saving_option = api_arg->godot_variant_as_string(&godvar_saving_option);
-
-        wchar_t* wc_saving_option = api_arg->godot_string_wide_str(&godstring_saving_option);
-
-        add_saving_option(wc_saving_option, 256);
-    }
-}
-
-void ProcessScenarioPersonOwned(godot_string* pgostring_person_arg, godot_dictionary* pgodict_product_amount_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_string gostring_person_arg = (*pgostring_person_arg);
-
-    godot_dictionary godict_product_owned = (*pgodict_product_amount_arg);
-
-    godot_array godarray_keys_products = api_arg->godot_dictionary_keys(&godict_product_owned);
-    godot_array godarray_values_products = api_arg->godot_dictionary_values(&godict_product_owned);
-
-    godot_int godint_size_of_array_products = api_arg->godot_array_size(&godarray_keys_products);
-
-    printf("Size of array: %d \n", godint_size_of_array_products);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array_products;i++)
-    {
-        godot_variant godvar_my_key;
-        godvar_my_key = api_arg->godot_array_get(&godarray_keys_products, i);
-        godot_string godstring_key_product = api_arg->godot_variant_as_string(&godvar_my_key);
-
-        godot_variant godvar_my_value;
-        godvar_my_value = api_arg->godot_array_get(&godarray_values_products, i);
-        godot_real godreal_value = api_arg->godot_variant_as_real(&godvar_my_value);
-        
-        const wchar_t* pwc_person = api_arg->godot_string_wide_str(&gostring_person_arg);
-        const wchar_t* pwc_product = api_arg->godot_string_wide_str(&godstring_key_product);
-        float dAmountOfProduct = godreal_value;
-
-        add_person_owned(pwc_person,256,pwc_product,256,dAmountOfProduct);       
-    }
-}
-
-void ProcessScenarioOwned(godot_dictionary* pgodict_owned_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_dictionary godict_owned = (*pgodict_owned_arg);
-
-    godot_array godarray_keys_persons = api_arg->godot_dictionary_keys(&godict_owned);
-    godot_array godarray_values_persons = api_arg->godot_dictionary_values(&godict_owned);
-
-    godot_int godint_size_of_array_persons = api_arg->godot_array_size(&godarray_keys_persons);
-
-    printf("Size of array: %d \n", godint_size_of_array_persons);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array_persons;i++)
-    {
-        godot_variant godvar_my_key;
-        godvar_my_key = api_arg->godot_array_get(&godarray_keys_persons, i);
-        godot_string godstring_key_person = api_arg->godot_variant_as_string(&godvar_my_key);
-        
-        godot_variant godvar_my_value;
-        godvar_my_value = api_arg->godot_array_get(&godarray_values_persons, i);
-        godot_dictionary godict_value_prodamounts = api_arg->godot_variant_as_dictionary(&godvar_my_value);
-
-        ProcessScenarioPersonOwned(&godstring_key_person, &godict_value_prodamounts, api_arg);
-    }    
-}
-
-void ProcessScenarioOptionProduct(godot_dictionary* pgodict_option_product_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_dictionary godict_option_product = (*pgodict_option_product_arg);
-
-    godot_array godarray_keys_options = api_arg->godot_dictionary_keys(&godict_option_product);
-    godot_array godarray_values_products = api_arg->godot_dictionary_values(&godict_option_product);
-
-    godot_int godint_size_of_array_options = api_arg->godot_array_size(&godarray_keys_options);
-
-    printf("Size of array: %d \n", godint_size_of_array_options);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array_options;i++)
-    {
-        godot_variant godvar_my_key;
-        godvar_my_key = api_arg->godot_array_get(&godarray_keys_options, i);
-        godot_string godstring_key_option = api_arg->godot_variant_as_string(&godvar_my_key);
-
-        godot_variant godvar_my_value;
-        godvar_my_value = api_arg->godot_array_get(&godarray_values_products, i);
-        godot_string godict_value_product = api_arg->godot_variant_as_string(&godvar_my_value);
-
-        const wchar_t* pwc_option = api_arg->godot_string_wide_str(&godstring_key_option);
-        const wchar_t* pwc_product = api_arg->godot_string_wide_str(&godict_value_product);
-
-        add_option_product(pwc_option, 256, pwc_product, 256);
-    }
-}
-
-void ProcessScenarioCurrency(godot_string* pgostring_currency_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    godot_string gostring_currency = (*pgostring_currency_arg);
-    const wchar_t* pwc_currency = api_arg->godot_string_wide_str(&gostring_currency);
-    add_currency(pwc_currency, 256);
-}
-
-//Método para procesar la información del escenario que viene en un diccionario desde GODOT
-void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg)
-{
-    //var text_dict_arg : Dictionary = {
-    //    "Persons": ["Peter","George"] ,
-    //    "Products" : ["nut","chocolate","candy"] ,
-    //    "Consumption" : ["nut_consumption","chocolate_consumption","candy_consumption"] ,
-    //    "Owned" : {
-    //        "Peter":
-    //                {"nut":1,"chocolate" : 2,"candy" : 3},
-    //        "George" :
-    //                {"nut":4,"chocolate" : 5,"candy" : 6}
-    //    },
-    //    "OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"},
-    //    "Currency" : "nut"
-    //}
-
-    //godot_dictionary godict_arg = api2->godot_variant_as_dictionary(p_args[i]);
-    godot_dictionary godict_scenario_info = (*pgodict_scenario_info_arg);
-
-    godot_array godarray_keys = api_arg->godot_dictionary_keys(&godict_scenario_info);
-    godot_array godarray_values = api_arg->godot_dictionary_values(&godict_scenario_info);
-
-    godot_int godint_size_of_array = api_arg->godot_array_size(&godarray_keys);
-
-    printf("Size of array: %d \n", godint_size_of_array);
-
-    int i = 0;
-    for (i = 0;i < godint_size_of_array;i++)
-    {
-        //No sé si hace falta copiar los strings como lo hago aquí
-        //No sé qué tipo de copia se hace con los variant, si paso la referencia directamente
-        //desde el diccionario origen
-        godot_variant godvar_my_key;
-        godvar_my_key = api_arg->godot_array_get(&godarray_keys, i);
-        godot_string godstring_key = api_arg->godot_variant_as_string(&godvar_my_key);
-        api_arg->godot_print(&godstring_key);
-
-        godot_variant godvar_my_value;
-        godvar_my_value = api_arg->godot_array_get(&godarray_values, i);
-        godot_string godstring_value = api_arg->godot_variant_as_string(&godvar_my_value);
-        api_arg->godot_print(&godstring_value);
-
-        const wchar_t* pwc_key = api_arg->godot_string_wide_str(&godstring_key);
-        const wchar_t wc_persons[] = L"Persons";
-        const wchar_t wc_products[] = L"Products";
-        const wchar_t wc_consumption[] = L"Consumption";
-        const wchar_t wc_saving[] = L"Saving";
-        const wchar_t wc_owned[] = L"Owned";
-        const wchar_t wc_option_product[] = L"OptionProduct";
-        const wchar_t wc_currency[] = L"Currency";
-        
-        if (wcscmp(pwc_key, wc_persons) == 0)
-        {                        
-            godot_array godarray_persons = api_arg->godot_variant_as_array(&godvar_my_value);
-            ProcessScenarioPersons(&godarray_persons,api_arg);           
-        }
-        else if (wcscmp(pwc_key, wc_products) == 0)
-        {            
-            godot_array godarray_products = api_arg->godot_variant_as_array(&godvar_my_value);
-            ProcessScenarioProducts(&godarray_products, api_arg);
-        }
-        else if (wcscmp(pwc_key, wc_consumption) == 0)
-        {
-            godot_array godarray_consumption = api_arg->godot_variant_as_array(&godvar_my_value);
-            ProcessScenarioConsumption(&godarray_consumption, api_arg);
-        }
-        else if (wcscmp(pwc_key, wc_saving) == 0)
-        {
-            godot_array godarray_saving = api_arg->godot_variant_as_array(&godvar_my_value);
-            ProcessScenarioSaving(&godarray_saving, api_arg);
-        }
-        else if (wcscmp(pwc_key, wc_owned) == 0)
-        {
-            godot_dictionary godict_owned = api_arg->godot_variant_as_dictionary(&godvar_my_value);
-            ProcessScenarioOwned(&godict_owned, api_arg);
-        }
-        else if (wcscmp(pwc_key, wc_option_product) == 0)
-        {
-            godot_dictionary godict_option_product = api_arg->godot_variant_as_dictionary(&godvar_my_value);
-            ProcessScenarioOptionProduct(&godict_option_product, api_arg);
-        }
-        else if (wcscmp(pwc_key, wc_currency) == 0)
-        {
-            godot_string gostring_currency = api_arg->godot_variant_as_string(&godvar_my_value);
-            ProcessScenarioCurrency(&gostring_currency, api_arg);
-        }
-    }
-}
-
-void SaveProductPriceResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg)
-{    
-    //Pruebo a salvar datos de los precios primero
-    int i = 0;
-    for (i = 0;i < pstr_scenario_info->prices.n_num_prices;i++)
-    {
-        double dPrice = pstr_scenario_info->prices.prod_price[i].dAmount;
-
-        wchar_t* pwchar_product_name = pstr_scenario_info->prices.prod_price[i].name_product.wc_name;
-        int size = wcslen(pwchar_product_name);
-        godot_string godstring_product_name;
-        api_arg->godot_string_new_with_wide_string(&godstring_product_name, pwchar_product_name, size);
-        godot_variant godvar_product_name;
-        api_arg->godot_variant_new_string(&godvar_product_name, &godstring_product_name);
-
-        godot_real godreal_price = dPrice;
-        godot_variant godvar_product_price;
-        api_arg->godot_variant_new_real(&godvar_product_price, dPrice);
-
-        api_arg->godot_dictionary_set(pgodict_product_price, &godvar_product_name, &godvar_product_price);
-    }
-}
-
-void SaveProductAmountResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
-{
-    int i = 0;
-    for (i = 0;i < pstr_scenario_info->owned_things.person_prod_amounts[person_index].n_num_prod_amounts;i++)
-    {
-        wchar_t* pwchar_product_name = pstr_scenario_info->owned_things.person_prod_amounts[person_index].prod_amounts[i].name_product.wc_name;
-        int size = wcslen(pwchar_product_name);
-        godot_string godstring_product_name;
-        api_arg->godot_string_new_with_wide_string(&godstring_product_name, pwchar_product_name, size);
-        godot_variant godvar_product_name;
-        api_arg->godot_variant_new_string(&godvar_product_name, &godstring_product_name);
-
-        const double dAmount = pstr_scenario_info->owned_things.person_prod_amounts[person_index].prod_amounts[i].dAmount;        
-        godot_variant godvar_amount;
-        api_arg->godot_variant_new_real(&godvar_amount, dAmount);
-
-        api_arg->godot_dictionary_set(pgodict_product_amount, &godvar_product_name, &godvar_amount);
-    }
-
-}
-
-void SavePersonProdamountResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_prodamount, const godot_gdnative_core_api_struct* api_arg)
-{
-    int i = 0;
-    for (i = 0;i < pstr_scenario_info->owned_things.n_num_persons;i++)
-    {
-        wchar_t* pwchar_person_name = pstr_scenario_info->owned_things.person_prod_amounts[i].name_person.wc_name;
-        int size = wcslen(pwchar_person_name);
-        godot_string godstring_person_name;
-        api_arg->godot_string_new_with_wide_string(&godstring_person_name, pwchar_person_name, size);
-        godot_variant godvar_person_name;
-        api_arg->godot_variant_new_string(&godvar_person_name, &godstring_person_name);
-
-        godot_dictionary godict_product_amount;
-        api_arg->godot_dictionary_new(&godict_product_amount);
-        SaveProductAmountResults(pstr_scenario_info, &godict_product_amount, i, api_arg);
-
-        godot_variant godvar_product_amount;
-        api_arg->godot_variant_new_dictionary(&godvar_product_amount, &godict_product_amount);
-        
-        api_arg->godot_dictionary_set(pgodict_person_prodamount, &godvar_person_name, &godvar_product_amount);
-    }
-}
-
-void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg)
-{
-    //var text_dict_arg : Dictionary = {
-//    "Prices":
-//                {"nut":1.1,"chocolate" : 2.3,"candy" : 3.5},
-//    "Owned" : {
-//        "Peter":
-//                {"nut":1,"chocolate" : 2,"candy" : 3},
-//        "George" :
-//                {"nut":4,"chocolate" : 5,"candy" : 6}
-//    },
-//}
-
-    godot_dictionary godict_scenario_info = (*pgdict_results_scenario_info);
-
-    //////////////
-    //Save Prices:
-    godot_dictionary godict_product_price;
-    api_arg->godot_dictionary_new(&godict_product_price);
-
-    SaveProductPriceResults(pstr_scenario_info, &godict_product_price, api_arg);
-    
-    wchar_t* pwchar_prices = L"Prices";
-    int size_prices = wcslen(pwchar_prices);
-    godot_string godstring_prices;
-    api_arg->godot_string_new_with_wide_string(&godstring_prices, pwchar_prices, size_prices);
-    godot_variant godvar_prices;
-    api_arg->godot_variant_new_string(&godvar_prices, &godstring_prices);
-
-    godot_variant godvar_product_price;
-    api_arg->godot_variant_new_dictionary(&godvar_product_price, &godict_product_price);
-       
-    //Se añade el diccionario de precios al diccionario del escenario
-    api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_prices, &godvar_product_price);
-
-    /////////////
-    //Save Owned:
-    godot_dictionary godict_person_prodamount;
-    api_arg->godot_dictionary_new(&godict_person_prodamount);
-
-    SavePersonProdamountResults(pstr_scenario_info, &godict_person_prodamount, api_arg);
-
-    wchar_t* pwchar_owned = L"Owned";
-    int size_owned = wcslen(pwchar_owned);
-    godot_string godstring_owned;
-    api_arg->godot_string_new_with_wide_string(&godstring_owned, pwchar_owned, size_owned);
-    godot_variant godvar_owned;
-    api_arg->godot_variant_new_string(&godvar_owned, &godstring_owned);
-
-    godot_variant godvar_person_prodamount;
-    api_arg->godot_variant_new_dictionary(&godvar_person_prodamount, &godict_person_prodamount);
-
-    //Se añade el diccionario de precios al diccionario del escenario
-    api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_owned, &godvar_person_prodamount);
-
-    //TODO
-}
-
 godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
 {
     godot_variant godvar_ret;
 
-    struct strProductAmount2 strRet;
+    //struct strProductAmount2 strRet;
 //    int nPointerOfPriceCalculator_1 = test_price_calculator_dll_with_str(&strRet);
-    strRet.nProductId = 0;
-    strRet.dAmount = 0;
+    //strRet.nProductId = 0;
+    //strRet.dAmount = 0;
     int nPointerOfPriceCalculator_1 = 0;
 
-    int int_ret_from_price_calculator_dll = strRet.nProductId;
-    double double_ret_from_price_calculator_dll = strRet.dAmount;
+    int int_ret_from_price_calculator_dll = 0;//strRet.nProductId;
+    double double_ret_from_price_calculator_dll = 0;// = strRet.dAmount;
 
     wchar_t wchar_pointer_1[MAXSTRING] = L"Pointer of PC 1:";
     PrintInGodotConsole_Text(wchar_pointer_1);

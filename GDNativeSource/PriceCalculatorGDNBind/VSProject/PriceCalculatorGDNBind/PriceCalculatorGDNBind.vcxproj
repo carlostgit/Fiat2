@@ -153,14 +153,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\AuxFuncs.h" />
     <ClInclude Include="..\..\src\BindToCPP.h" />
     <ClInclude Include="..\..\src\BindToCPP_CPPHeader.h" />
+    <ClInclude Include="..\..\src\LoadingScenarioDictionaryFuncs.h" />
+    <ClInclude Include="..\..\src\SavingResultsDictionaryFuncs.h" />
     <ClInclude Include="Prueba.h" />
     <ClInclude Include="Prueba2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\AuxFuncs.c" />
     <ClCompile Include="..\..\src\BindToCPP.cpp" />
+    <ClCompile Include="..\..\src\LoadingScenarioDictionaryFuncs.c" />
     <ClCompile Include="..\..\src\PriceCalculatorGDNBind.c" />
+    <ClCompile Include="..\..\src\SavingResultsDictionaryFuncs.c" />
     <ClCompile Include="Prueba.cpp" />
     <ClCompile Include="Prueba2.cpp" />
   </ItemGroup>

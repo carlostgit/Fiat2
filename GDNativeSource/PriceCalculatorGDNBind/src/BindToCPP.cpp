@@ -304,6 +304,11 @@ void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo)
     memset(pstrScenarioInfo, 0, sizeof(strScenarioInfo));
 }
 
+struct strScenarioInfo createScenarioInfoStruct() {
+    struct strScenarioInfo newStruct = { 0 };
+    return newStruct;
+}
+
 //////////////////////////////////////////////////////
 //Prueba
 
@@ -394,22 +399,39 @@ void LoadPriceCalculationResults(pca::CPriceCalculator* pPriceCalculator, struct
         person_index++;
     }
 
-        
-        
-    
 
+    //            
+    //TODO. Seguir aquí.
+    //void add_traded_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount);
+    //void add_consumed_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
+    //void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
+    //person_index = 0;
+    //for (auto& person : g_setPersons)
+    //{
+    //    for (auto& product : g_setProducts)
+    //    {
+    //        double dAmount = pPriceCalculator->GetTradedAmount(product, person); //Todo. Falta un método GetTradedAmount
+    //        add_traded_thing_to_scenario_info_cpp(pstrScenarioInfo, person_index, person, product, dAmount);
+    //    }
+    //    person_index++;
+    //}
 
+    person_index = 0;
+    for (auto& sPerson : g_setPersons)
+    {
+        for (auto& sOption : g_setSavingOptions)
+        {
+            double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
+            add_saved_option_to_scenario_info_cpp(pstrScenarioInfo, person_index, sPerson, sOption, dAmount);
+        }
+        for (auto& sOption : g_setConsumptionOptions)
+        {
+            double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
+            add_consumed_option_to_scenario_info_cpp(pstrScenarioInfo, person_index, sPerson, sOption, dAmount);
+        }
+        person_index++;
+    }
 
-    //TODO. Seguir aquí. Pero cambiar lo anterior, para hacerlo menos complicado
-    //Igual tengo que cambiar los métodos de la estructura, para que sean enteramente en c++
-    //aceptando std:string. El constructor de la estructura es el único que tiene que ser en c
-    //std::set<std::string> g_setPersons;
-    //std::set<std::string> g_setProducts;
-    //std::set<std::string> g_setConsumptionOptions;
-    //std::set<std::string> g_setSavingOptions;
-    //std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
-    //std::map<std::string, std::string> g_mapOptionProduct;
-    //std::string g_sCurrency;
 
 }
 
@@ -537,62 +559,62 @@ void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
 
 }
 
-extern "C" int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount)
-{   
-    pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
-
-    if (pPriceCalculator)
-    {
-        //LaunchPriceCalculatorDefaultTest(pPriceCalculator);
-        LaunchPriceCalculatorLoadedScenario(pPriceCalculator);
-
-        double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
-
-        strProdAmount->dAmount = dAmount;
-    }
-
-    return (int)pPriceCalculator;
-
-    //strProdAmount->dAmount = 2.1;
-    //strProdAmount->nProductId = 3;
-
-    ////Si se usa una librería dinámica en GODOT, he comprobado q carga la librería solo si la pongo en el exe de godot
-    //std::wstring libraryName = L"PriceCalculatorDLL.dll";
-    ////HMODULE hDll = LoadLibrary(TEXT("PriceCalculatorDLL.dll"));
-    //HMODULE hDll = LoadLibrary(libraryName.c_str());
-    //if (!hDll || hDll == INVALID_HANDLE_VALUE) {
-    //    std::wcout << "Unable to load library " << libraryName.c_str() << L" with 'explicit linking'!\n";
-    //    std::cout << "Saliendo del programa por el fallo al cargar la libreria" << std::endl;
-    //    return 0;
-    //}
-
-    //std::wcout << L"Library " << libraryName.c_str() << L" loaded\n";
-
-    ////typedef pca::CPriceCalculator* (*fpGetPriceCalculatorRefFromDLL2)();
-    ////extern "C" PRICECALCULATORDLL_API pca::CPriceCalculator * GetPriceCalculatorRefFromDLL2();
-
-    //std::string nombreMetodo = "GetPriceCalculatorRefFromDLL2";
-    //pca::CPriceCalculator* (*fpGetPriceCalculatorRefFromDLL2)();
-    //fpGetPriceCalculatorRefFromDLL2 = (pca::CPriceCalculator * (*)())(GetProcAddress(hDll, nombreMetodo.c_str()));
-
-    //if (fpGetPriceCalculatorRefFromDLL2)
-    //{
-    //    std::wcout << "Hello World con la librería dinámica " << libraryName.c_str() << " linkada en ejecución!\n";
-    //    std::cout << "Llamando al método: " << nombreMetodo << std::endl;
-    //    pca::CPriceCalculator* pPriceCalculator = fpGetPriceCalculatorRefFromDLL2();
-    //    std::cout << "Dirección de memoria del objeto pPriceCalculator" << pPriceCalculator << std::endl;
-    //    std::cout << "Ejecutando LaunchPriceCalculatorDefaultTest(pPriceCalculator);" << std::endl;
-    //    LaunchPriceCalculatorDefaultTest(pPriceCalculator);
-
-    //    double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
-
-    //    strProdAmount->dAmount = dAmount;
-
-    //    return (int)pPriceCalculator;
-    //}
-
-    return 0;
-}
+//extern "C" int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount)
+//{   
+//    pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
+//
+//    if (pPriceCalculator)
+//    {
+//        //LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+//        LaunchPriceCalculatorLoadedScenario(pPriceCalculator);
+//
+//        double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
+//
+//        strProdAmount->dAmount = dAmount;
+//    }
+//
+//    return (int)pPriceCalculator;
+//
+//    //strProdAmount->dAmount = 2.1;
+//    //strProdAmount->nProductId = 3;
+//
+//    ////Si se usa una librería dinámica en GODOT, he comprobado q carga la librería solo si la pongo en el exe de godot
+//    //std::wstring libraryName = L"PriceCalculatorDLL.dll";
+//    ////HMODULE hDll = LoadLibrary(TEXT("PriceCalculatorDLL.dll"));
+//    //HMODULE hDll = LoadLibrary(libraryName.c_str());
+//    //if (!hDll || hDll == INVALID_HANDLE_VALUE) {
+//    //    std::wcout << "Unable to load library " << libraryName.c_str() << L" with 'explicit linking'!\n";
+//    //    std::cout << "Saliendo del programa por el fallo al cargar la libreria" << std::endl;
+//    //    return 0;
+//    //}
+//
+//    //std::wcout << L"Library " << libraryName.c_str() << L" loaded\n";
+//
+//    ////typedef pca::CPriceCalculator* (*fpGetPriceCalculatorRefFromDLL2)();
+//    ////extern "C" PRICECALCULATORDLL_API pca::CPriceCalculator * GetPriceCalculatorRefFromDLL2();
+//
+//    //std::string nombreMetodo = "GetPriceCalculatorRefFromDLL2";
+//    //pca::CPriceCalculator* (*fpGetPriceCalculatorRefFromDLL2)();
+//    //fpGetPriceCalculatorRefFromDLL2 = (pca::CPriceCalculator * (*)())(GetProcAddress(hDll, nombreMetodo.c_str()));
+//
+//    //if (fpGetPriceCalculatorRefFromDLL2)
+//    //{
+//    //    std::wcout << "Hello World con la librería dinámica " << libraryName.c_str() << " linkada en ejecución!\n";
+//    //    std::cout << "Llamando al método: " << nombreMetodo << std::endl;
+//    //    pca::CPriceCalculator* pPriceCalculator = fpGetPriceCalculatorRefFromDLL2();
+//    //    std::cout << "Dirección de memoria del objeto pPriceCalculator" << pPriceCalculator << std::endl;
+//    //    std::cout << "Ejecutando LaunchPriceCalculatorDefaultTest(pPriceCalculator);" << std::endl;
+//    //    LaunchPriceCalculatorDefaultTest(pPriceCalculator);
+//
+//    //    double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
+//
+//    //    strProdAmount->dAmount = dAmount;
+//
+//    //    return (int)pPriceCalculator;
+//    //}
+//
+//    return 0;
+//}
 
 //extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)
 extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)

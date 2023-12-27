@@ -26,3 +26,4 @@ std::set<std::string> g_setSavingOptions;
 std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
 std::map<std::string, std::string> g_mapOptionProduct;
 std::string g_sCurrency;
+

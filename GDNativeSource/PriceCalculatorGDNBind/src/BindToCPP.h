@@ -1,9 +1,9 @@
-
-struct strProductAmount2
-{
-    int nProductId;
-    double dAmount;    
-};
+#pragma once
+//struct strProductAmount2
+//{
+//    int nProductId;
+//    double dAmount;    
+//};
 
 struct strName
 {
@@ -97,15 +97,6 @@ struct strScenarioInfo
         
 };
 
-//Métodos para manipular la estructura:
-struct strScenarioInfo createScenarioInfoStruct() {
-    struct strScenarioInfo newStruct = { 0 };
-    return newStruct;
-}
-
-
-//Fin de métodos para manipular la estructura
-
 //Typedefs
 
 //////////////////////
@@ -132,7 +123,7 @@ void market_setCallbackMethodForPrices(setPriceFunc_t setPriceFunc);
 
 long test_price_calculator_dll();
 
-int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount);
+//int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount);
 //int calculate_prices_with_price_calculator(struct strScenarioInfo* strScenarioInfo);
 
 //Fin de código para pruebas
@@ -152,6 +143,7 @@ void add_consumed_option_to_scenario_info(struct strScenarioInfo* pstrScenarioIn
 void add_saved_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
 
 void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo);
+struct strScenarioInfo createScenarioInfoStruct();
 ////////////////////////////////////////////////////////
 
 int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrProdAmount);
