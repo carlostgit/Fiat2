@@ -1,9 +1,6 @@
 #include "SavingResultsDictionaryFuncs.h"
 #include "AuxFuncs.h"
 
-
-
-
 void SaveProductPriceResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg)
 {
     //Pruebo a salvar datos de los precios primero
@@ -45,7 +42,6 @@ void SaveProductAmountResults(struct strScenarioInfo* pstr_scenario_info, godot_
 
         api_arg->godot_dictionary_set(pgodict_product_amount, &godvar_product_name, &godvar_amount);
     }
-
 }
 
 void SaveTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
@@ -65,6 +61,46 @@ void SaveTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_diction
         api_arg->godot_variant_new_real(&godvar_amount, dAmount);
 
         api_arg->godot_dictionary_set(pgodict_product_amount, &godvar_product_name, &godvar_amount);
+    }
+}
+
+void SaveConsumedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_consumed_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+{
+    int i = 0;
+    for (i = 0;i < pstr_scenario_info->consumed_options.person_option_amounts[person_index].n_num_option_amounts;i++)
+    {
+        wchar_t* pwchar_option_name = pstr_scenario_info->consumed_options.person_option_amounts[person_index].option_amounts[i].name_option.wc_name;
+        int size = wcslen(pwchar_option_name);
+        godot_string godstring_option_name;
+        api_arg->godot_string_new_with_wide_string(&godstring_option_name, pwchar_option_name, size);
+        godot_variant godvar_option_name;
+        api_arg->godot_variant_new_string(&godvar_option_name, &godstring_option_name);
+
+        const double dAmount = pstr_scenario_info->consumed_options.person_option_amounts[person_index].option_amounts[i].dAmount;
+        godot_variant godvar_amount;
+        api_arg->godot_variant_new_real(&godvar_amount, dAmount);
+
+        api_arg->godot_dictionary_set(pgodict_consumed_amount, &godvar_option_name, &godvar_amount);
+    }
+}
+
+void SaveSavedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_saved_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+{
+    int i = 0;
+    for (i = 0;i < pstr_scenario_info->saved_options.person_option_amounts[person_index].n_num_option_amounts;i++)
+    {
+        wchar_t* pwchar_option_name = pstr_scenario_info->saved_options.person_option_amounts[person_index].option_amounts[i].name_option.wc_name;
+        int size = wcslen(pwchar_option_name);
+        godot_string godstring_option_name;
+        api_arg->godot_string_new_with_wide_string(&godstring_option_name, pwchar_option_name, size);
+        godot_variant godvar_option_name;
+        api_arg->godot_variant_new_string(&godvar_option_name, &godstring_option_name);
+
+        const double dAmount = pstr_scenario_info->saved_options.person_option_amounts[person_index].option_amounts[i].dAmount;
+        godot_variant godvar_amount;
+        api_arg->godot_variant_new_real(&godvar_amount, dAmount);
+
+        api_arg->godot_dictionary_set(pgodict_saved_amount, &godvar_option_name, &godvar_amount);
     }
 }
 
@@ -112,6 +148,52 @@ void SavePersonTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_d
         api_arg->godot_variant_new_dictionary(&godvar_product_amount, &godict_product_amount);
 
         api_arg->godot_dictionary_set(pgodict_person_traded, &godvar_person_name, &godvar_product_amount);
+    }
+}
+
+void SavePersonConsumedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_consumed, const godot_gdnative_core_api_struct* api_arg)
+{
+    int i = 0;
+    for (i = 0;i < pstr_scenario_info->consumed_options.n_num_persons;i++)
+    {
+        wchar_t* pwchar_person_name = pstr_scenario_info->consumed_options.person_option_amounts[i].name_person.wc_name;
+        int size = wcslen(pwchar_person_name);
+        godot_string godstring_person_name;
+        api_arg->godot_string_new_with_wide_string(&godstring_person_name, pwchar_person_name, size);
+        godot_variant godvar_person_name;
+        api_arg->godot_variant_new_string(&godvar_person_name, &godstring_person_name);
+
+        godot_dictionary godict_consumed_amount;
+        api_arg->godot_dictionary_new(&godict_consumed_amount);
+        SaveConsumedResults(pstr_scenario_info, &godict_consumed_amount, i, api_arg);
+
+        godot_variant godvar_consumed_amount;
+        api_arg->godot_variant_new_dictionary(&godvar_consumed_amount, &godict_consumed_amount);
+
+        api_arg->godot_dictionary_set(pgodict_person_consumed, &godvar_person_name, &godvar_consumed_amount);
+    }
+}
+
+void SavePersonSavedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_saved, const godot_gdnative_core_api_struct* api_arg)
+{
+    int i = 0;
+    for (i = 0;i < pstr_scenario_info->saved_options.n_num_persons;i++)
+    {
+        wchar_t* pwchar_person_name = pstr_scenario_info->saved_options.person_option_amounts[i].name_person.wc_name;
+        int size = wcslen(pwchar_person_name);
+        godot_string godstring_person_name;
+        api_arg->godot_string_new_with_wide_string(&godstring_person_name, pwchar_person_name, size);
+        godot_variant godvar_person_name;
+        api_arg->godot_variant_new_string(&godvar_person_name, &godstring_person_name);
+
+        godot_dictionary godict_saved_amount;
+        api_arg->godot_dictionary_new(&godict_saved_amount);
+        SaveSavedResults(pstr_scenario_info, &godict_saved_amount, i, api_arg);
+
+        godot_variant godvar_saved_amount;
+        api_arg->godot_variant_new_dictionary(&godvar_saved_amount, &godict_saved_amount);
+
+        api_arg->godot_dictionary_set(pgodict_person_saved, &godvar_person_name, &godvar_saved_amount);
     }
 }
 
@@ -190,6 +272,7 @@ void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     //Se añade el diccionario de owned al diccionario del escenario
     api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_owned, &godvar_person_prodamount);
 
+
     //////////////
     //Save Traded:
     godot_dictionary godict_person_traded;
@@ -209,6 +292,50 @@ void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_d
 
     //Se añade el diccionario de traded al diccionario del escenario
     api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_traded, &godvar_person_traded);
+
+
+    //////////////
+    //Save Consumed:
+    godot_dictionary godict_person_consumed;
+    api_arg->godot_dictionary_new(&godict_person_consumed);
+
+    SavePersonConsumedResults(pstr_scenario_info, &godict_person_consumed, api_arg);
+
+    wchar_t* pwchar_consumed = L"Consumed";
+    int size_consumed = wcslen(pwchar_consumed);
+    godot_string godstring_consumed;
+    api_arg->godot_string_new_with_wide_string(&godstring_consumed, pwchar_consumed, size_consumed);
+    godot_variant godvar_consumed;
+    api_arg->godot_variant_new_string(&godvar_consumed, &godstring_consumed);
+
+    godot_variant godvar_person_consumed;
+    api_arg->godot_variant_new_dictionary(&godvar_person_consumed, &godict_person_consumed);
+
+    //Se añade el diccionario de consumed al diccionario del escenario
+    api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_consumed, &godvar_person_consumed);
+
+
+    //////////////
+    //Save Saved:
+    godot_dictionary godict_person_saved;
+    api_arg->godot_dictionary_new(&godict_person_saved);
+
+    SavePersonSavedResults(pstr_scenario_info, &godict_person_saved, api_arg);
+
+    wchar_t* pwchar_saved = L"Saved";
+    int size_saved = wcslen(pwchar_saved);
+    godot_string godstring_saved;
+    api_arg->godot_string_new_with_wide_string(&godstring_saved, pwchar_saved, size_saved);
+    godot_variant godvar_saved;
+    api_arg->godot_variant_new_string(&godvar_saved, &godstring_saved);
+
+    godot_variant godvar_person_saved;
+    api_arg->godot_variant_new_dictionary(&godvar_person_consumed, &godict_person_consumed);
+
+    //Se añade el diccionario de consumed al diccionario del escenario
+    api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_consumed, &godvar_person_consumed);
+
+
 
     //TODO
 }

@@ -27,16 +27,16 @@ func _on_GDNativeTestButton_pressed():
 	
 	var output_dict:Dictionary = {
 		"Persons": ["Peter","George"], 
-		"Products":["nut","chocolate","candy"], 
-		"Consumption":["nut_consumption","chocolate_consumption","candy_consumption"],
+		"Products":["bill","chocolate","candy"], 
+		"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
 		"Owned": {
 			"Peter":
-					{"nut":1,"chocolate":2,"candy":3},
+					{"bill":1,"chocolate":2,"candy":3},
 			"George":
-					{"nut":4,"chocolate":5,"candy":6}
+					{"bill":4,"chocolate":5,"candy":6}
 		},
-		"OptionProduct":{"nut_consumption":"nut","chocolate_consumption":"chocolate","candy_consumption":"candy"},
-		"Currency":"nut"
+		"OptionProduct":{"bill_consumption":"bill","chocolate_consumption":"chocolate","candy_consumption":"candy"},
+		"Currency":"bill"
 	}
 	
 	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}

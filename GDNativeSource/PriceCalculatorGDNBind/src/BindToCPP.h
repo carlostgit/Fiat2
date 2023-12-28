@@ -121,7 +121,7 @@ void market_addOwnedAmountForPerson(int nPersonId, int nProductId, double dAmoun
 //Recibe un functor, al cual podremos llamar
 void market_setCallbackMethodForPrices(setPriceFunc_t setPriceFunc);
 
-long test_price_calculator_dll();
+//long test_price_calculator_dll();
 
 //int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount);
 //int calculate_prices_with_price_calculator(struct strScenarioInfo* strScenarioInfo);

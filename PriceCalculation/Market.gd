@@ -257,9 +257,9 @@ func init_default_example(satisf_calc_arg:Node):
 	add_person("Person 1", trade_calculator)
 	add_person("Person 2", trade_calculator)
 	
-	_person_owned_dict = {"Person 1": {"candy":1,"chocolate":20,"nut":10
+	_person_owned_dict = {"Person 1": {"candy":1,"chocolate":20,"bill":10
 												},
-									"Person 2": {"candy":1,"chocolate":40,"nut":10
+									"Person 2": {"candy":1,"chocolate":40,"bill":10
 												}  
 									}
 	

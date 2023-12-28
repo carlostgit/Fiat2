@@ -221,6 +221,21 @@ double pca::CPriceCalculator::GetOptionAmount(std::string sOptionName, std::stri
 
 }
 
+double pca::CPriceCalculator::GetTradedAmount(std::string sProductName, std::string sPerson)
+{
+    CProduct* pProductRef = m_upReality->GetProduct(sProductName);
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+
+    if (pPersonRef && pProductRef)
+    {
+        return pPersonRef->GetTradedAmount(pProductRef);
+    }
+
+    return 0.0;
+
+}
+
+
 void pca::CPriceCalculator::PrintPricesEvolution()
 {
     CUtils::PrintPricesEvolution(m_upReality->GetLastMarketRef());

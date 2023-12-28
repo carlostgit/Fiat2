@@ -1,0 +1,5 @@
+#pragma once
+
+#define MAXSTRING 256
+#define COD_ERROR_FALTAN_ARGS -1
+#define COD_ERROR_FALTA_OBJETO_PRICE_CALCULATOR -2

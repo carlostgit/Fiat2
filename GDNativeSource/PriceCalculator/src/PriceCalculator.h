@@ -42,6 +42,7 @@ namespace pca
         double GetPrice(std::string sProductName);
         double GetProductAmount(std::string sProductName, std::string sPerson);
         double GetOptionAmount(std::string sOptionName, std::string sPerson);
+        double GetTradedAmount(std::string sProductName, std::string sPerson);
 
         void PrintPricesEvolution();
 

@@ -209,6 +209,14 @@ std::map<pca::CProduct*, double> pca::CPerson::GetTrade()
     return m_mapCurrentTradProd_Amount;
 }
 
+double pca::CPerson::GetTradedAmount(pca::CProduct* pProduct)
+{
+    if (m_mapCurrentTradProd_Amount.end() != m_mapCurrentTradProd_Amount.find(pProduct))
+    {
+        return m_mapCurrentTradProd_Amount.at(pProduct);
+    }
+}
+
 pca::CTradeCalculator* pca::CPerson::GetTradeCalculatorRef()
 {
     return m_upTradeCalculator.get();

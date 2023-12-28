@@ -60,9 +60,6 @@ margin_top = 144.0
 margin_right = 848.0
 margin_bottom = 168.0
 text = "Trade"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CalculatePrices" type="Button" parent="."]
 margin_left = 680.0
@@ -77,9 +74,6 @@ margin_top = 112.0
 margin_right = 889.0
 margin_bottom = 136.0
 text = "Calculate trade & consumption"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Producer1" parent="." instance=ExtResource( 1 )]
 position = Vector2( 48, 32 )
@@ -427,10 +421,10 @@ rect_pivot_offset = Vector2( 36, 7 )
 text = "Return Label"
 
 [node name="InputTextEdit" type="TextEdit" parent="GDNativeTestButton"]
-margin_left = 266.0
-margin_top = -52.0
-margin_right = 483.0
-margin_bottom = 52.0
+margin_left = 236.0
+margin_top = -115.0
+margin_right = 453.0
+margin_bottom = -11.0
 text = "InputTextEdit"
 
 [connection signal="signal_consumption_of_person_updated" from="." to="Producer1" method="_on_Fiat_signal_consumption_of_person_updated"]

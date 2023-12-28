@@ -1,5 +1,6 @@
 #include "BindToCPP.h"
 #include "BindToCPP_CPPHeader.h"
+#include "Defines.h"
 
 #include "../../PriceCalculator/src/PriceCalculator.h"
 #include "../../PriceCalculator/src/PriceCalculatorStaticUser.h"
@@ -18,8 +19,8 @@
 #include <locale>
 #include <codecvt>
 
-std::map<int,double> g_map_Product_Price;
-std::map<int,std::map<int,double> > g_map_Person_mapProdAmount;
+//std::map<int,double> g_map_Product_Price;
+//std::map<int,std::map<int,double> > g_map_Person_mapProdAmount;
 
 
 void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
@@ -322,43 +323,43 @@ void(*m_setPrice)(int nProduct, double dAmount)=0;
 //    return dI;
 //}
 
-extern "C" void market_addPriceForProduct(int nProductId, double dPrice)
-{
-    g_map_Product_Price[nProductId]=dPrice;
-}
-
-extern "C" void market_addOwnedAmountForPerson(int nPersonId, int nProductId, double dAmount)
-{
-    if(g_map_Person_mapProdAmount.end() == g_map_Person_mapProdAmount.find(nPersonId))
-    {
-
-        std::map<int,double> productAmount;
-        productAmount[nProductId]=dAmount;
-        g_map_Person_mapProdAmount[nPersonId] = productAmount;
-    }
-    else
-        g_map_Person_mapProdAmount[nPersonId][nProductId]=dAmount;
-}
+//extern "C" void market_addPriceForProduct(int nProductId, double dPrice)
+//{
+//    g_map_Product_Price[nProductId]=dPrice;
+//}
+//
+//extern "C" void market_addOwnedAmountForPerson(int nPersonId, int nProductId, double dAmount)
+//{
+//    if(g_map_Person_mapProdAmount.end() == g_map_Person_mapProdAmount.find(nPersonId))
+//    {
+//
+//        std::map<int,double> productAmount;
+//        productAmount[nProductId]=dAmount;
+//        g_map_Person_mapProdAmount[nPersonId] = productAmount;
+//    }
+//    else
+//        g_map_Person_mapProdAmount[nPersonId][nProductId]=dAmount;
+//}
 
 extern "C" void market_setCallbackMethodForPrices(void(*setPrice)(int nProduct, double dAmount))
 {
     m_setPrice = setPrice;
 
-    if (g_map_Product_Price.empty())
+    //if (g_map_Product_Price.empty())
         m_setPrice(1,1.2);
-    else
-    {
-        int nFirstAmount = g_map_Product_Price.begin()->first;
-        int nSecondAmount = g_map_Product_Price.begin()->second;
-        m_setPrice(nFirstAmount,nSecondAmount);
+    //else
+    //{
+    //    int nFirstAmount = g_map_Product_Price.begin()->first;
+    //    int nSecondAmount = g_map_Product_Price.begin()->second;
+    //    m_setPrice(nFirstAmount,nSecondAmount);
 
-    }
+    //}
 }
 
-extern "C" long test_price_calculator_dll()
-{
-    return 2;
-}
+//extern "C" long test_price_calculator_dll()
+//{
+//    return 2;
+//}
 
 //Fin de pruebas
 //////////////////////////////////////////////////////
@@ -405,16 +406,16 @@ void LoadPriceCalculationResults(pca::CPriceCalculator* pPriceCalculator, struct
     //void add_traded_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount);
     //void add_consumed_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
     //void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
-    //person_index = 0;
-    //for (auto& person : g_setPersons)
-    //{
-    //    for (auto& product : g_setProducts)
-    //    {
-    //        double dAmount = pPriceCalculator->GetTradedAmount(product, person); //Todo. Falta un método GetTradedAmount
-    //        add_traded_thing_to_scenario_info_cpp(pstrScenarioInfo, person_index, person, product, dAmount);
-    //    }
-    //    person_index++;
-    //}
+    person_index = 0;
+    for (auto& person : g_setPersons)
+    {
+        for (auto& product : g_setProducts)
+        {
+            double dAmount = pPriceCalculator->GetTradedAmount(product, person);
+            add_traded_thing_to_scenario_info_cpp(pstrScenarioInfo, person_index, person, product, dAmount);
+        }
+        person_index++;
+    }
 
     person_index = 0;
     for (auto& sPerson : g_setPersons)
@@ -638,8 +639,12 @@ extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* ps
         LoadPriceCalculationResults(pPriceCalculator, pstrScenarioInfo);
         
     }
+    else
+    {
+        return COD_ERROR_FALTA_OBJETO_PRICE_CALCULATOR;
+    }
 
-    return (int)pPriceCalculator;
+    return 0;
 
 }
 

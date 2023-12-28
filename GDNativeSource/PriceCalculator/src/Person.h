@@ -70,6 +70,8 @@ namespace pca
 
         std::map<pca::CProduct*, double> GetTrade();
 
+        double GetTradedAmount(pca::CProduct* pProduct);
+
         pca::CTradeCalculator* GetTradeCalculatorRef();
 
         pca::CSatisfactionCalculator* GetSatisfactionCalculatorRef();

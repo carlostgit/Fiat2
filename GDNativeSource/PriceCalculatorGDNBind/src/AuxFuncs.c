@@ -1,5 +1,5 @@
 #include "AuxFuncs.h"
-
+#include "Defines.h"
 
 
 
@@ -24,12 +24,12 @@ void PrintInGodotConsole_Text_Size(wchar_t wchar_to_print[], size_t size)
     //swprintf(wchar_for_number_to_print, sizeof(wchar_for_number_to_print) / sizeof(wchar_for_number_to_print[0]), L"%d", godint_to_print_length);
     //MessageBox(NULL, wchar_for_number_to_print, L"Message", MB_OK);
     godot_string godstring_to_print;
-    api_for_auxfuncs->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print2, godint_to_print_length);
+    api_godot_core->godot_string_new_with_wide_string(&godstring_to_print, &wchar_to_print2, godint_to_print_length);
 
     //MessageBox(NULL, wchar_to_print2, L"Message", MB_OK);
     //MessageBox(NULL, api->godot_string_wide_str(&godstring_to_print), L"Message", MB_OK);
 
-    api_for_auxfuncs->godot_print(&godstring_to_print);
+    api_godot_core->godot_print(&godstring_to_print);
 }
 
 void PrintInGodotConsole_Text(wchar_t wchar_to_print[])

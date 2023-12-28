@@ -322,7 +322,7 @@ func _init_chocolate_satisfaction():
 	
 	_option_satisf_curve_dict["chocolate_consumption"]=satis_curve_chocolate
 	_option_satisf_curve_dict["candy_consumption"]=satis_curve_candy
-	_option_satisf_curve_dict["nut_consumption"]=satis_curve_nut
+	_option_satisf_curve_dict["bill_consumption"]=satis_curve_nut
 	_complementary_combo_satisf_curve_dict["sweets_consumption"]=satis_curve_sweets
 	_supplementary_combo_satisf_curve_dict["savings"]=satis_curve_savings
 
