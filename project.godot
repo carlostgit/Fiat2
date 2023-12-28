@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Fiat2"
-run/main_scene="res://Fiat.tscn"
+run/main_scene="res://PriceCalculation/PriceCalculationTesterScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]

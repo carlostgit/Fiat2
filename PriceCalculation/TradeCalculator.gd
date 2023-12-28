@@ -12,6 +12,10 @@ const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalcu
 
 var _satisfaction_calculator:SatisfactionCalculator = null
 
+#onready var PriceCalculatorGDNBind = preload("res://PriceCalculatorGDNBind.gdns").new()
+const PriceCalculatorGDNBind = preload("res://PriceCalculatorGDNBind.gdns")
+var _priceCalculatorGDNBind:PriceCalculatorGDNBind = null
+
 #const PricesRes = preload("res://Pricecalculation/Prices.gd")
 
 #Cosas precalculadas:
@@ -28,6 +32,10 @@ func _ready():
 #	testeo de calculate_combination_difference
 	_satisfaction_calculator = SatisfactionCalculator.new()
 	_satisfaction_calculator.init_default_satisfaction()
+	
+	if (null==_priceCalculatorGDNBind):
+		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()	
+	
 	
 #	var combination_1:Dictionary = {"chocolate": 0, "candy": 0}
 #	var combination_2:Dictionary = {"chocolate": 2, "candy": 1}
@@ -891,6 +899,57 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 				break
 
 	return combination
+
+
+
+
+func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):
+#	TDOO: usar gdnative
+	
+	var budget_step_length:float = budget_step_arg
+	#	
+	var options:Array = _satisfaction_calculator.get_options()
+
+	var combination:Dictionary = current_combidict
+	
+	var productdict = _satisfaction_calculator.calculate_productdict_from_optiondict(combination)
+	var cost_of_arg_combination = Prices.calculate_combidict_price(productdict)
+	
+	var left_money:float = budget_arg - cost_of_arg_combination
+	
+#	var best_previous_satisfaction = combination
+	var best_previous_satisfaction:float = _satisfaction_calculator.calculate_satisf_of_combidict(combination)
+#	var best_previous_combination:Dictionary = combination
+	
+	#PriceCalculatorGDNBind
+################################################
+	#TODO: Llamar a aquí a un método de GDNative que nos de esto
+	#De momento no existe ese método. Hago pruebas
+	
+	
+	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
+	var input_dict:Dictionary = {}
+	
+	#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
+#	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
+
+
+
+	if (null==_priceCalculatorGDNBind):
+		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()		
+		#var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.calc_info_from_price_calculator_dll(output_dict,input_dict))
+		var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict(budget_arg, current_combidict, budget_step_arg, max_step_arg))
+		var strInput = str(input_dict)	
+		print("Input of adjust_best_combidict_with_gdnative:")
+		print(strInput)
+		
+	
+	assert(""=="Todo: llamar a gdnative")
+
+################################################
+
+	return combination
+
 
 	
 

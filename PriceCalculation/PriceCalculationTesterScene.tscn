@@ -16,9 +16,6 @@ anchor_bottom = 1.0
 margin_right = 2.0
 margin_bottom = 3.0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="SatisfactionModelEditor" parent="." instance=ExtResource( 2 )]
 modulate = Color( 0.839216, 0.839216, 1, 1 )
@@ -182,9 +179,9 @@ filters = PoolStringArray( "*.col" )
 visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
 margin_left = 104.0
-margin_top = 360.0
+margin_top = 359.0
 margin_right = 1064.0
-margin_bottom = 744.0
+margin_bottom = 743.0
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -300,7 +297,7 @@ __meta__ = {
 [node name="CalculateTest7Button" type="Button" parent="TradeTesterScene"]
 margin_left = 560.0
 margin_top = 304.0
-margin_right = 944.0
+margin_right = 824.0
 margin_bottom = 324.0
 text = "Test 7 aprox curves from budget steps"
 align = 0
@@ -311,13 +308,21 @@ __meta__ = {
 [node name="CalculateTest8Button" type="Button" parent="TradeTesterScene"]
 margin_left = 560.0
 margin_top = 328.0
-margin_right = 944.0
+margin_right = 672.0
 margin_bottom = 348.0
 text = "Test 8 adjust"
 align = 0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="CalculateTest9Button" type="Button" parent="TradeTesterScene"]
+margin_left = 560.0
+margin_top = 352.0
+margin_right = 808.0
+margin_bottom = 372.0
+text = "Test 9 gdnative (En construcción)"
+align = 0
 
 [node name="UpdateItemsButton" type="Button" parent="TradeTesterScene"]
 margin_left = 576.0
@@ -452,6 +457,7 @@ margin_bottom = 94.0
 text = "currency"
 
 [node name="MarketTesterScene" type="WindowDialog" parent="."]
+visible = true
 margin_left = 168.0
 margin_top = 96.0
 margin_right = 1016.0
@@ -608,10 +614,20 @@ text = "Next Step"
 
 [node name="CalculateNewPricesButton" type="Button" parent="MarketTesterScene"]
 margin_left = 392.0
-margin_top = 272.0
+margin_top = 264.0
 margin_right = 552.0
-margin_bottom = 296.0
+margin_bottom = 288.0
 text = "Calculate new prices"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="CalcNewPricesGDNatButton" type="Button" parent="MarketTesterScene"]
+margin_left = 392.0
+margin_top = 288.0
+margin_right = 552.0
+margin_bottom = 312.0
+text = "Calc prices with GDNat (En construcción)"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -673,6 +689,7 @@ script = ExtResource( 9 )
 [connection signal="pressed" from="TradeTesterScene/CalculateTest6Button" to="TradeTesterScene" method="_on_CalculateTest6Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest7Button" to="TradeTesterScene" method="_on_CalculateTest7Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/CalculateTest8Button" to="TradeTesterScene" method="_on_CalculateTest8Button_pressed"]
+[connection signal="pressed" from="TradeTesterScene/CalculateTest9Button" to="TradeTesterScene" method="_on_CalculateTest9Button_pressed"]
 [connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]
@@ -694,4 +711,5 @@ script = ExtResource( 9 )
 [connection signal="pressed" from="MarketTesterScene/CalculateValueButton" to="MarketTesterScene" method="_on_CalculateValueButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/NextStepButton" to="MarketTesterScene" method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateNewPricesButton" to="MarketTesterScene" method="_on_CalculateNewPricesButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/CalcNewPricesGDNatButton" to="MarketTesterScene" method="_on_CalcNewPricesGDNatButton_pressed"]
 [connection signal="pressed" from="PruebaButton" to="PruebaButton" method="_on_PruebaButton_pressed"]

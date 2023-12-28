@@ -7,6 +7,10 @@ extends Control
 
 const Market = preload("res://PriceCalculation/Market.gd")
 
+const PriceCalculatorGDNBind = preload("res://PriceCalculatorGDNBind.gdns")
+var _priceCalculatorGDNBind:PriceCalculatorGDNBind = null
+
+
 var _market:Node = null
 
 #var _default_satisf_calc = null
@@ -126,7 +130,7 @@ func _on_CalculateTradeButton_pressed():
 
 
 func _on_CalculateValueButton_pressed():
-	_market.calculate_value_of_owned()
+	#_market.calculate_value_of_owned()	
 	var person_product_dict:Dictionary = get_selected_person_and_product()
 	if person_product_dict.has("person"):
 		var person:String = person_product_dict["person"]
@@ -158,7 +162,8 @@ func _on_SumTradeButton_pressed():
 
 
 func _on_NextStepButton_pressed():
-	_market.change_prices_step(0.1)
+	#_market.change_prices_step(0.1)
+	_market._change_prices(0.1)
 	
 
 
@@ -325,3 +330,79 @@ func _on_XMinSpinBox_value_changed(value):
 
 func _on_YMinSpinBox_value_changed(value):
 	$Plotter.set_min_y_axis_value(value)	
+
+
+func _on_CalcNewPricesGDNatButton_pressed():
+	#
+	#TODO: Calcular nuevos precios a traves de GDNative
+	assert(""!="TODO: _on_CalcNewPricesGDNatButton_pressed")
+
+	if (null==_priceCalculatorGDNBind):
+		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()	
+
+	if (null!=_priceCalculatorGDNBind):
+		
+
+		assert(""!="TODO: Falta rellenar output_dict con los valores del escenario")
+			
+		var output_dict:Dictionary = {
+			"Persons": ["Peter","George"], 
+			"Products":["bill","chocolate","candy"], 
+			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
+			"Owned": {
+				"Peter":
+						{"bill":1,"chocolate":2,"candy":3},
+				"George":
+						{"bill":4,"chocolate":5,"candy":6}
+			},
+			"OptionProduct":{"bill_consumption":"bill","chocolate_consumption":"chocolate","candy_consumption":"candy"},
+			"Currency":"bill"
+		}
+		
+		#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
+		var input_dict:Dictionary = {}
+		
+		#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
+	#	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
+		
+		print( str(output_dict))
+		print("Calculando precios con: _priceCalculatorGDNBind.calc_info_from_price_calculator_dll")
+		var returnValue = _priceCalculatorGDNBind.calc_info_from_price_calculator_dll(output_dict,input_dict)
+		
+		print("Return value:")
+		print(returnValue)
+				
+		print("input dict:")
+		print(input_dict)
+	
+		assert(""!="TODO: actualizar los precios con el resultado")	
+
+#	TimeMeasurement.reset()
+#
+#	_market.calculate_new_prices()
+#	$PricesItemList.clear()
+#	for product in Prices.get_products():
+#		var price:float = Prices.get_price_of_product(product)
+#		var product_price_text:String = product+" "+str(price)
+#		$PricesItemList.add_item(product_price_text)
+##	var product_pricearray = _market.get_last_price_calculation_prices()
+#	var product_pricearray = _market.get_all_price_calculation_prices()
+#	_draw_product_pricearray(product_pricearray)
+#	var price_change_step_array:Array = _market.get_all_price_change_step()
+#	_draw_price_change_step_array(price_change_step_array)
+#
+#	var product_pricetops = _market.get_product_price_tops()
+#	var product_pricebottoms = _market.get_product_price_bottoms()
+#	_draw_product_price_tops_bottoms(product_pricetops,product_pricebottoms)
+#
+#
+#	#var elapsed = TimeMeasurement.get_average_time("draw_test5_simple_continuity")
+#	var elapsed = TimeMeasurement.get_total_time("calculate_best_combidict_simple_with_continuity")
+#	var num_calls = TimeMeasurement.get_num_measurements("calculate_best_combidict_simple_with_continuity")
+#
+#	TimeMeasurement.print_info()
+#
+##	$CalcCostLabel.set_text("calculate_best_combidict_simple_with_continuity: "+ str(elapsed))
+##	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
+
+
