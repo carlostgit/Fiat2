@@ -343,21 +343,48 @@ func _on_CalcNewPricesGDNatButton_pressed():
 	if (null!=_priceCalculatorGDNBind):
 		
 
-		assert(""!="TODO: Falta rellenar output_dict con los valores del escenario")
+		assert(""!="TODO: Falta rellenar output_dict con los valores del escenario")		
 			
-		var output_dict:Dictionary = {
-			"Persons": ["Peter","George"], 
-			"Products":["bill","chocolate","candy"], 
-			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
-			"Owned": {
-				"Peter":
-						{"bill":1,"chocolate":2,"candy":3},
-				"George":
-						{"bill":4,"chocolate":5,"candy":6}
-			},
-			"OptionProduct":{"bill_consumption":"bill","chocolate_consumption":"chocolate","candy_consumption":"candy"},
-			"Currency":"bill"
-		}
+		var output_dict:Dictionary = {}
+		
+#		Voy a ir rellenando output_dict
+#		Relleno Prsons
+		var persons:Array = _market.get_persons()
+		output_dict["Persons"] = persons
+		
+		var products = PriceCalculationGlobals._products
+		output_dict["Products"] = products
+				
+		var options:Array =_satisfaction_calculator_ref.get_options_of_use("consumption")
+		output_dict["Consumption"] = options
+					
+		var person_owned:Dictionary = {}
+		for person in persons:
+			var product_amount:Dictionary = _market.get_owned_products(person)
+			person_owned[person] = product_amount
+		output_dict["Owned"] = person_owned
+		var option_product_dict = _satisfaction_calculator_ref.get_option_product_dict()
+		
+		var consumoption_product_dict = {}
+		for option in option_product_dict.keys():
+			if option in options:
+				consumoption_product_dict[option] = option_product_dict[option]				 
+		
+		output_dict["OptionProduct"] = consumoption_product_dict
+		output_dict["Currency"] = Prices.get_currency()
+#		var output_dict:Dictionary = {
+#			"Persons": ["Peter","George"], 
+#			"Products":["bill","chocolate","candy"], 
+#			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
+#			"Owned": {
+#				"Peter":
+#						{"bill":1,"chocolate":2,"candy":3},
+#				"George":
+#						{"bill":4,"chocolate":5,"candy":6}
+#			},
+#			"OptionProduct":{"bill_consumption":"bill","chocolate_consumption":"chocolate","candy_consumption":"candy"},
+#			"Currency":"bill"
+#		}
 		
 		#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 		var input_dict:Dictionary = {}
@@ -376,6 +403,24 @@ func _on_CalcNewPricesGDNatButton_pressed():
 		print(input_dict)
 	
 		assert(""!="TODO: actualizar los precios con el resultado")	
+		
+		var prices_dict = {}
+		if input_dict.has("Prices"):
+			prices_dict = input_dict.get("Prices")
+		
+		
+		$PricesItemList.clear()
+		for product in Prices.get_products():					
+			var new_price:float = 0.0
+			if prices_dict.has(product):
+				new_price = prices_dict.get(product)
+			
+			if(new_price!=0.0):
+				Prices.set_price_of_product(product,new_price)
+				
+			var price:float = Prices.get_price_of_product(product)
+			var product_price_text:String = product+" "+str(price)
+			$PricesItemList.add_item(product_price_text)
 
 #	TimeMeasurement.reset()
 #

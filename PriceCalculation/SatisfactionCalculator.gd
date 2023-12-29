@@ -931,4 +931,13 @@ func get_optidict_of_type_from_optidict(option_amount_dict_arg:Dictionary, type_
 		
 	return optidict
 		
+func get_option_use_dict()->Dictionary:
+	return _option_use
+
+func get_options_of_use(type_arg:String)->Array:
+	var options:Array = []
+	for option in self._option_use.keys():
+		if _option_use[option] == type_arg:
+			options.append(option)
 	
+	return options

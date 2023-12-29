@@ -650,7 +650,7 @@ text = "Mouse pos"
 margin_left = 408.0
 margin_top = 312.0
 margin_right = 560.0
-margin_bottom = 352.0
+margin_bottom = 376.0
 
 [node name="Plotter" parent="MarketTesterScene" instance=ExtResource( 4 )]
 
