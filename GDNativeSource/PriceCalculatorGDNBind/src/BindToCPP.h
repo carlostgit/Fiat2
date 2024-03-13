@@ -22,6 +22,13 @@ struct strOptionAmount
     double dAmount;
 };
 
+struct strOptionPreference
+{
+    struct strName name_option;
+    double dPreferenceAt0;
+    double dMaximumSatisfaction;
+};
+
 struct strPersonProductAmounts
 {
     struct strName name_person;
@@ -36,6 +43,12 @@ struct strPersonOptionAmounts
     struct strOptionAmount option_amounts[25];
 };
 
+struct strPersonOptionPreferences
+{
+    struct strName name_person;
+    int n_num_option_preferences;
+    struct strOptionPreference option_preferences[25];
+};
 
 struct strOwnedThings
 {
@@ -67,20 +80,15 @@ struct strSavedOptions
     struct strPersonOptionAmounts person_option_amounts[25];
 };
 
+struct strPreferences
+{
+    int n_num_persons;
+    struct strPersonOptionPreferences person_option_preferences[25];
+};
+
 
 struct strScenarioInfo
 {
-    //struct strName name_persons[256];
-    //int n_num_of_persons;
-    //struct strName name_products[256];
-    //int n_num_of_products;
-    //struct strName name_consumptions[256];
-    //int n_num_of_consumption_options;
-    //struct strName names_saving[256];
-    //int n_num_of_saving_options;
-    //struct strOwnedThings owned_things[256];
-    //Con lo de arriba obtengo un stack overflow
-
     struct strName name_persons[25];
     int n_num_of_persons;
     struct strName name_products[25];
@@ -93,6 +101,7 @@ struct strScenarioInfo
     struct strTradedThings traded_things; //new
     struct strConsumedOptions consumed_options; //new
     struct strSavedOptions saved_options; //new
+    struct strPreferences option_preference;
     struct strPrices prices;
         
 };

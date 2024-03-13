@@ -202,6 +202,23 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
     //                {"nut":4,"chocolate" : 5,"candy" : 6}
     //    },
     //    "OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"},
+    // #  "Preferences": {
+//#				"Peter":					
+//#						{
+//#							"PreferenceAt0":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#							"MaximumSatisfaction":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#						},
+//#				"George":					
+//#						{
+//#							"PreferenceAt0":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#							"MaximumSatisfaction":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#						},
+//#				},
+
     //    "Currency" : "nut"
     //}
 
@@ -239,6 +256,7 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
         const wchar_t wc_owned[] = L"Owned";
         const wchar_t wc_option_product[] = L"OptionProduct";
         const wchar_t wc_currency[] = L"Currency";
+        const wchar_t wc_preferences[] = L"Preferences";
 
         if (wcscmp(pwc_key, wc_persons) == 0)
         {
@@ -275,5 +293,99 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
             godot_string gostring_currency = api_arg->godot_variant_as_string(&godvar_my_value);
             ProcessScenarioCurrency(&gostring_currency, api_arg);
         }
+        else if (wcscmp(pwc_key, wc_preferences) == 0)
+        {
+            godot_dictionary godict_preferences = api_arg->godot_variant_as_dictionary(&godvar_my_value);
+            ProcessScenarioPreferences(&godict_preferences, api_arg);
+        }
     }
 }
+
+
+void ProcessScenarioPreferences(godot_dictionary* pgodict_preferences_arg, const godot_gdnative_core_api_struct* api_arg)
+{
+    godot_dictionary godict_preferences = (*pgodict_preferences_arg);
+
+    godot_array godarray_keys_persons = api_arg->godot_dictionary_keys(&godict_preferences);
+    godot_array godarray_values_persons = api_arg->godot_dictionary_values(&godict_preferences);
+
+    godot_int godint_size_of_array_persons = api_arg->godot_array_size(&godarray_keys_persons);
+
+    printf("Size of array: %d \n", godint_size_of_array_persons);
+
+    int i = 0;
+    for (i = 0;i < godint_size_of_array_persons;i++)
+    {
+        godot_variant godvar_my_key;
+        godvar_my_key = api_arg->godot_array_get(&godarray_keys_persons, i);
+        godot_string godstring_key_person = api_arg->godot_variant_as_string(&godvar_my_key);
+
+        godot_variant godvar_my_value;
+        godvar_my_value = api_arg->godot_array_get(&godarray_values_persons, i);
+        godot_dictionary godict_typeofpref_optionpreferences = api_arg->godot_variant_as_dictionary(&godvar_my_value);
+
+        
+        //Averiguar por qué compila esto poniendo cualquier nombre como si fuera una funcion.
+        //Ver este link:
+        //https://stackoverflow.com/questions/28170800/compiler-gives-warning-c4013-getche-undefined-assuming-extern-returning-in
+        //Y configurar que el compilador saque como error estas situaciones
+
+        //Como puede compilar esto si no existe el método ProcessScenarioPersonOptionPreferences
+        ProcessScenarioPerson_Typeofpref_OptionPreferences(&godstring_key_person, &godict_typeofpref_optionpreferences, api_arg);
+        //NombreInventado(&godstring_key_person, &godict_value_optionpreferences, api_arg);
+        //Meinventonombreypongoalgoentreparentesis();
+    }
+}
+
+void ProcessScenarioPerson_Typeofpref_OptionPreferences(godot_string* pgostring_person_arg, godot_dictionary* pgodict_typeofpref_optionpreferences, const godot_gdnative_core_api_struct* api_arg)
+{
+    //#				"George":
+    //#						{
+    //#							"PreferenceAt0":
+    //#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+    //#							"MaximumSatisfaction":
+    //#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+    //#						},
+
+    godot_string gostring_person_arg = (*pgostring_person_arg);
+
+    godot_dictionary godict_typeofpref_optionpreferences = (*pgodict_typeofpref_optionpreferences);
+
+    godot_array godarray_keys_typeofpref = api_arg->godot_dictionary_keys(&godict_typeofpref_optionpreferences);
+    godot_array godarray_values_optionpreferences = api_arg->godot_dictionary_values(&godict_typeofpref_optionpreferences);
+
+    godot_int godint_size_of_array_typeofpref = api_arg->godot_array_size(&godarray_keys_typeofpref);
+
+    printf("Size of array: %d \n", godint_size_of_array_typeofpref);
+
+    int i = 0;
+    for (i = 0;i < godint_size_of_array_typeofpref;i++)
+    {
+        godot_variant godvar_my_key;
+        godvar_my_key = api_arg->godot_array_get(&godarray_keys_typeofpref, i);
+        godot_string godstring_key_typeofpref = api_arg->godot_variant_as_string(&godvar_my_key);
+
+        godot_variant godvar_my_value;
+        godvar_my_value = api_arg->godot_array_get(&godarray_values_optionpreferences, i);
+        godot_real godreal_value = api_arg->godot_variant_as_real(&godvar_my_value);
+
+        const wchar_t* pwc_person = api_arg->godot_string_wide_str(&gostring_person_arg);
+        const wchar_t* pwc_typeofpref = api_arg->godot_string_wide_str(&godstring_key_typeofpref);
+
+        //TODO. 
+        //Seguir por aquí. Tal vez debería escribir un método que me facilitase la lectura de
+        //diccionarios de forma general. 
+        //Hacer método que me de un array de wchar_t de las keys
+        //Hacer otro método que me de un array de wchar_t de los valores de una key,         
+        //Hacer otro método que me de un array de doubles de sus valores de una key
+        //Hacer otro método que me de un array godot_dict de sus valores de una key
+
+
+        //float dAmountOfProduct = godreal_value;
+
+        //add_person_owned(pwc_person, 256, pwc_typeofpref, 256, dAmountOfProduct);
+    }
+}
+
+
+//TODO: ProcessScenarioPersonOptionPreferences

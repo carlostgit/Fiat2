@@ -27,3 +27,9 @@ std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
 std::map<std::string, std::string> g_mapOptionProduct;
 std::string g_sCurrency;
 
+//Nuevos:
+std::map<std::string, double> g_mapOption_MaximumSatisf;
+std::map<std::string, double> g_mapOption_PreferenceAt0;
+
+
+

@@ -381,9 +381,24 @@ func _on_CalcNewPricesGDNatButton_pressed():
 #						{"bill":1,"chocolate":2,"candy":3},
 #				"George":
 #						{"bill":4,"chocolate":5,"candy":6}
-#			},
-#			"OptionProduct":{"bill_consumption":"bill","chocolate_consumption":"chocolate","candy_consumption":"candy"},
-#			"Currency":"bill"
+#				},
+#			"Preferences": {
+#				"Peter":					
+#						{
+#							"PreferenceAt0":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#							"MaximumSatisfaction":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#						},
+#				"George":					
+#						{
+#							"PreferenceAt0":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#							"MaximumSatisfaction":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#						},
+#				},
+#			"Currency":"bill"			
 #		}
 		
 		#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
