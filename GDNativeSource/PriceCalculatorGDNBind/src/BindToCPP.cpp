@@ -18,6 +18,7 @@
 //para transformar el wchar
 #include <locale>
 #include <codecvt>
+#include <assert.h>
 
 //std::map<int,double> g_map_Product_Price;
 //std::map<int,std::map<int,double> > g_map_Person_mapProdAmount;
@@ -449,6 +450,32 @@ void LaunchPriceCalculatorLoadedScenario(pca::CPriceCalculator* pPriceCalculator
         pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
     }
 
+    for (auto& pairPerson_Pref: g_mapPerson_Preferences)
+    {
+        std::string sPerson = pairPerson_Pref.first;
+        strPreferencesCpp strPref = pairPerson_Pref.second;
+
+        for (auto& pairOption_dMaxSat : strPref.mapOptionMaxSatisf)
+        {
+            std::string sOption = pairOption_dMaxSat.first;
+            double dMaxSatisf = pairOption_dMaxSat.second;
+            
+            if (strPref.mapOptionPrefAt0.end() == strPref.mapOptionPrefAt0.find(sOption))
+            {
+                std::cerr << "Error en LaunchPriceCalculatorLoadedScenario";
+                assert("" == "Error en LaunchPriceCalculatorLoadedScenario");
+            }
+
+            double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
+
+            pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(sPerson, sOption, dPrefAt0, dMaxSatisf);
+
+        }
+        
+        //pPriceCalculator
+    }
+    //g_mapOption_PreferenceAt0;
+
     pPriceCalculator->CreateEmptyMarket();
    
     pPriceCalculator->SetCurrency(g_sCurrency);
@@ -742,5 +769,24 @@ void add_currency(wchar_t wc_currency[256], int n_size)
     std::string sCurrency = converter.to_bytes(wide_str_currency);
 
     g_sCurrency = sCurrency;
+}
+
+void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_option(wc_option);
+    std::wstring wide_str_person(wc_person);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sOption = converter.to_bytes(wide_str_option);
+    std::string sPerson = converter.to_bytes(wide_str_person);
+
+    strPreferencesCpp strPref;    
+    strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
+
+    g_mapPerson_Preferences[sPerson] = strPref;
+
 }
 

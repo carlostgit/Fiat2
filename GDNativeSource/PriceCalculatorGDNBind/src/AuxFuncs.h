@@ -48,10 +48,16 @@ struct strAFNames GetAFNamesFromGovar(godot_variant govar_name_arg, const godot_
 
 struct strAFDictKeys GetKeysFromGodict(godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg);
 struct strAFName GetNameFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg);
+double GetNumberFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg);
+
 struct strAFNames GetNamesFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg);
 godot_dictionary GetGodictFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg);
-
 
 //Fin de los métodos para leer diccionarios de godot
 ///////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////
+//Inicio de los métodos para copiar wchar_t
+struct strAFName GetNameFromWChar(wchar_t wc_name[256]);
+//
+///////////////////////////////////////////////////////

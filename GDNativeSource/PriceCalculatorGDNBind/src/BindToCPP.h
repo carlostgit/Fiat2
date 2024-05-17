@@ -164,6 +164,8 @@ void add_saving_option(wchar_t wc_saving_option[256], int n_size);
 void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount);
 void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void add_currency(wchar_t wc_currency[256], int n_size);
+void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+
 
 #ifdef __cplusplus
 }

@@ -193,6 +193,23 @@ struct strAFName GetNameFromGodict(const struct strAFName* pgodict_key, godot_di
     return retName;
 }
 
+double GetNumberFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+{    
+
+    godot_dictionary godict_arg = (*pgodict_arg);
+
+    godot_variant govar_key = GetGovarFromAFName(pgodict_key, api_arg);
+
+    godot_variant govar_value = api_arg->godot_dictionary_get(&godict_arg, &govar_key);
+
+    godot_real godreal_value = api_arg->godot_variant_as_real(&govar_value);
+    
+    float dValueDouble = godreal_value;
+
+    return dValueDouble;
+}
+
+
 struct strAFNames GetNamesFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFNames retNames;
@@ -276,6 +293,18 @@ godot_dictionary GetGodictFromGodict(const struct strAFName* pgodict_key, godot_
 ///////////////////////////////////////////////////////
 
 
+///////////////////////////////////////////////////////
+//Inicio de los métodos para copiar wchar_t
+struct strAFName GetNameFromWChar(wchar_t wc_name[256])
+{
+    struct strAFName retName;    
+    int size = wcslen(wc_name);
+    int size_with_null = size + 1;    
+    wcsncpy(retName.wc_name, wc_name, size_with_null);
+    return retName;
+}
 
+//
+///////////////////////////////////////////////////////
 
 

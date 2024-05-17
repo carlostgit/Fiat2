@@ -27,9 +27,14 @@ std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
 std::map<std::string, std::string> g_mapOptionProduct;
 std::string g_sCurrency;
 
+struct strPreferencesCpp
+{
+	std::map<std::string, double> mapOptionMaxSatisf;
+	std::map<std::string, double> mapOptionPrefAt0;
+};
 //Nuevos:
-std::map<std::string, double> g_mapOption_MaximumSatisf;
-std::map<std::string, double> g_mapOption_PreferenceAt0;
+std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;
+
 
 
 
