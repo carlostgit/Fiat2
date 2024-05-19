@@ -372,6 +372,26 @@ func _on_CalcNewPricesGDNatButton_pressed():
 		
 		output_dict["OptionProduct"] = consumoption_product_dict
 		output_dict["Currency"] = Prices.get_currency()
+		
+		###TODO		
+		var person_preferences_dict = {}
+		for person in persons:			
+			var preferences_at_0_dict = {}			
+			var maximum_satisfaction_dict = {}			
+			for option in options:
+				
+				var preference_at_0:float = _satisfaction_calculator_ref.get_option_preference_at_0(option)
+				var max_satisf:float = _satisfaction_calculator_ref.get_option_max_satisfaction(option)				
+				preferences_at_0_dict[option] = preference_at_0
+				maximum_satisfaction_dict[option] = max_satisf
+				
+			var preferences_dict = {}	
+			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+			person_preferences_dict[person] = preferences_dict
+		
+		output_dict["Preferences"] = person_preferences_dict
+		
 #		var output_dict:Dictionary = {
 #			"Persons": ["Peter","George"], 
 #			"Products":["bill","chocolate","candy"], 

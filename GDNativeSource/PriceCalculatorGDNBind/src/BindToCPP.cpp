@@ -450,34 +450,8 @@ void LaunchPriceCalculatorLoadedScenario(pca::CPriceCalculator* pPriceCalculator
         pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
     }
 
-    for (auto& pairPerson_Pref: g_mapPerson_Preferences)
-    {
-        std::string sPerson = pairPerson_Pref.first;
-        strPreferencesCpp strPref = pairPerson_Pref.second;
-
-        for (auto& pairOption_dMaxSat : strPref.mapOptionMaxSatisf)
-        {
-            std::string sOption = pairOption_dMaxSat.first;
-            double dMaxSatisf = pairOption_dMaxSat.second;
-            
-            if (strPref.mapOptionPrefAt0.end() == strPref.mapOptionPrefAt0.find(sOption))
-            {
-                std::cerr << "Error en LaunchPriceCalculatorLoadedScenario";
-                assert("" == "Error en LaunchPriceCalculatorLoadedScenario");
-            }
-
-            double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
-
-            pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(sPerson, sOption, dPrefAt0, dMaxSatisf);
-
-        }
-        
-        //pPriceCalculator
-    }
-    //g_mapOption_PreferenceAt0;
-
     pPriceCalculator->CreateEmptyMarket();
-   
+
     pPriceCalculator->SetCurrency(g_sCurrency);
 
     for (auto& person : g_setPersons)
@@ -499,20 +473,43 @@ void LaunchPriceCalculatorLoadedScenario(pca::CPriceCalculator* pPriceCalculator
         }        
     }
 
-    for (auto& person : g_setPersons)
-    {        
-        std::set<std::string> setOptions = g_setConsumptionOptions;
-        setOptions.insert(g_setSavingOptions.begin(), g_setSavingOptions.end());
+    //for (auto& person : g_setPersons)
+    //{        
+    //    std::set<std::string> setOptions = g_setConsumptionOptions;
+    //    setOptions.insert(g_setSavingOptions.begin(), g_setSavingOptions.end());
 
-        for (auto& option : setOptions)
+    //    for (auto& option : setOptions)
+    //    {
+    //        //TODO: añadir la configuración de esto
+    //        double dValueAt0 = 1;
+    //        double dMaxValue = 10;
+
+    //        pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(person, option, dValueAt0, dMaxValue);
+    //    }
+    //}
+
+    for (auto& pairPerson_Pref : g_mapPerson_Preferences)
+    {
+        std::string sPerson = pairPerson_Pref.first;
+        strPreferencesCpp strPref = pairPerson_Pref.second;
+
+        for (auto& pairOption_dMaxSat : strPref.mapOptionMaxSatisf)
         {
-            //TODO: añadir la configuración de esto
-            double dValueAt0 = 1;
-            double dMaxValue = 10;
+            std::string sOption = pairOption_dMaxSat.first;
+            double dMaxSatisf = pairOption_dMaxSat.second;
 
-            pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(person, option, dValueAt0, dMaxValue);
+            if (strPref.mapOptionPrefAt0.end() == strPref.mapOptionPrefAt0.find(sOption))
+            {
+                std::cerr << "Error en LaunchPriceCalculatorLoadedScenario";
+                assert("" == "Error en LaunchPriceCalculatorLoadedScenario");
+            }
+
+            double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
+
+            pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(sPerson, sOption, dPrefAt0, dMaxSatisf);
         }
     }
+
 
     pPriceCalculator->AdjustPrices();
 
@@ -782,11 +779,15 @@ void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], 
     std::string sOption = converter.to_bytes(wide_str_option);
     std::string sPerson = converter.to_bytes(wide_str_person);
 
-    strPreferencesCpp strPref;    
-    strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
-    strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
+    //strPreferencesCpp strPref;    
+    //strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    //strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
 
-    g_mapPerson_Preferences[sPerson] = strPref;
+    if (g_mapPerson_Preferences.end() == g_mapPerson_Preferences.find(sPerson))
+        g_mapPerson_Preferences[sPerson];
+
+    g_mapPerson_Preferences[sPerson].mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    g_mapPerson_Preferences[sPerson].mapOptionPrefAt0[sOption] = d_preference_at_0;        
 
 }
 

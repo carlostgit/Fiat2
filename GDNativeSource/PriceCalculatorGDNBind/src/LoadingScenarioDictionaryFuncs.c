@@ -339,7 +339,12 @@ void ProcessScenarioInfo(godot_dictionary* pgodict_scenario_info_arg, const godo
             for (int iPersons = 0;iPersons < strPersons.n_num_of_keys;iPersons++)
             {
                 struct strAFName strPerson = strPersons.keys[iPersons];
-                godot_dictionary dict_type_preferences = GetGodictFromGodict(&strPreferences, &godict_scenario_info, api_arg);
+                godot_dictionary dict_type_preferences = GetGodictFromGodict(&strPerson, &dict_person_preferences, api_arg);
+
+                //debug
+                //struct strAFDictKeys strPrefTypes = GetKeysFromGodict(&dict_person_preferences, api_arg);
+                //
+
                 {
                     wchar_t wchar_PreferenceAt0[256] = L"PreferenceAt0";
 
