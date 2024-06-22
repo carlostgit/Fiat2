@@ -568,7 +568,8 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
 
             //Fin prueba
 
-            ProcessScenarioInfo(&godict_arg, api_godot_core);
+            //ProcessScenarioInfo(&godict_arg, api_godot_core);
+            LoadScenarioInfoFromGDN(&godict_arg, api_godot_core);
         }       
     }
     //strScenarioInfo strScenarioInfo;
@@ -585,7 +586,7 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
         if (i == 1) //En el segundo argumento devuelvo los resultados. Es el output
         {
             godot_dictionary godict_arg = api_godot_core->godot_variant_as_dictionary(p_args[i]);
-            SaveScenarioInfoResults(&strScenarioInfo, &godict_arg, api_godot_core);
+            GetGodotDictionaryFromScenarioInfoStruct(&strScenarioInfo, &godict_arg, api_godot_core);
         }
     }
 

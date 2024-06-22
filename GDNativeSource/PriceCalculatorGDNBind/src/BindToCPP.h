@@ -5,6 +5,8 @@
 //    double dAmount;    
 //};
 
+//Estructuras con las que se devolverán los resultados a GDNBind
+//
 struct strName
 {
     wchar_t wc_name[256];
@@ -124,11 +126,11 @@ extern "C" {
 
 /////////////////////////////
 //Codigo para pruebas 
-void market_addPriceForProduct(int nProductId, double dPrice);
-void market_addOwnedAmountForPerson(int nPersonId, int nProductId, double dAmount);
+//void market_addPriceForProduct(int nProductId, double dPrice);
+//void market_addOwnedAmountForPerson(int nPersonId, int nProductId, double dAmount);
 
 //Recibe un functor, al cual podremos llamar
-void market_setCallbackMethodForPrices(setPriceFunc_t setPriceFunc);
+//void market_setCallbackMethodForPrices(setPriceFunc_t setPriceFunc);
 
 //long test_price_calculator_dll();
 
@@ -157,6 +159,7 @@ struct strScenarioInfo createScenarioInfoStruct();
 
 int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrProdAmount);
 
+//Métodos para cargar el escenario en BindToCpp, para después poder cargarlo en PriceCalculator
 void add_person(wchar_t wc_person[256], int n_size);
 void add_product(wchar_t wc_product[256], int n_size);
 void add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
@@ -165,6 +168,8 @@ void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_prod
 void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void add_currency(wchar_t wc_currency[256], int n_size);
 void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+
+void ResetScenarioInfo();
 
 
 #ifdef __cplusplus

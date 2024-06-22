@@ -367,7 +367,7 @@ extern "C" void market_setCallbackMethodForPrices(void(*setPrice)(int nProduct, 
 
 void LoadPriceCalculationResults(pca::CPriceCalculator* pPriceCalculator, struct strScenarioInfo* pstrScenarioInfo)
 {
-    int index = 0;
+    //int index = 0;
 
     for (auto& person : g_setPersons)
     {
@@ -791,3 +791,14 @@ void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], 
 
 }
 
+void ResetScenarioInfo()
+{
+    g_setPersons.clear();
+    g_setProducts.clear();
+    g_setConsumptionOptions.clear();
+    g_setSavingOptions.clear();
+    g_mapPerson_ProdAmount.clear();
+    g_mapOptionProduct.clear();
+    g_sCurrency.clear();
+    g_mapPerson_Preferences.clear();
+}

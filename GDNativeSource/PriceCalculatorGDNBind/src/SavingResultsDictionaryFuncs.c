@@ -1,7 +1,7 @@
 #include "SavingResultsDictionaryFuncs.h"
 #include "AuxFuncs.h"
 
-void SaveProductPriceResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg)
+void GetProductPriceGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg)
 {
     //Pruebo a salvar datos de los precios primero
     int i = 0;
@@ -24,7 +24,7 @@ void SaveProductPriceResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     }
 }
 
-void SaveProductAmountResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetProductAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->owned_things.person_prod_amounts[person_index].n_num_prod_amounts;i++)
@@ -44,7 +44,7 @@ void SaveProductAmountResults(struct strScenarioInfo* pstr_scenario_info, godot_
     }
 }
 
-void SaveTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetTradedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->traded_things.person_prod_amounts[person_index].n_num_prod_amounts;i++)
@@ -64,7 +64,7 @@ void SaveTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_diction
     }
 }
 
-void SaveConsumedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_consumed_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetConsumedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_consumed_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->consumed_options.person_option_amounts[person_index].n_num_option_amounts;i++)
@@ -84,7 +84,7 @@ void SaveConsumedResults(struct strScenarioInfo* pstr_scenario_info, godot_dicti
     }
 }
 
-void SaveSavedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_saved_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetSavedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_saved_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->saved_options.person_option_amounts[person_index].n_num_option_amounts;i++)
@@ -105,7 +105,7 @@ void SaveSavedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictiona
 }
 
 
-void SavePersonProdamountResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_prodamount, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonProdamountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_prodamount, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->owned_things.n_num_persons;i++)
@@ -119,7 +119,7 @@ void SavePersonProdamountResults(struct strScenarioInfo* pstr_scenario_info, god
 
         godot_dictionary godict_product_amount;
         api_arg->godot_dictionary_new(&godict_product_amount);
-        SaveProductAmountResults(pstr_scenario_info, &godict_product_amount, i, api_arg);
+        GetProductAmountGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_product_amount, i, api_arg);
 
         godot_variant godvar_product_amount;
         api_arg->godot_variant_new_dictionary(&godvar_product_amount, &godict_product_amount);
@@ -128,7 +128,7 @@ void SavePersonProdamountResults(struct strScenarioInfo* pstr_scenario_info, god
     }
 }
 
-void SavePersonTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_traded, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonTradedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_traded, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->traded_things.n_num_persons;i++)
@@ -142,7 +142,7 @@ void SavePersonTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_d
 
         godot_dictionary godict_product_amount;
         api_arg->godot_dictionary_new(&godict_product_amount);
-        SaveTradedResults(pstr_scenario_info, &godict_product_amount, i, api_arg);
+        GetTradedAmountGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_product_amount, i, api_arg);
 
         godot_variant godvar_product_amount;
         api_arg->godot_variant_new_dictionary(&godvar_product_amount, &godict_product_amount);
@@ -151,7 +151,7 @@ void SavePersonTradedResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     }
 }
 
-void SavePersonConsumedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_consumed, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonConsumedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_consumed, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->consumed_options.n_num_persons;i++)
@@ -165,7 +165,7 @@ void SavePersonConsumedResults(struct strScenarioInfo* pstr_scenario_info, godot
 
         godot_dictionary godict_consumed_amount;
         api_arg->godot_dictionary_new(&godict_consumed_amount);
-        SaveConsumedResults(pstr_scenario_info, &godict_consumed_amount, i, api_arg);
+        GetConsumedAmountGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_consumed_amount, i, api_arg);
 
         godot_variant godvar_consumed_amount;
         api_arg->godot_variant_new_dictionary(&godvar_consumed_amount, &godict_consumed_amount);
@@ -174,7 +174,7 @@ void SavePersonConsumedResults(struct strScenarioInfo* pstr_scenario_info, godot
     }
 }
 
-void SavePersonSavedResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_saved, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonSavedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_saved, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->saved_options.n_num_persons;i++)
@@ -188,7 +188,7 @@ void SavePersonSavedResults(struct strScenarioInfo* pstr_scenario_info, godot_di
 
         godot_dictionary godict_saved_amount;
         api_arg->godot_dictionary_new(&godict_saved_amount);
-        SaveSavedResults(pstr_scenario_info, &godict_saved_amount, i, api_arg);
+        GetSavedAmountGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_saved_amount, i, api_arg);
 
         godot_variant godvar_saved_amount;
         api_arg->godot_variant_new_dictionary(&godvar_saved_amount, &godict_saved_amount);
@@ -198,7 +198,7 @@ void SavePersonSavedResults(struct strScenarioInfo* pstr_scenario_info, godot_di
 }
 
 
-void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg)
+void GetGodotDictionaryFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg)
 {
     //var text_dict_arg : Dictionary = {
 //    "Prices":
@@ -237,7 +237,7 @@ void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     godot_dictionary godict_product_price;
     api_arg->godot_dictionary_new(&godict_product_price);
 
-    SaveProductPriceResults(pstr_scenario_info, &godict_product_price, api_arg);
+    GetProductPriceGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_product_price, api_arg);
 
     wchar_t* pwchar_prices = L"Prices";
     int size_prices = wcslen(pwchar_prices);
@@ -257,7 +257,7 @@ void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     godot_dictionary godict_person_prodamount;
     api_arg->godot_dictionary_new(&godict_person_prodamount);
 
-    SavePersonProdamountResults(pstr_scenario_info, &godict_person_prodamount, api_arg);
+    GetPersonProdamountGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_person_prodamount, api_arg);
 
     wchar_t* pwchar_owned = L"Owned";
     int size_owned = wcslen(pwchar_owned);
@@ -278,7 +278,7 @@ void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     godot_dictionary godict_person_traded;
     api_arg->godot_dictionary_new(&godict_person_traded);
 
-    SavePersonTradedResults(pstr_scenario_info, &godict_person_traded, api_arg);
+    GetPersonTradedGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_person_traded, api_arg);
 
     wchar_t* pwchar_traded = L"Traded";
     int size_traded = wcslen(pwchar_traded);
@@ -299,7 +299,7 @@ void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     godot_dictionary godict_person_consumed;
     api_arg->godot_dictionary_new(&godict_person_consumed);
 
-    SavePersonConsumedResults(pstr_scenario_info, &godict_person_consumed, api_arg);
+    GetPersonConsumedGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_person_consumed, api_arg);
 
     wchar_t* pwchar_consumed = L"Consumed";
     int size_consumed = wcslen(pwchar_consumed);
@@ -320,7 +320,7 @@ void SaveScenarioInfoResults(struct strScenarioInfo* pstr_scenario_info, godot_d
     godot_dictionary godict_person_saved;
     api_arg->godot_dictionary_new(&godict_person_saved);
 
-    SavePersonSavedResults(pstr_scenario_info, &godict_person_saved, api_arg);
+    GetPersonSavedGodictFromScenarioInfoStruct(pstr_scenario_info, &godict_person_saved, api_arg);
 
     wchar_t* pwchar_saved = L"Saved";
     int size_saved = wcslen(pwchar_saved);

@@ -456,6 +456,8 @@ func _on_CalcNewPricesGDNatButton_pressed():
 			var price:float = Prices.get_price_of_product(product)
 			var product_price_text:String = product+" "+str(price)
 			$PricesItemList.add_item(product_price_text)
+			
+		$PricesItemList.add_item(str(input_dict))
 
 #	TimeMeasurement.reset()
 #
