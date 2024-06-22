@@ -545,31 +545,31 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
         {            
             godot_dictionary godict_arg = api_godot_core->godot_variant_as_dictionary(p_args[0]);
 
-            //Prueba
-            struct strAFDictKeys strKeys = GetKeysFromGodict(&godict_arg, api_godot_core);
-            wchar_t wchar_error_num_args[MAXSTRING] = L"GetKeysFromGodict llamado. Numero de keys: ";            
-            PrintInGodotConsole_Int(strKeys.n_num_of_keys);
+            ////Prueba
+            //struct strAFDictKeys strKeys = GetKeysFromGodict(&godict_arg, api_godot_core);
+            //wchar_t wchar_error_num_args[MAXSTRING] = L"GetKeysFromGodict llamado. Numero de keys: ";            
+            //PrintInGodotConsole_Int(strKeys.n_num_of_keys);
 
-            wchar_t wchar_owned[256] = L"Owned";
+            //wchar_t wchar_owned[256] = L"Owned";
 
-            struct strAFName strOwned;            
-            
-            for (int i = 0; i < 256; ++i) {
-                strOwned.wc_name[i] = wchar_owned[i];
-            }
+            //struct strAFName strOwned;            
+            //
+            //for (int i = 0; i < 256; ++i) {
+            //    strOwned.wc_name[i] = wchar_owned[i];
+            //}
 
-            int size = wcslen(wchar_owned);
-            int size_with_null = size + 1;
-            wcsncpy(strOwned.wc_name, wchar_owned, size_with_null);
+            //int size = wcslen(wchar_owned);
+            //int size_with_null = size + 1;
+            //wcsncpy(strOwned.wc_name, wchar_owned, size_with_null);
 
-            godot_dictionary dict_owned = GetGodictFromGodict(&strOwned,&godict_arg, api_godot_core);
-            struct strAFDictKeys strKeys_owned = GetKeysFromGodict(&dict_owned, api_godot_core);
+            //godot_dictionary dict_owned = GetGodictFromGodict(&strOwned,&godict_arg, api_godot_core);
+            //struct strAFDictKeys strKeys_owned = GetKeysFromGodict(&dict_owned, api_godot_core);
             
 
             //Fin prueba
 
             //ProcessScenarioInfo(&godict_arg, api_godot_core);
-            LoadScenarioInfoFromGDN(&godict_arg, api_godot_core);
+            LoadScenarioInfoFromGDNIntoGlobalCPPVariables(&godict_arg, api_godot_core);
         }       
     }
     //strScenarioInfo strScenarioInfo;

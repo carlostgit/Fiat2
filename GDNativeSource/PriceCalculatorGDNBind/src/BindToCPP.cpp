@@ -301,9 +301,9 @@ void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioI
 
 //
 
-void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo)
+void clear_scenario_info_strucct(struct strScenarioInfo* pstrScenarioInfoInOut)
 {
-    memset(pstrScenarioInfo, 0, sizeof(strScenarioInfo));
+    memset(pstrScenarioInfoInOut, 0, sizeof(strScenarioInfo));
 }
 
 struct strScenarioInfo createScenarioInfoStruct() {
@@ -365,7 +365,7 @@ extern "C" void market_setCallbackMethodForPrices(void(*setPrice)(int nProduct, 
 //Fin de pruebas
 //////////////////////////////////////////////////////
 
-void LoadPriceCalculationResults(pca::CPriceCalculator* pPriceCalculator, struct strScenarioInfo* pstrScenarioInfo)
+void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPriceCalculator* pPriceCalculator, struct strScenarioInfo* pstrScenarioInfo)
 {
     //int index = 0;
 
@@ -437,7 +437,7 @@ void LoadPriceCalculationResults(pca::CPriceCalculator* pPriceCalculator, struct
 
 }
 
-void LaunchPriceCalculatorLoadedScenario(pca::CPriceCalculator* pPriceCalculator)
+void LoadGlobalVariablesIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator)
 {
     pPriceCalculator->CreateEmptyReality();
     for (auto& product : g_setProducts)
@@ -642,26 +642,18 @@ void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
 //}
 
 //extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)
-extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)
+extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfoOut)
 {
     pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
 
     if (pPriceCalculator)
     {
-        //LaunchPriceCalculatorDefaultTest(pPriceCalculator);
-        LaunchPriceCalculatorLoadedScenario(pPriceCalculator);
+        //Cargar en pPriceCalculator, la info del escenario que está en variables globales 
+        //y ajustar precios con CPriceCalculator
+        LoadGlobalVariablesIntoPriceCalculatorAndAdjustPrices(pPriceCalculator);
 
-        //Para debugearssssS
-        //TODO. Devolver aquí resultados a GODOT, por el argumento pstrScenarioInfo
-        //o de alguna otra manera mejor
-        //double dAmount = pPriceCalculator->GetProductAmount("nut", "Peter");
-
-        //pPriceCalculator->PrintPricesEvolution();
-        //pPriceCalculator->PrintPersonsOptionAdjustmentToFile();
-        //
-
-        LoadPriceCalculationResults(pPriceCalculator, pstrScenarioInfo);
-        
+        //Obtener los resultados desde pPriceCalculator, y cargarlos strScenarioInfo
+        LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pPriceCalculator, pstrScenarioInfoOut);        
     }
     else
     {
@@ -791,7 +783,7 @@ void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], 
 
 }
 
-void ResetScenarioInfo()
+void ResetScenarioInfoGlobalCPPVariables()
 {
     g_setPersons.clear();
     g_setProducts.clear();

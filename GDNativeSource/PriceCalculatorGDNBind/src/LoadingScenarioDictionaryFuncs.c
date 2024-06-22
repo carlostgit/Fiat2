@@ -7,10 +7,10 @@
 //Inicio de métodos para procesar la información que llega desde GODOT
 
 //Método para procesar la información del escenario que viene en un diccionario desde GODOT
-void LoadScenarioInfoFromGDN(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg)
+void LoadScenarioInfoFromGDNIntoGlobalCPPVariables(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     //Primero Reseteamos la información
-    ResetScenarioInfo();
+    ResetScenarioInfoGlobalCPPVariables();
 
     //var text_dict_arg : Dictionary = {
     //    "Persons": ["Peter","George"] ,

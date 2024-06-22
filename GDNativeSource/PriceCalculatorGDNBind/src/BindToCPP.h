@@ -1,4 +1,14 @@
 #pragma once
+
+//"BindToCPP.h" es una cabecera con las funciones y estructuras en código C,
+//para que puedan ser usados desde el código GND, que está en en C.
+// Son métodos que sirven para hacer las llamadas a PriceCalculator
+// -Para pasar los datos del escenario que se quiere calcular
+// -Y para recoger los resultados
+//Los métodos de esta cabecera compatible con C están definidos en C++ en "BindToCPP.cpp"
+//Existe otra cabecera con variables y métodos C++ (BindToCPP_CPPHeader.h)
+
+
 //struct strProductAmount2
 //{
 //    int nProductId;
@@ -142,22 +152,23 @@ extern "C" {
 
 //////////////////////////////////////////////////////
 //Métodos para manipular la estructura strScenarioInfo
-void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size);
-void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
-void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_product[256], int size, double dPrice);
+void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
+void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
+void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
+void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
+void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_product[256], int size, double dPrice);
 
 void add_traded_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
 void add_consumed_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
 void add_saved_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
 
-void clear_scenario_info(struct strScenarioInfo* pstrScenarioInfo);
+void clear_scenario_info_struct(struct strScenarioInfo* pstrScenarioInfoInOut);
 struct strScenarioInfo createScenarioInfoStruct();
 ////////////////////////////////////////////////////////
 
-int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrProdAmount);
+//Calcula el ajuste de precios y devuelve el resultado en strScenarioInfo
+int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfoOutput);
 
 //Métodos para cargar el escenario en BindToCpp, para después poder cargarlo en PriceCalculator
 void add_person(wchar_t wc_person[256], int n_size);
@@ -169,7 +180,7 @@ void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_pr
 void add_currency(wchar_t wc_currency[256], int n_size);
 void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
 
-void ResetScenarioInfo();
+void ResetScenarioInfoGlobalCPPVariables();
 
 
 #ifdef __cplusplus

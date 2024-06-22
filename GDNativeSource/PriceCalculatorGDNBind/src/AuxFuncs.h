@@ -3,6 +3,7 @@
 #include <gdnative_api_struct.gen.h>
 #include <string.h>
 
+//Métodos auxiliares en C, para usar en GDN
 
 //////////////////////////////////////////////////////////////
 //Inicio de métodos para imprimir cosas en la consola de GODOT

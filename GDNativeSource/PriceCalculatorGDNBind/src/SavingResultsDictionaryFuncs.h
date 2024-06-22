@@ -4,6 +4,8 @@
 #include <string.h>
 #include "BindToCPP.h"
 
+//Métodos para cargar en una estructura godot_dictionary la información de la estructura strScenarioInfo
+// que contiene los resultados de los cálculos hechos en PriceCalculator
 
 //Private:
 void GetProductPriceGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg);
