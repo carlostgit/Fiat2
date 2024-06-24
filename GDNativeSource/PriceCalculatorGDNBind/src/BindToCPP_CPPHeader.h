@@ -15,7 +15,10 @@
 namespace pca {
 	class CPriceCalculator;
 }
-struct strScenarioInfo;
+struct strScenarioInfo; //Todo: Cambiar nombre a algo así como strPriceCalculationResultsInfo
+
+//Todo: Crear resultados de 
+//struct strScenarioInfo;
 
 //Funciones auxiliares usados por LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct
 //para meter los resultados de los cálculos desde PriceCalculator a la estructura strScenarioInfo
@@ -36,8 +39,12 @@ void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPr
 //Método para cargar las variables globales en CPriceCalculator y ajustar precios
 void LoadGlobalVariablesIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator);
 
+//Variables globales donde se guardan los datos del escenario que se va a calcular:
+//////////////////// (Igual esto se puede llevar a estructuras o clases)
+//Cálculo de precios:
 //Variables globales donde se guardan los datos del escenario que se tiene que calcular
 //Datos del escenario que se va a calcular
+//Todo: Meter estas variables dentro de una clase que sea algo así como: class CAjustPricesInput
 std::set<std::string> g_setPersons;
 std::set<std::string> g_setProducts;
 std::set<std::string> g_setConsumptionOptions;
@@ -51,6 +58,19 @@ struct strPreferencesCpp
 	std::map<std::string, double> mapOptionPrefAt0;
 };
 std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;
+
+//////////////////////
+//TODO: Cálculo de opciones escogidas para un presupuesto
+//Variables globales para calcular las opciones escogidas por un TradeCalculator para un presupuesto
+//Todo: Meter estas variables dentro de una clase que sea algo así como: class CalculateOptionsForBudgetInput
+//strPreferencesCpp g_strPreferences;
+//std::set<std::string> g_setProducts;
+//std::set<std::string> g_setConsumptionOptions;
+//double g_dBudget;
+
+//Para calcular las opciones en un rango de presupuestos, habría que tener lo mismo, y además un g_dCalcStep
+//Todo: Meter estas variables dentro de una clase que sea algo así como: class CalculateOptionsForRangeOfBudgetInput
+//Esto último se tiene que hacer con un límite, porque el número de datos que se pueden devolver de una sola vez es limitado
 
 
 

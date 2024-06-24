@@ -99,7 +99,7 @@ struct strPreferences
 };
 
 
-struct strScenarioInfo
+struct strScenarioInfo //TODO: Cambiar el nombre a esto a a algo así como strAdjustPriceResults
 {
     struct strName name_persons[25];
     int n_num_of_persons;
@@ -109,6 +109,9 @@ struct strScenarioInfo
     int n_num_of_consumption_options;
     struct strName name_saving_options[25];
     int n_num_of_saving_options;
+    //La parte de arriba tal vez se pueda omitir para los resultados, porque no debería cambiar respecto a los datos originales
+
+    //Esto de abajo si sería parte de los resultados:
     struct strOwnedThings owned_things;
     struct strTradedThings traded_things; //new
     struct strConsumedOptions consumed_options; //new
@@ -117,6 +120,10 @@ struct strScenarioInfo
     struct strPrices prices;
         
 };
+
+
+//Todo: Añadir estructuras de resultados para otros cálculos como strOptionsForBudgetResults y strOptionsForRangeOfBudgetsResults
+
 
 //Typedefs
 
