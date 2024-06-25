@@ -1,7 +1,7 @@
 #include <gdnative_api_struct.gen.h>
 
 
-extern struct strScenarioInfo strScenarioInfo;
+extern struct strAdjustPriceResults strAdjustPriceResults;
 
 //Punteros a las api, que hay que inicializar en PriceCalculatorGDNBind.c
 extern const godot_gdnative_core_api_struct* api_godot_core;// = NULL;

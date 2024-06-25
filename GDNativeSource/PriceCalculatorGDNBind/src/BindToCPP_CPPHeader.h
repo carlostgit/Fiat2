@@ -15,29 +15,29 @@
 namespace pca {
 	class CPriceCalculator;
 }
-struct strScenarioInfo; //Todo: Cambiar nombre a algo así como strPriceCalculationResultsInfo
+struct strAdjustPriceResults; //Todo: Cambiar nombre a algo así como strAdjustPriceResults
 
 //Todo: Crear resultados de 
-//struct strScenarioInfo;
+//struct strAdjustPriceResults;
 
-//Funciones auxiliares usados por LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct
-//para meter los resultados de los cálculos desde PriceCalculator a la estructura strScenarioInfo
-static void add_person_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sPerson);
-static void add_product_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sProduct);
-static void add_consumption_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sOption);
-static void add_saving_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sOption);
-static void add_owned_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount);
-static void add_price_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sProduct, double dPrice);
+//Funciones auxiliares usados por LoadAdjustPriceResultsFromPriceCalculatorToStruct
+//para meter los resultados de los cálculos desde PriceCalculator a la estructura strAdjustPriceResults
+static void add_person_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sPerson);
+static void add_product_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct);
+static void add_consumption_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption);
+static void add_saving_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption);
+static void add_owned_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
+static void add_price_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct, double dPrice);
 
-static void add_traded_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount);
-static void add_consumed_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
-static void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
+static void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
+static void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
+static void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
 
-//Metodo para meter los resultados de los calculos desde CPriceCalculator a strScenarioInfo
-void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPriceCalculator* pPriceCalculator, struct strScenarioInfo* pstrScenarioInfoOutput);
+//Metodo para meter los resultados de los calculos desde CPriceCalculator a strAdjustPriceResults
+void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResultsOutput);
 
 //Método para cargar las variables globales en CPriceCalculator y ajustar precios
-void LoadGlobalVariablesIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator);
+void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator);
 
 //Variables globales donde se guardan los datos del escenario que se va a calcular:
 //////////////////// (Igual esto se puede llevar a estructuras o clases)

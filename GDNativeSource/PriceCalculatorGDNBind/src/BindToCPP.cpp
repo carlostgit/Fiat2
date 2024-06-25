@@ -24,16 +24,16 @@
 //std::map<int,std::map<int,double> > g_map_Person_mapProdAmount;
 
 
-void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+void add_person_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
 { 
-    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_persons[pstrScenarioInfo->n_num_of_persons].wc_name;
+    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_persons[pstrAdjustPriceResults->n_num_of_persons].wc_name;
     wcsncpy(pwc_name_in_struct, wc_name, size);
     //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
 
-    pstrScenarioInfo->n_num_of_persons += 1;
+    pstrAdjustPriceResults->n_num_of_persons += 1;
 }
 
-void add_person_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sPerson)
+void add_person_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sPerson)
 {
     // Convert narrow string to wide string
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -43,19 +43,19 @@ void add_person_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, s
     int size = ws_person_name.size();
     wcsncpy(array_wc_not_const, ws_person_name.c_str(), size);
 
-    add_person_to_scenario_info(pstrScenarioInfo, array_wc_not_const, size);
+    add_person_to_adjust_price_results(pstrAdjustPriceResults, array_wc_not_const, size);
 }
 
-void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+void add_product_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
 {
-    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_products[pstrScenarioInfo->n_num_of_products].wc_name;
+    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_products[pstrAdjustPriceResults->n_num_of_products].wc_name;
     wcsncpy(pwc_name_in_struct, wc_name, size);
     //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
 
-    pstrScenarioInfo->n_num_of_products += 1;
+    pstrAdjustPriceResults->n_num_of_products += 1;
 }
 
-void add_product_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sProduct)
+void add_product_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct)
 {
     // Convert narrow string to wide string
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -65,19 +65,19 @@ void add_product_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, 
     int size = ws_product_name.size();
     wcsncpy(array_wc_not_const, ws_product_name.c_str(), size);
 
-    add_product_to_scenario_info(pstrScenarioInfo, array_wc_not_const, size);
+    add_product_to_adjust_price_results(pstrAdjustPriceResults, array_wc_not_const, size);
 }
 
-void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+void add_consumption_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
 {
-    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_consumption_options[pstrScenarioInfo->n_num_of_consumption_options].wc_name;
+    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_consumption_options[pstrAdjustPriceResults->n_num_of_consumption_options].wc_name;
     wcsncpy(pwc_name_in_struct, wc_name, size);
     //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
 
-    pstrScenarioInfo->n_num_of_consumption_options += 1;
+    pstrAdjustPriceResults->n_num_of_consumption_options += 1;
 }
 
-void add_consumption_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sOption)
+void add_consumption_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption)
 {
     // Convert narrow string to wide string
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -87,19 +87,19 @@ void add_consumption_option_to_scenario_info_cpp(struct strScenarioInfo* pstrSce
     int size = ws_option_name.size();
     wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
 
-    add_consumption_option_to_scenario_info(pstrScenarioInfo, array_wc_not_const, size);
+    add_consumption_option_to_adjust_price_results(pstrAdjustPriceResults, array_wc_not_const, size);
 }
 
-void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_name[256], int size)
+void add_saving_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
 {
-    wchar_t* pwc_name_in_struct = pstrScenarioInfo->name_saving_options[pstrScenarioInfo->n_num_of_saving_options].wc_name;
+    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_saving_options[pstrAdjustPriceResults->n_num_of_saving_options].wc_name;
     wcsncpy(pwc_name_in_struct, wc_name, size);
     //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
 
-    pstrScenarioInfo->n_num_of_saving_options += 1;
+    pstrAdjustPriceResults->n_num_of_saving_options += 1;
 }
 
-void add_saving_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sOption)
+void add_saving_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption)
 {
     // Convert narrow string to wide string
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -109,16 +109,16 @@ void add_saving_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenario
     int size = ws_option_name.size();
     wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
 
-    add_saving_option_to_scenario_info(pstrScenarioInfo, array_wc_not_const, size);
+    add_saving_option_to_adjust_price_results(pstrAdjustPriceResults, array_wc_not_const, size);
 }
 
-void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount)
+void add_owned_thing_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount)
 {
-    //int person_index = pstrScenarioInfo->owned_things.n_num_persons;
-    int prod_amount_index = pstrScenarioInfo->owned_things.person_prod_amounts[person_index].n_num_prod_amounts;
+    //int person_index = pstrAdjustPriceResults->owned_things.n_num_persons;
+    int prod_amount_index = pstrAdjustPriceResults->owned_things.person_prod_amounts[person_index].n_num_prod_amounts;
 
-    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->owned_things.person_prod_amounts[person_index].name_person.wc_name;
-    wchar_t* pwc_product_name_in_struct = pstrScenarioInfo->owned_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].name_product.wc_name;
+    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->owned_things.person_prod_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_product_name_in_struct = pstrAdjustPriceResults->owned_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].name_product.wc_name;
     
     wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
     //pwc_person_name_in_struct[size_person - 1] = L'\0';  // Ensure null-termination
@@ -126,17 +126,17 @@ void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, 
     wcsncpy(pwc_product_name_in_struct, wc_product, size_product);
     //pwc_product_name_in_struct[size_product - 1] = L'\0';  // Ensure null-termination
 
-    pstrScenarioInfo->owned_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].dAmount = dAmount;
+    pstrAdjustPriceResults->owned_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].dAmount = dAmount;
     
-    if (pstrScenarioInfo->owned_things.n_num_persons < person_index + 1)
+    if (pstrAdjustPriceResults->owned_things.n_num_persons < person_index + 1)
     {
-        pstrScenarioInfo->owned_things.n_num_persons = person_index + 1;
+        pstrAdjustPriceResults->owned_things.n_num_persons = person_index + 1;
     }
 
-    pstrScenarioInfo->owned_things.person_prod_amounts[person_index].n_num_prod_amounts += 1;
+    pstrAdjustPriceResults->owned_things.person_prod_amounts[person_index].n_num_prod_amounts += 1;
 }
 
-void add_owned_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount)
+void add_owned_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount)
 {
     // Convert narrow string to wide string
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -150,24 +150,24 @@ void add_owned_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioIn
     wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
     wcsncpy(array_wc_product_not_const, ws_product_name.c_str(), size_product);
 
-    add_owned_thing_to_scenario_info(pstrScenarioInfo, person_index, array_wc_person_not_const, size_person, array_wc_product_not_const, size_product, dAmount);
+    add_owned_thing_to_adjust_price_results(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_product_not_const, size_product, dAmount);
 }
 
-void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, wchar_t wc_product[256], int size, double dPrice)
+void add_price_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_product[256], int size, double dPrice)
 {    
-    int prod_price_index = pstrScenarioInfo->prices.n_num_prices;
+    int prod_price_index = pstrAdjustPriceResults->prices.n_num_prices;
     
-    wchar_t* pwc_product_name_in_struct = pstrScenarioInfo->prices.prod_price[prod_price_index].name_product.wc_name;
+    wchar_t* pwc_product_name_in_struct = pstrAdjustPriceResults->prices.prod_price[prod_price_index].name_product.wc_name;
     
     wcsncpy(pwc_product_name_in_struct, wc_product, size);
     //pwc_product_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
 
-    pstrScenarioInfo->prices.prod_price[prod_price_index].dAmount = dPrice;
+    pstrAdjustPriceResults->prices.prod_price[prod_price_index].dAmount = dPrice;
 
-    pstrScenarioInfo->prices.n_num_prices += 1;    
+    pstrAdjustPriceResults->prices.n_num_prices += 1;    
 }
 
-void add_price_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, std::string sProduct, double dPrice)
+void add_price_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct, double dPrice)
 {
     // Convert narrow string to wide string
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -177,32 +177,32 @@ void add_price_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, st
     int size = ws_product_name.size();
     wcsncpy(array_wc_not_const, ws_product_name.c_str(), size);
 
-    add_price_to_scenario_info(pstrScenarioInfo, array_wc_not_const, size, dPrice);
+    add_price_to_adjust_price_results(pstrAdjustPriceResults, array_wc_not_const, size, dPrice);
 
 }
 
 //Nuevos
-void add_traded_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount)
+void add_traded_thing_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount)
 {    
-    int prod_amount_index = pstrScenarioInfo->traded_things.person_prod_amounts[person_index].n_num_prod_amounts;
+    int prod_amount_index = pstrAdjustPriceResults->traded_things.person_prod_amounts[person_index].n_num_prod_amounts;
 
-    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->traded_things.person_prod_amounts[person_index].name_person.wc_name;
-    wchar_t* pwc_product_name_in_struct = pstrScenarioInfo->traded_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].name_product.wc_name;
+    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->traded_things.person_prod_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_product_name_in_struct = pstrAdjustPriceResults->traded_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].name_product.wc_name;
 
     wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
     wcsncpy(pwc_product_name_in_struct, wc_product, size_product);    
 
-    pstrScenarioInfo->traded_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].dAmount = dAmount;
+    pstrAdjustPriceResults->traded_things.person_prod_amounts[person_index].prod_amounts[prod_amount_index].dAmount = dAmount;
 
-    if (pstrScenarioInfo->traded_things.n_num_persons < person_index + 1)
+    if (pstrAdjustPriceResults->traded_things.n_num_persons < person_index + 1)
     {
-        pstrScenarioInfo->traded_things.n_num_persons = person_index + 1;
+        pstrAdjustPriceResults->traded_things.n_num_persons = person_index + 1;
     }
 
-    pstrScenarioInfo->traded_things.person_prod_amounts[person_index].n_num_prod_amounts += 1;
+    pstrAdjustPriceResults->traded_things.person_prod_amounts[person_index].n_num_prod_amounts += 1;
 }
 
-void add_traded_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount)
+void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount)
 {
     // Convert narrow string to wide string
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -216,32 +216,32 @@ void add_traded_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioI
     wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
     wcsncpy(array_wc_product_not_const, ws_product_name.c_str(), size_product);
 
-    add_traded_thing_to_scenario_info(pstrScenarioInfo, person_index, array_wc_person_not_const, size_person, array_wc_product_not_const, size_product, dAmount);
+    add_traded_thing_to_adjust_price_results(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_product_not_const, size_product, dAmount);
 }
 
-void add_consumed_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
+void add_consumed_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
 {
 
-    int option_amount_index = pstrScenarioInfo->consumed_options.person_option_amounts[person_index].n_num_option_amounts;
+    int option_amount_index = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].n_num_option_amounts;
 
-    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->consumed_options.person_option_amounts[person_index].name_person.wc_name;
-    wchar_t* pwc_option_name_in_struct = pstrScenarioInfo->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
+    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_option_name_in_struct = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
 
     wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
     wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
 
-    pstrScenarioInfo->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
+    pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
 
-    if (pstrScenarioInfo->consumed_options.n_num_persons < person_index + 1)
+    if (pstrAdjustPriceResults->consumed_options.n_num_persons < person_index + 1)
     {
-        pstrScenarioInfo->consumed_options.n_num_persons = person_index + 1;
+        pstrAdjustPriceResults->consumed_options.n_num_persons = person_index + 1;
     }
 
-    pstrScenarioInfo->consumed_options.person_option_amounts[person_index].n_num_option_amounts += 1;
+    pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].n_num_option_amounts += 1;
 
 }
 
-void add_consumed_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount)
+void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount)
 {
 
     // Convert narrow string to wide string
@@ -256,31 +256,31 @@ void add_consumed_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenar
     wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
     wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
 
-    add_consumed_option_to_scenario_info(pstrScenarioInfo, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
+    add_consumed_option_to_adjust_price_results(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
 
 }
 
-void add_saved_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
+void add_saved_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
 {
-    int option_amount_index = pstrScenarioInfo->saved_options.person_option_amounts[person_index].n_num_option_amounts;
+    int option_amount_index = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].n_num_option_amounts;
 
-    wchar_t* pwc_person_name_in_struct = pstrScenarioInfo->saved_options.person_option_amounts[person_index].name_person.wc_name;
-    wchar_t* pwc_option_name_in_struct = pstrScenarioInfo->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
+    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].name_person.wc_name;
+    wchar_t* pwc_option_name_in_struct = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
 
     wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
     wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
 
-    pstrScenarioInfo->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
+    pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
 
-    if (pstrScenarioInfo->saved_options.n_num_persons < person_index + 1)
+    if (pstrAdjustPriceResults->saved_options.n_num_persons < person_index + 1)
     {
-        pstrScenarioInfo->saved_options.n_num_persons = person_index + 1;
+        pstrAdjustPriceResults->saved_options.n_num_persons = person_index + 1;
     }
 
-    pstrScenarioInfo->saved_options.person_option_amounts[person_index].n_num_option_amounts += 1;
+    pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].n_num_option_amounts += 1;
 }
 
-void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount)
+void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount)
 {
 
     // Convert narrow string to wide string
@@ -295,19 +295,19 @@ void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioI
     wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
     wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
 
-    add_saved_option_to_scenario_info(pstrScenarioInfo, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
+    add_saved_option_to_adjust_price_results(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
 }
 
 
 //
 
-void clear_scenario_info_strucct(struct strScenarioInfo* pstrScenarioInfoInOut)
+void clear_scenario_info_strucct(struct strAdjustPriceResults* pstrAdjustPriceResults)
 {
-    memset(pstrScenarioInfoInOut, 0, sizeof(strScenarioInfo));
+    memset(pstrAdjustPriceResults, 0, sizeof(strAdjustPriceResults));
 }
 
-struct strScenarioInfo createScenarioInfoStruct() {
-    struct strScenarioInfo newStruct = { 0 };
+struct strAdjustPriceResults create_adjust_price_results_struct() {
+    struct strAdjustPriceResults newStruct = { 0 };
     return newStruct;
 }
 
@@ -365,29 +365,29 @@ extern "C" void market_setCallbackMethodForPrices(void(*setPrice)(int nProduct, 
 //Fin de pruebas
 //////////////////////////////////////////////////////
 
-void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPriceCalculator* pPriceCalculator, struct strScenarioInfo* pstrScenarioInfo)
+void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults)
 {
     //int index = 0;
 
     for (auto& person : g_setPersons)
     {
-        add_person_to_scenario_info_cpp(pstrScenarioInfo, person);
+        add_person_to_adjust_price_results_cpp(pstrAdjustPriceResults, person);
     }
 
     for (auto& product : g_setProducts)
     {
         double dPrice = pPriceCalculator->GetPrice(product);
-        add_price_to_scenario_info_cpp(pstrScenarioInfo, product, dPrice);
+        add_price_to_adjust_price_results_cpp(pstrAdjustPriceResults, product, dPrice);
     }
 
     for (auto& consumption_option : g_setConsumptionOptions)
     {
-        add_consumption_option_to_scenario_info_cpp(pstrScenarioInfo, consumption_option);
+        add_consumption_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, consumption_option);
     }
 
     for (auto& saving_option : g_setSavingOptions)
     {
-        add_saving_option_to_scenario_info_cpp(pstrScenarioInfo, saving_option);
+        add_saving_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, saving_option);
     }
 
     int person_index = 0;
@@ -396,7 +396,7 @@ void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPr
         for (auto& product : g_setProducts)
         {
             double dAmount = pPriceCalculator->GetProductAmount(product, person);
-            add_owned_thing_to_scenario_info_cpp(pstrScenarioInfo, person_index, person, product, dAmount);
+            add_owned_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
         }    
         person_index++;
     }
@@ -404,16 +404,16 @@ void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPr
 
     //            
     //TODO. Seguir aquí.
-    //void add_traded_thing_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sProduct, double dAmount);
-    //void add_consumed_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
-    //void add_saved_option_to_scenario_info_cpp(struct strScenarioInfo* pstrScenarioInfo, int person_index, std::string sPerson, std::string sOption, double dAmount);
+    //void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
+    //void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
+    //void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
     person_index = 0;
     for (auto& person : g_setPersons)
     {
         for (auto& product : g_setProducts)
         {
             double dAmount = pPriceCalculator->GetTradedAmount(product, person);
-            add_traded_thing_to_scenario_info_cpp(pstrScenarioInfo, person_index, person, product, dAmount);
+            add_traded_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
         }
         person_index++;
     }
@@ -424,12 +424,12 @@ void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPr
         for (auto& sOption : g_setSavingOptions)
         {
             double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
-            add_saved_option_to_scenario_info_cpp(pstrScenarioInfo, person_index, sPerson, sOption, dAmount);
+            add_saved_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
         }
         for (auto& sOption : g_setConsumptionOptions)
         {
             double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
-            add_consumed_option_to_scenario_info_cpp(pstrScenarioInfo, person_index, sPerson, sOption, dAmount);
+            add_consumed_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
         }
         person_index++;
     }
@@ -437,7 +437,7 @@ void LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pca::CPr
 
 }
 
-void LoadGlobalVariablesIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator)
+void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator)
 {
     pPriceCalculator->CreateEmptyReality();
     for (auto& product : g_setProducts)
@@ -641,8 +641,8 @@ void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
 //    return 0;
 //}
 
-//extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfo)
-extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfoOut)
+//extern "C" int adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResults)
+extern "C" int adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResultsOut)
 {
     pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
 
@@ -650,10 +650,10 @@ extern "C" int calculate_prices_with_price_calculator(struct strScenarioInfo* ps
     {
         //Cargar en pPriceCalculator, la info del escenario que está en variables globales 
         //y ajustar precios con CPriceCalculator
-        LoadGlobalVariablesIntoPriceCalculatorAndAdjustPrices(pPriceCalculator);
+        LoadInputDataIntoPriceCalculatorAndAdjustPrices(pPriceCalculator);
 
-        //Obtener los resultados desde pPriceCalculator, y cargarlos strScenarioInfo
-        LoadPriceCalculationResultsFromPriceCalculatorToScenarioInfoStruct(pPriceCalculator, pstrScenarioInfoOut);        
+        //Obtener los resultados desde pPriceCalculator, y cargarlos strAdjustPriceResults
+        LoadAdjustPriceResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResultsOut);        
     }
     else
     {
@@ -783,7 +783,7 @@ void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], 
 
 }
 
-void ResetScenarioInfoGlobalCPPVariables()
+void ResetAdjustPricesDataInput()
 {
     g_setPersons.clear();
     g_setProducts.clear();

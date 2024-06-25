@@ -99,7 +99,7 @@ struct strPreferences
 };
 
 
-struct strScenarioInfo //TODO: Cambiar el nombre a esto a a algo así como strAdjustPriceResults
+struct strAdjustPriceResults //TODO: Cambiar el nombre a esto a a algo así como strAdjustPriceResults
 {
     struct strName name_persons[25];
     int n_num_of_persons;
@@ -152,30 +152,30 @@ extern "C" {
 //long test_price_calculator_dll();
 
 //int test_price_calculator_dll_with_str(struct strProductAmount2* strProdAmount);
-//int calculate_prices_with_price_calculator(struct strScenarioInfo* strScenarioInfo);
+//int adjust_price_with_price_calculator(struct strAdjustPriceResults* strAdjustPriceResults);
 
 //Fin de código para pruebas
 /////////////////////////////
 
 //////////////////////////////////////////////////////
-//Métodos para manipular la estructura strScenarioInfo
-void add_person_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
-void add_product_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
-void add_consumption_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
-void add_saving_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_name[256], int size);
-void add_owned_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
-void add_price_to_scenario_info(struct strScenarioInfo* pstrScenarioInfoInOut, wchar_t wc_product[256], int size, double dPrice);
+//Métodos para manipular la estructura strAdjustPriceResults
+void add_person_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+void add_product_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+void add_consumption_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+void add_saving_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+void add_owned_thing_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+void add_price_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_product[256], int size, double dPrice);
 
-void add_traded_thing_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
-void add_consumed_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
-void add_saved_option_to_scenario_info(struct strScenarioInfo* pstrScenarioInfo, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
+void add_traded_thing_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+void add_consumed_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
+void add_saved_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
 
-void clear_scenario_info_struct(struct strScenarioInfo* pstrScenarioInfoInOut);
-struct strScenarioInfo createScenarioInfoStruct();
+//void clear_scenario_info_struct(struct strAdjustPriceResults* pstrAdjustPriceResults);
+struct strAdjustPriceResults create_adjust_price_results_struct();
 ////////////////////////////////////////////////////////
 
-//Calcula el ajuste de precios y devuelve el resultado en strScenarioInfo
-int calculate_prices_with_price_calculator(struct strScenarioInfo* pstrScenarioInfoOutput);
+//Calcula el ajuste de precios y devuelve el resultado en strAdjustPriceResults
+int adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResultsOutput);
 
 //Métodos para cargar el escenario en BindToCpp, para después poder cargarlo en PriceCalculator
 void add_person(wchar_t wc_person[256], int n_size);
@@ -187,7 +187,9 @@ void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_pr
 void add_currency(wchar_t wc_currency[256], int n_size);
 void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
 
-void ResetScenarioInfoGlobalCPPVariables();
+
+void ResetAdjustPricesDataInput();
+
 
 
 #ifdef __cplusplus

@@ -572,21 +572,21 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
             LoadScenarioInfoFromGDNIntoGlobalCPPVariables(&godict_arg, api_godot_core);
         }       
     }
-    //strScenarioInfo strScenarioInfo;
-    //calculate_prices_with_price_calculator(&strScenarioInfo);
-    struct strScenarioInfo strScenarioInfo = createScenarioInfoStruct();
-    int ret_cod = calculate_prices_with_price_calculator(&strScenarioInfo);
+    //strAdjustPriceResults strAdjustPriceResults;
+    //adjust_price_with_price_calculator(&strAdjustPriceResults);
+    struct strAdjustPriceResults strAdjustPriceResults = create_adjust_price_results_struct();
+    int ret_cod = adjust_price_with_price_calculator(&strAdjustPriceResults);
 
     //wchar_t wchar_sizeofscenarioinfostruct[MAXSTRING] = L"sizeof(strProdAmount):";
     //PrintInGodotConsole_Text(wchar_sizeofscenarioinfostruct);
-    //PrintInGodotConsole_Int(sizeof(strScenarioInfo));
+    //PrintInGodotConsole_Int(sizeof(strAdjustPriceResults));
 
     for (int i = 0;i < p_num_args;i++)
     {
         if (i == 1) //En el segundo argumento devuelvo los resultados. Es el output
         {
             godot_dictionary godict_arg = api_godot_core->godot_variant_as_dictionary(p_args[i]);
-            GetGodotDictionaryFromScenarioInfoStruct(&strScenarioInfo, &godict_arg, api_godot_core);
+            GetGodotDictionaryFromScenarioInfoStruct(&strAdjustPriceResults, &godict_arg, api_godot_core);
         }
     }
 

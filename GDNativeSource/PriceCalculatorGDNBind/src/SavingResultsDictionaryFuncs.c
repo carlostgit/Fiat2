@@ -1,7 +1,7 @@
 #include "SavingResultsDictionaryFuncs.h"
 #include "AuxFuncs.h"
 
-void GetProductPriceGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg)
+void GetProductPriceGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg)
 {
     //Pruebo a salvar datos de los precios primero
     int i = 0;
@@ -24,7 +24,7 @@ void GetProductPriceGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_sc
     }
 }
 
-void GetProductAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetProductAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->owned_things.person_prod_amounts[person_index].n_num_prod_amounts;i++)
@@ -44,7 +44,7 @@ void GetProductAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_s
     }
 }
 
-void GetTradedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetTradedAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->traded_things.person_prod_amounts[person_index].n_num_prod_amounts;i++)
@@ -64,7 +64,7 @@ void GetTradedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_sc
     }
 }
 
-void GetConsumedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_consumed_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetConsumedAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_consumed_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->consumed_options.person_option_amounts[person_index].n_num_option_amounts;i++)
@@ -84,7 +84,7 @@ void GetConsumedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_
     }
 }
 
-void GetSavedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_saved_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
+void GetSavedAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_saved_amount, int person_index, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->saved_options.person_option_amounts[person_index].n_num_option_amounts;i++)
@@ -105,7 +105,7 @@ void GetSavedAmountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_sce
 }
 
 
-void GetPersonProdamountGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_prodamount, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonProdamountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_prodamount, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->owned_things.n_num_persons;i++)
@@ -128,7 +128,7 @@ void GetPersonProdamountGodictFromScenarioInfoStruct(struct strScenarioInfo* pst
     }
 }
 
-void GetPersonTradedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_traded, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonTradedGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_traded, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->traded_things.n_num_persons;i++)
@@ -151,7 +151,7 @@ void GetPersonTradedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_sc
     }
 }
 
-void GetPersonConsumedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_consumed, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonConsumedGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_consumed, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->consumed_options.n_num_persons;i++)
@@ -174,7 +174,7 @@ void GetPersonConsumedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_
     }
 }
 
-void GetPersonSavedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgodict_person_saved, const godot_gdnative_core_api_struct* api_arg)
+void GetPersonSavedGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_saved, const godot_gdnative_core_api_struct* api_arg)
 {
     int i = 0;
     for (i = 0;i < pstr_scenario_info->saved_options.n_num_persons;i++)
@@ -198,7 +198,7 @@ void GetPersonSavedGodictFromScenarioInfoStruct(struct strScenarioInfo* pstr_sce
 }
 
 
-void GetGodotDictionaryFromScenarioInfoStruct(struct strScenarioInfo* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg)
+void GetGodotDictionaryFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg)
 {
     //var text_dict_arg : Dictionary = {
 //    "Prices":
