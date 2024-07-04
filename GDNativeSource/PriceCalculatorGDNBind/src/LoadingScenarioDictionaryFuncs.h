@@ -12,4 +12,4 @@
 
 //Métodos para procesar la información del escenario que viene en un diccionario desde GODOT
 
-void LoadScenarioInfoFromGDNIntoGlobalCPPVariables(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg);
+void LoadDataFromGodotIntoAdjustPricesInputObject(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg);

@@ -36,6 +36,9 @@
     <ClInclude Include="..\..\src\Defines.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\AdjustPrices.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\BindToCPP.cpp">
@@ -51,6 +54,9 @@
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\AuxFuncs.c">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\AdjustPrices.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
   </ItemGroup>

@@ -369,31 +369,38 @@ void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pP
 {
     //int index = 0;
 
-    for (auto& person : g_setPersons)
+    //for (auto& person : g_setPersons)
+    for (auto& person : oAdjustPrices.GetPersons())
+    
     {
         add_person_to_adjust_price_results_cpp(pstrAdjustPriceResults, person);
     }
 
-    for (auto& product : g_setProducts)
+    //for (auto& product : g_setProducts)
+    for (auto& product : oAdjustPrices.GetProducts())
     {
         double dPrice = pPriceCalculator->GetPrice(product);
         add_price_to_adjust_price_results_cpp(pstrAdjustPriceResults, product, dPrice);
     }
 
-    for (auto& consumption_option : g_setConsumptionOptions)
+    //for (auto& consumption_option : g_setConsumptionOptions)
+    for (auto& consumption_option : oAdjustPrices.GetConsumptionOptions())
     {
         add_consumption_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, consumption_option);
     }
 
-    for (auto& saving_option : g_setSavingOptions)
+    //for (auto& saving_option : g_setSavingOptions)
+    for (auto& saving_option : oAdjustPrices.GetSavingOptions())
     {
         add_saving_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, saving_option);
     }
 
     int person_index = 0;
-    for (auto& person : g_setPersons)
+    //for (auto& person : g_setPersons)
+    for (auto& person : oAdjustPrices.GetPersons())
     {
-        for (auto& product : g_setProducts)
+        //for (auto& product : g_setProducts)
+        for (auto& product : oAdjustPrices.GetProducts())
         {
             double dAmount = pPriceCalculator->GetProductAmount(product, person);
             add_owned_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
@@ -408,9 +415,11 @@ void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pP
     //void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
     //void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
     person_index = 0;
-    for (auto& person : g_setPersons)
+    //for (auto& person : g_setPersons)
+    for (auto& person : oAdjustPrices.GetPersons())
     {
-        for (auto& product : g_setProducts)
+        //for (auto& product : g_setProducts)
+        for (auto& product : oAdjustPrices.GetProducts())
         {
             double dAmount = pPriceCalculator->GetTradedAmount(product, person);
             add_traded_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
@@ -419,14 +428,17 @@ void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pP
     }
 
     person_index = 0;
-    for (auto& sPerson : g_setPersons)
+    //for (auto& sPerson : g_setPersons)
+    for (auto& sPerson : oAdjustPrices.GetPersons())
     {
-        for (auto& sOption : g_setSavingOptions)
+        //for (auto& sOption : g_setSavingOptions)
+        for (auto& sOption : oAdjustPrices.GetSavingOptions())
         {
             double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
             add_saved_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
         }
-        for (auto& sOption : g_setConsumptionOptions)
+        //for (auto& sOption : g_setConsumptionOptions)
+        for (auto& sOption : oAdjustPrices.GetConsumptionOptions())
         {
             double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
             add_consumed_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
@@ -440,26 +452,31 @@ void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pP
 void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator)
 {
     pPriceCalculator->CreateEmptyReality();
-    for (auto& product : g_setProducts)
+    //for (auto& product : g_setProducts)
+    for (auto& product : oAdjustPrices.GetProducts())
     {
         pPriceCalculator->CreateProduct(product);
     }
 
-    for (auto& pairOptionProduct : g_mapOptionProduct)
+    //for (auto& pairOptionProduct : g_mapOptionProduct)
+    for (auto& pairOptionProduct : oAdjustPrices.GetMapOption_Product())
     {
         pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
     }
 
     pPriceCalculator->CreateEmptyMarket();
 
-    pPriceCalculator->SetCurrency(g_sCurrency);
+    //pPriceCalculator->SetCurrency(g_sCurrency);
+    pPriceCalculator->SetCurrency(oAdjustPrices.GetCurrency());
 
-    for (auto& person : g_setPersons)
+    //for (auto& person : g_setPersons)
+    for (auto& person : oAdjustPrices.GetPersons())
     {
         pPriceCalculator->AddToMarket_CreatePerson(person);
     }
 
-    for (auto& pairperson_prodamounts : g_mapPerson_ProdAmount)
+    //for (auto& pairperson_prodamounts : g_mapPerson_ProdAmount)
+    for (auto& pairperson_prodamounts : oAdjustPrices.GetMapPerson_ProdAmount())
     {
         std::string person = pairperson_prodamounts.first;
         std::map<std::string, double> mapProd_Amount = pairperson_prodamounts.second;
@@ -488,7 +505,8 @@ void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPri
     //    }
     //}
 
-    for (auto& pairPerson_Pref : g_mapPerson_Preferences)
+    //for (auto& pairPerson_Pref : g_mapPerson_Preferences)
+    for (auto& pairPerson_Pref : oAdjustPrices.GetMapPerson_Preferences())
     {
         std::string sPerson = pairPerson_Pref.first;
         strPreferencesCpp strPref = pairPerson_Pref.second;
@@ -666,131 +684,155 @@ extern "C" int adjust_price_with_price_calculator(struct strAdjustPriceResults* 
 
 extern "C" void add_person(wchar_t wc_person[256], int n_size)
 {
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_person);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str(wc_person);
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sPerson = converter.to_bytes(wide_str);
+    //// Convert std::wstring to std::string
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sPerson = converter.to_bytes(wide_str);
 
-    g_setPersons.insert(sPerson);
+    //g_setPersons.insert(sPerson);
+
+    oAdjustPrices.add_person(wc_person, n_size);
 }
 
 extern "C" void add_product(wchar_t wc_product[256], int n_size)
 {    
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_product);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str(wc_product);
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sProduct = converter.to_bytes(wide_str);
+    //// Convert std::wstring to std::string
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sProduct = converter.to_bytes(wide_str);
 
-    g_setProducts.insert(sProduct);
+    //g_setProducts.insert(sProduct);
+
+    oAdjustPrices.add_product(wc_product, n_size);
 }
 
 extern "C" void add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
 {
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_consumption_option);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str(wc_consumption_option);
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sConsumptionOption = converter.to_bytes(wide_str);
+    //// Convert std::wstring to std::string
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sConsumptionOption = converter.to_bytes(wide_str);
 
-    g_setConsumptionOptions.insert(sConsumptionOption);
+    //g_setConsumptionOptions.insert(sConsumptionOption);
+
+    oAdjustPrices.add_consumption_option(wc_consumption_option, n_size);
 }
 
 extern "C" void add_saving_option(wchar_t wc_saving_option[256], int n_size)
 {
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_saving_option);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str(wc_saving_option);
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sSavingOption = converter.to_bytes(wide_str);
+    //// Convert std::wstring to std::string
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sSavingOption = converter.to_bytes(wide_str);
 
-    g_setSavingOptions.insert(sSavingOption);
+    //g_setSavingOptions.insert(sSavingOption);
+
+    oAdjustPrices.add_saving_option(wc_saving_option, n_size);
+
 }
 
 extern "C" void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
 {    
-    std::map<std::string,double> mapProdAmount;
+    //std::map<std::string,double> mapProdAmount;
 
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sProduct = converter.to_bytes(wc_product);
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sProduct = converter.to_bytes(wc_product);
 
-    mapProdAmount[sProduct] = dAmount;        
-    std::string sPerson = converter.to_bytes(wc_person);
+    //mapProdAmount[sProduct] = dAmount;        
+    //std::string sPerson = converter.to_bytes(wc_person);
 
-    if(g_mapPerson_ProdAmount.end() == g_mapPerson_ProdAmount.find(sPerson))
-        g_mapPerson_ProdAmount[sPerson] = mapProdAmount;
-    else
-    {
-        g_mapPerson_ProdAmount[sPerson][sProduct] = dAmount;
-    }
+    //if(g_mapPerson_ProdAmount.end() == g_mapPerson_ProdAmount.find(sPerson))
+    //    g_mapPerson_ProdAmount[sPerson] = mapProdAmount;
+    //else
+    //{
+    //    g_mapPerson_ProdAmount[sPerson][sProduct] = dAmount;
+    //}
+
+    oAdjustPrices.add_person_owned(wc_person, n_size_person, wc_product, n_size_product, dAmount);
+
 }
 
 void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product)
 {
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str_option(wc_option);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str_option(wc_option);
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sOption = converter.to_bytes(wide_str_option);
+    //// Convert std::wstring to std::string
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sOption = converter.to_bytes(wide_str_option);
 
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str_product(wc_product);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str_product(wc_product);
 
-    // Convert std::wstring to std::string    
-    std::string sProduct = converter.to_bytes(wide_str_product);
+    //// Convert std::wstring to std::string    
+    //std::string sProduct = converter.to_bytes(wide_str_product);
 
-    g_mapOptionProduct[sOption] = sProduct;
+    //g_mapOptionProduct[sOption] = sProduct;
+
+    oAdjustPrices.add_option_product(wc_option, n_size_option, wc_product, n_size_product);
+
 }
 
 void add_currency(wchar_t wc_currency[256], int n_size)
 {
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str_currency(wc_currency);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str_currency(wc_currency);
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sCurrency = converter.to_bytes(wide_str_currency);
+    //// Convert std::wstring to std::string
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sCurrency = converter.to_bytes(wide_str_currency);
 
-    g_sCurrency = sCurrency;
+    //g_sCurrency = sCurrency;
+
+
+    oAdjustPrices.add_currency(wc_currency,n_size);
+
 }
 
 void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
 {
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str_option(wc_option);
-    std::wstring wide_str_person(wc_person);
+    //// Convert wchar_t array to std::wstring
+    //std::wstring wide_str_option(wc_option);
+    //std::wstring wide_str_person(wc_person);
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sOption = converter.to_bytes(wide_str_option);
-    std::string sPerson = converter.to_bytes(wide_str_person);
+    //// Convert std::wstring to std::string
+    //std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    //std::string sOption = converter.to_bytes(wide_str_option);
+    //std::string sPerson = converter.to_bytes(wide_str_person);
 
-    //strPreferencesCpp strPref;    
-    //strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
-    //strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
+    ////strPreferencesCpp strPref;    
+    ////strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    ////strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
 
-    if (g_mapPerson_Preferences.end() == g_mapPerson_Preferences.find(sPerson))
-        g_mapPerson_Preferences[sPerson];
+    //if (g_mapPerson_Preferences.end() == g_mapPerson_Preferences.find(sPerson))
+    //    g_mapPerson_Preferences[sPerson];
 
-    g_mapPerson_Preferences[sPerson].mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
-    g_mapPerson_Preferences[sPerson].mapOptionPrefAt0[sOption] = d_preference_at_0;        
+    //g_mapPerson_Preferences[sPerson].mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    //g_mapPerson_Preferences[sPerson].mapOptionPrefAt0[sOption] = d_preference_at_0;        
+
+
+    oAdjustPrices.add_preferences_for_person(wc_person, wc_option, d_maximum_satisfaction, d_preference_at_0);
 
 }
 
 void ResetAdjustPricesDataInput()
 {
-    g_setPersons.clear();
-    g_setProducts.clear();
-    g_setConsumptionOptions.clear();
-    g_setSavingOptions.clear();
-    g_mapPerson_ProdAmount.clear();
-    g_mapOptionProduct.clear();
-    g_sCurrency.clear();
-    g_mapPerson_Preferences.clear();
+    //g_setPersons.clear();
+    //g_setProducts.clear();
+    //g_setConsumptionOptions.clear();
+    //g_setSavingOptions.clear();
+    //g_mapPerson_ProdAmount.clear();
+    //g_mapOptionProduct.clear();
+    //g_sCurrency.clear();
+    //g_mapPerson_Preferences.clear();
+
+    oAdjustPrices.ResetAdjustPricesDataInput();
 }

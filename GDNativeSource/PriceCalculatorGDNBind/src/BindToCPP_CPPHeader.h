@@ -45,19 +45,19 @@ void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPri
 //Variables globales donde se guardan los datos del escenario que se tiene que calcular
 //Datos del escenario que se va a calcular
 //Todo: Meter estas variables dentro de una clase que sea algo así como: class CAjustPricesInput
-std::set<std::string> g_setPersons;
-std::set<std::string> g_setProducts;
-std::set<std::string> g_setConsumptionOptions;
-std::set<std::string> g_setSavingOptions;
-std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
-std::map<std::string, std::string> g_mapOptionProduct;
-std::string g_sCurrency;
-struct strPreferencesCpp
-{
-	std::map<std::string, double> mapOptionMaxSatisf;
-	std::map<std::string, double> mapOptionPrefAt0;
-};
-std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;
+//std::set<std::string> g_setPersons;
+//std::set<std::string> g_setProducts;
+//std::set<std::string> g_setConsumptionOptions;
+//std::set<std::string> g_setSavingOptions;
+//std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
+//std::map<std::string, std::string> g_mapOptionProduct;
+//std::string g_sCurrency;
+//struct strPreferencesCpp
+//{
+//	std::map<std::string, double> mapOptionMaxSatisf;
+//	std::map<std::string, double> mapOptionPrefAt0;
+//};
+//std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;
 
 //////////////////////
 //TODO: Cálculo de opciones escogidas para un presupuesto
@@ -72,6 +72,9 @@ std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;
 //Todo: Meter estas variables dentro de una clase que sea algo así como: class CalculateOptionsForRangeOfBudgetInput
 //Esto último se tiene que hacer con un límite, porque el número de datos que se pueden devolver de una sola vez es limitado
 
+#include "AdjustPrices.h"
+
+CAdjustPrices oAdjustPrices;
 
 
 

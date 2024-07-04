@@ -8,15 +8,15 @@
 // que contiene los resultados de los cálculos hechos en PriceCalculator
 
 //Private:
-void GetProductPriceGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg);
-void GetProductAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
-void GetTradedAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
-void GetConsumedAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_consumed_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
-void GetSavedAmountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_saved_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
-void GetPersonProdamountGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_prodamount, const godot_gdnative_core_api_struct* api_arg);
-void GetPersonTradedGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_traded, const godot_gdnative_core_api_struct* api_arg);
-void GetPersonConsumedGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_consumed, const godot_gdnative_core_api_struct* api_arg);
-void GetPersonSavedGodictFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_saved, const godot_gdnative_core_api_struct* api_arg);
+void GetProductPriceGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg);
+void GetProductAmountGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
+void GetTradedAmountGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
+void GetConsumedAmountGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_consumed_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
+void GetSavedAmountGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_saved_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
+void GetPersonProdamountGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_prodamount, const godot_gdnative_core_api_struct* api_arg);
+void GetPersonTradedGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_traded, const godot_gdnative_core_api_struct* api_arg);
+void GetPersonConsumedGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_consumed, const godot_gdnative_core_api_struct* api_arg);
+void GetPersonSavedGodictFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_person_saved, const godot_gdnative_core_api_struct* api_arg);
 
 //Public:
-void GetGodotDictionaryFromScenarioInfoStruct(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg);
+void GetGodotDictionaryFromAdjustPriceResults(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg);
