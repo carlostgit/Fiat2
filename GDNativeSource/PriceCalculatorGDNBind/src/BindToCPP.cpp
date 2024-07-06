@@ -365,176 +365,176 @@ extern "C" void market_setCallbackMethodForPrices(void(*setPrice)(int nProduct, 
 //Fin de pruebas
 //////////////////////////////////////////////////////
 
-void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults)
-{
-    //Voy a meter la mayor parte de la lógica dentro de AdjustPrices
-    oAdjustPrices.LoadResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResults);
-
-    ////int index = 0;
-
-    ////for (auto& person : g_setPersons)
-    //for (auto& person : oAdjustPrices.GetPersons())
-    //
-    //{
-    //    add_person_to_adjust_price_results_cpp(pstrAdjustPriceResults, person);
-    //}
-
-    ////for (auto& product : g_setProducts)
-    //for (auto& product : oAdjustPrices.GetProducts())
-    //{
-    //    double dPrice = pPriceCalculator->GetPrice(product);
-    //    add_price_to_adjust_price_results_cpp(pstrAdjustPriceResults, product, dPrice);
-    //}
-
-    ////for (auto& consumption_option : g_setConsumptionOptions)
-    //for (auto& consumption_option : oAdjustPrices.GetConsumptionOptions())
-    //{
-    //    add_consumption_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, consumption_option);
-    //}
-
-    ////for (auto& saving_option : g_setSavingOptions)
-    //for (auto& saving_option : oAdjustPrices.GetSavingOptions())
-    //{
-    //    add_saving_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, saving_option);
-    //}
-
-    //int person_index = 0;
-    ////for (auto& person : g_setPersons)
-    //for (auto& person : oAdjustPrices.GetPersons())
-    //{
-    //    //for (auto& product : g_setProducts)
-    //    for (auto& product : oAdjustPrices.GetProducts())
-    //    {
-    //        double dAmount = pPriceCalculator->GetProductAmount(product, person);
-    //        add_owned_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
-    //    }    
-    //    person_index++;
-    //}
-
-
-    ////            
-    ////TODO. Seguir aquí.
-    ////void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
-    ////void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
-    ////void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
-    //person_index = 0;
-    ////for (auto& person : g_setPersons)
-    //for (auto& person : oAdjustPrices.GetPersons())
-    //{
-    //    //for (auto& product : g_setProducts)
-    //    for (auto& product : oAdjustPrices.GetProducts())
-    //    {
-    //        double dAmount = pPriceCalculator->GetTradedAmount(product, person);
-    //        add_traded_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
-    //    }
-    //    person_index++;
-    //}
-
-    //person_index = 0;
-    ////for (auto& sPerson : g_setPersons)
-    //for (auto& sPerson : oAdjustPrices.GetPersons())
-    //{
-    //    //for (auto& sOption : g_setSavingOptions)
-    //    for (auto& sOption : oAdjustPrices.GetSavingOptions())
-    //    {
-    //        double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
-    //        add_saved_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
-    //    }
-    //    //for (auto& sOption : g_setConsumptionOptions)
-    //    for (auto& sOption : oAdjustPrices.GetConsumptionOptions())
-    //    {
-    //        double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
-    //        add_consumed_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
-    //    }
-    //    person_index++;
-    //}
-
-
-}
-
-void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator)
-{
-    pPriceCalculator->CreateEmptyReality();
-    //for (auto& product : g_setProducts)
-    for (auto& product : oAdjustPrices.GetProducts())
-    {
-        pPriceCalculator->CreateProduct(product);
-    }
-
-    //for (auto& pairOptionProduct : g_mapOptionProduct)
-    for (auto& pairOptionProduct : oAdjustPrices.GetMapOption_Product())
-    {
-        pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
-    }
-
-    pPriceCalculator->CreateEmptyMarket();
-
-    //pPriceCalculator->SetCurrency(g_sCurrency);
-    pPriceCalculator->SetCurrency(oAdjustPrices.GetCurrency());
-
-    //for (auto& person : g_setPersons)
-    for (auto& person : oAdjustPrices.GetPersons())
-    {
-        pPriceCalculator->AddToMarket_CreatePerson(person);
-    }
-
-    //for (auto& pairperson_prodamounts : g_mapPerson_ProdAmount)
-    for (auto& pairperson_prodamounts : oAdjustPrices.GetMapPerson_ProdAmount())
-    {
-        std::string person = pairperson_prodamounts.first;
-        std::map<std::string, double> mapProd_Amount = pairperson_prodamounts.second;
-
-        for (auto& pairProd_Amount : mapProd_Amount)
-        {
-            std::string product = pairProd_Amount.first;
-            double dAmount = pairProd_Amount.second;
-
-            pPriceCalculator->AddToPerson_SetProductAmount(person, product, dAmount);
-        }        
-    }
-
-    //for (auto& person : g_setPersons)
-    //{        
-    //    std::set<std::string> setOptions = g_setConsumptionOptions;
-    //    setOptions.insert(g_setSavingOptions.begin(), g_setSavingOptions.end());
-
-    //    for (auto& option : setOptions)
-    //    {
-    //        //TODO: añadir la configuración de esto
-    //        double dValueAt0 = 1;
-    //        double dMaxValue = 10;
-
-    //        pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(person, option, dValueAt0, dMaxValue);
-    //    }
-    //}
-
-    //for (auto& pairPerson_Pref : g_mapPerson_Preferences)
-    for (auto& pairPerson_Pref : oAdjustPrices.GetMapPerson_Preferences())
-    {
-        std::string sPerson = pairPerson_Pref.first;
-        strPreferencesCpp strPref = pairPerson_Pref.second;
-
-        for (auto& pairOption_dMaxSat : strPref.mapOptionMaxSatisf)
-        {
-            std::string sOption = pairOption_dMaxSat.first;
-            double dMaxSatisf = pairOption_dMaxSat.second;
-
-            if (strPref.mapOptionPrefAt0.end() == strPref.mapOptionPrefAt0.find(sOption))
-            {
-                std::cerr << "Error en LaunchPriceCalculatorLoadedScenario";
-                assert("" == "Error en LaunchPriceCalculatorLoadedScenario");
-            }
-
-            double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
-
-            pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(sPerson, sOption, dPrefAt0, dMaxSatisf);
-        }
-    }
-
-
-    pPriceCalculator->AdjustPrices();
-
-}
+//void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults)
+//{
+//    //Voy a meter la mayor parte de la lógica dentro de AdjustPrices
+//    oAdjustPrices.LoadResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResults);
+//
+//    ////int index = 0;
+//
+//    ////for (auto& person : g_setPersons)
+//    //for (auto& person : oAdjustPrices.GetPersons())
+//    //
+//    //{
+//    //    add_person_to_adjust_price_results_cpp(pstrAdjustPriceResults, person);
+//    //}
+//
+//    ////for (auto& product : g_setProducts)
+//    //for (auto& product : oAdjustPrices.GetProducts())
+//    //{
+//    //    double dPrice = pPriceCalculator->GetPrice(product);
+//    //    add_price_to_adjust_price_results_cpp(pstrAdjustPriceResults, product, dPrice);
+//    //}
+//
+//    ////for (auto& consumption_option : g_setConsumptionOptions)
+//    //for (auto& consumption_option : oAdjustPrices.GetConsumptionOptions())
+//    //{
+//    //    add_consumption_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, consumption_option);
+//    //}
+//
+//    ////for (auto& saving_option : g_setSavingOptions)
+//    //for (auto& saving_option : oAdjustPrices.GetSavingOptions())
+//    //{
+//    //    add_saving_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, saving_option);
+//    //}
+//
+//    //int person_index = 0;
+//    ////for (auto& person : g_setPersons)
+//    //for (auto& person : oAdjustPrices.GetPersons())
+//    //{
+//    //    //for (auto& product : g_setProducts)
+//    //    for (auto& product : oAdjustPrices.GetProducts())
+//    //    {
+//    //        double dAmount = pPriceCalculator->GetProductAmount(product, person);
+//    //        add_owned_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
+//    //    }    
+//    //    person_index++;
+//    //}
+//
+//
+//    ////            
+//    ////TODO. Seguir aquí.
+//    ////void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
+//    ////void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
+//    ////void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
+//    //person_index = 0;
+//    ////for (auto& person : g_setPersons)
+//    //for (auto& person : oAdjustPrices.GetPersons())
+//    //{
+//    //    //for (auto& product : g_setProducts)
+//    //    for (auto& product : oAdjustPrices.GetProducts())
+//    //    {
+//    //        double dAmount = pPriceCalculator->GetTradedAmount(product, person);
+//    //        add_traded_thing_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, person, product, dAmount);
+//    //    }
+//    //    person_index++;
+//    //}
+//
+//    //person_index = 0;
+//    ////for (auto& sPerson : g_setPersons)
+//    //for (auto& sPerson : oAdjustPrices.GetPersons())
+//    //{
+//    //    //for (auto& sOption : g_setSavingOptions)
+//    //    for (auto& sOption : oAdjustPrices.GetSavingOptions())
+//    //    {
+//    //        double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
+//    //        add_saved_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
+//    //    }
+//    //    //for (auto& sOption : g_setConsumptionOptions)
+//    //    for (auto& sOption : oAdjustPrices.GetConsumptionOptions())
+//    //    {
+//    //        double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
+//    //        add_consumed_option_to_adjust_price_results_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
+//    //    }
+//    //    person_index++;
+//    //}
+//
+//
+//}
+//
+//void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator)
+//{
+//    pPriceCalculator->CreateEmptyReality();
+//    //for (auto& product : g_setProducts)
+//    for (auto& product : oAdjustPrices.GetProducts())
+//    {
+//        pPriceCalculator->CreateProduct(product);
+//    }
+//
+//    //for (auto& pairOptionProduct : g_mapOptionProduct)
+//    for (auto& pairOptionProduct : oAdjustPrices.GetMapOption_Product())
+//    {
+//        pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
+//    }
+//
+//    pPriceCalculator->CreateEmptyMarket();
+//
+//    //pPriceCalculator->SetCurrency(g_sCurrency);
+//    pPriceCalculator->SetCurrency(oAdjustPrices.GetCurrency());
+//
+//    //for (auto& person : g_setPersons)
+//    for (auto& person : oAdjustPrices.GetPersons())
+//    {
+//        pPriceCalculator->AddToMarket_CreatePerson(person);
+//    }
+//
+//    //for (auto& pairperson_prodamounts : g_mapPerson_ProdAmount)
+//    for (auto& pairperson_prodamounts : oAdjustPrices.GetMapPerson_ProdAmount())
+//    {
+//        std::string person = pairperson_prodamounts.first;
+//        std::map<std::string, double> mapProd_Amount = pairperson_prodamounts.second;
+//
+//        for (auto& pairProd_Amount : mapProd_Amount)
+//        {
+//            std::string product = pairProd_Amount.first;
+//            double dAmount = pairProd_Amount.second;
+//
+//            pPriceCalculator->AddToPerson_SetProductAmount(person, product, dAmount);
+//        }        
+//    }
+//
+//    //for (auto& person : g_setPersons)
+//    //{        
+//    //    std::set<std::string> setOptions = g_setConsumptionOptions;
+//    //    setOptions.insert(g_setSavingOptions.begin(), g_setSavingOptions.end());
+//
+//    //    for (auto& option : setOptions)
+//    //    {
+//    //        //TODO: añadir la configuración de esto
+//    //        double dValueAt0 = 1;
+//    //        double dMaxValue = 10;
+//
+//    //        pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(person, option, dValueAt0, dMaxValue);
+//    //    }
+//    //}
+//
+//    //for (auto& pairPerson_Pref : g_mapPerson_Preferences)
+//    for (auto& pairPerson_Pref : oAdjustPrices.GetMapPerson_Preferences())
+//    {
+//        std::string sPerson = pairPerson_Pref.first;
+//        strPreferencesCpp strPref = pairPerson_Pref.second;
+//
+//        for (auto& pairOption_dMaxSat : strPref.mapOptionMaxSatisf)
+//        {
+//            std::string sOption = pairOption_dMaxSat.first;
+//            double dMaxSatisf = pairOption_dMaxSat.second;
+//
+//            if (strPref.mapOptionPrefAt0.end() == strPref.mapOptionPrefAt0.find(sOption))
+//            {
+//                std::cerr << "Error en LaunchPriceCalculatorLoadedScenario";
+//                assert("" == "Error en LaunchPriceCalculatorLoadedScenario");
+//            }
+//
+//            double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
+//
+//            pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(sPerson, sOption, dPrefAt0, dMaxSatisf);
+//        }
+//    }
+//
+//
+//    pPriceCalculator->AdjustPrices();
+//
+//}
 
 
 extern "C" void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCalculator)
@@ -669,12 +669,15 @@ extern "C" int adjust_price_with_price_calculator(struct strAdjustPriceResults* 
 
     if (pPriceCalculator)
     {
+        oAdjustPrices.AdjustPriceWithPriceCalculator(pPriceCalculator, pstrAdjustPriceResultsOut);
+
         //Cargar en pPriceCalculator, la info del escenario que está en variables globales 
         //y ajustar precios con CPriceCalculator
-        LoadInputDataIntoPriceCalculatorAndAdjustPrices(pPriceCalculator);
+        //oAdjustPrices.LoadInputDataIntoPriceCalculatorAndAdjustPrices(pPriceCalculator);
 
         //Obtener los resultados desde pPriceCalculator, y cargarlos strAdjustPriceResults
-        LoadAdjustPriceResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResultsOut);        
+        //LoadAdjustPriceResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResultsOut);        
+        //oAdjustPrices.LoadResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResultsOut);
     }
     else
     {
@@ -696,7 +699,7 @@ extern "C" void add_person(wchar_t wc_person[256], int n_size)
 
     //g_setPersons.insert(sPerson);
 
-    oAdjustPrices.add_person(wc_person, n_size);
+    oAdjustPrices.AddPerson(wc_person, n_size);
 }
 
 extern "C" void add_product(wchar_t wc_product[256], int n_size)
@@ -710,7 +713,7 @@ extern "C" void add_product(wchar_t wc_product[256], int n_size)
 
     //g_setProducts.insert(sProduct);
 
-    oAdjustPrices.add_product(wc_product, n_size);
+    oAdjustPrices.AddProduct(wc_product, n_size);
 }
 
 extern "C" void add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
@@ -724,7 +727,7 @@ extern "C" void add_consumption_option(wchar_t wc_consumption_option[256], int n
 
     //g_setConsumptionOptions.insert(sConsumptionOption);
 
-    oAdjustPrices.add_consumption_option(wc_consumption_option, n_size);
+    oAdjustPrices.AddConsumptionOption(wc_consumption_option, n_size);
 }
 
 extern "C" void add_saving_option(wchar_t wc_saving_option[256], int n_size)
@@ -738,7 +741,7 @@ extern "C" void add_saving_option(wchar_t wc_saving_option[256], int n_size)
 
     //g_setSavingOptions.insert(sSavingOption);
 
-    oAdjustPrices.add_saving_option(wc_saving_option, n_size);
+    oAdjustPrices.AddSavingOption(wc_saving_option, n_size);
 
 }
 
@@ -759,7 +762,7 @@ extern "C" void add_person_owned(wchar_t wc_person[256], int n_size_person, wcha
     //    g_mapPerson_ProdAmount[sPerson][sProduct] = dAmount;
     //}
 
-    oAdjustPrices.add_person_owned(wc_person, n_size_person, wc_product, n_size_product, dAmount);
+    oAdjustPrices.AddPersonOwned(wc_person, n_size_person, wc_product, n_size_product, dAmount);
 
 }
 
@@ -780,7 +783,7 @@ void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_pr
 
     //g_mapOptionProduct[sOption] = sProduct;
 
-    oAdjustPrices.add_option_product(wc_option, n_size_option, wc_product, n_size_product);
+    oAdjustPrices.AddOptionProduct(wc_option, n_size_option, wc_product, n_size_product);
 
 }
 
@@ -796,7 +799,7 @@ void add_currency(wchar_t wc_currency[256], int n_size)
     //g_sCurrency = sCurrency;
 
 
-    oAdjustPrices.add_currency(wc_currency,n_size);
+    oAdjustPrices.AddCurrency(wc_currency,n_size);
 
 }
 
@@ -822,11 +825,11 @@ void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], 
     //g_mapPerson_Preferences[sPerson].mapOptionPrefAt0[sOption] = d_preference_at_0;        
 
 
-    oAdjustPrices.add_preferences_for_person(wc_person, wc_option, d_maximum_satisfaction, d_preference_at_0);
+    oAdjustPrices.AddPreferencesForPerson(wc_person, wc_option, d_maximum_satisfaction, d_preference_at_0);
 
 }
 
-void ResetAdjustPricesDataInput()
+void reset_adjust_prices_data_input()
 {
     //g_setPersons.clear();
     //g_setProducts.clear();

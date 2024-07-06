@@ -170,7 +170,13 @@ extern "C" {
 //void add_consumed_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
 //void add_saved_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
 
+
+/////////////////////////////////////////////////
+//Métodos para calcular el precio en un escenario:
+// 
+// 
 //void clear_scenario_info_struct(struct strAdjustPriceResults* pstrAdjustPriceResults);
+//Método para preparar la estructura. Igual no hace falta.
 struct strAdjustPriceResults create_adjust_price_results_struct();
 ////////////////////////////////////////////////////////
 
@@ -188,8 +194,8 @@ void add_currency(wchar_t wc_currency[256], int n_size);
 void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
 
 
-void ResetAdjustPricesDataInput();
-
+void reset_adjust_prices_data_input();
+//
 
 
 #ifdef __cplusplus

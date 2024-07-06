@@ -23,45 +23,56 @@ public:
     ~CAdjustPrices() {}
 
 public:
-    void add_person(wchar_t wc_person[256], int n_size);
-    void add_product(wchar_t wc_product[256], int n_size);
-    void add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
-    void add_saving_option(wchar_t wc_saving_option[256], int n_size);
-    void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount);
-    void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
-    void add_currency(wchar_t wc_currency[256], int n_size);
-    void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
 
+    //Metodos para definir el escenario que se quiere calcular
+    void AddPerson(wchar_t wc_person[256], int n_size);
+    void AddProduct(wchar_t wc_product[256], int n_size);
+    void AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size);
+    void AddSavingOption(wchar_t wc_saving_option[256], int n_size);
+    void AddPersonOwned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount);
+    void AddOptionProduct(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
+    void AddCurrency(wchar_t wc_currency[256], int n_size);
+    void AddPreferencesForPerson(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+
+    //Método para resetear el escenario que se quiere calcular
     void ResetAdjustPricesDataInput();
 
-    //Métodos para guardar los resultados de PriceCalculator en una estructura compatible con C:
+    //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios y guardarlos en la estructura strAdjustPriceResults
+    void AdjustPriceWithPriceCalculator(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults);
+
+
+protected:
+    //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios
+    void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator);
+
+    //Método para guardar los resultados de PriceCalculator en una estructura compatible con C:
     void LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults);
+
+    //Métodos auxiliares para guardar los resultados de PriceCalculator en una estructura compatible con C:
+    static void AddPersonToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sPerson);
+    static void AddProductToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct);
+    static void AddConsumptionOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption);
+    static void AddSavingOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption);
+    static void AddOwnedThingToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
+    static void AddPriceToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct, double dPrice);
+    static void AddTradedThingToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
+    static void AddConsumedOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
+    static void AddSavedOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
+    static void AddPersonToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+    static void AddProductToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+    static void AddConsumptionOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+    static void AddSavingOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
+    static void AddOwnedThingToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+    static void AddPriceToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_product[256], int size, double dPrice);
+    static void AddTradedThingToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
+    static void AddConsumedOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
+    static void AddSavedOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
+
+
 
 protected:
 
-    //Métodos para guardar los resultados de PriceCalculator en una estructura compatible con C:
-    static void add_person_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sPerson);
-    static void add_product_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct);
-    static void add_consumption_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption);
-    static void add_saving_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption);
-    static void add_owned_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
-    static void add_price_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sProduct, double dPrice);
-    static void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
-    static void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
-    static void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
-    static void add_person_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
-    static void add_product_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
-    static void add_consumption_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
-    static void add_saving_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size);
-    static void add_owned_thing_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
-    static void add_price_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_product[256], int size, double dPrice);
-    static void add_traded_thing_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount);
-    static void add_consumed_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
-    static void add_saved_option_to_adjust_price_results(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount);
-
-
-
-public:
+    //Métodos Get de acceso a variables miembro
     std::set<std::string>& GetPersons() {
         return g_setPersons;
     }

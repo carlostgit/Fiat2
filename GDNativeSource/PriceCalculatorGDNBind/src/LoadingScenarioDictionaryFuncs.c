@@ -10,7 +10,8 @@
 void LoadDataFromGodotIntoAdjustPricesInputObject(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     //Primero Reseteamos la información
-    ResetAdjustPricesDataInput();
+    //ResetAdjustPricesDataInput();
+    reset_adjust_prices_data_input();
 
     //var text_dict_arg : Dictionary = {
     //    "Persons": ["Peter","George"] ,

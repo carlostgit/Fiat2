@@ -12,10 +12,10 @@
 #include <set>
 #include <map>
 
-namespace pca {
-	class CPriceCalculator;
-}
-struct strAdjustPriceResults; //Todo: Cambiar nombre a algo así como strAdjustPriceResults
+//namespace pca {
+//	class CPriceCalculator;
+//}
+//struct strAdjustPriceResults; //Todo: Cambiar nombre a algo así como strAdjustPriceResults
 
 //Todo: Crear resultados de 
 //struct strAdjustPriceResults;
@@ -34,10 +34,10 @@ struct strAdjustPriceResults; //Todo: Cambiar nombre a algo así como strAdjustPr
 //static void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
 
 //Metodo para meter los resultados de los calculos desde CPriceCalculator a strAdjustPriceResults
-void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResultsOutput);
+//void LoadAdjustPriceResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResultsOutput);
 
 //Método para cargar las variables globales en CPriceCalculator y ajustar precios
-void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator);
+//void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator);
 
 //Variables globales donde se guardan los datos del escenario que se va a calcular:
 //////////////////// (Igual esto se puede llevar a estructuras o clases)
