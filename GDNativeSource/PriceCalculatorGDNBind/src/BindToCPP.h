@@ -177,7 +177,7 @@ extern "C" {
 // 
 //void clear_scenario_info_struct(struct strAdjustPriceResults* pstrAdjustPriceResults);
 //Método para preparar la estructura. Igual no hace falta.
-struct strAdjustPriceResults create_adjust_price_results_struct();
+//struct strAdjustPriceResults create_adjust_price_results_struct();
 ////////////////////////////////////////////////////////
 
 //Calcula el ajuste de precios y devuelve el resultado en strAdjustPriceResults
@@ -192,7 +192,6 @@ void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_prod
 void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void add_currency(wchar_t wc_currency[256], int n_size);
 void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
-
 
 void reset_adjust_prices_data_input();
 //

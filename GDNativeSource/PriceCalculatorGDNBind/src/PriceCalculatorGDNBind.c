@@ -575,8 +575,10 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
     //strAdjustPriceResults strAdjustPriceResults;
     //adjust_price_with_price_calculator(&strAdjustPriceResults);
     //struct strAdjustPriceResults strAdjustPriceResults = create_adjust_price_results_struct();
-    //struct strAdjustPriceResults strAdjustPriceResults; //Si no uso el create_adjust_price_results_struct hay un casque en ejecución
-    struct strAdjustPriceResults strAdjustPriceResults = { 0 }; //Si no pongo lo del {0} casca, y no sé por qué
+    //struct strAdjustPriceResults strAdjustPriceResults; 
+    
+    //Inicializo la estructura, aunque luego la pongo a 0 también dentro del método de ajustar los cálculos
+    struct strAdjustPriceResults strAdjustPriceResults = { 0 };
     int ret_cod = adjust_price_with_price_calculator(&strAdjustPriceResults);
 
     //wchar_t wchar_sizeofscenarioinfostruct[MAXSTRING] = L"sizeof(strProdAmount):";

@@ -306,10 +306,10 @@
 //    memset(pstrAdjustPriceResults, 0, sizeof(strAdjustPriceResults));
 //}
 
-extern "C" struct strAdjustPriceResults create_adjust_price_results_struct() {
-    struct strAdjustPriceResults newStruct = { 0 };
-    return newStruct;
-}
+//extern "C" struct strAdjustPriceResults create_adjust_price_results_struct() {
+//    struct strAdjustPriceResults newStruct = { 0 };
+//    return newStruct;
+//}
 
 //////////////////////////////////////////////////////
 //Prueba

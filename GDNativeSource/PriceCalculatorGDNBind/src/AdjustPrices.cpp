@@ -591,6 +591,9 @@ void CAdjustPrices::AdjustPriceWithPriceCalculator(pca::CPriceCalculator* pPrice
     //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios
     LoadInputDataIntoPriceCalculatorAndAdjustPrices(pPriceCalculator);
 
+    //Poner la estructura a 0, por si no se ha inicializado antes
+    struct strAdjustPriceResults emptyStruct = { 0 };
+    *pstrAdjustPriceResults = emptyStruct;
     //Método para guardar los resultados de PriceCalculator en una estructura compatible con C:
     LoadResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResults);
 
