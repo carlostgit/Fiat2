@@ -136,7 +136,7 @@ struct strAFNames get_AFNames_from_govar(godot_variant govar_name_arg, const god
     return retNames;
 }
 
-struct strAFDictKeys get_keys_from_godict(godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFDictKeys get_AFDictKeys_from_godict(godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFDictKeys retKeys;
 
@@ -178,7 +178,7 @@ struct strAFDictKeys get_keys_from_godict(godot_dictionary* pgodict_arg, const g
     return retKeys;
 }
 
-struct strAFName get_Name_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFName get_AFName_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFName retName;
 
@@ -210,7 +210,7 @@ double get_number_from_godict(const struct strAFName* pgodict_key, godot_diction
 }
 
 
-struct strAFNames get_Names_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFNames get_AFNames_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFNames retNames;
 
@@ -233,7 +233,7 @@ godot_dictionary get_godict_from_godict(const struct strAFName* pgodict_key, god
 
     godot_dictionary godict_value = api_arg->godot_variant_as_dictionary(&govar_value);
 
-    struct strAFDictKeys keys = get_keys_from_godict(&godict_value, api_arg);
+    struct strAFDictKeys keys = get_AFDictKeys_from_godict(&godict_value, api_arg);
 
     return godict_value;
 }
@@ -246,7 +246,7 @@ godot_dictionary get_godict_from_godict(const struct strAFName* pgodict_key, god
 
 ///////////////////////////////////////////////////////
 //Inicio de los métodos para copiar wchar_t
-struct strAFName get_Name_from_wchar(wchar_t wc_name[256])
+struct strAFName get_AFName_from_wchar(wchar_t wc_name[256])
 {
     struct strAFName retName;    
     int size = wcslen(wc_name);

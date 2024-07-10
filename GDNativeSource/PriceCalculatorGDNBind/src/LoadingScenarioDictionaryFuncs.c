@@ -47,7 +47,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
     //Código nuevo de carga
     {
         godot_dictionary godict_scenario_info = (*pgodict_scenario_info_arg);
-        struct strAFDictKeys strKeys = get_keys_from_godict(&godict_scenario_info, api_arg);
+        struct strAFDictKeys strKeys = get_AFDictKeys_from_godict(&godict_scenario_info, api_arg);
 
         //////////
         //Owned
@@ -59,20 +59,20 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
         //    },
         {
             wchar_t wchar_owned[256] = L"Owned";
-            struct strAFName strOwned = get_Name_from_wchar(wchar_owned);
+            struct strAFName strOwned = get_AFName_from_wchar(wchar_owned);
             godot_dictionary dict_owned = get_godict_from_godict(&strOwned, &godict_scenario_info, api_arg);
-            struct strAFDictKeys strPersons = get_keys_from_godict(&dict_owned, api_arg);
+            struct strAFDictKeys strPersons = get_AFDictKeys_from_godict(&dict_owned, api_arg);
 
             for (int iPers = 0;iPers < strPersons.n_num_of_keys;iPers++)
             {
                 struct strAFName strPerson = strPersons.keys[iPers];
                 godot_dictionary godict_ownedbyperson = get_godict_from_godict(&strPerson, &dict_owned, api_arg);
-                struct strAFDictKeys strProducts = get_keys_from_godict(&godict_ownedbyperson, api_arg);
+                struct strAFDictKeys strProducts = get_AFDictKeys_from_godict(&godict_ownedbyperson, api_arg);
 
                 for (int iProd = 0;iProd < strProducts.n_num_of_keys;iProd++)
                 {
                     struct strAFName strProduct = strProducts.keys[iProd];
-                    struct strAFName strAmount = get_Name_from_godict(&strProduct, &godict_ownedbyperson, api_arg);
+                    struct strAFName strAmount = get_AFName_from_godict(&strProduct, &godict_ownedbyperson, api_arg);
                     double dAmount = get_number_from_godict(&strProduct, &godict_ownedbyperson, api_arg);
                     add_person_owned(strPerson.wc_name, 256, strProduct.wc_name, 256, dAmount);
                 }
@@ -84,8 +84,8 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
         //    "Persons": ["Peter","George"] ,
         {
             wchar_t wchar_persons[256] = L"Persons";
-            struct strAFName strPersons2 = get_Name_from_wchar(wchar_persons);
-            struct strAFNames strNames = get_Names_from_godict(&strPersons2, &godict_scenario_info, api_arg);
+            struct strAFName strPersons2 = get_AFName_from_wchar(wchar_persons);
+            struct strAFNames strNames = get_AFNames_from_godict(&strPersons2, &godict_scenario_info, api_arg);
             int num_persons = strNames.n_num_of_values;
 
             for (int iPers = 0;iPers < num_persons;iPers++)
@@ -99,8 +99,8 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
         //    "Products" : ["nut","chocolate","candy"] ,
         {
             wchar_t wchar_products[256] = L"Products";
-            struct strAFName strProducts2 = get_Name_from_wchar(wchar_products);
-            struct strAFNames strNames = get_Names_from_godict(&strProducts2, &godict_scenario_info, api_arg);
+            struct strAFName strProducts2 = get_AFName_from_wchar(wchar_products);
+            struct strAFNames strNames = get_AFNames_from_godict(&strProducts2, &godict_scenario_info, api_arg);
             int num_products = strNames.n_num_of_values;
 
             for (int iProds = 0;iProds < num_products;iProds++)
@@ -114,8 +114,8 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
         //"Consumption" : ["nut_consumption", "chocolate_consumption", "candy_consumption"] ,
         {
             wchar_t wchar_consumption[256] = L"Consumption";
-            struct strAFName strConsumption2 = get_Name_from_wchar(wchar_consumption);
-            struct strAFNames strNames = get_Names_from_godict(&strConsumption2, &godict_scenario_info, api_arg);
+            struct strAFName strConsumption2 = get_AFName_from_wchar(wchar_consumption);
+            struct strAFNames strNames = get_AFNames_from_godict(&strConsumption2, &godict_scenario_info, api_arg);
             int num_consumption = strNames.n_num_of_values;
 
             for (int iConsumption = 0;iConsumption < num_consumption;iConsumption++)
@@ -129,14 +129,14 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
         //    "OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"},
         {
             wchar_t wchar_option_product[256] = L"OptionProduct";
-            struct strAFName strOptionProduct = get_Name_from_wchar(wchar_option_product);
+            struct strAFName strOptionProduct = get_AFName_from_wchar(wchar_option_product);
             godot_dictionary dict_option_product = get_godict_from_godict(&strOptionProduct, &godict_scenario_info, api_arg);
-            struct strAFDictKeys strOptions = get_keys_from_godict(&dict_option_product, api_arg);
+            struct strAFDictKeys strOptions = get_AFDictKeys_from_godict(&dict_option_product, api_arg);
 
             for (int iOptions = 0;iOptions < strOptions.n_num_of_keys;iOptions++)
             {
                 struct strAFName strOption = strOptions.keys[iOptions];
-                struct strAFName strProduct = get_Name_from_godict(&strOption, &dict_option_product, api_arg);
+                struct strAFName strProduct = get_AFName_from_godict(&strOption, &dict_option_product, api_arg);
                 add_option_product(strOption.wc_name, 256, strProduct.wc_name, 256);
             }
         }
@@ -154,9 +154,9 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
 //#	
         {
             wchar_t wchar_preferences[256] = L"Preferences";
-            struct strAFName strPreferences = get_Name_from_wchar(wchar_preferences);
+            struct strAFName strPreferences = get_AFName_from_wchar(wchar_preferences);
             godot_dictionary dict_person_preferences = get_godict_from_godict(&strPreferences, &godict_scenario_info, api_arg);
-            struct strAFDictKeys strPersons = get_keys_from_godict(&dict_person_preferences, api_arg);
+            struct strAFDictKeys strPersons = get_AFDictKeys_from_godict(&dict_person_preferences, api_arg);
 
             for (int iPersons = 0;iPersons < strPersons.n_num_of_keys;iPersons++)
             {
@@ -170,13 +170,13 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
                 {
                     wchar_t wchar_PreferenceAt0[256] = L"PreferenceAt0";
 
-                    struct strAFName strPreferenceAt0 = get_Name_from_wchar(wchar_PreferenceAt0);
+                    struct strAFName strPreferenceAt0 = get_AFName_from_wchar(wchar_PreferenceAt0);
                     godot_dictionary dict_option_PreferenceAt0 = get_godict_from_godict(&strPreferenceAt0, &dict_type_preferences, api_arg);
-                    struct strAFDictKeys strOptions = get_keys_from_godict(&dict_option_PreferenceAt0, api_arg);
+                    struct strAFDictKeys strOptions = get_AFDictKeys_from_godict(&dict_option_PreferenceAt0, api_arg);
 
                     wchar_t wchar_MaximumSatisfaction[256] = L"MaximumSatisfaction";
                     godot_dictionary dict_option_MaximumSatisfaction = get_godict_from_godict(&wchar_MaximumSatisfaction, &dict_type_preferences, api_arg);
-                    struct strAFDictKeys strOptionsMaxSat = get_keys_from_godict(&dict_option_MaximumSatisfaction, api_arg);
+                    struct strAFDictKeys strOptionsMaxSat = get_AFDictKeys_from_godict(&dict_option_MaximumSatisfaction, api_arg);
 
                     if (strOptionsMaxSat.n_num_of_keys != strOptions.n_num_of_keys)
                         printf("strOptionsMaxSat.n_num_of_keys != strOptions.n_num_of_keys \n");
@@ -206,8 +206,8 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
         //    "Currency" : "nut"
         {
             wchar_t wchar_currency[256] = L"Currency";
-            struct strAFName strCurrency = get_Name_from_wchar(wchar_currency);
-            struct strAFName strName = get_Name_from_godict(&strCurrency, &godict_scenario_info, api_arg);
+            struct strAFName strCurrency = get_AFName_from_wchar(wchar_currency);
+            struct strAFName strName = get_AFName_from_godict(&strCurrency, &godict_scenario_info, api_arg);
             int num_persons = strName.wc_name;
             add_currency(strName.wc_name, 256);
         }
