@@ -928,7 +928,7 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	
 	
 	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
-	var input_dict:Dictionary = {}
+	var gdn_output_best_combidict:Dictionary = {}
 	
 	#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
 #	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
@@ -938,13 +938,13 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	if (null==_priceCalculatorGDNBind):
 		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()		
 		#var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.calc_info_from_price_calculator_dll(output_dict,input_dict))
-		var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict(budget_arg, current_combidict, budget_step_arg, max_step_arg))
-		var strInput = str(input_dict)	
-		print("Input of adjust_best_combidict_with_gdnative:")
-		print(strInput)
+		var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(budget_arg, current_combidict, gdn_output_best_combidict))
+		var strOutput = str(gdn_output_best_combidict)	
+		print("Output of adjust_best_combidict_with_gdnative:")
+		print(strOutput)
 		
 	
-	assert(""=="Todo: llamar a gdnative")
+	#assert(""=="Todo: llamar a gdnative")
 
 ################################################
 

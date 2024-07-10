@@ -53,7 +53,10 @@ godot_variant simple_get_data(godot_object *p_instance, void *p_method_data, voi
 //godot_variant simple_get_num_args(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
 //godot_variant simple_get_and_set_dict(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
 //godot_variant simple_calc_info_from_market_test(godot_object *p_instance, void *p_method_data, void *p_user_data, int p_num_args, godot_variant **p_args);
-godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args);
+
+godot_variant simple_adjust_best_combidict_with_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args);
+godot_variant simple_adjust_price_with_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args);
+
 
 // `gdnative_init` is a function that initializes our dynamic library.
 // Godot will give it a pointer to a structure that contains various bits of
@@ -129,8 +132,13 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
     //godot_instance_method calc_info_from_market_test = { NULL, NULL, NULL };
     //calc_info_from_market_test.method = &simple_calc_info_from_market_test;
 
-    godot_instance_method calc_info_from_price_calculator_dll = { NULL, NULL, NULL };
-    calc_info_from_price_calculator_dll.method = &simple_calc_info_from_price_calculator_dll;
+    
+
+    godot_instance_method adjust_best_combidict_with_price_calculator_dll = { NULL, NULL, NULL };
+    adjust_best_combidict_with_price_calculator_dll.method = &simple_adjust_best_combidict_with_price_calculator_dll;
+
+    godot_instance_method adjust_price_with_price_calculator_dll = { NULL, NULL, NULL };
+    adjust_price_with_price_calculator_dll.method = &simple_adjust_price_with_price_calculator_dll;
 
 	godot_method_attributes attributes = { GODOT_METHOD_RPC_MODE_DISABLED };
 
@@ -149,7 +157,10 @@ void GDN_EXPORT godot_nativescript_init(void *p_handle) {
 	//nativescript_api_godot->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_num_args", attributes, get_num_args);
 	//nativescript_api_godot->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "get_and_set_dict", attributes, get_and_set_dict);
 	//nativescript_api->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_market_test", attributes, calc_info_from_market_test);
-    nativescript_api_godot->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "calc_info_from_price_calculator_dll", attributes, calc_info_from_price_calculator_dll);
+
+    //adjust_best_combidict_with_price_calculator_dll
+    nativescript_api_godot->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "adjust_best_combidict_with_price_calculator_dll", attributes, adjust_best_combidict_with_price_calculator_dll);
+    nativescript_api_godot->godot_nativescript_register_method(p_handle, "PRICECALCULATORGDNBIND", "adjust_price_with_price_calculator_dll", attributes, adjust_price_with_price_calculator_dll);
 }
 
 // In our constructor, allocate memory for our structure and fill
@@ -498,7 +509,18 @@ void setDataFromMarket(int nProduct, double dAmount)
     g_dDataFromMarket = dAmount;
 }
 
-godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
+
+godot_variant simple_adjust_best_combidict_with_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
+{
+    godot_variant godvar_ret;
+
+    //TODO: 
+    //var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(budget_arg, current_combidict, gdn_output_best_combidict))
+
+    return godvar_ret;
+}
+
+godot_variant simple_adjust_price_with_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
 {
     godot_variant godvar_ret;
 

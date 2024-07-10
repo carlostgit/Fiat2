@@ -343,26 +343,26 @@ func _on_CalcNewPricesGDNatButton_pressed():
 	if (null!=_priceCalculatorGDNBind):
 		
 
-		assert(""!="TODO: Falta rellenar output_dict con los valores del escenario")		
+		assert(""!="TODO: Falta rellenar gdn_input_dict con los valores del escenario")		
 			
-		var output_dict:Dictionary = {}
+		var gdn_input_dict:Dictionary = {}
 		
-#		Voy a ir rellenando output_dict
+#		Voy a ir rellenando gdn_input_dict
 #		Relleno Prsons
 		var persons:Array = _market.get_persons()
-		output_dict["Persons"] = persons
+		gdn_input_dict["Persons"] = persons
 		
 		var products = PriceCalculationGlobals._products
-		output_dict["Products"] = products
+		gdn_input_dict["Products"] = products
 				
 		var options:Array =_satisfaction_calculator_ref.get_options_of_use("consumption")
-		output_dict["Consumption"] = options
+		gdn_input_dict["Consumption"] = options
 					
 		var person_owned:Dictionary = {}
 		for person in persons:
 			var product_amount:Dictionary = _market.get_owned_products(person)
 			person_owned[person] = product_amount
-		output_dict["Owned"] = person_owned
+		gdn_input_dict["Owned"] = person_owned
 		var option_product_dict = _satisfaction_calculator_ref.get_option_product_dict()
 		
 		var consumoption_product_dict = {}
@@ -370,8 +370,8 @@ func _on_CalcNewPricesGDNatButton_pressed():
 			if option in options:
 				consumoption_product_dict[option] = option_product_dict[option]				 
 		
-		output_dict["OptionProduct"] = consumoption_product_dict
-		output_dict["Currency"] = Prices.get_currency()
+		gdn_input_dict["OptionProduct"] = consumoption_product_dict
+		gdn_input_dict["Currency"] = Prices.get_currency()
 		
 		###TODO		
 		var person_preferences_dict = {}
@@ -390,9 +390,9 @@ func _on_CalcNewPricesGDNatButton_pressed():
 			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
 			person_preferences_dict[person] = preferences_dict
 		
-		output_dict["Preferences"] = person_preferences_dict
+		gdn_input_dict["Preferences"] = person_preferences_dict
 		
-#		var output_dict:Dictionary = {
+#		var gdn_input_dict:Dictionary = {
 #			"Persons": ["Peter","George"], 
 #			"Products":["bill","chocolate","candy"], 
 #			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
@@ -422,26 +422,26 @@ func _on_CalcNewPricesGDNatButton_pressed():
 #		}
 		
 		#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
-		var input_dict:Dictionary = {}
+		var gdn_output_dict:Dictionary = {}
 		
 		#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
 	#	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
 		
-		print( str(output_dict))
+		print( str(gdn_input_dict))
 		print("Calculando precios con: _priceCalculatorGDNBind.calc_info_from_price_calculator_dll")
-		var returnValue = _priceCalculatorGDNBind.calc_info_from_price_calculator_dll(output_dict,input_dict)
+		var returnValue = _priceCalculatorGDNBind.adjust_price_with_price_calculator_dll(gdn_input_dict,gdn_output_dict)
 		
 		print("Return value:")
 		print(returnValue)
 				
-		print("input dict:")
-		print(input_dict)
+		print("output dict:")
+		print(gdn_output_dict)
 	
 		assert(""!="TODO: actualizar los precios con el resultado")	
 		
 		var prices_dict = {}
-		if input_dict.has("Prices"):
-			prices_dict = input_dict.get("Prices")
+		if gdn_output_dict.has("Prices"):
+			prices_dict = gdn_output_dict.get("Prices")
 		
 		
 		$PricesItemList.clear()
@@ -457,7 +457,7 @@ func _on_CalcNewPricesGDNatButton_pressed():
 			var product_price_text:String = product+" "+str(price)
 			$PricesItemList.add_item(product_price_text)
 			
-		$PricesItemList.add_item(str(input_dict))
+		$PricesItemList.add_item(str(gdn_output_dict))
 
 #	TimeMeasurement.reset()
 #
