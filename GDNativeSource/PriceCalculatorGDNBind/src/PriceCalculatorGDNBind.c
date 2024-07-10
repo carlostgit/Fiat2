@@ -533,7 +533,7 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
     if (p_num_args!=2)
     {
         wchar_t wchar_error_num_args[MAXSTRING] = L"Error: se esperan 2 argumentos";
-        PrintInGodotConsole_Text(wchar_error_num_args);
+        print_in_godot_console_Text(wchar_error_num_args);
 
         api_godot_core->godot_variant_new_int(&godvar_ret, COD_ERROR_FALTAN_ARGS);
         return godvar_ret;
@@ -569,7 +569,7 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
             //Fin prueba
 
             //ProcessScenarioInfo(&godict_arg, api_godot_core);
-            LoadDataFromGodotIntoAdjustPricesInputObject(&godict_arg, api_godot_core);
+            load_data_from_godot_into_adjust_prices_input_object(&godict_arg, api_godot_core);
         }       
     }
     //strAdjustPriceResults strAdjustPriceResults;
@@ -590,7 +590,7 @@ godot_variant simple_calc_info_from_price_calculator_dll(godot_object* p_instanc
         if (i == 1) //En el segundo argumento devuelvo los resultados. Es el output
         {
             godot_dictionary godict_arg = api_godot_core->godot_variant_as_dictionary(p_args[i]);
-            GetGodotDictionaryFromAdjustPriceResults(&strAdjustPriceResults, &godict_arg, api_godot_core);
+            get_godot_dictionary_from_adjust_price_results(&strAdjustPriceResults, &godict_arg, api_godot_core);
         }
     }
 

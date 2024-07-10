@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////////////////
 //Inicio de métodos para imprimir cosas en la consola de GODOT
 
-void PrintInGodotConsole_Text_Size(wchar_t wchar_to_print[], size_t size)
+void print_in_godot_console_Text_Size(wchar_t wchar_to_print[], size_t size)
 {
     //Este método admite como máximo 256 caracteres    
     wchar_t wchar_to_print2[MAXSTRING];
@@ -29,25 +29,25 @@ void PrintInGodotConsole_Text_Size(wchar_t wchar_to_print[], size_t size)
     api_godot_core->godot_print(&godstring_to_print);
 }
 
-void PrintInGodotConsole_Text(wchar_t wchar_to_print[])
+void print_in_godot_console_Text(wchar_t wchar_to_print[])
 {
-    PrintInGodotConsole_Text_Size(wchar_to_print, MAXSTRING);
+    print_in_godot_console_Text_Size(wchar_to_print, MAXSTRING);
 }
 
-void PrintInGodotConsole_Int(int intNumber)
+void print_in_godot_console_Int(int intNumber)
 {
     wchar_t wchar_to_print[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
     swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%d", intNumber);
     int numberOfCharacters = wcslen(wchar_to_print);
-    PrintInGodotConsole_Text_Size(wchar_to_print, numberOfCharacters);
+    print_in_godot_console_Text_Size(wchar_to_print, numberOfCharacters);
 }
 
-void PrintInGodotConsole_Double(double doubleNumber)
+void print_in_godot_console_Double(double doubleNumber)
 {
     wchar_t wchar_to_print[MAXSTRING]; // Choose a buffer size that is large enough to hold your integer as a wide string
     swprintf(wchar_to_print, sizeof(wchar_to_print) / sizeof(wchar_to_print[0]), L"%f", doubleNumber);
     int numberOfCharacters = wcslen(wchar_to_print);
-    PrintInGodotConsole_Text_Size(wchar_to_print, numberOfCharacters);
+    print_in_godot_console_Text_Size(wchar_to_print, numberOfCharacters);
 }
 
 //Fin de métodos para imprimir cosas en la consola de GODOT
@@ -56,7 +56,7 @@ void PrintInGodotConsole_Double(double doubleNumber)
 ///////////////////////////////////////////////////////
 //Inicio de los métodos para leer diccionarios de godot
 
-godot_variant GetGovarFromAFName(struct strAFName* pName, const godot_gdnative_core_api_struct* api_arg)
+godot_variant get_govar_from_AFName(struct strAFName* pName, const godot_gdnative_core_api_struct* api_arg)
 {
     godot_variant retpGovar;
 
@@ -73,7 +73,7 @@ godot_variant GetGovarFromAFName(struct strAFName* pName, const godot_gdnative_c
     return retpGovar;
 }
 
-struct strAFName GetAFNameFromGovar(godot_variant govar_name_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFName get_AFName_from_govar(godot_variant govar_name_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFName retName;
 
@@ -102,7 +102,7 @@ struct strAFName GetAFNameFromGovar(godot_variant govar_name_arg, const godot_gd
     return retName;
 }
 
-struct strAFNames GetAFNamesFromGovar(godot_variant govar_name_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFNames get_AFNames_from_govar(godot_variant govar_name_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFNames retNames;
 
@@ -136,7 +136,7 @@ struct strAFNames GetAFNamesFromGovar(godot_variant govar_name_arg, const godot_
     return retNames;
 }
 
-struct strAFDictKeys GetKeysFromGodict(godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFDictKeys get_keys_from_godict(godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFDictKeys retKeys;
 
@@ -178,27 +178,27 @@ struct strAFDictKeys GetKeysFromGodict(godot_dictionary* pgodict_arg, const godo
     return retKeys;
 }
 
-struct strAFName GetNameFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFName get_Name_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFName retName;
 
     godot_dictionary godict_arg = (*pgodict_arg);
 
-    godot_variant govar_key = GetGovarFromAFName(pgodict_key, api_arg);
+    godot_variant govar_key = get_govar_from_AFName(pgodict_key, api_arg);
     
     godot_variant govar_value = api_arg->godot_dictionary_get(&godict_arg, &govar_key);    
     
-    retName = GetAFNameFromGovar(govar_value, api_arg);
+    retName = get_AFName_from_govar(govar_value, api_arg);
     
     return retName;
 }
 
-double GetNumberFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+double get_number_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {    
 
     godot_dictionary godict_arg = (*pgodict_arg);
 
-    godot_variant govar_key = GetGovarFromAFName(pgodict_key, api_arg);
+    godot_variant govar_key = get_govar_from_AFName(pgodict_key, api_arg);
 
     godot_variant govar_value = api_arg->godot_dictionary_get(&godict_arg, &govar_key);
 
@@ -210,30 +210,30 @@ double GetNumberFromGodict(const struct strAFName* pgodict_key, godot_dictionary
 }
 
 
-struct strAFNames GetNamesFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+struct strAFNames get_Names_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     struct strAFNames retNames;
 
     godot_dictionary godict_arg = (*pgodict_arg);
 
-    godot_variant govar_key = GetGovarFromAFName(pgodict_key, api_arg);
+    godot_variant govar_key = get_govar_from_AFName(pgodict_key, api_arg);
 
     godot_variant govar_value = api_arg->godot_dictionary_get(&godict_arg, &govar_key);
 
-    retNames = GetAFNamesFromGovar(govar_value, api_arg);
+    retNames = get_AFNames_from_govar(govar_value, api_arg);
 
     return retNames;
 }
 
-godot_dictionary GetGodictFromGodict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
+godot_dictionary get_godict_from_godict(const struct strAFName* pgodict_key, godot_dictionary* pgodict_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     godot_dictionary godict_arg = (*pgodict_arg);
-    godot_variant govar_key = GetGovarFromAFName(pgodict_key, api_arg);
+    godot_variant govar_key = get_govar_from_AFName(pgodict_key, api_arg);
     godot_variant govar_value = api_arg->godot_dictionary_get(&godict_arg, &govar_key);
 
     godot_dictionary godict_value = api_arg->godot_variant_as_dictionary(&govar_value);
 
-    struct strAFDictKeys keys = GetKeysFromGodict(&godict_value, api_arg);
+    struct strAFDictKeys keys = get_keys_from_godict(&godict_value, api_arg);
 
     return godict_value;
 }
@@ -246,7 +246,7 @@ godot_dictionary GetGodictFromGodict(const struct strAFName* pgodict_key, godot_
 
 ///////////////////////////////////////////////////////
 //Inicio de los métodos para copiar wchar_t
-struct strAFName GetNameFromWChar(wchar_t wc_name[256])
+struct strAFName get_Name_from_wchar(wchar_t wc_name[256])
 {
     struct strAFName retName;    
     int size = wcslen(wc_name);
