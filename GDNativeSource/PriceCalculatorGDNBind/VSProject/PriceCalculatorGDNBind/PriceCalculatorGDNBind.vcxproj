@@ -154,6 +154,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\AdjustBestCombination.h" />
     <ClInclude Include="..\..\src\AdjustPrices.h" />
     <ClInclude Include="..\..\src\AuxFuncs.h" />
     <ClInclude Include="..\..\src\BindToCPP.h" />
@@ -164,6 +165,7 @@
     <ClInclude Include="..\..\src\SavingResultsDictionaryFuncs.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\src\AdjustBestCombination.cpp" />
     <ClCompile Include="..\..\src\AdjustPrices.cpp" />
     <ClCompile Include="..\..\src\AuxFuncs.c" />
     <ClCompile Include="..\..\src\BindToCPP.cpp" />

@@ -14,8 +14,9 @@
 
 
 #include "AdjustPrices.h"
+#include "AdjustBestCombination.h"
 
 CAdjustPrices oAdjustPrices;
-
+CAdjustBestCombination oAdjustBestCombination;
 
 

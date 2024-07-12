@@ -11,7 +11,7 @@
 void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictionary* godict_input_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     //TODO:
-    //reset_adjust_best_combidict_data_input();
+    //ABC_reset_adjust_best_combidict_data_input();
 
 
     //El diccionario que llega será de este tipo
@@ -45,15 +45,14 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
         wchar_t wchar_budget[256] = L"Budget";
         struct strAFName strBudget = get_AFName_from_wchar(wchar_budget);
 
-        double dbudget = get_number_from_godict(&strBudget, &godict_scenario_info, api_arg);
+        double dBudget = get_number_from_godict(&strBudget, &godict_scenario_info, api_arg);
+
+        ABC_add_budget(dBudget);
 
         //TODO: Hacer clase AdjustBestCombidict, y métodos para pasar el input
 
     }
     //TODO: Seguir cargando el diccionario
-
-
-
 
 }
 
@@ -63,7 +62,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
 {
     //Primero Reseteamos la información
     //ResetAdjustPricesDataInput();
-    reset_adjust_prices_data_input();
+    AP_reset_adjust_prices_data_input();
 
     //var text_dict_arg : Dictionary = {
     //    "Persons": ["Peter","George"] ,
@@ -126,7 +125,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
                     struct strAFName strProduct = strProducts.keys[iProd];
                     struct strAFName strAmount = get_AFName_from_godict(&strProduct, &godict_ownedbyperson, api_arg);
                     double dAmount = get_number_from_godict(&strProduct, &godict_ownedbyperson, api_arg);
-                    add_person_owned(strPerson.wc_name, 256, strProduct.wc_name, 256, dAmount);
+                    AP_add_person_owned(strPerson.wc_name, 256, strProduct.wc_name, 256, dAmount);
                 }
             }
         }
@@ -143,7 +142,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
             for (int iPers = 0;iPers < num_persons;iPers++)
             {
                 struct strAFName strPerson = strNames.names[iPers];
-                add_person(strPerson.wc_name, 256);
+                AP_add_person(strPerson.wc_name, 256);
             }
         }
         /////////
@@ -158,7 +157,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
             for (int iProds = 0;iProds < num_products;iProds++)
             {
                 struct strAFName strProduct = strNames.names[iProds];
-                add_product(strProduct.wc_name, 256);
+                AP_add_product(strProduct.wc_name, 256);
             }
         }
 
@@ -173,7 +172,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
             for (int iConsumption = 0;iConsumption < num_consumption;iConsumption++)
             {
                 struct strAFName strConsumption = strNames.names[iConsumption];
-                add_consumption_option(strConsumption.wc_name, 256);
+                AP_add_consumption_option(strConsumption.wc_name, 256);
             }
         }
 
@@ -189,7 +188,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
             {
                 struct strAFName strOption = strOptions.keys[iOptions];
                 struct strAFName strProduct = get_AFName_from_godict(&strOption, &dict_option_product, api_arg);
-                add_option_product(strOption.wc_name, 256, strProduct.wc_name, 256);
+                AP_add_option_product(strOption.wc_name, 256, strProduct.wc_name, 256);
             }
         }
         //
@@ -245,7 +244,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
                         //struct strAFName MaximumSatisfaction = GetNameFromGodict(&strOption, &dict_option_MaximumSatisfaction, api_arg);
                         double dMaximumSatisfaction = get_number_from_godict(&strOption, &dict_option_MaximumSatisfaction, api_arg);
 
-                        add_preferences_for_person(strPerson.wc_name, strOption.wc_name, dMaximumSatisfaction, dPreferenceAt0);
+                        AP_add_preferences_for_person(strPerson.wc_name, strOption.wc_name, dMaximumSatisfaction, dPreferenceAt0);
                         //add_currency(strName.wc_name, 256);
                         //TODO: Falta el método para añadir esto
 
@@ -261,7 +260,7 @@ void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgod
             struct strAFName strCurrency = get_AFName_from_wchar(wchar_currency);
             struct strAFName strName = get_AFName_from_godict(&strCurrency, &godict_scenario_info, api_arg);
             int num_persons = strName.wc_name;
-            add_currency(strName.wc_name, 256);
+            AP_add_currency(strName.wc_name, 256);
         }
         //
 

@@ -526,11 +526,11 @@ godot_variant simple_adjust_best_combidict_with_price_calculator_dll(godot_objec
         return godvar_ret;
     }
 
-    godot_variant* pInput1Arg = p_args[0];    
+    godot_variant* pInputArg = p_args[0];    
     godot_variant* pOutputArg = p_args[1];
            
 
-    godot_dictionary godict_input_arg = api_godot_core->godot_variant_as_dictionary(pInput1Arg);
+    godot_dictionary godict_input_arg = api_godot_core->godot_variant_as_dictionary(pInputArg);
 
     //todo
     load_data_from_godot_into_adjust_best_combidict_input_object(&godict_input_arg, api_godot_core);
@@ -624,7 +624,7 @@ godot_variant simple_adjust_price_with_price_calculator_dll(godot_object* p_inst
     
     //Inicializo la estructura, aunque luego la pongo a 0 también dentro del método de ajustar los cálculos
     struct strAdjustPriceResults strAdjustPriceResults = { 0 };
-    int ret_cod = adjust_price_with_price_calculator(&strAdjustPriceResults);
+    int ret_cod = AP_adjust_price_with_price_calculator(&strAdjustPriceResults);
 
     //wchar_t wchar_sizeofscenarioinfostruct[MAXSTRING] = L"sizeof(strProdAmount):";
     //PrintInGodotConsole_Text(wchar_sizeofscenarioinfostruct);

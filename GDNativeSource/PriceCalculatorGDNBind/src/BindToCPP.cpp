@@ -199,7 +199,13 @@ extern "C" void LaunchPriceCalculatorDefaultTest(pca::CPriceCalculator* pPriceCa
 //    return 0;
 //}
 
-extern "C" int adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResultsOut)
+
+
+/////////////////////////////////
+//Adjust Price methods:
+
+
+extern "C" int AP_adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResultsOut)
 {
     pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
 
@@ -216,47 +222,115 @@ extern "C" int adjust_price_with_price_calculator(struct strAdjustPriceResults* 
 
 }
 
-extern "C" void add_person(wchar_t wc_person[256], int n_size)
+extern "C" void AP_add_person(wchar_t wc_person[256], int n_size)
 {
     oAdjustPrices.AddPerson(wc_person, n_size);
 }
 
-extern "C" void add_product(wchar_t wc_product[256], int n_size)
+extern "C" void AP_add_product(wchar_t wc_product[256], int n_size)
 {    
     oAdjustPrices.AddProduct(wc_product, n_size);
 }
 
-extern "C" void add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
+extern "C" void AP_add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
 {
     oAdjustPrices.AddConsumptionOption(wc_consumption_option, n_size);
 }
 
-extern "C" void add_saving_option(wchar_t wc_saving_option[256], int n_size)
+extern "C" void AP_add_saving_option(wchar_t wc_saving_option[256], int n_size)
 {
     oAdjustPrices.AddSavingOption(wc_saving_option, n_size);
 }
 
-extern "C" void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
+extern "C" void AP_add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
 {    
     oAdjustPrices.AddPersonOwned(wc_person, n_size_person, wc_product, n_size_product, dAmount);
 }
 
-void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product)
+void AP_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product)
 {
     oAdjustPrices.AddOptionProduct(wc_option, n_size_option, wc_product, n_size_product);
 }
 
-void add_currency(wchar_t wc_currency[256], int n_size)
+void AP_add_currency(wchar_t wc_currency[256], int n_size)
 {
     oAdjustPrices.AddCurrency(wc_currency,n_size);
 }
 
-void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
+void AP_add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
 {
     oAdjustPrices.AddPreferencesForPerson(wc_person, wc_option, d_maximum_satisfaction, d_preference_at_0);
 }
 
-void reset_adjust_prices_data_input()
+void AP_reset_adjust_prices_data_input()
 {
     oAdjustPrices.ResetAdjustPricesDataInput();
 }
+
+//End of Adjust prices methods:
+/////////////////////////////////
+
+
+/////////////////////////////////
+//Adjust best combination methods:
+
+//extern "C" int ABC_adjust_best_combination_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResultsOut)
+//{
+//    pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
+//
+//    if (pPriceCalculator)
+//    {
+//        oAdjustBestCombination.AdjustBestCombinationWithPriceCalculator(pPriceCalculator, pstrAdjustPriceResultsOut);
+//    }
+//    else
+//    {
+//        return COD_ERROR_FALTA_OBJETO_PRICE_CALCULATOR;
+//    }
+//
+//    return 0;
+//
+//}
+
+extern "C" void ABC_add_budget(double dBudget)
+{
+    oAdjustBestCombination.AddBudget(dBudget);
+}
+
+extern "C" void ABC_add_product(wchar_t wc_product[256], int n_size)
+{
+    oAdjustBestCombination.AddProduct(wc_product, n_size);
+}
+
+extern "C" void ABC_add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
+{
+    oAdjustBestCombination.AddConsumptionOption(wc_consumption_option, n_size);
+}
+
+extern "C" void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size)
+{
+    oAdjustBestCombination.AddSavingOption(wc_saving_option, n_size);
+}
+
+void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product)
+{
+    oAdjustBestCombination.AddOptionProduct(wc_option, n_size_option, wc_product, n_size_product);
+}
+
+void ABC_add_currency(wchar_t wc_currency[256], int n_size)
+{
+    oAdjustBestCombination.AddCurrency(wc_currency, n_size);
+}
+
+void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    oAdjustBestCombination.AddPreferences(wc_option, d_maximum_satisfaction, d_preference_at_0);
+}
+
+void ABC_reset_adjust_best_combination_data_input()
+{
+    oAdjustBestCombination.ResetAdjustBestCombinationDataInput();
+}
+
+//End of Adjust best combination methods:
+/////////////////////////////////
+

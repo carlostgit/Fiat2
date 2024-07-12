@@ -157,22 +157,45 @@ extern "C" {
 //Fin de código para pruebas
 /////////////////////////////
 
+//////////////////////////
+///Adjust Prices methods:
 
 //Calcula el ajuste de precios y devuelve el resultado en strAdjustPriceResults
-int adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResultsOutput);
+int AP_adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdjustPriceResultsOutput);
 
-//Métodos para cargar el escenario en BindToCpp, para después poder cargarlo en PriceCalculator
-void add_person(wchar_t wc_person[256], int n_size);
-void add_product(wchar_t wc_product[256], int n_size);
-void add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
-void add_saving_option(wchar_t wc_saving_option[256], int n_size);
-void add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount);
-void add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
-void add_currency(wchar_t wc_currency[256], int n_size);
-void add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+//Métodos para cargar el escenario de ajuste de precios en AdjustPrices, para después poder cargarlo en PriceCalculator
+void AP_add_person(wchar_t wc_person[256], int n_size);
+void AP_add_product(wchar_t wc_product[256], int n_size);
+void AP_add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
+void AP_add_saving_option(wchar_t wc_saving_option[256], int n_size);
+void AP_add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount);
+void AP_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
+void AP_add_currency(wchar_t wc_currency[256], int n_size);
+void AP_add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
 
-void reset_adjust_prices_data_input();
+void AP_reset_adjust_prices_data_input();
 //
+//////////////////////////
+
+//////////////////////////
+///Adjust Best Combination methods:
+
+//TODO:
+//int ABC_adjust_best_combination_with_price_calculator(struct strAdjustBestCombinationResults* pstrAdjustPriceResultsOutput);
+
+void ABC_add_budget(double dBudget);
+void ABC_add_product(wchar_t wc_product[256], int n_size);
+void ABC_add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
+void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size);
+
+void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
+void ABC_add_currency(wchar_t wc_currency[256], int n_size);
+void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+
+void ABC_reset_adjust_prices_data_input();
+//
+//////////////////////////
+
 
 
 #ifdef __cplusplus
