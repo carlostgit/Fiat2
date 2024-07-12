@@ -6,7 +6,59 @@
 /////////////////////////////////////////////////////////////////////
 //Inicio de métodos para procesar la información que llega desde GODOT
 
+//Cálculo de mejor combinación de opciones para un presupuesto
 //Método para procesar la información del escenario que viene en un diccionario desde GODOT
+void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictionary* godict_input_arg, const godot_gdnative_core_api_struct* api_arg)
+{
+    //TODO:
+    //reset_adjust_best_combidict_data_input();
+
+
+    //El diccionario que llega será de este tipo
+
+        //var text_dict_arg : Dictionary = {
+    //    "Budget" : 23.0
+    //    "Products" : ["nut","chocolate","candy"] ,
+    //    "Consumption" : ["nut_consumption","chocolate_consumption","candy_consumption"] ,    
+    //    "OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"},
+    // #  "Preferences": {
+//#							"PreferenceAt0":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#							"MaximumSatisfaction":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#						},
+
+    //    "Currency" : "nut"
+    //}
+
+
+    //Código de carga
+    
+    godot_dictionary godict_scenario_info = (*godict_input_arg);
+    struct strAFDictKeys strKeys = get_AFDictKeys_from_godict(&godict_scenario_info, api_arg);
+
+    //////////
+    //Budget
+    //    "Budget" : 23.0
+    
+    {
+        wchar_t wchar_budget[256] = L"Budget";
+        struct strAFName strBudget = get_AFName_from_wchar(wchar_budget);
+
+        double dbudget = get_number_from_godict(&strBudget, &godict_scenario_info, api_arg);
+
+        //TODO: Hacer clase AdjustBestCombidict, y métodos para pasar el input
+
+    }
+    //TODO: Seguir cargando el diccionario
+
+
+
+
+}
+
+
+//Cálculo de un precio
 void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg)
 {
     //Primero Reseteamos la información

@@ -924,8 +924,41 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	#PriceCalculatorGDNBind
 ################################################
 	#TODO: Llamar a aquí a un método de GDNative que nos de esto
-	#De momento no existe ese método. Hago pruebas
+	#De momento no existe ese método. Hago pruebas		
+
+	var gdn_input_dict:Dictionary = {}
 	
+	gdn_input_dict["Budget"] = budget_arg
+	
+	var products = PriceCalculationGlobals._products
+	gdn_input_dict["Products"] = products
+			
+	var options_cons:Array =_satisfaction_calculator.get_options_of_use("consumption")
+	gdn_input_dict["Consumption"] = options_cons
+
+	var preferences_at_0_dict = {}			
+	var maximum_satisfaction_dict = {}			
+	for option in options:
+		
+		var preference_at_0:float = _satisfaction_calculator.get_option_preference_at_0(option)
+		var max_satisf:float = _satisfaction_calculator.get_option_max_satisfaction(option)				
+		preferences_at_0_dict[option] = preference_at_0
+		maximum_satisfaction_dict[option] = max_satisf
+		
+	var preferences_dict = {}	
+	preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+	preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+	gdn_input_dict["Preferences"] = preferences_dict
+
+	var option_product_dict = _satisfaction_calculator.get_option_product_dict()
+	var consumoption_product_dict = {}
+	for option in option_product_dict.keys():
+		if option in options:
+			consumoption_product_dict[option] = option_product_dict[option]				 
+	
+	gdn_input_dict["OptionProduct"] = consumoption_product_dict
+	gdn_input_dict["Currency"] = Prices.get_currency()
+
 	
 	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 	var gdn_output_best_combidict:Dictionary = {}
@@ -938,11 +971,12 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	if (null==_priceCalculatorGDNBind):
 		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()		
 		#var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.calc_info_from_price_calculator_dll(output_dict,input_dict))
-		var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(budget_arg, current_combidict, gdn_output_best_combidict))
-		var strOutput = str(gdn_output_best_combidict)	
-		print("Output of adjust_best_combidict_with_gdnative:")
-		print(strOutput)
 		
+	var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(gdn_input_dict, gdn_output_best_combidict))
+	var strOutput = str(gdn_output_best_combidict)	
+	print("Output of adjust_best_combidict_with_gdnative:")
+	print(strOutput)
+	
 	
 	#assert(""=="Todo: llamar a gdnative")
 

@@ -8,6 +8,7 @@ namespace pca{
     class CPriceCalculator;
 }
 
+//Estructura con el output para Godot
 struct strAdjustPriceResults;
 
 struct strPreferencesCpp
@@ -16,6 +17,7 @@ struct strPreferencesCpp
     std::map<std::string, double> mapOptionPrefAt0;
 };
 
+//Clase para manejar el input y output de PriceCalculator
 class CAdjustPrices 
 {
 public:
@@ -24,7 +26,7 @@ public:
 
 public:
 
-    //Metodos para definir el escenario que se quiere calcular
+    //Metodos para definir el escenario (input) que se quiere calcular
     void AddPerson(wchar_t wc_person[256], int n_size);
     void AddProduct(wchar_t wc_product[256], int n_size);
     void AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size);
@@ -37,7 +39,7 @@ public:
     //Método para resetear el escenario que se quiere calcular
     void ResetAdjustPricesDataInput();
 
-    //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios y guardarlos en la estructura strAdjustPriceResults
+    //Método para cargar los datos (input) del escenario a calcular en CPriceCalculator y calcular los precios y guardarlos (output) en la estructura strAdjustPriceResults
     void AdjustPriceWithPriceCalculator(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults);
 
 
@@ -45,7 +47,7 @@ protected:
     //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios
     void LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator);
 
-    //Método para guardar los resultados de PriceCalculator en una estructura compatible con C:
+    //Método para guardar los resultados (output) de PriceCalculator en una estructura compatible con C:
     void LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults);
 
     //Métodos auxiliares para guardar los resultados de PriceCalculator en una estructura compatible con C:
@@ -106,6 +108,8 @@ protected:
     }
 
 private:
+
+    //Variables miembro con el Input para PriceCalculator
     std::set<std::string> g_setPersons;
     std::set<std::string> g_setProducts;
     std::set<std::string> g_setConsumptionOptions;

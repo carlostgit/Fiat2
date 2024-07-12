@@ -8,8 +8,10 @@
 //añadiendo 4013 en "Disable Specific Warnings"
 //warning C4013 typically indicates that a function declaration is not found.
 
-
-
 //Métodos para procesar la información del escenario que viene en un diccionario desde GODOT
 
+//Cálculo de mejor combinación de opciones para un presupuest:
+void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictionary* godict_input_arg, const godot_gdnative_core_api_struct* api_arg);
+
+//Cálculo de precio:
 void load_data_from_godot_into_adjust_prices_input_object(godot_dictionary* pgodict_scenario_info_arg, const godot_gdnative_core_api_struct* api_arg);

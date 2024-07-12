@@ -515,7 +515,27 @@ godot_variant simple_adjust_best_combidict_with_price_calculator_dll(godot_objec
     godot_variant godvar_ret;
 
     //TODO: 
-    //var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(budget_arg, current_combidict, gdn_output_best_combidict))
+    //var strReturn = "calc_info_from_price_calculator_dll: " + str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(gdn_input_dict, gdn_output_best_combidict))
+
+    if (p_num_args != 2)
+    {
+        wchar_t wchar_error_num_args[MAXSTRING] = L"Error: se esperan 2 argumentos";
+        print_in_godot_console_Text(wchar_error_num_args);
+
+        api_godot_core->godot_variant_new_int(&godvar_ret, COD_ERROR_FALTAN_ARGS);
+        return godvar_ret;
+    }
+
+    godot_variant* pInput1Arg = p_args[0];    
+    godot_variant* pOutputArg = p_args[1];
+           
+
+    godot_dictionary godict_input_arg = api_godot_core->godot_variant_as_dictionary(pInput1Arg);
+
+    //todo
+    load_data_from_godot_into_adjust_best_combidict_input_object(&godict_input_arg, api_godot_core);
+    
+
 
     return godvar_ret;
 }
@@ -561,39 +581,42 @@ godot_variant simple_adjust_price_with_price_calculator_dll(godot_object* p_inst
         return godvar_ret;
     }
 
-    for (int i = 0;i < p_num_args;i++)
-    {
-        if (i == 0) //En el primer argumento recibo la información. Es el input
-        {            
-            godot_dictionary godict_arg = api_godot_core->godot_variant_as_dictionary(p_args[0]);
+    godot_variant* pInputArg = p_args[0];
+    godot_variant* pOutputArg = p_args[1];
 
-            ////Prueba
-            //struct strAFDictKeys strKeys = GetKeysFromGodict(&godict_arg, api_godot_core);
-            //wchar_t wchar_error_num_args[MAXSTRING] = L"GetKeysFromGodict llamado. Numero de keys: ";            
-            //PrintInGodotConsole_Int(strKeys.n_num_of_keys);
+    //for (int i = 0;i < p_num_args;i++)
+    //{
+    //    if (i == 0) //En el primer argumento recibo la información. Es el input
+    //    {            
+    godot_dictionary godict_input_arg = api_godot_core->godot_variant_as_dictionary(pInputArg);
 
-            //wchar_t wchar_owned[256] = L"Owned";
+    ////Prueba
+    //struct strAFDictKeys strKeys = GetKeysFromGodict(&godict_arg, api_godot_core);
+    //wchar_t wchar_error_num_args[MAXSTRING] = L"GetKeysFromGodict llamado. Numero de keys: ";            
+    //PrintInGodotConsole_Int(strKeys.n_num_of_keys);
 
-            //struct strAFName strOwned;            
-            //
-            //for (int i = 0; i < 256; ++i) {
-            //    strOwned.wc_name[i] = wchar_owned[i];
-            //}
+    //wchar_t wchar_owned[256] = L"Owned";
 
-            //int size = wcslen(wchar_owned);
-            //int size_with_null = size + 1;
-            //wcsncpy(strOwned.wc_name, wchar_owned, size_with_null);
+    //struct strAFName strOwned;            
+    //
+    //for (int i = 0; i < 256; ++i) {
+    //    strOwned.wc_name[i] = wchar_owned[i];
+    //}
 
-            //godot_dictionary dict_owned = GetGodictFromGodict(&strOwned,&godict_arg, api_godot_core);
-            //struct strAFDictKeys strKeys_owned = GetKeysFromGodict(&dict_owned, api_godot_core);
+    //int size = wcslen(wchar_owned);
+    //int size_with_null = size + 1;
+    //wcsncpy(strOwned.wc_name, wchar_owned, size_with_null);
+
+    //godot_dictionary dict_owned = GetGodictFromGodict(&strOwned,&godict_arg, api_godot_core);
+    //struct strAFDictKeys strKeys_owned = GetKeysFromGodict(&dict_owned, api_godot_core);
             
 
-            //Fin prueba
+    //Fin prueba
 
-            //ProcessScenarioInfo(&godict_arg, api_godot_core);
-            load_data_from_godot_into_adjust_prices_input_object(&godict_arg, api_godot_core);
-        }       
-    }
+    //ProcessScenarioInfo(&godict_arg, api_godot_core);
+    load_data_from_godot_into_adjust_prices_input_object(&godict_input_arg, api_godot_core);
+    //    }       
+    //}
     //strAdjustPriceResults strAdjustPriceResults;
     //adjust_price_with_price_calculator(&strAdjustPriceResults);
     //struct strAdjustPriceResults strAdjustPriceResults = create_adjust_price_results_struct();
@@ -607,14 +630,14 @@ godot_variant simple_adjust_price_with_price_calculator_dll(godot_object* p_inst
     //PrintInGodotConsole_Text(wchar_sizeofscenarioinfostruct);
     //PrintInGodotConsole_Int(sizeof(strAdjustPriceResults));
 
-    for (int i = 0;i < p_num_args;i++)
-    {
-        if (i == 1) //En el segundo argumento devuelvo los resultados. Es el output
-        {
-            godot_dictionary godict_arg = api_godot_core->godot_variant_as_dictionary(p_args[i]);
-            get_godot_dictionary_from_adjust_price_results(&strAdjustPriceResults, &godict_arg, api_godot_core);
-        }
-    }
+    //for (int i = 0;i < p_num_args;i++)
+    //{
+    //    if (i == 1) //En el segundo argumento devuelvo los resultados. Es el output
+    //    {
+    godot_dictionary godict_output_arg = api_godot_core->godot_variant_as_dictionary(pOutputArg);
+    get_godot_dictionary_from_adjust_price_results(&strAdjustPriceResults, &godict_output_arg, api_godot_core);
+    //    }
+    //}
 
     //api_godot_core->godot_variant_new_real(&godvar_ret, 0.0);
     api_godot_core->godot_variant_new_int(&godvar_ret, ret_cod);
