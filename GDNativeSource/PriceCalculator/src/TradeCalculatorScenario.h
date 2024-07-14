@@ -1,8 +1,9 @@
-#ifndef CPRICECALCULATOR_H
-#define CPRICECALCULATOR_H
+#ifndef CTRADECALCULATORSCENARIO_H
+#define CTRADECALCULATORSCENARIO_H
 
 #include "Market.h"
 #include "Reality.h"
+#include "TradeCalculator.h"
 
 #include <vector>
 #include <memory>
@@ -14,12 +15,13 @@ namespace pca
     class CPrices;
     class CMarket;
     class CReality;
+    class CTradeCalculator;
 
-    class CPriceCalculator
+    class CTradeCalculatorScenario
     {
     public:
-        CPriceCalculator();
-        virtual ~CPriceCalculator();
+        CTradeCalculatorScenario();
+        virtual ~CTradeCalculatorScenario();
 
         static int GetTestPrice();
 
@@ -27,20 +29,22 @@ namespace pca
         //Crear un escenario para ajustar precios, paso a paso
         void CreateEmptyMarket();
         void CreateEmptyReality();
+        void CreateTradeCalculator();
         void CreateProduct(std::string sProductName);
         void SetCurrency(std::string sProductName);
         void AddToProduct_CreateConsumptionOption(std::string sProduct ,std::string sOption);
-        void AddToMarket_CreatePerson(std::string sPerson);
-        void AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount);
-        void AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue);
+        //void AddToMarket_CreatePerson(std::string sPerson);
+        //void AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount);
+        //void AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue);
+
+        void SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue);
+
         //
         ///////////////
         //TODO: Hacer método que reciba el escenario en una sola estructura
 
         //
 
-        //Método para ajustar precios. Requiere que se haya creado un mercado con personas productos opciones etc.
-        void AdjustPrices();
 
         //Métodos para obtener información del escenario
         bool IsProduct(std::string sProductName);
@@ -58,7 +62,18 @@ namespace pca
         double GetDesiredProdAmount(std::string sPerson, std::string sProductName);
         void PrintPersonOptionAdjustmentToFile(std::string sPerson);
         void PrintPersonsOptionAdjustmentToFile();        
-        
+
+        /////////////
+        //Para hacer cálculos de TradeCalculator, sin generar un escenario con personas
+        //
+        /*void CreateEmptyMarket();
+        void CreateEmptyReality();
+        void CreateProduct(std::string sProductName);
+        void SetCurrency(std::string sProductName);
+        void AddToProduct_CreateConsumptionOption(std::string sProduct, std::string sOption);*/        
+        //std::map<COption*, double>  AdjustBestCombidictWithTradeCalculator(structTradeCalculatorScenario* sTradCalculatorScenario);
+
+        std::map<pca::COption*, double> AdjustBestCombidict(double dBudgetArg, std::map<pca::COption*, double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg);
        
     protected:
 
@@ -68,7 +83,9 @@ namespace pca
         
         std::unique_ptr<CReality> m_upReality;        
 
+        std::unique_ptr<CTradeCalculator> m_upTradeCalculator;
+
     };
 }
 
-#endif // CPRICECALCULATOR_H
+#endif // CTRADECALCULATORSCENARIO_H

@@ -1,9 +1,10 @@
-#include "PriceCalculator.h"
+#include "TradeCalculatorScenario.h"
 #include "Person.h"
 #include "Prices.h"
 #include "Product.h"
 #include "Market.h"
 #include "Reality.h"
+#include "TradeCalculator.h"
 #include "SatisfactionCurve.h"
 #include "SatisfactionCalculator.h"
 #include "TradeCalculator.h"
@@ -15,24 +16,24 @@
 
 
 
-pca::CPriceCalculator::CPriceCalculator()
+pca::CTradeCalculatorScenario::CTradeCalculatorScenario()
 {
 
     std::cout << "Price Calculator constructor." << std::endl;
 }
 
-pca::CPriceCalculator::~CPriceCalculator()
+pca::CTradeCalculatorScenario::~CTradeCalculatorScenario()
 {
     //dtor
     std::cout << "Price Calculator destructor." << std::endl;
 }
 
-int pca::CPriceCalculator::GetTestPrice()
+int pca::CTradeCalculatorScenario::GetTestPrice()
 {
     return 8;
 }
 
-void pca::CPriceCalculator::CreateEmptyMarket()
+void pca::CTradeCalculatorScenario::CreateEmptyMarket()
 {
     if (m_upReality)
     {
@@ -45,19 +46,31 @@ void pca::CPriceCalculator::CreateEmptyMarket()
     }
 }
 
-void pca::CPriceCalculator::CreateEmptyReality()
+void pca::CTradeCalculatorScenario::CreateEmptyReality()
 {
     m_upReality.reset();
     std::unique_ptr<CReality> upReality(new CReality(false));
     m_upReality = std::move(upReality);
 }
 
-void pca::CPriceCalculator::CreateProduct(std::string sProductName)
+void pca::CTradeCalculatorScenario::CreateTradeCalculator()
+{
+    if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef())
+    {
+        m_upTradeCalculator.reset();
+        std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator(m_upReality->GetLastMarketRef()));
+
+        std::unique_ptr<CTradeCalculator> upTradeCalculator(new CTradeCalculator(std::move(upSatisfactionCalculator), m_upReality->GetLastMarketRef()->GetPricesRef(), m_upReality->GetLastMarketRef()));
+        m_upTradeCalculator = std::move(upTradeCalculator);
+    }
+}
+
+void pca::CTradeCalculatorScenario::CreateProduct(std::string sProductName)
 {
     m_upReality->CreateProduct(sProductName);
 }
 
-void pca::CPriceCalculator::SetCurrency(std::string sProductName)
+void pca::CTradeCalculatorScenario::SetCurrency(std::string sProductName)
 {
     if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef())
     {
@@ -82,7 +95,7 @@ void pca::CPriceCalculator::SetCurrency(std::string sProductName)
     }
 }
 
-void pca::CPriceCalculator::AddToProduct_CreateConsumptionOption(std::string sProduct, std::string sOption)
+void pca::CTradeCalculatorScenario::AddToProduct_CreateConsumptionOption(std::string sProduct, std::string sOption)
 {
     CProduct* pProductRef = m_upReality->GetProduct(sProduct);
     if (pProductRef)
@@ -91,49 +104,47 @@ void pca::CPriceCalculator::AddToProduct_CreateConsumptionOption(std::string sPr
     }
 }
 
-void pca::CPriceCalculator::AddToMarket_CreatePerson(std::string sPerson)
-{
-    if (m_upReality->GetLastMarketRef())
-        m_upReality->GetLastMarketRef()->CreatePerson(sPerson);
-}
+//void pca::CTradeCalculatorScenario::AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue)
+//{
+//    if (nullptr == m_upReality->GetLastMarketRef())
+//        return;
+//
+//    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+//    COption* pOptionRef = m_upReality->GetOption(sOption);
+//
+//    if (pPersonRef && pOptionRef)
+//    {
+//        pca::CSatisfactionCalculator* pSatCalculator = pPersonRef->GetTradeCalculatorRef()->GetSatisfactionCalculatorRef();
+//        pSatCalculator->SetPreferenceAt0(pOptionRef, dValueAt0);
+//        pSatCalculator->SetMaximumSatisf(pOptionRef, dMaxValue);        
+//    }
+//}
 
-void pca::CPriceCalculator::AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount)
-{
-    if (nullptr == m_upReality->GetLastMarketRef())
-        return;
-
-    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
-    CProduct* pProductRef = m_upReality->GetProduct(sProduct);
-
-    if (pPersonRef && pProductRef)
-    {
-        pPersonRef->AddProductAmount(pProductRef, dAmount);
-    }
-}
-
-void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue)
+void pca::CTradeCalculatorScenario::SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue)
 {
     if (nullptr == m_upReality->GetLastMarketRef())
         return;
-
-    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+    
     COption* pOptionRef = m_upReality->GetOption(sOption);
 
-    if (pPersonRef && pOptionRef)
+    if (pOptionRef && m_upTradeCalculator)
     {
-        pca::CSatisfactionCalculator* pSatCalculator = pPersonRef->GetTradeCalculatorRef()->GetSatisfactionCalculatorRef();
+        
+        pca::CSatisfactionCalculator* pSatCalculator = m_upTradeCalculator->GetSatisfactionCalculatorRef();
         pSatCalculator->SetPreferenceAt0(pOptionRef, dValueAt0);
-        pSatCalculator->SetMaximumSatisf(pOptionRef, dMaxValue);        
+        pSatCalculator->SetMaximumSatisf(pOptionRef, dMaxValue);
     }
 }
 
-void pca::CPriceCalculator::AdjustPrices()
+std::map<pca::COption*, double> pca::CTradeCalculatorScenario::AdjustBestCombidict(double dBudgetArg, std::map<COption*, double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
 {
-    if (m_upReality->GetLastMarketRef())
-        m_upReality->GetLastMarketRef()->CalculateNewPrices();
+    if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef() || nullptr == m_upTradeCalculator)
+        return std::map<pca::COption*, double>();
 
+    return m_upTradeCalculator->AdjustBestCombidict(dBudgetArg, mapCurrentCombidictArg, dBudgetStepArg, nMaxStepArg);
 }
-bool pca::CPriceCalculator::IsProduct(std::string sProductName)
+
+bool pca::CTradeCalculatorScenario::IsProduct(std::string sProductName)
 {
     CProduct* pProductRef = m_upReality->GetProduct(sProductName);
 
@@ -145,7 +156,7 @@ bool pca::CPriceCalculator::IsProduct(std::string sProductName)
     return false;
 }
 
-bool pca::CPriceCalculator::IsPerson(std::string sPersonName)
+bool pca::CTradeCalculatorScenario::IsPerson(std::string sPersonName)
 {
     if (m_upReality && nullptr == m_upReality->GetLastMarketRef())
         return false;
@@ -160,7 +171,7 @@ bool pca::CPriceCalculator::IsPerson(std::string sPersonName)
     return false;
 }
 
-bool pca::CPriceCalculator::IsOption(std::string sOptionName)
+bool pca::CTradeCalculatorScenario::IsOption(std::string sOptionName)
 {
     COption* pOptionRef = m_upReality->GetOption(sOptionName);
 
@@ -172,7 +183,7 @@ bool pca::CPriceCalculator::IsOption(std::string sOptionName)
     return false;
 }
 
-std::string pca::CPriceCalculator::GetCurrency()
+std::string pca::CTradeCalculatorScenario::GetCurrency()
 {
     if (m_upReality->GetLastMarketRef() && m_upReality->GetLastMarketRef()->GetPricesRef() && m_upReality->GetLastMarketRef()->GetPricesRef()->GetCurrency())
     {
@@ -181,7 +192,7 @@ std::string pca::CPriceCalculator::GetCurrency()
     return "";
 }
 
-double pca::CPriceCalculator::GetPrice(std::string sProductName)
+double pca::CTradeCalculatorScenario::GetPrice(std::string sProductName)
 {
     CProduct* pProductRef = m_upReality->GetProduct(sProductName);
 
@@ -193,7 +204,7 @@ double pca::CPriceCalculator::GetPrice(std::string sProductName)
     return 0.0;
 }
 
-double pca::CPriceCalculator::GetProductAmount(std::string sProductName, std::string sPerson)
+double pca::CTradeCalculatorScenario::GetProductAmount(std::string sProductName, std::string sPerson)
 {
     CProduct* pProductRef = m_upReality->GetProduct(sProductName);
     CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
@@ -207,7 +218,7 @@ double pca::CPriceCalculator::GetProductAmount(std::string sProductName, std::st
 
 }
 
-double pca::CPriceCalculator::GetOptionAmount(std::string sOptionName, std::string sPerson)
+double pca::CTradeCalculatorScenario::GetOptionAmount(std::string sOptionName, std::string sPerson)
 {
     COption* pOptionRef = m_upReality->GetOption(sOptionName);
     CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
@@ -221,7 +232,7 @@ double pca::CPriceCalculator::GetOptionAmount(std::string sOptionName, std::stri
 
 }
 
-double pca::CPriceCalculator::GetTradedAmount(std::string sProductName, std::string sPerson)
+double pca::CTradeCalculatorScenario::GetTradedAmount(std::string sProductName, std::string sPerson)
 {
     CProduct* pProductRef = m_upReality->GetProduct(sProductName);
     CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
@@ -236,12 +247,12 @@ double pca::CPriceCalculator::GetTradedAmount(std::string sProductName, std::str
 }
 
 
-void pca::CPriceCalculator::PrintPricesEvolution()
+void pca::CTradeCalculatorScenario::PrintPricesEvolution()
 {
     CUtils::PrintPricesEvolution(m_upReality->GetLastMarketRef());
 }
 
-double pca::CPriceCalculator::GetDesiredProdAmount(std::string sPerson, std::string sProductName)
+double pca::CTradeCalculatorScenario::GetDesiredProdAmount(std::string sPerson, std::string sProductName)
 {
     CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
     CProduct* pProductRef = m_upReality->GetProduct(sProductName);
@@ -255,7 +266,7 @@ double pca::CPriceCalculator::GetDesiredProdAmount(std::string sPerson, std::str
 
 }
 
-void pca::CPriceCalculator::PrintPersonOptionAdjustmentToFile(std::string sPerson)
+void pca::CTradeCalculatorScenario::PrintPersonOptionAdjustmentToFile(std::string sPerson)
 {
     CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
 
@@ -265,8 +276,10 @@ void pca::CPriceCalculator::PrintPersonOptionAdjustmentToFile(std::string sPerso
     }
 }
 
-void pca::CPriceCalculator::PrintPersonsOptionAdjustmentToFile()
+void pca::CTradeCalculatorScenario::PrintPersonsOptionAdjustmentToFile()
 {
     if (m_upReality->GetLastMarketRef())
         pca::CUtils::PrintPersonsOptionAdjustmentToFile(m_upReality->GetLastMarketRef());
 }
+
+

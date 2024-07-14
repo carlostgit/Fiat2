@@ -89,22 +89,22 @@ protected:
     ////Métodos Get de acceso a variables miembro
     // 
     double GetBudget() {
-        return g_dBudget;
+        return m_dBudget;
     }
     //std::set<std::string>& GetPersons() {
     //    return g_setPersons;
     //}
 
     std::set<std::string>& GetProducts() {
-        return g_setProducts;
+        return m_setProducts;
     }
 
     std::set<std::string>& GetConsumptionOptions() {
-        return g_setConsumptionOptions;
+        return m_setConsumptionOptions;
     }
 
     std::set<std::string>& GetSavingOptions() {
-        return g_setSavingOptions;
+        return m_setSavingOptions;
     }
 
     //std::map<std::string, std::map<std::string, double> >& GetMapPerson_ProdAmount() {
@@ -112,11 +112,11 @@ protected:
     //}
 
     std::map<std::string, std::string>& GetMapOption_Product() {
-        return g_mapOptionProduct;
+        return m_mapOptionProduct;
     }
 
     std::string GetCurrency()& {
-        return g_sCurrency;
+        return m_sCurrency;
     }
 
     //std::map<std::string, strPreferencesCpp>& GetMapPerson_Preferences() {
@@ -127,18 +127,18 @@ private:
 
     //Variables miembro con el Input para PriceCalculator
     // 
-    double g_dBudget = 0.0;
+    double m_dBudget = 0.0;
     //std::set<std::string> g_setPersons;
-    std::set<std::string> g_setProducts;
-    std::set<std::string> g_setConsumptionOptions;
-    std::set<std::string> g_setSavingOptions;
+    std::set<std::string> m_setProducts;
+    std::set<std::string> m_setConsumptionOptions;
+    std::set<std::string> m_setSavingOptions;
     //std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
-    std::map<std::string, std::string> g_mapOptionProduct;
-    std::string g_sCurrency;
+    std::map<std::string, std::string> m_mapOptionProduct;
+    std::string m_sCurrency;
     
     //std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;
 
-    strPreferencesCpp g_strPreferencesCpp;
+    strPreferencesCpp m_strPreferencesCpp;
         
 };
 

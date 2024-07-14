@@ -81,6 +81,9 @@
     <ClCompile Include="..\..\src\PriceCalculatorStaticUser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\TradeCalculatorScenario.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\Person.h">
@@ -147,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\PriceCalculatorStaticUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\TradeCalculatorScenario.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

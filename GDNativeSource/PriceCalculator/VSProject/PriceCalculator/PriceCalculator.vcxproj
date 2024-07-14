@@ -40,6 +40,7 @@
     <ClCompile Include="..\..\src\SupplCombos.cpp" />
     <ClCompile Include="..\..\src\Tester.cpp" />
     <ClCompile Include="..\..\src\TradeCalculator.cpp" />
+    <ClCompile Include="..\..\src\TradeCalculatorScenario.cpp" />
     <ClCompile Include="..\..\src\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +65,7 @@
     <ClInclude Include="..\..\src\SupplCombos.h" />
     <ClInclude Include="..\..\src\Tester.h" />
     <ClInclude Include="..\..\src\TradeCalculator.h" />
+    <ClInclude Include="..\..\src\TradeCalculatorScenario.h" />
     <ClInclude Include="..\..\src\Utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

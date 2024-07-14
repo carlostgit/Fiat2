@@ -10,7 +10,7 @@
 
 void CAdjustBestCombination::AddBudget(double dBudget)
 {
-    g_dBudget = dBudget;
+    m_dBudget = dBudget;
 }
 
 //void CAdjustBestCombination::AddPerson(wchar_t wc_person[256], int n_size)
@@ -34,7 +34,7 @@ void CAdjustBestCombination::AddProduct(wchar_t wc_product[256], int n_size)
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     std::string sProduct = converter.to_bytes(wide_str);
 
-    g_setProducts.insert(sProduct);
+    m_setProducts.insert(sProduct);
 }
 
 void CAdjustBestCombination::AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size)
@@ -46,7 +46,7 @@ void CAdjustBestCombination::AddConsumptionOption(wchar_t wc_consumption_option[
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     std::string sConsumptionOption = converter.to_bytes(wide_str);
 
-    g_setConsumptionOptions.insert(sConsumptionOption);
+    m_setConsumptionOptions.insert(sConsumptionOption);
 }
 
 void CAdjustBestCombination::AddSavingOption(wchar_t wc_saving_option[256], int n_size)
@@ -58,7 +58,7 @@ void CAdjustBestCombination::AddSavingOption(wchar_t wc_saving_option[256], int 
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     std::string sSavingOption = converter.to_bytes(wide_str);
 
-    g_setSavingOptions.insert(sSavingOption);
+    m_setSavingOptions.insert(sSavingOption);
 }
 
 //void CAdjustBestCombination::AddPersonOwned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
@@ -94,7 +94,7 @@ void CAdjustBestCombination::AddOptionProduct(wchar_t wc_option[256], int n_size
     // Convert std::wstring to std::string    
     std::string sProduct = converter.to_bytes(wide_str_product);
 
-    g_mapOptionProduct[sOption] = sProduct;
+    m_mapOptionProduct[sOption] = sProduct;
 }
 
 void CAdjustBestCombination::AddCurrency(wchar_t wc_currency[256], int n_size)
@@ -106,7 +106,7 @@ void CAdjustBestCombination::AddCurrency(wchar_t wc_currency[256], int n_size)
     std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
     std::string sCurrency = converter.to_bytes(wide_str_currency);
 
-    g_sCurrency = sCurrency;
+    m_sCurrency = sCurrency;
 }
 
 void CAdjustBestCombination::AddPreferences( wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
@@ -125,22 +125,22 @@ void CAdjustBestCombination::AddPreferences( wchar_t wc_option[256], double d_ma
     //strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
 
     
-    g_strPreferencesCpp.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
-    g_strPreferencesCpp.mapOptionPrefAt0[sOption] = d_preference_at_0;
+    m_strPreferencesCpp.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    m_strPreferencesCpp.mapOptionPrefAt0[sOption] = d_preference_at_0;
 
 }
 
 void CAdjustBestCombination::ResetAdjustBestCombinationDataInput()
 {
     //g_setPersons.clear();
-    g_setProducts.clear();
-    g_setConsumptionOptions.clear();
-    g_setSavingOptions.clear();
+    m_setProducts.clear();
+    m_setConsumptionOptions.clear();
+    m_setSavingOptions.clear();
     //g_mapPerson_ProdAmount.clear();
-    g_mapOptionProduct.clear();
-    g_sCurrency.clear();
+    m_mapOptionProduct.clear();
+    m_sCurrency.clear();
     //g_mapPerson_Preferences.clear();
-    g_strPreferencesCpp.Clear();
+    m_strPreferencesCpp.Clear();
     
 }
 
@@ -508,23 +508,26 @@ void CAdjustBestCombination::LoadResultsFromPriceCalculatorToStruct(pca::CPriceC
 //
 void CAdjustBestCombination::LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CPriceCalculator* pPriceCalculator)
 {
-//    pPriceCalculator->CreateEmptyReality();
-//    //for (auto& product : g_setProducts)
-//    for (auto& product : this->GetProducts())
-//    {
-//        pPriceCalculator->CreateProduct(product);
-//    }
-//
-//    //for (auto& pairOptionProduct : g_mapOptionProduct)
-//    for (auto& pairOptionProduct : this->GetMapOption_Product())
-//    {
-//        pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
-//    }
-//
+
+
+
+    pPriceCalculator->CreateEmptyReality();
+    //for (auto& product : g_setProducts)
+    for (auto& product : this->GetProducts())
+    {
+        pPriceCalculator->CreateProduct(product);
+    }
+
+    //for (auto& pairOptionProduct : g_mapOptionProduct)
+    for (auto& pairOptionProduct : this->GetMapOption_Product())
+    {
+        pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
+    }
+
 //    pPriceCalculator->CreateEmptyMarket();
 //
 //    //pPriceCalculator->SetCurrency(g_sCurrency);
-//    pPriceCalculator->SetCurrency(this->GetCurrency());
+    pPriceCalculator->SetCurrency(this->GetCurrency());
 //
 //    //for (auto& person : g_setPersons)
 //    for (auto& person : this->GetPersons())
