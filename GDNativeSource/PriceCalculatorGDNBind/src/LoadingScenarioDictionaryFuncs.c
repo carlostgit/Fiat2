@@ -12,6 +12,7 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
 {
     //TODO:
     //ABC_reset_adjust_best_combidict_data_input();
+    ABC_reset_adjust_best_combination_data_input();
 
 
     //El diccionario que llega será de este tipo
@@ -52,6 +53,119 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
         //TODO: Hacer clase AdjustBestCombidict, y métodos para pasar el input
 
     }
+    //////////
+    //Products
+    //    "Products" : ["nut","chocolate","candy"] ,
+    {
+        wchar_t wchar_products[256] = L"Products";
+        struct strAFName strProducts2 = get_AFName_from_wchar(wchar_products);
+        struct strAFNames strNames = get_AFNames_from_godict(&strProducts2, &godict_scenario_info, api_arg);
+        int num_products = strNames.n_num_of_values;
+
+        for (int iProds = 0;iProds < num_products;iProds++)
+        {
+            struct strAFName strProduct = strNames.names[iProds];
+            ABC_add_product(strProduct.wc_name, 256);
+        }
+
+    }
+
+    //Consumption
+    //"Consumption" : ["nut_consumption", "chocolate_consumption", "candy_consumption"] ,
+    {
+        wchar_t wchar_consumption[256] = L"Consumption";
+        struct strAFName strConsumption2 = get_AFName_from_wchar(wchar_consumption);
+        struct strAFNames strNames = get_AFNames_from_godict(&strConsumption2, &godict_scenario_info, api_arg);
+        int num_consumption = strNames.n_num_of_values;
+
+        for (int iConsumption = 0;iConsumption < num_consumption;iConsumption++)
+        {
+            struct strAFName strConsumption = strNames.names[iConsumption];
+            ABC_add_consumption_option(strConsumption.wc_name, 256);
+        }
+    }
+    //OptionProduct
+    //    "OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"},
+    {
+        wchar_t wchar_option_product[256] = L"OptionProduct";
+        struct strAFName strOptionProduct = get_AFName_from_wchar(wchar_option_product);
+        godot_dictionary dict_option_product = get_godict_from_godict(&strOptionProduct, &godict_scenario_info, api_arg);
+        struct strAFDictKeys strOptions = get_AFDictKeys_from_godict(&dict_option_product, api_arg);
+
+        for (int iOptions = 0;iOptions < strOptions.n_num_of_keys;iOptions++)
+        {
+            struct strAFName strOption = strOptions.keys[iOptions];
+            struct strAFName strProduct = get_AFName_from_godict(&strOption, &dict_option_product, api_arg);
+            ABC_add_option_product(strOption.wc_name, 256, strProduct.wc_name, 256);
+        }
+    }
+    //Preferences
+// #  "Preferences": {
+
+//#							"PreferenceAt0":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#							"MaximumSatisfaction":
+//#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+//#                  }
+    {
+        wchar_t wchar_preferences[256] = L"Preferences";
+        struct strAFName strPreferences = get_AFName_from_wchar(wchar_preferences);
+        godot_dictionary dict_type_preferences = get_godict_from_godict(&strPreferences, &godict_scenario_info, api_arg);
+        
+        //debug
+        //struct strAFDictKeys strPrefTypes = GetKeysFromGodict(&dict_person_preferences, api_arg);
+        //
+
+        {
+            wchar_t wchar_PreferenceAt0[256] = L"PreferenceAt0";
+
+            struct strAFName strPreferenceAt0 = get_AFName_from_wchar(wchar_PreferenceAt0);
+            godot_dictionary dict_option_PreferenceAt0 = get_godict_from_godict(&strPreferenceAt0, &dict_type_preferences, api_arg);
+            struct strAFDictKeys strOptions = get_AFDictKeys_from_godict(&dict_option_PreferenceAt0, api_arg);
+
+            wchar_t wchar_MaximumSatisfaction[256] = L"MaximumSatisfaction";
+            godot_dictionary dict_option_MaximumSatisfaction = get_godict_from_godict(&wchar_MaximumSatisfaction, &dict_type_preferences, api_arg);
+            struct strAFDictKeys strOptionsMaxSat = get_AFDictKeys_from_godict(&dict_option_MaximumSatisfaction, api_arg);
+
+            if (strOptionsMaxSat.n_num_of_keys != strOptions.n_num_of_keys)
+                printf("strOptionsMaxSat.n_num_of_keys != strOptions.n_num_of_keys \n");
+
+            for (int iOptions = 0;iOptions < strOptions.n_num_of_keys;iOptions++)
+            {
+                if (strOptionsMaxSat.keys[iOptions].wc_name != strOptions.keys[iOptions].wc_name)
+                    printf("strOptionsMaxSat.keys[iOptions]!= strOptions.keys[iOptions] \n");
+
+                struct strAFName strOption = strOptions.keys[iOptions];
+                //struct strAFName PreferenceAt0 = GetNameFromGodict(&strOption, &dict_option_PreferenceAt0, api_arg);
+                double dPreferenceAt0 = get_number_from_godict(&strOption, &dict_option_PreferenceAt0, api_arg);
+
+                //struct strAFName MaximumSatisfaction = GetNameFromGodict(&strOption, &dict_option_MaximumSatisfaction, api_arg);
+                double dMaximumSatisfaction = get_number_from_godict(&strOption, &dict_option_MaximumSatisfaction, api_arg);
+
+                ABC_add_preferences(strOption.wc_name, dMaximumSatisfaction, dPreferenceAt0);
+                //add_currency(strName.wc_name, 256);
+                //TODO: Falta el método para añadir esto
+
+            }
+        }
+
+    }
+
+
+    //Currency
+    //    "Currency" : "nut"
+    {
+        wchar_t wchar_currency[256] = L"Currency";
+        struct strAFName strCurrency = get_AFName_from_wchar(wchar_currency);
+        struct strAFName strName = get_AFName_from_godict(&strCurrency, &godict_scenario_info, api_arg);
+        int num_persons = strName.wc_name;
+        ABC_add_currency(strName.wc_name, 256);
+    }
+    //
+
+
+    //
+
     //TODO: Seguir cargando el diccionario
 
 }

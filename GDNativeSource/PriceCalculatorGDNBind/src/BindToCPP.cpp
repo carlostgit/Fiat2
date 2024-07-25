@@ -4,6 +4,7 @@
 
 #include "../../PriceCalculator/src/PriceCalculator.h"
 #include "../../PriceCalculator/src/PriceCalculatorStaticUser.h"
+#include "../../PriceCalculator/src/TradeCalculatorScenario.h"
 
 
 //#include "windows.h"
@@ -331,6 +332,35 @@ void ABC_reset_adjust_best_combination_data_input()
     oAdjustBestCombination.ResetAdjustBestCombinationDataInput();
 }
 
+
+
+extern "C" int ABC_adjust_best_combination_with_price_calculator(struct strAdjustBestCombinationResults* pstrAdjustBestCombinationResultsOut)
+{
+    //pca::CPriceCalculator* pPriceCalculator = pca::CPriceCalculatorStaticUser::GetPriceCalculatorRef();
+
+    pca::CTradeCalculatorScenario oTradeCalculatorScenario;
+
+    /*oTradeCalculatorScenario.CreateEmptyMarket();
+    oTradeCalculatorScenario.CreateEmptyReality();
+    oTradeCalculatorScenario.CreateTradeCalculator();*/
+
+    oAdjustBestCombination.AdjustBestCombinationWithPriceCalculator(&oTradeCalculatorScenario, pstrAdjustBestCombinationResultsOut);
+
+    //if (pPriceCalculator)
+    //{
+    //    oAdjustBestCombination.AdjustBestCombinationWithPriceCalculator(pPriceCalculator, pstrAdjustBestCombinationResultsOut);
+    //}
+    //else
+    //{
+    //    return COD_ERROR_FALTA_OBJETO_PRICE_CALCULATOR;
+    //}
+
+    return 0;
+
+}
+
+
 //End of Adjust best combination methods:
 /////////////////////////////////
+
 

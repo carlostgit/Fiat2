@@ -6,6 +6,7 @@
 
 namespace pca{
     class CPriceCalculator;
+    class CTradeCalculatorScenario;
 }
 
 //Estructura con el output para Godot
@@ -52,15 +53,15 @@ public:
     void ResetAdjustBestCombinationDataInput();
 
     //Método para cargar los datos (input) del escenario a calcular en CPriceCalculator y calcular los precios y guardarlos (output) en la estructura strAdjustPriceResults
-    void AdjustBestCombinationWithPriceCalculator(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults);
+    void AdjustBestCombinationWithPriceCalculator(pca::CTradeCalculatorScenario* pTradeCalculatorScenario, struct strAdjustBestCombinationResults* pstrAdjustPriceResults);
 
 
 protected:
     //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios
-    void LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CPriceCalculator* pPriceCalculator);
+    void LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CTradeCalculatorScenario* pTradeCalculatorScenario);
 
     //Método para guardar los resultados (output) de PriceCalculator en una estructura compatible con C:
-    void LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults);
+    void LoadResultsFromPriceCalculatorToStruct(pca::CTradeCalculatorScenario* pTradeCalculatorScenario, struct strAdjustBestCombinationResults* pstrAdjustPriceResults);
 
     //Métodos auxiliares para guardar los resultados de PriceCalculator en una estructura compatible con C:
     //static void AddPersonToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sPerson);

@@ -122,6 +122,22 @@ struct strAdjustPriceResults //TODO: Cambiar el nombre a esto a a algo así como 
 };
 
 
+//Estructuras para los resultados de AdjustBestCombinationResults
+struct strOptionAmounts
+{
+    struct strName name_person;
+    int n_num_option_amounts;
+    struct strOptionAmount option_amounts[25];
+};
+
+struct strAdjustBestCombinationResults 
+{    
+    
+    struct strOptionAmounts adjusted_options;  
+};
+//
+
+
 //Todo: Añadir estructuras de resultados para otros cálculos como strOptionsForBudgetResults y strOptionsForRangeOfBudgetsResults
 
 
@@ -192,7 +208,9 @@ void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t w
 void ABC_add_currency(wchar_t wc_currency[256], int n_size);
 void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
 
-void ABC_reset_adjust_prices_data_input();
+void ABC_reset_adjust_best_combination_data_input();
+
+int ABC_adjust_best_combination_with_price_calculator(struct strAdjustBestCombinationResults* pstrAdjustPriceResultsOutput);
 //
 //////////////////////////
 

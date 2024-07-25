@@ -38,6 +38,7 @@ void pca::CTradeCalculatorScenario::CreateEmptyMarket()
     if (m_upReality)
     {
         std::unique_ptr<CMarket> upMarket(new CMarket(m_upReality.get()));
+        
         m_upReality.get()->AddMarket(upMarket);
     }
     else
