@@ -56,7 +56,7 @@ void pca::CTradeCalculatorScenario::CreateEmptyReality()
 
 void pca::CTradeCalculatorScenario::CreateTradeCalculator()
 {
-    if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef())
+    if (nullptr != m_upReality && nullptr != m_upReality->GetLastMarketRef())
     {
         m_upTradeCalculator.reset();
         std::unique_ptr<CSatisfactionCalculator> upSatisfactionCalculator(new CSatisfactionCalculator(m_upReality->GetLastMarketRef()));
