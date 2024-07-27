@@ -2,6 +2,7 @@
 #include "Person.h"
 #include "Prices.h"
 #include "Product.h"
+#include "Option.h"
 #include "Market.h"
 #include "Reality.h"
 #include "TradeCalculator.h"
@@ -137,12 +138,21 @@ void pca::CTradeCalculatorScenario::SetSatisfactionCurveForOption(std::string sO
     }
 }
 
-std::map<pca::COption*, double> pca::CTradeCalculatorScenario::AdjustBestCombidict(double dBudgetArg, std::map<COption*, double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
+std::map<std::string, double> pca::CTradeCalculatorScenario::AdjustBestCombidict(double dBudgetArg, std::map<COption*, double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
 {
     if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef() || nullptr == m_upTradeCalculator)
-        return std::map<pca::COption*, double>();
+        return std::map<std::string, double>();
 
-    return m_upTradeCalculator->AdjustBestCombidict(dBudgetArg, mapCurrentCombidictArg, dBudgetStepArg, nMaxStepArg);
+    std::map<std::string, double> mapOptionName_dAmount; 
+    std::map <COption*, double > mapOption_dAmount= m_upTradeCalculator->AdjustBestCombidict(dBudgetArg, mapCurrentCombidictArg, dBudgetStepArg, nMaxStepArg);
+
+
+    for (auto& pairOptionName_dAmount : mapOption_dAmount)
+    {
+        mapOptionName_dAmount[pairOptionName_dAmount.first->GetName()] = pairOptionName_dAmount.second;
+    }
+
+    return mapOptionName_dAmount;
 }
 
 bool pca::CTradeCalculatorScenario::IsProduct(std::string sProductName)

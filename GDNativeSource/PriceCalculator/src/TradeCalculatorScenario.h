@@ -73,7 +73,7 @@ namespace pca
         void AddToProduct_CreateConsumptionOption(std::string sProduct, std::string sOption);*/        
         //std::map<COption*, double>  AdjustBestCombidictWithTradeCalculator(structTradeCalculatorScenario* sTradCalculatorScenario);
 
-        std::map<pca::COption*, double> AdjustBestCombidict(double dBudgetArg, std::map<pca::COption*, double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg);
+        std::map<std::string, double> AdjustBestCombidict(double dBudgetArg, std::map<pca::COption*, double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg);
        
     protected:
 

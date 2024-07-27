@@ -145,8 +145,46 @@ void CAdjustBestCombination::ResetAdjustBestCombinationDataInput()
     
 }
 
-void CAdjustBestCombination::LoadResultsFromPriceCalculatorToStruct(pca::CTradeCalculatorScenario* pTradeCalculatorScenario, struct strAdjustBestCombinationResults* pstrAdjustPriceResults)
+void CAdjustBestCombination::LoadResultsFromPriceCalculatorToStruct(std::map<std::string, double> mapBestCombinationOption_dAmount, struct strAdjustBestCombinationResults* pstrAdjustPriceResults)
 {
+
+    //struct strOptionAmount
+    //{
+    //    struct strName name_option;
+    //    double dAmount;
+    //};
+
+
+    //struct strOptionAmounts
+    //{
+    //    struct strName name_person;
+    //    int n_num_option_amounts;
+    //    struct strOptionAmount option_amounts[25];
+    //};
+
+    //struct strAdjustBestCombinationResults
+    //{
+
+    //    struct strOptionAmounts adjusted_options;
+    //};
+
+    for (auto& pairOptionAmount : mapBestCombinationOption_dAmount)
+    {
+        std::string sOptionName = pairOptionAmount.first;
+        int indexOption = pstrAdjustPriceResults->adjusted_options.n_num_option_amounts;
+        
+        // Convert narrow string to wide string
+        std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+        std::wstring ws_option_name = converter.from_bytes(sOptionName);        
+        int size = ws_option_name.size();
+        strOptionAmount stOptionAmount;
+        wcsncpy(stOptionAmount.name_option.wc_name, ws_option_name.c_str(), size);
+        stOptionAmount.dAmount = pairOptionAmount.second;        
+        pstrAdjustPriceResults->adjusted_options.option_amounts[indexOption] = stOptionAmount;
+
+        pstrAdjustPriceResults->adjusted_options.n_num_option_amounts++;        
+    }
+
     //Voy a meter la mayor parte de la lógica dentro de AdjustPrices
     //oAdjustPrices.LoadResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResults);
 
@@ -507,7 +545,7 @@ void CAdjustBestCombination::LoadResultsFromPriceCalculatorToStruct(pca::CTradeC
 //    AddSavedOptionToAdjustPriceResults(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
 //}
 //
-void CAdjustBestCombination::LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CTradeCalculatorScenario* pTradeCalculatorScenario)
+std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CTradeCalculatorScenario* pTradeCalculatorScenario)
 {
     //TODO:
 
@@ -540,8 +578,9 @@ void CAdjustBestCombination::LoadInputDataIntoPriceCalculatorAndAdjustBestCombin
     std::map<pca::COption*, double> mapCurrentCombidictArg;
     double dBudgetStepArg = 0.1;
     int nMaxStepArg = 1000;
-    std::map<pca::COption*, double> mapBestCombination = pTradeCalculatorScenario->AdjustBestCombidict(m_dBudget, mapCurrentCombidictArg, dBudgetStepArg, nMaxStepArg);
+    std::map<std::string, double> mapBestCombination = pTradeCalculatorScenario->AdjustBestCombidict(m_dBudget, mapCurrentCombidictArg, dBudgetStepArg, nMaxStepArg);
 
+    return mapBestCombination;
 //
 //    //for (auto& person : g_setPersons)
 //    for (auto& person : this->GetPersons())
@@ -611,13 +650,13 @@ void CAdjustBestCombination::LoadInputDataIntoPriceCalculatorAndAdjustBestCombin
 void CAdjustBestCombination::AdjustBestCombinationWithPriceCalculator(pca::CTradeCalculatorScenario* pTradeCalculatorScenario, struct strAdjustBestCombinationResults* pstrAdjustBestCombinationResults)
 {
     //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios
-    LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pTradeCalculatorScenario);
+    std::map<std::string, double> mapBestCombinationOption_dAmount = LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pTradeCalculatorScenario);
 
     //Poner la estructura a 0, por si no se ha inicializado antes
     struct strAdjustBestCombinationResults emptyStruct = { 0 };
     *pstrAdjustBestCombinationResults = emptyStruct;
     //Método para guardar los resultados de PriceCalculator en una estructura compatible con C:
-    LoadResultsFromPriceCalculatorToStruct(pTradeCalculatorScenario, pstrAdjustBestCombinationResults);
+    LoadResultsFromPriceCalculatorToStruct(mapBestCombinationOption_dAmount, pstrAdjustBestCombinationResults);
 
 
 }

@@ -58,10 +58,10 @@ public:
 
 protected:
     //Método para cargar los datos del escenario a calcular en CPriceCalculator y calcular los precios
-    void LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CTradeCalculatorScenario* pTradeCalculatorScenario);
+    std::map<std::string, double> LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CTradeCalculatorScenario* pTradeCalculatorScenario);
 
     //Método para guardar los resultados (output) de PriceCalculator en una estructura compatible con C:
-    void LoadResultsFromPriceCalculatorToStruct(pca::CTradeCalculatorScenario* pTradeCalculatorScenario, struct strAdjustBestCombinationResults* pstrAdjustPriceResults);
+    void LoadResultsFromPriceCalculatorToStruct(std::map<std::string, double> mapBestCombinationOption_dAmount, struct strAdjustBestCombinationResults* pstrAdjustPriceResults);
 
     //Métodos auxiliares para guardar los resultados de PriceCalculator en una estructura compatible con C:
     //static void AddPersonToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sPerson);

@@ -538,7 +538,8 @@ godot_variant simple_adjust_best_combidict_with_price_calculator_dll(godot_objec
     struct strAdjustBestCombinationResults strAdjustBestCombinationResults = { 0 };
     int ret_cod = ABC_adjust_best_combination_with_price_calculator(&strAdjustBestCombinationResults);
 
-    
+    godot_dictionary godict_output_arg = api_godot_core->godot_variant_as_dictionary(pOutputArg);
+    get_godot_dictionary_from_adjust_best_combination(&strAdjustBestCombinationResults, &godict_output_arg, api_godot_core);
 
 
     return godvar_ret;

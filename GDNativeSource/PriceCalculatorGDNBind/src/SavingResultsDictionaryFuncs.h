@@ -7,6 +7,8 @@
 //Métodos para cargar en una estructura godot_dictionary la información de la estructura strAdjustPriceResults
 // que contiene los resultados de los cálculos hechos en PriceCalculator
 
+//Métodos para Adjust Prices:
+
 //Private:
 void get_product_price_godict_from_adjust_price_results(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_price, const godot_gdnative_core_api_struct* api_arg);
 void get_product_amount_godict_from_adjust_price_results(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgodict_product_amount, int person_index, const godot_gdnative_core_api_struct* api_arg);
@@ -20,3 +22,9 @@ void get_person_saved_godict_from_adjust_price_results(struct strAdjustPriceResu
 
 //Public:
 void get_godot_dictionary_from_adjust_price_results(struct strAdjustPriceResults* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg);
+
+
+//Métodos para Adjust Best Combination:
+
+//Public:
+void get_godot_dictionary_from_adjust_best_combination(struct strAdjustBestCombinationResults* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg);

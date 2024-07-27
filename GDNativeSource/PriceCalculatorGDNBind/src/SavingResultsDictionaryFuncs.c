@@ -330,12 +330,47 @@ void get_godot_dictionary_from_adjust_price_results(struct strAdjustPriceResults
     api_arg->godot_variant_new_string(&godvar_saved, &godstring_saved);
 
     godot_variant godvar_person_saved;
-    api_arg->godot_variant_new_dictionary(&godvar_person_consumed, &godict_person_consumed);
+    api_arg->godot_variant_new_dictionary(&godvar_person_saved, &godict_person_saved);
 
     //Se añade el diccionario de consumed al diccionario del escenario
-    api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_consumed, &godvar_person_consumed);
+    api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_saved, &godvar_person_saved);
 
 
 
     //TODO
 }
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+//Para Adjust Best Combination:
+void get_godot_dictionary_from_adjust_best_combination(struct strAdjustBestCombinationResults* pstr_scenario_info, godot_dictionary* pgdict_results_scenario_info, const godot_gdnative_core_api_struct* api_arg)
+{
+    godot_dictionary godict_option_amount = (*pgdict_results_scenario_info);
+
+    //godot_dictionary godict_option_amount;
+    //api_arg->godot_dictionary_new(&godict_option_amount); //Creo que no hace falta new, porque lo estoy recogiendo de godot
+
+    
+    //godot_variant godvar_product_options;
+
+    for (int i = 0; i < pstr_scenario_info->adjusted_options.n_num_option_amounts;i++)
+    {
+        wchar_t* pwchar_option = pstr_scenario_info->adjusted_options.option_amounts[i].name_option.wc_name;
+        int size_options = wcslen(pwchar_option);
+        godot_string godstring_option;
+        api_arg->godot_string_new_with_wide_string(&godstring_option, pwchar_option, size_options);
+        godot_variant godvar_options;
+        api_arg->godot_variant_new_string(&godvar_options, &godstring_option);
+
+        const double dAmount = pstr_scenario_info->adjusted_options.option_amounts[i].dAmount;
+        godot_variant godvar_amount;
+        api_arg->godot_variant_new_real(&godvar_amount, dAmount);
+
+        api_arg->godot_dictionary_set(&godict_option_amount, &godvar_options, &godvar_amount);
+    }
+
+
+}
+

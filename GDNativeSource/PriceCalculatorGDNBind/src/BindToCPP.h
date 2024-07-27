@@ -125,7 +125,7 @@ struct strAdjustPriceResults //TODO: Cambiar el nombre a esto a a algo así como 
 //Estructuras para los resultados de AdjustBestCombinationResults
 struct strOptionAmounts
 {
-    struct strName name_person;
+    //struct strName name_person;
     int n_num_option_amounts;
     struct strOptionAmount option_amounts[25];
 };
