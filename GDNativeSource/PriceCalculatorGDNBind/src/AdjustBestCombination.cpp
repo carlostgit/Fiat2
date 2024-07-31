@@ -176,14 +176,20 @@ void CAdjustBestCombination::LoadResultsFromPriceCalculatorToStruct(std::map<std
         // Convert narrow string to wide string
         std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
         std::wstring ws_option_name = converter.from_bytes(sOptionName);        
-        int size = ws_option_name.size();
+        int size = ws_option_name.size()+1; //+1 por el null termination
         strOptionAmount stOptionAmount;
         wcsncpy(stOptionAmount.name_option.wc_name, ws_option_name.c_str(), size);
+
+        //if (stOptionAmount.name_option.wc_name[size - 1] != L'\0') {
+        //    std::wcout << L"Null-termination missing in destination" << std::endl;
+        //}
         stOptionAmount.dAmount = pairOptionAmount.second;        
         pstrAdjustPriceResults->adjusted_options.option_amounts[indexOption] = stOptionAmount;
 
         pstrAdjustPriceResults->adjusted_options.n_num_option_amounts++;        
     }
+
+
 
     //Voy a meter la mayor parte de la lógica dentro de AdjustPrices
     //oAdjustPrices.LoadResultsFromPriceCalculatorToStruct(pPriceCalculator, pstrAdjustPriceResults);
@@ -567,6 +573,20 @@ std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalc
     pTradeCalculatorScenario->CreateEmptyMarket();
 
     pTradeCalculatorScenario->CreateTradeCalculator();
+
+    //void pca::CTradeCalculatorScenario::SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue)
+
+    
+    for (auto pairOption_MaxSatisf: m_strPreferencesCpp.mapOptionMaxSatisf)
+    {
+        auto sOption = pairOption_MaxSatisf.first;
+        double dMaxValue = pairOption_MaxSatisf.second;
+
+        double dValueAt0 = m_strPreferencesCpp.mapOptionPrefAt0.at(sOption);
+         
+        pTradeCalculatorScenario->SetSatisfactionCurveForOption(sOption, dValueAt0, dMaxValue);
+    }
+    
 
 //    pPriceCalculator->CreateEmptyMarket();
 //

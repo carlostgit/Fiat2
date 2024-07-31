@@ -977,6 +977,7 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	print("Output of adjust_best_combidict_with_gdnative:")
 	print(strOutput)
 	
+	combination = gdn_output_best_combidict
 	
 	#assert(""=="Todo: llamar a gdnative")
 

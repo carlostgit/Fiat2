@@ -243,7 +243,7 @@ void CAdjustPrices::AddPersonToAdjustPriceResults_cpp(struct strAdjustPriceResul
     std::wstring ws_person_name = converter.from_bytes(sPerson);
 
     wchar_t array_wc_not_const[256];
-    int size = ws_person_name.size();
+    int size = ws_person_name.size()+1;
     wcsncpy(array_wc_not_const, ws_person_name.c_str(), size);
 
     AddPersonToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
@@ -265,7 +265,7 @@ void CAdjustPrices::AddProductToAdjustPriceResults_cpp(struct strAdjustPriceResu
     std::wstring ws_product_name = converter.from_bytes(sProduct);
 
     wchar_t array_wc_not_const[256];
-    int size = ws_product_name.size();
+    int size = ws_product_name.size()+1;
     wcsncpy(array_wc_not_const, ws_product_name.c_str(), size);
 
     AddProductToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
@@ -287,7 +287,7 @@ void CAdjustPrices::AddConsumptionOptionToAdjustPriceResults_cpp(struct strAdjus
     std::wstring ws_option_name = converter.from_bytes(sOption);
 
     wchar_t array_wc_not_const[256];
-    int size = ws_option_name.size();
+    int size = ws_option_name.size()+1;
     wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
 
     AddConsumptionOptionToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
@@ -309,7 +309,7 @@ void CAdjustPrices::AddSavingOptionToAdjustPriceResults_cpp(struct strAdjustPric
     std::wstring ws_option_name = converter.from_bytes(sOption);
 
     wchar_t array_wc_not_const[256];
-    int size = ws_option_name.size();
+    int size = ws_option_name.size()+1;
     wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
 
     AddSavingOptionToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
@@ -348,8 +348,8 @@ void CAdjustPrices::AddOwnedThingToAdjustPriceResults_cpp(struct strAdjustPriceR
 
     wchar_t array_wc_person_not_const[256];
     wchar_t array_wc_product_not_const[256];
-    int size_person = ws_person_name.size();
-    int size_product = ws_product_name.size();
+    int size_person = ws_person_name.size()+1;
+    int size_product = ws_product_name.size()+1;
     wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
     wcsncpy(array_wc_product_not_const, ws_product_name.c_str(), size_product);
 
@@ -377,7 +377,7 @@ void CAdjustPrices::AddPriceToAdjustPriceResults_cpp(struct strAdjustPriceResult
     std::wstring ws_product_name = converter.from_bytes(sProduct);
 
     wchar_t array_wc_not_const[256];
-    int size = ws_product_name.size();
+    int size = ws_product_name.size()+1;
     wcsncpy(array_wc_not_const, ws_product_name.c_str(), size);
 
     AddPriceToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size, dPrice);
@@ -454,8 +454,8 @@ void CAdjustPrices::AddConsumedOptionToAdjustPriceResults_cpp(struct strAdjustPr
 
     wchar_t array_wc_person_not_const[256];
     wchar_t array_wc_option_not_const[256];
-    int size_person = ws_person_name.size();
-    int size_option = ws_option_name.size();
+    int size_person = ws_person_name.size()+1;
+    int size_option = ws_option_name.size()+1;
     wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
     wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
 
@@ -493,8 +493,8 @@ void CAdjustPrices::AddSavedOptionToAdjustPriceResults_cpp(struct strAdjustPrice
 
     wchar_t array_wc_person_not_const[256];
     wchar_t array_wc_option_not_const[256];
-    int size_person = ws_person_name.size();
-    int size_option = ws_option_name.size();
+    int size_person = ws_person_name.size()+1;
+    int size_option = ws_option_name.size()+1;
     wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
     wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
 
