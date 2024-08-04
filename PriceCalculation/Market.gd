@@ -526,6 +526,7 @@ func _calculate_new_prices_increment(param_price_change_step_arg:float):
 	#Este parámetro deberían pasarse por argumento al método calculate_new_prices_increment():
 	var param_price_change_step = param_price_change_step_arg 
 
+#TODO: ARREGLAR ESTO. NO ESTA BIEN. A VECES LLEVA A INFINITO
 	if (max_amount_of_product_excess > param_min_product_excess_to_change_price):
 		for product in excess_relative_to_currency.keys():
 			var amount = excess_relative_to_currency[product]

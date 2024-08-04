@@ -39,6 +39,8 @@ namespace pca
 
         void SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue);
 
+        void SetPrice(std::string sProductName, double dPrice);
+
         //
         ///////////////
         //TODO: Hacer método que reciba el escenario en una sola estructura

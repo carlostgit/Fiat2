@@ -30,6 +30,8 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
 //#						},
 
     //    "Currency" : "nut"
+    //    "Prices":
+	//                {"nut":1.1,"chocolate" : 2.3,"candy" : 3.5},
     //}
 
 
@@ -163,6 +165,22 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
     }
     //
 
+    //    "Prices":
+    //                {"nut":1.1,"chocolate" : 2.3,"candy" : 3.5},
+    {
+        wchar_t wchar_product_price[256] = L"Prices";
+        struct strAFName strProductPrice = get_AFName_from_wchar(wchar_product_price);
+        godot_dictionary dict_product_price = get_godict_from_godict(&strProductPrice, &godict_scenario_info, api_arg);
+        struct strAFDictKeys strProducts = get_AFDictKeys_from_godict(&dict_product_price, api_arg);
+
+        for (int iProduct = 0;iProduct < strProducts.n_num_of_keys;iProduct++)
+        {
+            struct strAFName strProduct = strProducts.keys[iProduct];
+            double dPrice = get_number_from_godict(&strProduct, &dict_product_price, api_arg);
+            
+            ABC_add_product_price(strProduct.wc_name, 256, dPrice);
+        }
+    }
 
     //
 

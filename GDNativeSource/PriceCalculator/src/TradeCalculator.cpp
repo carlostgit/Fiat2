@@ -97,6 +97,9 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
                 mapBestTryingCombination = mapTryingCombinationRemovingProduct;
                 bChangeMade = true;
                 dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
+
+                //Faltaba la siguiente linea
+                dBestDecrementOfSatisfaction = dCurentDecrementOfSatisfaction;
             }
         }
 

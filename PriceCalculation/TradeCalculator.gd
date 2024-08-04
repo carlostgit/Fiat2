@@ -814,6 +814,13 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 			var product_to_remove = _satisfaction_calculator.get_product_from_option(option_to_remove)
 			var trying_combination_removing_product:Dictionary = combination.duplicate()
 			var remove_product_step = budget_step_length/Prices.get_price_of_product(product_to_remove)
+			
+			#TODO: Probar a ver si hay un problema al dividir por números demasiado grandes
+			#var debug_budget_step = remove_product_step*Prices.get_price_of_product(product_to_remove)
+			#if remove_product_step == 0:
+			#	assert(false)
+			#
+			
 			if trying_combination_removing_product.has(option_to_remove)==false:
 				trying_combination_removing_product[option_to_remove] = 0
 			trying_combination_removing_product[option_to_remove] -= remove_product_step
@@ -828,6 +835,9 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 				change_made = true
 				
 				best_previous_satisfaction = satisfaction_of_trying_combination				
+				
+				#Pruebo a poner esto. Creo que faltaba
+				best_decrement_of_satisfaction = curent_decrement_of_satisfaction
 
 		if true == change_made:
 			combination = best_trying_combination
@@ -841,7 +851,7 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 			
 			
 	if left_money >= 0:
-#		Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
+
 		var count:int = 0
 		while true:
 			count += 1
@@ -861,6 +871,7 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 				var current_left_money = left_money-budget_step_length
 
 				if (current_left_money < 0.0):
+			#		Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
 					for old_option in options:
 						if new_option!=old_option:
 							var old_product = _satisfaction_calculator.get_product_from_option(old_option)
@@ -958,7 +969,14 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	
 	gdn_input_dict["OptionProduct"] = consumoption_product_dict
 	gdn_input_dict["Currency"] = Prices.get_currency()
+	
+	#Me faltaban los precios:
+#	//    "Prices":
+#	//                {"nut":1.1,"chocolate" : 2.3,"candy" : 3.5},
+	
+	gdn_input_dict["Prices"] = Prices.get_prices()
 
+	#
 	
 	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 	var gdn_output_best_combidict:Dictionary = {}

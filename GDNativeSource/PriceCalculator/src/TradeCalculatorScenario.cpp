@@ -97,6 +97,28 @@ void pca::CTradeCalculatorScenario::SetCurrency(std::string sProductName)
     }
 }
 
+void pca::CTradeCalculatorScenario::SetPrice(std::string sProductName, double dPrice)
+{
+    if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef())
+    {
+        if (nullptr == m_upReality)
+            std::cout << "pca::CPriceCalculator::SetCurrency needs a m_upReality before being called" << std::endl;
+        else if (nullptr == m_upReality->GetLastMarketRef())
+            std::cout << "pca::CPriceCalculator::SetCurrency needs a market inside m_upReality before being called" << std::endl;
+
+        return;
+    }
+
+    CPrices* pPricesRef = m_upReality->GetLastMarketRef()->GetPricesRef();
+
+    CProduct* pProductRef = m_upReality->GetProduct(sProductName);
+
+    if (pPricesRef && pProductRef)
+    {
+        pPricesRef->SetPriceOfProduct(pProductRef,dPrice);
+    }
+}
+
 void pca::CTradeCalculatorScenario::AddToProduct_CreateConsumptionOption(std::string sProduct, std::string sOption)
 {
     CProduct* pProductRef = m_upReality->GetProduct(sProduct);

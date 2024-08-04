@@ -317,6 +317,11 @@ void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t w
     oAdjustBestCombination.AddOptionProduct(wc_option, n_size_option, wc_product, n_size_product);
 }
 
+void ABC_add_product_price(wchar_t wc_product[256], int n_size_product, double dPrice)
+{
+    oAdjustBestCombination.AddProductPrice(wc_product, n_size_product, dPrice);
+}
+
 void ABC_add_currency(wchar_t wc_currency[256], int n_size)
 {
     oAdjustBestCombination.AddCurrency(wc_currency, n_size);

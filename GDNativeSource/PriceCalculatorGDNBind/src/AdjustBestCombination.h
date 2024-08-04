@@ -48,6 +48,8 @@ public:
     void AddOptionProduct(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
     void AddCurrency(wchar_t wc_currency[256], int n_size);
     void AddPreferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+    void AddProductPrice(wchar_t wc_product[256], int n_size_product, double dPrice);
+    
 
     //Método para resetear el escenario que se quiere calcular
     void ResetAdjustBestCombinationDataInput();
@@ -123,6 +125,7 @@ protected:
     //std::map<std::string, strPreferencesCpp>& GetMapPerson_Preferences() {
     //    return g_mapPerson_Preferences;
     //}
+    
 
 private:
 
@@ -135,6 +138,7 @@ private:
     std::set<std::string> m_setSavingOptions;
     //std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
     std::map<std::string, std::string> m_mapOptionProduct;
+    std::map < std::string, double> m_mapProductPrice;
     std::string m_sCurrency;
     
     //std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;

@@ -207,6 +207,7 @@ void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size);
 void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void ABC_add_currency(wchar_t wc_currency[256], int n_size);
 void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+void ABC_add_product_price(wchar_t wc_product[256], int n_size_product, double dPrice);
 
 void ABC_reset_adjust_best_combination_data_input();
 

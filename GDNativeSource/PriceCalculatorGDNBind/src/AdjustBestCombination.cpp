@@ -98,6 +98,18 @@ void CAdjustBestCombination::AddOptionProduct(wchar_t wc_option[256], int n_size
     m_mapOptionProduct[sOption] = sProduct;
 }
 
+void CAdjustBestCombination::AddProductPrice(wchar_t wc_product[256], int n_size_product, double dPrice)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_product(wc_product);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sProduct = converter.to_bytes(wide_str_product);
+
+    m_mapProductPrice[sProduct] = dPrice;
+}
+
 void CAdjustBestCombination::AddCurrency(wchar_t wc_currency[256], int n_size)
 {
     // Convert wchar_t array to std::wstring
@@ -574,6 +586,12 @@ std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalc
 
     pTradeCalculatorScenario->CreateTradeCalculator();
 
+    for (auto& pairProductPrice : m_mapProductPrice)
+    {
+        auto product = pairProductPrice.first;
+        double dPrice = pairProductPrice.second;
+        pTradeCalculatorScenario->SetPrice(product, dPrice);
+    }
     //void pca::CTradeCalculatorScenario::SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue)
 
     
