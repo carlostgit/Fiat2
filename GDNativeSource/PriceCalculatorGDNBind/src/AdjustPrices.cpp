@@ -126,6 +126,65 @@ void CAdjustPrices::AddPreferencesForPerson(wchar_t wc_person[256], wchar_t wc_o
 
 }
 
+void CAdjustPrices::AddComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_compl_combo(wc_compl_combo);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sComplCombo = converter.to_bytes(wide_str_compl_combo);
+
+    m_mapComplCombo_Options[sComplCombo];
+}
+
+void CAdjustPrices::AddOptionToComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_compl_combo(wc_compl_combo);
+    std::wstring wide_str_option(wc_option);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sComplCombo = converter.to_bytes(wide_str_compl_combo);    
+    std::string sOption = converter.to_bytes(wide_str_option);
+
+    if (m_mapComplCombo_Options.end() != m_mapComplCombo_Options.find(sOption))
+    {
+        m_mapComplCombo_Options[sComplCombo].insert(sOption);
+    }
+}
+
+void CAdjustPrices::AddSupplementaryCombo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_suppl_combo(wc_suppl_combo);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sSupplCombo = converter.to_bytes(wide_str_suppl_combo);
+
+    m_mapSupplCombo_mapOptionWeight[sSupplCombo];
+}
+
+void CAdjustPrices::AddOptionToSupplementaryCombo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo, wchar_t wc_option[256], int n_size_option, double dWeight)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_suppl_combo(wc_suppl_combo);
+    std::wstring wide_str_option(wc_option);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sSupplCombo = converter.to_bytes(wide_str_suppl_combo);
+    std::string sOption = converter.to_bytes(wide_str_option);
+
+    if (m_mapSupplCombo_mapOptionWeight.end() != m_mapSupplCombo_mapOptionWeight.find(sOption))
+    {
+        m_mapSupplCombo_mapOptionWeight[sSupplCombo].insert(std::make_pair(sOption, dWeight));
+    }
+}
+
+
 void CAdjustPrices::ResetAdjustPricesDataInput()
 {
     m_setPersons.clear();
@@ -136,7 +195,8 @@ void CAdjustPrices::ResetAdjustPricesDataInput()
     m_mapOptionProduct.clear();
     m_sCurrency.clear();
     m_mapPerson_Preferences.clear();
-    
+    m_mapComplCombo_Options.clear();
+    m_mapSupplCombo_mapOptionWeight.clear();
 }
 
 void CAdjustPrices::LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator* pPriceCalculator, struct strAdjustPriceResults* pstrAdjustPriceResults)
@@ -223,7 +283,7 @@ void CAdjustPrices::LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator
         person_index++;
     }
 
-
+   
 }
 
 
@@ -577,6 +637,32 @@ void CAdjustPrices::LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceC
             double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
 
             pPriceCalculator->AddToPerson_SetSatisfactionCurveForOption(sPerson, sOption, dPrefAt0, dMaxSatisf);
+        }
+    }
+
+    //Complementary combos
+    for (auto& pairComplCombo_Options : m_mapComplCombo_Options)
+    {
+        std::string sComplCombo = pairComplCombo_Options.first;
+        std::set<std::string> setOptions = pairComplCombo_Options.second;
+        for (auto& sOption : setOptions)
+        {
+            pPriceCalculator->CreateComplCombo(sComplCombo);
+            pPriceCalculator->AddOptionToComplCombo(sComplCombo, sOption);
+        }
+    }
+
+    //Supplementary combos
+    for (auto& pairSupplCombo_pairOptionWeight : m_mapSupplCombo_mapOptionWeight)
+    {
+        std::string sSupplCombo = pairSupplCombo_pairOptionWeight.first;
+        std::map<std::string, double> mapOption_dWeight = pairSupplCombo_pairOptionWeight.second;
+        for (auto& pairOption_dWeight : mapOption_dWeight)
+        {
+            pPriceCalculator->CreateSupplCombo(sSupplCombo);
+            std::string sOption = pairOption_dWeight.first;
+            double dWeight = pairOption_dWeight.second;
+            pPriceCalculator->AddOptionToSupplCombo(sSupplCombo, sOption, dWeight);
         }
     }
 

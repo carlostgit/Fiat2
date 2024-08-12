@@ -33,6 +33,13 @@ namespace pca
         void CreateProduct(std::string sProductName);
         void SetCurrency(std::string sProductName);
         void AddToProduct_CreateConsumptionOption(std::string sProduct ,std::string sOption);
+
+        void CreateComplCombo(std::string sComplCombo);
+        void AddOptionToComplCombo(std::string sComplCombo, std::string sOption);
+        void CreateSupplCombo(std::string sSupplCombo);
+        void AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight);
+
+
         //void AddToMarket_CreatePerson(std::string sPerson);
         //void AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount);
         //void AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue);

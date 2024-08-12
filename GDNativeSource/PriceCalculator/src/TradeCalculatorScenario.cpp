@@ -128,6 +128,104 @@ void pca::CTradeCalculatorScenario::AddToProduct_CreateConsumptionOption(std::st
     }
 }
 
+void pca::CTradeCalculatorScenario::CreateComplCombo(std::string sComplCombo)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::CreateComplCombo needs a m_upReality before being called" << std::endl;
+        return;
+    }
+
+    CComplCombo* pComplComboRef = m_upReality->GetComplCombo(sComplCombo);
+
+    if (nullptr == pComplComboRef)
+    {
+        std::cout << "error using pca::CPriceCalculator::CreateComplCombo. ComplCombo " << sComplCombo << " not found" << std::endl;
+        return;
+    }
+
+    if (pComplComboRef)
+    {
+        m_upReality->CreateComplCombo(sComplCombo);
+    }
+}
+
+void pca::CTradeCalculatorScenario::AddOptionToComplCombo(std::string sComplCombo, std::string sOption)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::AddOptionToComplCombo needs a m_upReality before being called" << std::endl;
+        return;
+    }
+
+    CComplCombo* pComplComboRef = m_upReality->GetComplCombo(sComplCombo);
+
+    if (nullptr == pComplComboRef)
+    {
+        std::cout << "error using pca::CPriceCalculator::AddOptionToComplCombo. ComplCombo " << sComplCombo << " not found" << std::endl;
+        return;
+    }
+
+    COption* pOptionRef = m_upReality->GetOption(sOption);
+
+    if (nullptr == pOptionRef)
+    {
+        std::cout << "error using pca::CPriceCalculator::AddOptionToComplCombo. Option " << sOption << " not found" << std::endl;
+        return;
+    }
+
+    m_upReality->AddOptionToComplCombo(sComplCombo, sOption);
+}
+
+void pca::CTradeCalculatorScenario::CreateSupplCombo(std::string sSupplCombo)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::CreateSupplCombo needs a m_upReality before being called" << std::endl;
+        return;
+    }
+
+    CSupplCombo* pSupplComboRef = m_upReality->GetSupplCombo(sSupplCombo);
+
+    if (nullptr == pSupplComboRef)
+    {
+        std::cout << "error using pca::CPriceCalculator::CreateSupplCombo. ComplCombo " << sSupplCombo << " not found" << std::endl;
+        return;
+    }
+
+    if (pSupplComboRef)
+    {
+        m_upReality->CreateSupplCombo(sSupplCombo);
+    }
+}
+
+void pca::CTradeCalculatorScenario::AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::AddOptionToSupplCombo needs a m_upReality before being called" << std::endl;
+        return;
+    }
+
+    CSupplCombo* pComplComboRef = m_upReality->GetSupplCombo(sSupplCombo);
+
+    if (nullptr == pComplComboRef)
+    {
+        std::cout << "error using pca::CPriceCalculator::AddOptionToSupplCombo. ComplCombo " << sSupplCombo << " not found" << std::endl;
+        return;
+    }
+
+    COption* pOptionRef = m_upReality->GetOption(sOption);
+
+    if (nullptr == pOptionRef)
+    {
+        std::cout << "error using pca::CPriceCalculator::AddOptionToComplCombo. Option " << sOption << " not found" << std::endl;
+        return;
+    }
+
+    m_upReality->AddOptionToComplCombo(sSupplCombo, sOption);
+}
+
 //void pca::CTradeCalculatorScenario::AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue)
 //{
 //    if (nullptr == m_upReality->GetLastMarketRef())

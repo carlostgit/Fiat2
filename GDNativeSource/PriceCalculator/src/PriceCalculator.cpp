@@ -84,10 +84,19 @@ void pca::CPriceCalculator::SetCurrency(std::string sProductName)
 
 void pca::CPriceCalculator::AddToProduct_CreateConsumptionOption(std::string sProduct, std::string sOption)
 {
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::AddToProduct_CreateConsumptionOption needs a m_upReality before being called" << std::endl;
+    }
+
     CProduct* pProductRef = m_upReality->GetProduct(sProduct);
     if (pProductRef)
     {
         m_upReality->CreateOption(sProduct, sOption);
+    }
+    else
+    {
+        std::cout << "Product: "<< sProduct << " not found in CPriceCalculator::AddToProduct_CreateConsumptionOption"<< std::endl;
     }
 }
 
@@ -270,3 +279,45 @@ void pca::CPriceCalculator::PrintPersonsOptionAdjustmentToFile()
     if (m_upReality->GetLastMarketRef())
         pca::CUtils::PrintPersonsOptionAdjustmentToFile(m_upReality->GetLastMarketRef());
 }
+
+//
+void pca::CPriceCalculator::CreateComplCombo(std::string sComplCombo)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::CreateComplCombo needs a m_upReality before being called" << std::endl;
+    }
+
+    m_upReality->CreateComplCombo(sComplCombo);
+}
+
+void pca::CPriceCalculator::AddOptionToComplCombo(std::string sComplCombo, std::string sOption)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::AddOptionToComplCombo needs a m_upReality before being called" << std::endl;
+    }
+
+    m_upReality->AddOptionToComplCombo(sComplCombo, sOption);
+}
+
+void pca::CPriceCalculator::CreateSupplCombo(std::string sSupplCombo)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::sSupplCombo needs a m_upReality before being called" << std::endl;
+    }
+
+    m_upReality->CreateSupplCombo(sSupplCombo);
+}
+
+void pca::CPriceCalculator::AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight)
+{
+    if (nullptr == m_upReality)
+    {
+        std::cout << "pca::CPriceCalculator::AddOptionToSupplCombo needs a m_upReality before being called" << std::endl;
+    }
+
+    m_upReality->AddOptionToSupplCombo(sSupplCombo, sOption, dWeight);
+}
+

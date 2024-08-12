@@ -143,6 +143,65 @@ void CAdjustBestCombination::AddPreferences( wchar_t wc_option[256], double d_ma
 
 }
 
+void CAdjustBestCombination::AddComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_compl_combo(wc_compl_combo);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sComplCombo = converter.to_bytes(wide_str_compl_combo);
+
+    m_mapComplCombo_Options[sComplCombo];
+}
+
+void CAdjustBestCombination::AddOptionToComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_compl_combo(wc_compl_combo);
+    std::wstring wide_str_option(wc_option);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sComplCombo = converter.to_bytes(wide_str_compl_combo);
+    std::string sOption = converter.to_bytes(wide_str_option);
+
+    if (m_mapComplCombo_Options.end() != m_mapComplCombo_Options.find(sOption))
+    {
+        m_mapComplCombo_Options[sComplCombo].insert(sOption);
+    }
+}
+
+void CAdjustBestCombination::AddSupplementaryCombo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_suppl_combo(wc_suppl_combo);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sSupplCombo = converter.to_bytes(wide_str_suppl_combo);
+
+    m_mapSupplCombo_mapOptionWeight[sSupplCombo];
+}
+
+void CAdjustBestCombination::AddOptionToSupplementaryCombo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo, wchar_t wc_option[256], int n_size_option, double dWeight)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_suppl_combo(wc_suppl_combo);
+    std::wstring wide_str_option(wc_option);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sSupplCombo = converter.to_bytes(wide_str_suppl_combo);
+    std::string sOption = converter.to_bytes(wide_str_option);
+
+    if (m_mapSupplCombo_mapOptionWeight.end() != m_mapSupplCombo_mapOptionWeight.find(sOption))
+    {
+        m_mapSupplCombo_mapOptionWeight[sSupplCombo].insert(std::make_pair(sOption, dWeight));
+    }
+}
+
+
 void CAdjustBestCombination::ResetAdjustBestCombinationDataInput()
 {
     //g_setPersons.clear();
@@ -154,6 +213,8 @@ void CAdjustBestCombination::ResetAdjustBestCombinationDataInput()
     m_sCurrency.clear();
     //g_mapPerson_Preferences.clear();
     m_strPreferencesCpp.Clear();
+    m_mapComplCombo_Options.clear();
+    m_mapSupplCombo_mapOptionWeight.clear();
     
 }
 
@@ -604,6 +665,8 @@ std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalc
          
         pTradeCalculatorScenario->SetSatisfactionCurveForOption(sOption, dValueAt0, dMaxValue);
     }
+
+
     
 
 //    pPriceCalculator->CreateEmptyMarket();
@@ -612,11 +675,40 @@ std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalc
     pTradeCalculatorScenario->SetCurrency(this->GetCurrency());
 
 
+    //Complementary combos
+    for (auto& pairComplCombo_Options : m_mapComplCombo_Options)
+    {
+        std::string sComplCombo = pairComplCombo_Options.first;
+        std::set<std::string> setOptions = pairComplCombo_Options.second;
+        for (auto& sOption : setOptions)
+        {
+            pTradeCalculatorScenario->CreateComplCombo(sComplCombo);
+            pTradeCalculatorScenario->AddOptionToComplCombo(sComplCombo, sOption);
+        }
+    }
+
+    //Supplementary combos
+    for (auto& pairSupplCombo_pairOptionWeight : m_mapSupplCombo_mapOptionWeight)
+    {
+        std::string sSupplCombo = pairSupplCombo_pairOptionWeight.first;
+        std::map<std::string, double> mapOption_dWeight = pairSupplCombo_pairOptionWeight.second;
+        for (auto& pairOption_dWeight : mapOption_dWeight)
+        {
+            pTradeCalculatorScenario->CreateSupplCombo(sSupplCombo);
+            std::string sOption = pairOption_dWeight.first;
+            double dWeight = pairOption_dWeight.second;
+            pTradeCalculatorScenario->AddOptionToSupplCombo(sSupplCombo, sOption, dWeight);
+        }
+    }
+
+
+
     //pTradeCalculatorScenario->Adj
     std::map<pca::COption*, double> mapCurrentCombidictArg;
     double dBudgetStepArg = 0.1;
     int nMaxStepArg = 1000;
     std::map<std::string, double> mapBestCombination = pTradeCalculatorScenario->AdjustBestCombidict(m_dBudget, mapCurrentCombidictArg, dBudgetStepArg, nMaxStepArg);
+
 
     return mapBestCombination;
 //

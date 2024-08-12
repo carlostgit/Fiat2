@@ -33,6 +33,12 @@ namespace pca
         void AddToMarket_CreatePerson(std::string sPerson);
         void AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount);
         void AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue);
+
+        //Nuevas, para escenarios mas complejos
+        void CreateComplCombo(std::string sComplCombo);
+        void AddOptionToComplCombo(std::string sComplCombo, std::string sOption);
+        void CreateSupplCombo(std::string sSupplCombo);
+        void AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight);
         //
         ///////////////
         //TODO: Hacer método que reciba el escenario en una sola estructura

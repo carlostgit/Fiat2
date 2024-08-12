@@ -188,6 +188,10 @@ void AP_add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_p
 void AP_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void AP_add_currency(wchar_t wc_currency[256], int n_size);
 void AP_add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+void AP_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo);
+void AP_add_option_to_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option);
+void AP_add_option_to_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo, wchar_t wc_option[256], int n_size_option, double dWeight);
+void AP_add_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo);
 
 void AP_reset_adjust_prices_data_input();
 //
@@ -207,7 +211,14 @@ void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size);
 void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void ABC_add_currency(wchar_t wc_currency[256], int n_size);
 void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+void ABC_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo);
+void ABC_add_option_to_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option);
 void ABC_add_product_price(wchar_t wc_product[256], int n_size_product, double dPrice);
+
+void ABC_add_option_to_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo, wchar_t wc_option[256], int n_size_option, double dWeight);
+void ABC_add_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo);
+
+
 
 void ABC_reset_adjust_best_combination_data_input();
 

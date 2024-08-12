@@ -110,7 +110,7 @@ void pca::CReality::InitDefaultProductsAndOptions()
 
     //ComplCombos
     std::map<std::string, std::set<std::string>> mapComplComboName_OptionNames({
-        { "sweets" , { "candy", "chocolate"} }
+        { "sweets_consumption" , { "candy_consumption", "chocolate_consumption"} }
         }
     );
 

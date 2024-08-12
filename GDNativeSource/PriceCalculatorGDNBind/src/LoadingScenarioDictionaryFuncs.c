@@ -181,8 +181,72 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
             ABC_add_product_price(strProduct.wc_name, 256, dPrice);
         }
     }
+    //
+
+    //Nuevo
+    //    "ComplementaryCombos":
+    //                {"sweets_consumption":["chocolate_consumption","candy_consumption"]},
+    {
+        wchar_t wchar_complementary_combos[256] = L"ComplementaryCombos";
+        struct strAFName strNameOptions = get_AFName_from_wchar(wchar_complementary_combos);
+        godot_dictionary dict_name_options = get_godict_from_godict(&strNameOptions, &godict_scenario_info, api_arg);
+        struct strAFDictKeys strComplCombos = get_AFDictKeys_from_godict(&dict_name_options, api_arg);
+
+        for (int iComplCombos = 0;iComplCombos < strComplCombos.n_num_of_keys;iComplCombos++)
+        {
+            struct strAFName strComplCombo = strComplCombos.keys[iComplCombos];            
+            ABC_add_complementary_combo(strComplCombo.wc_name, 256);
+
+            struct strAFNames strOptions = get_AFNames_from_godict(&strComplCombo, &dict_name_options, api_arg);
+            for (int iOption = 0;iOption < strOptions.n_num_of_values;iOption++)
+            {
+                struct strAFName strOption = strComplCombos.keys[iComplCombos];
+
+                ABC_add_option_to_complementary_combo(strComplCombo.wc_name, 256, strOption.wc_name, 256);
+            }
+        }
+    }
+    //
+
+
+    //TODO:
+    //    "SupplementaryCombos":
+    //              {"consumption", { {"candy consumption", 1.0},
+    //                              {"chocolate consumption", 1.0},
+    //                              {"nut consumption", 1.0} }
+    //              },
+    //              {"savings", { {"candy savings", 1.0},
+    //                          {"chocolate savings", 1.0},
+    //                          {"nut savings", 1.0} }
+    //              }
+    {
+        wchar_t wchar_supplementary_combos[256] = L"SupplementaryCombos";
+        struct strAFName strNameOptions = get_AFName_from_wchar(wchar_supplementary_combos);
+        godot_dictionary dict_name_options = get_godict_from_godict(&strNameOptions, &godict_scenario_info, api_arg);
+        struct strAFDictKeys strSupplCombos = get_AFDictKeys_from_godict(&dict_name_options, api_arg);
+
+        for (int iSupplCombos = 0;iSupplCombos < strSupplCombos.n_num_of_keys;iSupplCombos++)
+        {
+            struct strAFName strSupplCombo = strSupplCombos.keys[iSupplCombos];
+
+            ABC_add_supplementary_combo(strSupplCombo.wc_name, 256);
+
+            godot_dictionary dict_option_weight = get_godict_from_godict(&strSupplCombo, &dict_name_options, api_arg);
+            struct strAFDictKeys strOptions = get_AFDictKeys_from_godict(&dict_option_weight, api_arg);
+
+            for (int iOption = 0;iOption < strOptions.n_num_of_keys;iOption++)
+            {
+                struct strAFName strOption = strSupplCombos.keys[iSupplCombos];
+                double dWeight = get_number_from_godict(&strOption, &dict_option_weight, api_arg);
+
+                ABC_add_option_to_supplementary_combo(strSupplCombo.wc_name, 256, strOption.wc_name, 256, dWeight);
+            }
+        }
+    }
+
 
     //
+
 
     //TODO: Seguir cargando el diccionario
 

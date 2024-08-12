@@ -263,6 +263,28 @@ void AP_add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256
     oAdjustPrices.AddPreferencesForPerson(wc_person, wc_option, d_maximum_satisfaction, d_preference_at_0);
 }
 
+void AP_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo)
+{
+    oAdjustPrices.AddComplementaryCombo(wc_compl_combo, n_size_compl_combo);
+}
+
+void AP_add_option_to_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option)
+{
+    oAdjustPrices.AddOptionToComplementaryCombo(wc_compl_combo, n_size_compl_combo, wc_option, n_size_option);
+
+}
+
+void AP_add_option_to_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo, wchar_t wc_option[256], int n_size_option, double dWeight)
+{
+    oAdjustPrices.AddOptionToSupplementaryCombo(wc_suppl_combo, n_size_suppl_combo, wc_option, n_size_option, dWeight);
+}
+
+void AP_add_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo)
+{
+    oAdjustPrices.AddSupplementaryCombo(wc_suppl_combo, n_size_suppl_combo);
+}
+
+
 void AP_reset_adjust_prices_data_input()
 {
     oAdjustPrices.ResetAdjustPricesDataInput();
@@ -330,6 +352,26 @@ void ABC_add_currency(wchar_t wc_currency[256], int n_size)
 void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
 {
     oAdjustBestCombination.AddPreferences(wc_option, d_maximum_satisfaction, d_preference_at_0);
+}
+
+void ABC_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo)
+{
+    oAdjustBestCombination.AddComplementaryCombo(wc_compl_combo, n_size_compl_combo);
+}
+
+void ABC_add_option_to_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option)
+{
+    oAdjustBestCombination.AddOptionToComplementaryCombo(wc_compl_combo, n_size_compl_combo, wc_option, n_size_option);
+}
+
+void ABC_add_option_to_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo, wchar_t wc_option[256], int n_size_option, double dWeight)
+{
+    oAdjustBestCombination.AddOptionToSupplementaryCombo(wc_suppl_combo, n_size_suppl_combo, wc_option, n_size_option, dWeight); 
+}
+
+void ABC_add_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo)
+{
+    oAdjustBestCombination.AddSupplementaryCombo(wc_suppl_combo, n_size_suppl_combo);
 }
 
 void ABC_reset_adjust_best_combination_data_input()
