@@ -31,29 +31,29 @@ void CAdjustPrices::AddProduct(wchar_t wc_product[256], int n_size)
     m_setProducts.insert(sProduct);
 }
 
-void CAdjustPrices::AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size)
-{
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_consumption_option);
+//void CAdjustPrices::AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size)
+//{
+//    // Convert wchar_t array to std::wstring
+//    std::wstring wide_str(wc_consumption_option);
+//
+//    // Convert std::wstring to std::string
+//    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+//    std::string sConsumptionOption = converter.to_bytes(wide_str);
+//
+//    m_setConsumptionOptions.insert(sConsumptionOption);
+//}
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sConsumptionOption = converter.to_bytes(wide_str);
-
-    m_setConsumptionOptions.insert(sConsumptionOption);
-}
-
-void CAdjustPrices::AddSavingOption(wchar_t wc_saving_option[256], int n_size)
-{
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_saving_option);
-
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sSavingOption = converter.to_bytes(wide_str);
-
-    m_setSavingOptions.insert(sSavingOption);
-}
+//void CAdjustPrices::AddSavingOption(wchar_t wc_saving_option[256], int n_size)
+//{
+//    // Convert wchar_t array to std::wstring
+//    std::wstring wide_str(wc_saving_option);
+//
+//    // Convert std::wstring to std::string
+//    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+//    std::string sSavingOption = converter.to_bytes(wide_str);
+//
+//    m_setSavingOptions.insert(sSavingOption);
+//}
 
 void CAdjustPrices::AddPersonOwned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
 {
@@ -126,6 +126,51 @@ void CAdjustPrices::AddPreferencesForPerson(wchar_t wc_person[256], wchar_t wc_o
 
 }
 
+void CAdjustPrices::AddComplementaryComboPreferencesForPerson(wchar_t wc_person[256], wchar_t wc_complementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_complementary_combo(wc_complementary_combo);
+    std::wstring wide_str_person(wc_person);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sOption = converter.to_bytes(wide_str_complementary_combo);
+    std::string sPerson = converter.to_bytes(wide_str_person);
+
+    //strPreferencesCpp strPref;    
+    //strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    //strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
+
+    if (m_mapPerson_ComplementaryComboPreferences.end() == m_mapPerson_ComplementaryComboPreferences.find(sPerson))
+        m_mapPerson_ComplementaryComboPreferences[sPerson];
+
+    m_mapPerson_ComplementaryComboPreferences[sPerson].mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    m_mapPerson_ComplementaryComboPreferences[sPerson].mapOptionPrefAt0[sOption] = d_preference_at_0;
+}
+
+void CAdjustPrices::AddSupplementaryComboPreferencesForPerson(wchar_t wc_person[256], wchar_t wc_supplementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_supplementary_combo(wc_supplementary_combo);
+    std::wstring wide_str_person(wc_person);
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sOption = converter.to_bytes(wide_str_supplementary_combo);
+    std::string sPerson = converter.to_bytes(wide_str_person);
+
+    //strPreferencesCpp strPref;    
+    //strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    //strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
+
+    if (m_mapPerson_SupplementaryComboPreferences.end() == m_mapPerson_SupplementaryComboPreferences.find(sPerson))
+        m_mapPerson_SupplementaryComboPreferences[sPerson];
+
+    m_mapPerson_SupplementaryComboPreferences[sPerson].mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    m_mapPerson_SupplementaryComboPreferences[sPerson].mapOptionPrefAt0[sOption] = d_preference_at_0;
+}
+
+
 void CAdjustPrices::AddComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo)
 {
     // Convert wchar_t array to std::wstring
@@ -149,7 +194,7 @@ void CAdjustPrices::AddOptionToComplementaryCombo(wchar_t wc_compl_combo[256], i
     std::string sComplCombo = converter.to_bytes(wide_str_compl_combo);    
     std::string sOption = converter.to_bytes(wide_str_option);
 
-    if (m_mapComplCombo_Options.end() != m_mapComplCombo_Options.find(sOption))
+    if (m_mapComplCombo_Options.end() != m_mapComplCombo_Options.find(sComplCombo))
     {
         m_mapComplCombo_Options[sComplCombo].insert(sOption);
     }
@@ -178,7 +223,7 @@ void CAdjustPrices::AddOptionToSupplementaryCombo(wchar_t wc_suppl_combo[256], i
     std::string sSupplCombo = converter.to_bytes(wide_str_suppl_combo);
     std::string sOption = converter.to_bytes(wide_str_option);
 
-    if (m_mapSupplCombo_mapOptionWeight.end() != m_mapSupplCombo_mapOptionWeight.find(sOption))
+    if (m_mapSupplCombo_mapOptionWeight.end() != m_mapSupplCombo_mapOptionWeight.find(sSupplCombo))
     {
         m_mapSupplCombo_mapOptionWeight[sSupplCombo].insert(std::make_pair(sOption, dWeight));
     }
@@ -189,12 +234,14 @@ void CAdjustPrices::ResetAdjustPricesDataInput()
 {
     m_setPersons.clear();
     m_setProducts.clear();
-    m_setConsumptionOptions.clear();
-    m_setSavingOptions.clear();
+    //m_setConsumptionOptions.clear();
+    //m_setSavingOptions.clear();
     m_mapPerson_ProdAmount.clear();
     m_mapOptionProduct.clear();
     m_sCurrency.clear();
     m_mapPerson_Preferences.clear();
+    m_mapPerson_ComplementaryComboPreferences.clear();
+    m_mapPerson_SupplementaryComboPreferences.clear();
     m_mapComplCombo_Options.clear();
     m_mapSupplCombo_mapOptionWeight.clear();
 }
@@ -220,17 +267,17 @@ void CAdjustPrices::LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator
         AddPriceToAdjustPriceResults_cpp(pstrAdjustPriceResults, product, dPrice);
     }
 
-    //for (auto& consumption_option : g_setConsumptionOptions)
-    for (auto& consumption_option : this->GetConsumptionOptions())
-    {
-        AddConsumptionOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, consumption_option);
-    }
+    ////for (auto& consumption_option : g_setConsumptionOptions)
+    //for (auto& consumption_option : this->GetConsumptionOptions())
+    //{
+    //    AddConsumptionOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, consumption_option);
+    //}
 
-    //for (auto& saving_option : g_setSavingOptions)
-    for (auto& saving_option : this->GetSavingOptions())
-    {
-        AddSavingOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, saving_option);
-    }
+    ////for (auto& saving_option : g_setSavingOptions)
+    //for (auto& saving_option : this->GetSavingOptions())
+    //{
+    //    AddSavingOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, saving_option);
+    //}
 
     int person_index = 0;
     //for (auto& person : g_setPersons)
@@ -247,7 +294,7 @@ void CAdjustPrices::LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator
 
 
     //            
-    //TODO. Seguir aquí.
+    
     //void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
     //void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
     //void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
@@ -264,24 +311,24 @@ void CAdjustPrices::LoadResultsFromPriceCalculatorToStruct(pca::CPriceCalculator
         person_index++;
     }
 
-    person_index = 0;
-    //for (auto& sPerson : g_setPersons)
-    for (auto& sPerson : this->GetPersons())
-    {
-        //for (auto& sOption : g_setSavingOptions)
-        for (auto& sOption : this->GetSavingOptions())
-        {
-            double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
-            AddSavedOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
-        }
-        //for (auto& sOption : g_setConsumptionOptions)
-        for (auto& sOption : this->GetConsumptionOptions())
-        {
-            double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
-            AddConsumedOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
-        }
-        person_index++;
-    }
+    //person_index = 0;
+    ////for (auto& sPerson : g_setPersons)
+    //for (auto& sPerson : this->GetPersons())
+    //{
+    //    //for (auto& sOption : g_setSavingOptions)
+    //    for (auto& sOption : this->GetSavingOptions())
+    //    {
+    //        double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
+    //        AddSavedOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
+    //    }
+    //    //for (auto& sOption : g_setConsumptionOptions)
+    //    for (auto& sOption : this->GetConsumptionOptions())
+    //    {
+    //        double dAmount = pPriceCalculator->GetOptionAmount(sOption, sPerson);
+    //        AddConsumedOptionToAdjustPriceResults_cpp(pstrAdjustPriceResults, person_index, sPerson, sOption, dAmount);
+    //    }
+    //    person_index++;
+    //}
 
    
 }
@@ -331,49 +378,49 @@ void CAdjustPrices::AddProductToAdjustPriceResults_cpp(struct strAdjustPriceResu
     AddProductToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
 }
 
-void CAdjustPrices::AddConsumptionOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
-{
-    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_consumption_options[pstrAdjustPriceResults->n_num_of_consumption_options].wc_name;
-    wcsncpy(pwc_name_in_struct, wc_name, size);
-    //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
+//void CAdjustPrices::AddConsumptionOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
+//{
+//    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_consumption_options[pstrAdjustPriceResults->n_num_of_consumption_options].wc_name;
+//    wcsncpy(pwc_name_in_struct, wc_name, size);
+//    //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
+//
+//    pstrAdjustPriceResults->n_num_of_consumption_options += 1;
+//}
 
-    pstrAdjustPriceResults->n_num_of_consumption_options += 1;
-}
+//void CAdjustPrices::AddConsumptionOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption)
+//{
+//    // Convert narrow string to wide string
+//    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+//    std::wstring ws_option_name = converter.from_bytes(sOption);
+//
+//    wchar_t array_wc_not_const[256];
+//    int size = ws_option_name.size()+1;
+//    wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
+//
+//    AddConsumptionOptionToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
+//}
 
-void CAdjustPrices::AddConsumptionOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption)
-{
-    // Convert narrow string to wide string
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring ws_option_name = converter.from_bytes(sOption);
-
-    wchar_t array_wc_not_const[256];
-    int size = ws_option_name.size()+1;
-    wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
-
-    AddConsumptionOptionToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
-}
-
-void CAdjustPrices::AddSavingOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
-{
-    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_saving_options[pstrAdjustPriceResults->n_num_of_saving_options].wc_name;
-    wcsncpy(pwc_name_in_struct, wc_name, size);
-    //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
-
-    pstrAdjustPriceResults->n_num_of_saving_options += 1;
-}
-
-void CAdjustPrices::AddSavingOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption)
-{
-    // Convert narrow string to wide string
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring ws_option_name = converter.from_bytes(sOption);
-
-    wchar_t array_wc_not_const[256];
-    int size = ws_option_name.size()+1;
-    wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
-
-    AddSavingOptionToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
-}
+//void CAdjustPrices::AddSavingOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, wchar_t wc_name[256], int size)
+//{
+//    wchar_t* pwc_name_in_struct = pstrAdjustPriceResults->name_saving_options[pstrAdjustPriceResults->n_num_of_saving_options].wc_name;
+//    wcsncpy(pwc_name_in_struct, wc_name, size);
+//    //pwc_name_in_struct[size - 1] = L'\0';  // Ensure null-termination
+//
+//    pstrAdjustPriceResults->n_num_of_saving_options += 1;
+//}
+//
+//void CAdjustPrices::AddSavingOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, std::string sOption)
+//{
+//    // Convert narrow string to wide string
+//    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+//    std::wstring ws_option_name = converter.from_bytes(sOption);
+//
+//    wchar_t array_wc_not_const[256];
+//    int size = ws_option_name.size()+1;
+//    wcsncpy(array_wc_not_const, ws_option_name.c_str(), size);
+//
+//    AddSavingOptionToAdjustPriceResults(pstrAdjustPriceResults, array_wc_not_const, size);
+//}
 
 void CAdjustPrices::AddOwnedThingToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_product[256], int size_product, double dAmount)
 {
@@ -482,84 +529,84 @@ void CAdjustPrices::AddTradedThingToAdjustPriceResults_cpp(struct strAdjustPrice
     AddTradedThingToAdjustPriceResults(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_product_not_const, size_product, dAmount);
 }
 
-void CAdjustPrices::AddConsumedOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
-{
-
-    int option_amount_index = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].n_num_option_amounts;
-
-    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].name_person.wc_name;
-    wchar_t* pwc_option_name_in_struct = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
-
-    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
-    wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
-
-    pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
-
-    if (pstrAdjustPriceResults->consumed_options.n_num_persons < person_index + 1)
-    {
-        pstrAdjustPriceResults->consumed_options.n_num_persons = person_index + 1;
-    }
-
-    pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].n_num_option_amounts += 1;
-
-}
-
-void CAdjustPrices::AddConsumedOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount)
-{
-
-    // Convert narrow string to wide string
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring ws_person_name = converter.from_bytes(sPerson);
-    std::wstring ws_option_name = converter.from_bytes(sOption);
-
-    wchar_t array_wc_person_not_const[256];
-    wchar_t array_wc_option_not_const[256];
-    int size_person = ws_person_name.size()+1;
-    int size_option = ws_option_name.size()+1;
-    wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
-    wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
-
-    AddConsumedOptionToAdjustPriceResults(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
-
-}
-
-void CAdjustPrices::AddSavedOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
-{
-    int option_amount_index = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].n_num_option_amounts;
-
-    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].name_person.wc_name;
-    wchar_t* pwc_option_name_in_struct = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
-
-    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
-    wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
-
-    pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
-
-    if (pstrAdjustPriceResults->saved_options.n_num_persons < person_index + 1)
-    {
-        pstrAdjustPriceResults->saved_options.n_num_persons = person_index + 1;
-    }
-
-    pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].n_num_option_amounts += 1;
-}
-
-void CAdjustPrices::AddSavedOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount)
-{
-
-    // Convert narrow string to wide string
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring ws_person_name = converter.from_bytes(sPerson);
-    std::wstring ws_option_name = converter.from_bytes(sOption);
-
-    wchar_t array_wc_person_not_const[256];
-    wchar_t array_wc_option_not_const[256];
-    int size_person = ws_person_name.size()+1;
-    int size_option = ws_option_name.size()+1;
-    wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
-    wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
-
-    AddSavedOptionToAdjustPriceResults(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
-}
+//void CAdjustPrices::AddConsumedOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
+//{
+//
+//    int option_amount_index = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].n_num_option_amounts;
+//
+//    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].name_person.wc_name;
+//    wchar_t* pwc_option_name_in_struct = pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
+//
+//    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
+//    wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
+//
+//    pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
+//
+//    if (pstrAdjustPriceResults->consumed_options.n_num_persons < person_index + 1)
+//    {
+//        pstrAdjustPriceResults->consumed_options.n_num_persons = person_index + 1;
+//    }
+//
+//    pstrAdjustPriceResults->consumed_options.person_option_amounts[person_index].n_num_option_amounts += 1;
+//
+//}
+//
+//void CAdjustPrices::AddConsumedOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount)
+//{
+//
+//    // Convert narrow string to wide string
+//    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+//    std::wstring ws_person_name = converter.from_bytes(sPerson);
+//    std::wstring ws_option_name = converter.from_bytes(sOption);
+//
+//    wchar_t array_wc_person_not_const[256];
+//    wchar_t array_wc_option_not_const[256];
+//    int size_person = ws_person_name.size()+1;
+//    int size_option = ws_option_name.size()+1;
+//    wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
+//    wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
+//
+//    AddConsumedOptionToAdjustPriceResults(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
+//
+//}
+//
+//void CAdjustPrices::AddSavedOptionToAdjustPriceResults(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, wchar_t wc_person[256], int size_person, wchar_t wc_option[256], int size_option, double dAmount)
+//{
+//    int option_amount_index = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].n_num_option_amounts;
+//
+//    wchar_t* pwc_person_name_in_struct = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].name_person.wc_name;
+//    wchar_t* pwc_option_name_in_struct = pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].name_option.wc_name;
+//
+//    wcsncpy(pwc_person_name_in_struct, wc_person, size_person);
+//    wcsncpy(pwc_option_name_in_struct, wc_option, size_option);
+//
+//    pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].option_amounts[option_amount_index].dAmount = dAmount;
+//
+//    if (pstrAdjustPriceResults->saved_options.n_num_persons < person_index + 1)
+//    {
+//        pstrAdjustPriceResults->saved_options.n_num_persons = person_index + 1;
+//    }
+//
+//    pstrAdjustPriceResults->saved_options.person_option_amounts[person_index].n_num_option_amounts += 1;
+//}
+//
+//void CAdjustPrices::AddSavedOptionToAdjustPriceResults_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount)
+//{
+//
+//    // Convert narrow string to wide string
+//    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+//    std::wstring ws_person_name = converter.from_bytes(sPerson);
+//    std::wstring ws_option_name = converter.from_bytes(sOption);
+//
+//    wchar_t array_wc_person_not_const[256];
+//    wchar_t array_wc_option_not_const[256];
+//    int size_person = ws_person_name.size()+1;
+//    int size_option = ws_option_name.size()+1;
+//    wcsncpy(array_wc_person_not_const, ws_person_name.c_str(), size_person);
+//    wcsncpy(array_wc_option_not_const, ws_option_name.c_str(), size_option);
+//
+//    AddSavedOptionToAdjustPriceResults(pstrAdjustPriceResults, person_index, array_wc_person_not_const, size_person, array_wc_option_not_const, size_option, dAmount);
+//}
 
 void CAdjustPrices::LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceCalculator* pPriceCalculator)
 {
@@ -575,6 +622,34 @@ void CAdjustPrices::LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceC
     {
         pPriceCalculator->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
     }
+
+    //
+    //Complementary combos
+    for (auto& pairComplCombo_Options : m_mapComplCombo_Options)
+    {
+        std::string sComplCombo = pairComplCombo_Options.first;
+        std::set<std::string> setOptions = pairComplCombo_Options.second;
+        for (auto& sOption : setOptions)
+        {
+            pPriceCalculator->CreateComplCombo(sComplCombo);
+            pPriceCalculator->AddOptionToComplCombo(sComplCombo, sOption);
+        }
+    }
+
+    //Supplementary combos
+    for (auto& pairSupplCombo_pairOptionWeight : m_mapSupplCombo_mapOptionWeight)
+    {
+        std::string sSupplCombo = pairSupplCombo_pairOptionWeight.first;
+        std::map<std::string, double> mapOption_dWeight = pairSupplCombo_pairOptionWeight.second;
+        for (auto& pairOption_dWeight : mapOption_dWeight)
+        {
+            pPriceCalculator->CreateSupplCombo(sSupplCombo);
+            std::string sOption = pairOption_dWeight.first;
+            double dWeight = pairOption_dWeight.second;
+            pPriceCalculator->AddOptionToSupplCombo(sSupplCombo, sOption, dWeight);
+        }
+    }
+    //
 
     pPriceCalculator->CreateEmptyMarket();
 
@@ -609,7 +684,7 @@ void CAdjustPrices::LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceC
 
     //    for (auto& option : setOptions)
     //    {
-    //        //TODO: añadir la configuración de esto
+    
     //        double dValueAt0 = 1;
     //        double dMaxValue = 10;
 
@@ -640,29 +715,47 @@ void CAdjustPrices::LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceC
         }
     }
 
-    //Complementary combos
-    for (auto& pairComplCombo_Options : m_mapComplCombo_Options)
+    for (auto& pairPerson_Pref : this->GetMapPerson_ComplementaryComboPreferences())
     {
-        std::string sComplCombo = pairComplCombo_Options.first;
-        std::set<std::string> setOptions = pairComplCombo_Options.second;
-        for (auto& sOption : setOptions)
+        std::string sPerson = pairPerson_Pref.first;
+        strPreferencesCpp strPref = pairPerson_Pref.second;
+
+        for (auto& pairOption_dMaxSat : strPref.mapOptionMaxSatisf)
         {
-            pPriceCalculator->CreateComplCombo(sComplCombo);
-            pPriceCalculator->AddOptionToComplCombo(sComplCombo, sOption);
+            std::string sOption = pairOption_dMaxSat.first;
+            double dMaxSatisf = pairOption_dMaxSat.second;
+
+            if (strPref.mapOptionPrefAt0.end() == strPref.mapOptionPrefAt0.find(sOption))
+            {
+                std::cerr << "Error en LaunchPriceCalculatorLoadedScenario";
+                assert("" == "Error en LaunchPriceCalculatorLoadedScenario");
+            }
+
+            double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
+
+            pPriceCalculator->AddToPerson_SetSatisfactionCurveForComplementaryCombo(sPerson, sOption, dPrefAt0, dMaxSatisf);
         }
     }
 
-    //Supplementary combos
-    for (auto& pairSupplCombo_pairOptionWeight : m_mapSupplCombo_mapOptionWeight)
+    for (auto& pairPerson_Pref : this->GetMapPerson_SupplementaryComboPreferences())
     {
-        std::string sSupplCombo = pairSupplCombo_pairOptionWeight.first;
-        std::map<std::string, double> mapOption_dWeight = pairSupplCombo_pairOptionWeight.second;
-        for (auto& pairOption_dWeight : mapOption_dWeight)
+        std::string sPerson = pairPerson_Pref.first;
+        strPreferencesCpp strPref = pairPerson_Pref.second;
+
+        for (auto& pairOption_dMaxSat : strPref.mapOptionMaxSatisf)
         {
-            pPriceCalculator->CreateSupplCombo(sSupplCombo);
-            std::string sOption = pairOption_dWeight.first;
-            double dWeight = pairOption_dWeight.second;
-            pPriceCalculator->AddOptionToSupplCombo(sSupplCombo, sOption, dWeight);
+            std::string sOption = pairOption_dMaxSat.first;
+            double dMaxSatisf = pairOption_dMaxSat.second;
+
+            if (strPref.mapOptionPrefAt0.end() == strPref.mapOptionPrefAt0.find(sOption))
+            {
+                std::cerr << "Error en LaunchPriceCalculatorLoadedScenario";
+                assert("" == "Error en LaunchPriceCalculatorLoadedScenario");
+            }
+
+            double dPrefAt0 = strPref.mapOptionPrefAt0.at(sOption);
+
+            pPriceCalculator->AddToPerson_SetSatisfactionCurveForSupplementaryCombo(sPerson, sOption, dPrefAt0, dMaxSatisf);
         }
     }
 

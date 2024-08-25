@@ -767,7 +767,6 @@ func calculate_better_combidicts_from_list(money_available_arg:float, combidicts
 	return better_combidicts
 #
 
-#TODO: Probar este método
 func adjust_best_combidict_changing_step(budget_arg:float, current_combidict_arg:Dictionary, init_budget_step_arg:float, target_budget_step_arg:float, max_step_arg:int):
 	var max_step_param:int = max_step_arg
 	var current_budget_step:float = init_budget_step_arg
@@ -815,7 +814,7 @@ func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budge
 			var trying_combination_removing_product:Dictionary = combination.duplicate()
 			var remove_product_step = budget_step_length/Prices.get_price_of_product(product_to_remove)
 			
-			#TODO: Probar a ver si hay un problema al dividir por números demasiado grandes
+			#Probar a ver si hay un problema al dividir por números demasiado grandes
 			#var debug_budget_step = remove_product_step*Prices.get_price_of_product(product_to_remove)
 			#if remove_product_step == 0:
 			#	assert(false)
@@ -934,7 +933,7 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	
 	#PriceCalculatorGDNBind
 ################################################
-	#TODO: Llamar a aquí a un método de GDNative que nos de esto
+	
 	#De momento no existe ese método. Hago pruebas		
 
 	var gdn_input_dict:Dictionary = {}
@@ -944,8 +943,8 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	var products = PriceCalculationGlobals._products
 	gdn_input_dict["Products"] = products
 			
-	var options_cons:Array =_satisfaction_calculator.get_options_of_use("consumption")
-	gdn_input_dict["Consumption"] = options_cons
+#	var options_cons:Array =_satisfaction_calculator.get_options_of_use("consumption")
+#	gdn_input_dict["Consumption"] = options_cons
 
 	var preferences_at_0_dict = {}			
 	var maximum_satisfaction_dict = {}			
@@ -957,9 +956,43 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 		maximum_satisfaction_dict[option] = max_satisf
 		
 	var preferences_dict = {}	
-	preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
-	preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+	preferences_dict["PreferenceAt0"]=preferences_at_0_dict
+	preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict
 	gdn_input_dict["Preferences"] = preferences_dict
+	
+	#ComplementaryComboPreferences
+	preferences_at_0_dict = {}			
+	maximum_satisfaction_dict = {}			
+	var complementary_combos:Array = _satisfaction_calculator.get_complementary_combos().keys()
+	for compl_combo in complementary_combos:
+		
+		var preference_at_0:float = _satisfaction_calculator.get_complementary_combo_preference_at_0(compl_combo)
+		var max_satisf:float = _satisfaction_calculator.get_complementary_combo_max_satisfaction(compl_combo)
+		preferences_at_0_dict[compl_combo] = preference_at_0
+		maximum_satisfaction_dict[compl_combo] = max_satisf
+	
+	preferences_dict = {}
+	preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+	preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict
+	gdn_input_dict["ComplementaryComboPreferences"] = preferences_dict
+	#
+	
+	#SupplementaryComboPreferences
+	preferences_at_0_dict = {}			
+	maximum_satisfaction_dict = {}			
+	var supplementary_combos:Array = _satisfaction_calculator.get_supplementary_combos().keys()
+	for suppl_combo in supplementary_combos:
+		
+		var preference_at_0:float = _satisfaction_calculator.get_supplementary_combo_preference_at_0(suppl_combo)
+		var max_satisf:float = _satisfaction_calculator.get_supplementary_combo_max_satisfaction(suppl_combo)
+		preferences_at_0_dict[suppl_combo] = preference_at_0
+		maximum_satisfaction_dict[suppl_combo] = max_satisf
+	
+	preferences_dict = {}
+	preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+	preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict
+	gdn_input_dict["SupplementaryComboPreferences"] = preferences_dict
+	#
 
 	var option_product_dict = _satisfaction_calculator.get_option_product_dict()
 	var consumoption_product_dict = {}
@@ -976,6 +1009,31 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 	
 	gdn_input_dict["Prices"] = Prices.get_prices()
 
+#    //    "ComplementaryCombos":
+#    //                {"sweets_consumption":["chocolate_consumption","candy_consumption"]},
+#    //    "SupplementaryCombos":
+#    //              {"consumption", { {"candy consumption", 1.0},
+#    //                              {"chocolate consumption", 1.0},
+#    //                              {"nut consumption", 1.0} }
+#    //              },
+#    //              {"savings", { {"candy savings", 1.0},
+#    //                          {"chocolate savings", 1.0},
+#    //                          {"nut savings", 1.0} }
+#    //              }
+
+	#var complementary_combos:Dictionary = _satisfaction_calculator.get_complementary_combos()
+	gdn_input_dict["ComplementaryCombos"] = complementary_combos
+	
+	#var supplementary_combos:Dictionary = _satisfaction_calculator.get_supplementary_combos()
+	gdn_input_dict["SupplementaryCombos"] = supplementary_combos
+	#return self._complementary_combos
+
+#func get_supplementary_combos()->Dictionary:
+#	return self._supplementary_combos
+
+#	Paso una copia, para que no haya modificaciones del input
+	var gdn_input_dict_copy:Dictionary = Utils.deep_copy(gdn_input_dict)
+
 	#
 	
 	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
@@ -990,7 +1048,7 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()		
 		#var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.calc_info_from_price_calculator_dll(output_dict,input_dict))
 		
-	var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(gdn_input_dict, gdn_output_best_combidict))
+	var strReturn = "calc_info_from_price_calculator_dll: "+ str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(gdn_input_dict_copy, gdn_output_best_combidict))
 	var strOutput = str(gdn_output_best_combidict)	
 	print("Output of adjust_best_combidict_with_gdnative:")
 	print(strOutput)
@@ -1009,7 +1067,7 @@ func adjust_best_combidict_with_gdnative(budget_arg:float, current_combidict:Dic
 func calculate_best_combidict(budget_arg:float)->Dictionary:
 	var response:Dictionary
 	var param_product_step:float = 5
-	var best_comb_func_to_use = 7#TODO: Probar con el 7
+	var best_comb_func_to_use = 7
 
 	if (1==best_comb_func_to_use):
 		return calculate_best_combidict_classic(budget_arg)
@@ -1028,7 +1086,7 @@ func calculate_best_combidict(budget_arg:float)->Dictionary:
 	elif(5==best_comb_func_to_use):
 		var step_for_calculation:float = 1
 		return calculate_best_combidict_simple_with_continuity_budget_step(budget_arg,step_for_calculation)
-	elif(7==best_comb_func_to_use): #TODO: Probar esta opción
+	elif(7==best_comb_func_to_use):
 		var max_budget_for_precalculation:float = 2*budget_arg
 		var step_for_precalculation:float = 1
 		var polyline_group = precalculate_aprox_best_combidict_curves_for_a_budget_range(max_budget_for_precalculation, step_for_precalculation)

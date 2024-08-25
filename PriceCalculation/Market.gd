@@ -513,7 +513,6 @@ func _calculate_new_prices_increment(param_price_change_step_arg:float):
 		excess_relative_to_currency[product] = amount - amount_of_currency_excess
 		#	Añadimos el _excess_products_dict
 		
-	#		
 	
 	var max_amount_of_product_excess=0.0
 	for product in excess_relative_to_currency.keys():
@@ -526,7 +525,7 @@ func _calculate_new_prices_increment(param_price_change_step_arg:float):
 	#Este parámetro deberían pasarse por argumento al método calculate_new_prices_increment():
 	var param_price_change_step = param_price_change_step_arg 
 
-#TODO: ARREGLAR ESTO. NO ESTA BIEN. A VECES LLEVA A INFINITO
+# ARREGLAR ESTO. NO ESTA BIEN. A VECES LLEVA A INFINITO
 	if (max_amount_of_product_excess > param_min_product_excess_to_change_price):
 		for product in excess_relative_to_currency.keys():
 			var amount = excess_relative_to_currency[product]
@@ -554,18 +553,7 @@ func get_product_price_bottoms()->Dictionary:
 func set_excess_products(excess_product_arg:Dictionary)->void:
 	self._excess_products_dict = Utils.deep_copy(excess_product_arg)
 	
-	
-#Código de prueba
-#			TODO: Probar a usar 
-#			func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg):
-#Hacer los siguientes métodos:
-#func _adjust_best_combinations():
-#func _adjust_best_combination_for_person(person_arg:String,current_best_combidict:Dictionary)->Dictionary:
-#Cambiar el método:
-#func calculate_trades():
-#para que no se llame a calculate_best_combinations()
-#Habría que llamar a calculate_best_combinations() o adjust_best_combinations antes de llamar a calculate_trades
-#Fin del código de pruebaa
+
 
 func _adjust_best_combinations(budget_step:float,max_num_steps:int):
 	for person in _persons:
@@ -596,7 +584,7 @@ func adjust_best_combination_for_person_with_max_num_steps(person_arg:String, bu
 				_person_best_combination_dict[person_arg] = empty_combidict			
 			var current_best_combidict = _person_best_combination_dict[person_arg]
 #			var best_combidict:Dictionary = trade_calc.adjust_best_combidict(budget,current_best_combidict_arg,budget_step,max_num_steps)
-#			TODO: Probar adjust_best_combidict_changing_step
+#			Probar adjust_best_combidict_changing_step
 #			var init_budget_step = budget_step*8
 #			var best_combidict:Dictionary = trade_calc.adjust_best_combidict_changing_step(budget,current_best_combidict,init_budget_step,budget_step,max_num_steps)
 #			_person_best_combination_dict[person_arg] = best_combidict

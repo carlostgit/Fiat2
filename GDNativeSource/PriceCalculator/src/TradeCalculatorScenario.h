@@ -46,6 +46,9 @@ namespace pca
 
         void SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue);
 
+        void SetSatisfactionCurveForComplementaryCombo(std::string sComplementaryCombo, double dValueAt0, double dMaxValue);
+        void SetSatisfactionCurveForSupplementaryCombo(std::string sSupplementaryCombo, double dValueAt0, double dMaxValue);
+
         void SetPrice(std::string sProductName, double dPrice);
 
         //

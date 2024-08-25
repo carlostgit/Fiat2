@@ -136,6 +136,38 @@ void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForOption(std::strin
     }
 }
 
+void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForComplementaryCombo(std::string sPerson, std::string sComplementaryCombo, double dValueAt0, double dMaxValue)
+{
+    if (nullptr == m_upReality->GetLastMarketRef())
+        return;
+
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+    CComplCombo* pComplComboRef = m_upReality->GetComplCombo(sComplementaryCombo);
+
+    if (pPersonRef && pComplComboRef)
+    {
+        pca::CSatisfactionCalculator* pSatCalculator = pPersonRef->GetTradeCalculatorRef()->GetSatisfactionCalculatorRef();
+        pSatCalculator->SetPreferenceAt0(pComplComboRef, dValueAt0);
+        pSatCalculator->SetMaximumSatisf(pComplComboRef, dMaxValue);
+    }
+}
+
+void pca::CPriceCalculator::AddToPerson_SetSatisfactionCurveForSupplementaryCombo(std::string sPerson, std::string sSupplementaryCombo, double dValueAt0, double dMaxValue)
+{
+    if (nullptr == m_upReality->GetLastMarketRef())
+        return;
+
+    CPerson* pPersonRef = m_upReality->GetLastMarketRef()->GetPersonRef(sPerson);
+    CSupplCombo* pSupplComboRef = m_upReality->GetSupplCombo(sSupplementaryCombo);
+
+    if (pPersonRef && pSupplComboRef)
+    {
+        pca::CSatisfactionCalculator* pSatCalculator = pPersonRef->GetTradeCalculatorRef()->GetSatisfactionCalculatorRef();
+        pSatCalculator->SetPreferenceAt0(pSupplComboRef, dValueAt0);
+        pSatCalculator->SetMaximumSatisf(pSupplComboRef, dMaxValue);
+    }
+}
+
 void pca::CPriceCalculator::AdjustPrices()
 {
     if (m_upReality->GetLastMarketRef())

@@ -34,6 +34,9 @@ namespace pca
         void AddToPerson_SetProductAmount(std::string sPerson, std::string sProduct, double dAmount);
         void AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue);
 
+        void AddToPerson_SetSatisfactionCurveForComplementaryCombo(std::string sPerson, std::string sComplementaryCombo, double dValueAt0, double dMaxValue);
+        void AddToPerson_SetSatisfactionCurveForSupplementaryCombo(std::string sPerson, std::string sSupplementaryCombo, double dValueAt0, double dMaxValue);
+
         //Nuevas, para escenarios mas complejos
         void CreateComplCombo(std::string sComplCombo);
         void AddOptionToComplCombo(std::string sComplCombo, std::string sOption);

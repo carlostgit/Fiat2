@@ -8,8 +8,7 @@
 
 namespace pca
 {
-
-    //TODO. Cambiar esto por enumeradores. O crear clases (Clase CProduct etc...)
+    
 
     enum eProd {
         eProdCandy = 1,

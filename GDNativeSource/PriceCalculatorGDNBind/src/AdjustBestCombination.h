@@ -42,12 +42,16 @@ public:
 
     //void AddPerson(wchar_t wc_person[256], int n_size);
     void AddProduct(wchar_t wc_product[256], int n_size);
-    void AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size);
-    void AddSavingOption(wchar_t wc_saving_option[256], int n_size);
+    //void AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size);
+    //void AddSavingOption(wchar_t wc_saving_option[256], int n_size);
     //void AddPersonOwned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount);
     void AddOptionProduct(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
     void AddCurrency(wchar_t wc_currency[256], int n_size);
     void AddPreferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+
+    void AddComplementaryComboPreferences(wchar_t wc_complementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0);
+    void AddSupplementaryComboPreferences(wchar_t wc_supplementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0);
+
     void AddProductPrice(wchar_t wc_product[256], int n_size_product, double dPrice);
     void AddComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo);
     void AddOptionToComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option);
@@ -105,13 +109,13 @@ protected:
         return m_setProducts;
     }
 
-    std::set<std::string>& GetConsumptionOptions() {
-        return m_setConsumptionOptions;
-    }
+    //std::set<std::string>& GetConsumptionOptions() {
+    //    return m_setConsumptionOptions;
+    //}
 
-    std::set<std::string>& GetSavingOptions() {
-        return m_setSavingOptions;
-    }
+    //std::set<std::string>& GetSavingOptions() {
+    //    return m_setSavingOptions;
+    //}
 
     //std::map<std::string, std::map<std::string, double> >& GetMapPerson_ProdAmount() {
     //    return g_mapPerson_ProdAmount;
@@ -137,8 +141,8 @@ private:
     double m_dBudget = 0.0;
     //std::set<std::string> g_setPersons;
     std::set<std::string> m_setProducts;
-    std::set<std::string> m_setConsumptionOptions;
-    std::set<std::string> m_setSavingOptions;
+    //std::set<std::string> m_setConsumptionOptions;
+    //std::set<std::string> m_setSavingOptions;
     //std::map<std::string, std::map<std::string, double> > g_mapPerson_ProdAmount;
     std::map<std::string, std::string> m_mapOptionProduct;
     std::map < std::string, double> m_mapProductPrice;
@@ -151,6 +155,8 @@ private:
     //std::map<std::string, strPreferencesCpp> g_mapPerson_Preferences;
 
     strPreferencesCpp m_strPreferencesCpp;
+    strPreferencesCpp m_strComplementaryComboPreferencesCpp;
+    strPreferencesCpp m_strSupplementaryComboPreferencesCpp;
         
 };
 

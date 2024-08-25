@@ -265,8 +265,6 @@ godot_variant simple_get_data(godot_object *p_instance, void *p_method_data, voi
 //    //Recibo un diccionario, y devuelvo otro, cambiando el valor del elemento,
 //    //con key "cucu" por un 17.
 //
-//    //TODO: Ordenar esto un poco, y hacer algo parecido con diccionarios que
-//    //contengan arrays. Ya con eso, creo que podría hacer mucho
 //
 //    //También podría probar a convertir todo a un json, y usar un json
 //    //como argumento, y como respuesta.
@@ -513,9 +511,7 @@ void setDataFromMarket(int nProduct, double dAmount)
 godot_variant simple_adjust_best_combidict_with_price_calculator_dll(godot_object* p_instance, void* p_method_data, void* p_user_data, int p_num_args, godot_variant** p_args)
 {
     godot_variant godvar_ret;
-
-    //TODO: 
-    //var strReturn = "calc_info_from_price_calculator_dll: " + str(_priceCalculatorGDNBind.adjust_best_combidict_with_price_calculator_dll(gdn_input_dict, gdn_output_best_combidict))
+    
 
     if (p_num_args != 2)
     {

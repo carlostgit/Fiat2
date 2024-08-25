@@ -233,15 +233,15 @@ extern "C" void AP_add_product(wchar_t wc_product[256], int n_size)
     oAdjustPrices.AddProduct(wc_product, n_size);
 }
 
-extern "C" void AP_add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
-{
-    oAdjustPrices.AddConsumptionOption(wc_consumption_option, n_size);
-}
+//extern "C" void AP_add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
+//{
+//    oAdjustPrices.AddConsumptionOption(wc_consumption_option, n_size);
+//}
 
-extern "C" void AP_add_saving_option(wchar_t wc_saving_option[256], int n_size)
-{
-    oAdjustPrices.AddSavingOption(wc_saving_option, n_size);
-}
+//extern "C" void AP_add_saving_option(wchar_t wc_saving_option[256], int n_size)
+//{
+//    oAdjustPrices.AddSavingOption(wc_saving_option, n_size);
+//}
 
 extern "C" void AP_add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
 {    
@@ -261,6 +261,16 @@ void AP_add_currency(wchar_t wc_currency[256], int n_size)
 void AP_add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
 {
     oAdjustPrices.AddPreferencesForPerson(wc_person, wc_option, d_maximum_satisfaction, d_preference_at_0);
+}
+
+void AP_add_complementary_combo_preferences_for_person(wchar_t wc_person[256], wchar_t wc_complementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    oAdjustPrices.AddComplementaryComboPreferencesForPerson(wc_person, wc_complementary_combo, d_maximum_satisfaction, d_preference_at_0);
+}
+
+void AP_add_supplementary_combo_preferences_for_person(wchar_t wc_person[256], wchar_t wc_supplementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    oAdjustPrices.AddSupplementaryComboPreferencesForPerson(wc_person, wc_supplementary_combo, d_maximum_satisfaction, d_preference_at_0);
 }
 
 void AP_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo)
@@ -324,15 +334,15 @@ extern "C" void ABC_add_product(wchar_t wc_product[256], int n_size)
     oAdjustBestCombination.AddProduct(wc_product, n_size);
 }
 
-extern "C" void ABC_add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
-{
-    oAdjustBestCombination.AddConsumptionOption(wc_consumption_option, n_size);
-}
+//extern "C" void ABC_add_consumption_option(wchar_t wc_consumption_option[256], int n_size)
+//{
+//    oAdjustBestCombination.AddConsumptionOption(wc_consumption_option, n_size);
+//}
 
-extern "C" void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size)
-{
-    oAdjustBestCombination.AddSavingOption(wc_saving_option, n_size);
-}
+//extern "C" void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size)
+//{
+//    oAdjustBestCombination.AddSavingOption(wc_saving_option, n_size);
+//}
 
 void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product)
 {
@@ -352,6 +362,16 @@ void ABC_add_currency(wchar_t wc_currency[256], int n_size)
 void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0)
 {
     oAdjustBestCombination.AddPreferences(wc_option, d_maximum_satisfaction, d_preference_at_0);
+}
+
+void ABC_add_complementary_combo_preferences(wchar_t wc_complementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    oAdjustBestCombination.AddComplementaryComboPreferences(wc_complementary_combo, d_maximum_satisfaction, d_preference_at_0);
+}
+
+void ABC_add_supplementary_combo_preferences(wchar_t wc_supplementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    oAdjustBestCombination.AddSupplementaryComboPreferences(wc_supplementary_combo, d_maximum_satisfaction, d_preference_at_0);
 }
 
 void ABC_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo)

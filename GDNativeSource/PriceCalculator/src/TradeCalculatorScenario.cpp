@@ -136,18 +136,20 @@ void pca::CTradeCalculatorScenario::CreateComplCombo(std::string sComplCombo)
         return;
     }
 
-    CComplCombo* pComplComboRef = m_upReality->GetComplCombo(sComplCombo);
+    m_upReality->CreateComplCombo(sComplCombo);
 
-    if (nullptr == pComplComboRef)
-    {
-        std::cout << "error using pca::CPriceCalculator::CreateComplCombo. ComplCombo " << sComplCombo << " not found" << std::endl;
-        return;
-    }
+    //CComplCombo* pComplComboRef = m_upReality->GetComplCombo(sComplCombo);
 
-    if (pComplComboRef)
-    {
-        m_upReality->CreateComplCombo(sComplCombo);
-    }
+    //if (nullptr == pComplComboRef)
+    //{
+    //    std::cout << "error using pca::CPriceCalculator::CreateComplCombo. ComplCombo " << sComplCombo << " not found" << std::endl;
+    //    return;
+    //}
+
+    //if (pComplComboRef)
+    //{
+    //    m_upReality->CreateComplCombo(sComplCombo);
+    //}
 }
 
 void pca::CTradeCalculatorScenario::AddOptionToComplCombo(std::string sComplCombo, std::string sOption)
@@ -185,18 +187,20 @@ void pca::CTradeCalculatorScenario::CreateSupplCombo(std::string sSupplCombo)
         return;
     }
 
-    CSupplCombo* pSupplComboRef = m_upReality->GetSupplCombo(sSupplCombo);
+    m_upReality->CreateSupplCombo(sSupplCombo);
 
-    if (nullptr == pSupplComboRef)
-    {
-        std::cout << "error using pca::CPriceCalculator::CreateSupplCombo. ComplCombo " << sSupplCombo << " not found" << std::endl;
-        return;
-    }
+    //CSupplCombo* pSupplComboRef = m_upReality->GetSupplCombo(sSupplCombo);
 
-    if (pSupplComboRef)
-    {
-        m_upReality->CreateSupplCombo(sSupplCombo);
-    }
+    //if (nullptr == pSupplComboRef)
+    //{
+    //    std::cout << "error using pca::CPriceCalculator::CreateSupplCombo. ComplCombo " << sSupplCombo << " not found" << std::endl;
+    //    return;
+    //}
+
+    //if (pSupplComboRef)
+    //{
+    //    m_upReality->CreateSupplCombo(sSupplCombo);
+    //}
 }
 
 void pca::CTradeCalculatorScenario::AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight)
@@ -255,6 +259,42 @@ void pca::CTradeCalculatorScenario::SetSatisfactionCurveForOption(std::string sO
         pca::CSatisfactionCalculator* pSatCalculator = m_upTradeCalculator->GetSatisfactionCalculatorRef();
         pSatCalculator->SetPreferenceAt0(pOptionRef, dValueAt0);
         pSatCalculator->SetMaximumSatisf(pOptionRef, dMaxValue);
+    }
+}
+
+void pca::CTradeCalculatorScenario::SetSatisfactionCurveForComplementaryCombo(std::string sComplementaryCombo, double dValueAt0, double dMaxValue)
+{
+    if (nullptr == m_upReality->GetLastMarketRef())
+        return;
+
+    //COption* pOptionRef = m_upReality->GetOption(sOption);
+
+    pca::CComplCombo* pComplementaryCombo = m_upReality->GetComplCombo(sComplementaryCombo);
+
+    if (pComplementaryCombo && m_upTradeCalculator)
+    {
+
+        pca::CSatisfactionCalculator* pSatCalculator = m_upTradeCalculator->GetSatisfactionCalculatorRef();
+        pSatCalculator->SetPreferenceAt0(pComplementaryCombo, dValueAt0);
+        pSatCalculator->SetMaximumSatisf(pComplementaryCombo, dMaxValue);
+    }
+}
+
+void pca::CTradeCalculatorScenario::SetSatisfactionCurveForSupplementaryCombo(std::string sSupplementaryCombo, double dValueAt0, double dMaxValue)
+{
+    if (nullptr == m_upReality->GetLastMarketRef())
+        return;
+
+    //COption* pOptionRef = m_upReality->GetOption(sOption);
+
+    pca::CSupplCombo* pSupplementaryCombo = m_upReality->GetSupplCombo(sSupplementaryCombo);
+
+    if (pSupplementaryCombo && m_upTradeCalculator)
+    {
+
+        pca::CSatisfactionCalculator* pSatCalculator = m_upTradeCalculator->GetSatisfactionCalculatorRef();
+        pSatCalculator->SetPreferenceAt0(pSupplementaryCombo, dValueAt0);
+        pSatCalculator->SetMaximumSatisf(pSupplementaryCombo, dMaxValue);
     }
 }
 

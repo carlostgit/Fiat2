@@ -120,8 +120,7 @@ func _on_NextStepButton_pressed():
 		_price_calculation_interface.set_owned_products(person,owned_products_minus_trade_and_consumpt)
 		
 		emit_signal("signal_initialize_owned_products",_person_node_dict[person],owned_products_minus_trade_and_consumpt)
-		#TODO:
-		#ESTOY PROBANDO ESTE MÉTODO
+		
 
 func _on_Button_pressed():
 	var price_calculation_interface = PriceCalculationInterface.new()

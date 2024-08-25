@@ -28,11 +28,10 @@ pca::CTradeCalculator::~CTradeCalculator()
 }
 
 
-//TODO: Pasar este método a C++
+
 //Habrá que cambiar este método para que quede claro que la combinación que se ajusta es de opciones
 std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<COption*,double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
-{
-    //TODO: Hacer una clase que permita imprimir bien el contenido de elementos como std::map<int,double> mapCurrentCombidict
+{    
 
     if (c_traces) std::cout << "Start of AdjustBestCombidict" << std::endl;
 

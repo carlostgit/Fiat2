@@ -46,7 +46,7 @@ namespace pca
 
     private:
         //std::vector<long> m_vOptions; //Igual se puede sustituir esto por otra cosa
-        //std::set<long> m_setOptions;//TODO: sustituir por lo de PriceCalculationDefines
+        
         std::map<COption*, std::unique_ptr<CSatisfactionCurve> > m_Option_SatisfactionCurve;
 
         //std::map<long, std::set<long> > m_mapComplementaryCombo_setOptions;

@@ -278,7 +278,7 @@ double pca::CPerson::GetDesiredProdAmount(pca::CProduct* pProduct)
 //                _person_best_combination_dict[person_arg] = empty_combidict
 //                var current_best_combidict = _person_best_combination_dict[person_arg]
 //                #			var best_combidict : Dictionary = trade_calc.adjust_best_combidict(budget, current_best_combidict_arg, budget_step, max_num_steps)
-//                #			TODO : Probar adjust_best_combidict_changing_step
+
 //                #			var init_budget_step = budget_step * 8
 //                #			var best_combidict : Dictionary = trade_calc.adjust_best_combidict_changing_step(budget, current_best_combidict, init_budget_step, budget_step, max_num_steps)
 //                #			_person_best_combination_dict[person_arg] = best_combidict

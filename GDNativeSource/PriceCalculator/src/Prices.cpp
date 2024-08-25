@@ -8,7 +8,7 @@ pca::CPrices::CPrices(pca::CMarket* pMarketRef)
 {
     m_pMarketRef = pMarketRef;
     //ctor
-    //TODO:
+    
     InitDefaultPrices();
 }
 

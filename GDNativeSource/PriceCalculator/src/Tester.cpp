@@ -95,8 +95,7 @@ int pca::CTester::Test_SatisfactionCalculator()
         }
     }
     std::cout << "Test TradeCalculator finished" << std::endl;
-
-    std::cout << "TODO test Market" << std::endl;
+    
     std::cout << "Starting test Market" << std::endl;
     {
         CReality oReality;

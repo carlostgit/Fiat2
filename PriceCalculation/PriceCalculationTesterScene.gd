@@ -75,11 +75,11 @@ func _create_default_satisfaction_model(name_arg:String="default_satisf_calc") -
 	var satisfaction_curve_for_nut_consu:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_nut_consu, maximum_satisf_for_nut_consu)
 	satisfaction_calculator.set_satisfaction_curve("bill_consumption",satisfaction_curve_for_nut_consu)
 	
-	var param_preference_at_0_for_sweets = 1.0
-	var maximum_satisf_for_sweets = 10.0
-	var satisfaction_curve_for_sweets:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_sweets, maximum_satisf_for_sweets)
-	satisfaction_calculator.set_complementary_combo("sweets_consumption",["candy_consumption","chocolate_consumption"])
-	satisfaction_calculator.set_satisfaction_curve_for_complementary_combo("sweets_consumption",satisfaction_curve_for_sweets)
+	#var param_preference_at_0_for_sweets = 1.0
+	#var maximum_satisf_for_sweets = 10.0
+	#var satisfaction_curve_for_sweets:SatisfactionCurve = SatisfactionCurve.new(param_preference_at_0_for_sweets, maximum_satisf_for_sweets)
+	#satisfaction_calculator.set_complementary_combo("sweets_consumption",["candy_consumption","chocolate_consumption"])
+	#satisfaction_calculator.set_satisfaction_curve_for_complementary_combo("sweets_consumption",satisfaction_curve_for_sweets)
 	
 	var param_preference_at_0_for_candy_sav = 1.0
 	var maximum_satisf_for_candy_sav = 10.0

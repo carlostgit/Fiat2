@@ -336,8 +336,7 @@ void get_godot_dictionary_from_adjust_price_results(struct strAdjustPriceResults
     api_arg->godot_dictionary_set(&godict_scenario_info, &godvar_saved, &godvar_person_saved);
 
 
-
-    //TODO
+    
 }
 
 

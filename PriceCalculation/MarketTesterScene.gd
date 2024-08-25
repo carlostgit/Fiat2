@@ -169,8 +169,6 @@ func _on_NextStepButton_pressed():
 
 func _on_CalculateNewPricesButton_pressed():
 #	
-#	TODO: Ver por qué no se llega a un precio bien ajustado a la primera
-
 #
 	TimeMeasurement.reset()
 
@@ -334,16 +332,13 @@ func _on_YMinSpinBox_value_changed(value):
 
 func _on_CalcNewPricesGDNatButton_pressed():
 	#
-	#TODO: Calcular nuevos precios a traves de GDNative
-	assert(""!="TODO: _on_CalcNewPricesGDNatButton_pressed")
+	assert(""!="_on_CalcNewPricesGDNatButton_pressed")
 
 	if (null==_priceCalculatorGDNBind):
 		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()	
 
 	if (null!=_priceCalculatorGDNBind):
-		
-
-		assert(""!="TODO: Falta rellenar gdn_input_dict con los valores del escenario")		
+				
 			
 		var gdn_input_dict:Dictionary = {}
 		
@@ -355,8 +350,8 @@ func _on_CalcNewPricesGDNatButton_pressed():
 		var products = PriceCalculationGlobals._products
 		gdn_input_dict["Products"] = products
 				
-		var options:Array =_satisfaction_calculator_ref.get_options_of_use("consumption")
-		gdn_input_dict["Consumption"] = options
+		#var options:Array =_satisfaction_calculator_ref.get_options_of_use("consumption")		
+#		gdn_input_dict["Consumption"] = options
 					
 		var person_owned:Dictionary = {}
 		for person in persons:
@@ -364,6 +359,8 @@ func _on_CalcNewPricesGDNatButton_pressed():
 			person_owned[person] = product_amount
 		gdn_input_dict["Owned"] = person_owned
 		var option_product_dict = _satisfaction_calculator_ref.get_option_product_dict()
+		
+		var options:Array =_satisfaction_calculator_ref.get_options()
 		
 		var consumoption_product_dict = {}
 		for option in option_product_dict.keys():
@@ -373,11 +370,11 @@ func _on_CalcNewPricesGDNatButton_pressed():
 		gdn_input_dict["OptionProduct"] = consumoption_product_dict
 		gdn_input_dict["Currency"] = Prices.get_currency()
 		
-		###TODO		
-		var person_preferences_dict = {}
+		
+		var person_preferences_dict = {}		
 		for person in persons:			
 			var preferences_at_0_dict = {}			
-			var maximum_satisfaction_dict = {}			
+			var maximum_satisfaction_dict = {}
 			for option in options:
 				
 				var preference_at_0:float = _satisfaction_calculator_ref.get_option_preference_at_0(option)
@@ -392,10 +389,46 @@ func _on_CalcNewPricesGDNatButton_pressed():
 		
 		gdn_input_dict["Preferences"] = person_preferences_dict
 		
+		#ComplementaryComboPreferences
+		person_preferences_dict = {}
+		var complementary_combos:Array = _satisfaction_calculator_ref.get_complementary_combos().keys()
+		for person in persons:
+			var preferences_at_0_dict = {}
+			var maximum_satisfaction_dict = {}
+			for compl_combo in complementary_combos:
+				var preference_at_0:float = _satisfaction_calculator_ref.get_complementary_combo_preference_at_0(compl_combo)
+				var max_satisf:float = _satisfaction_calculator_ref.get_complementary_combo_max_satisfaction(compl_combo)
+				preferences_at_0_dict[compl_combo] = preference_at_0
+				maximum_satisfaction_dict[compl_combo] = max_satisf
+			var preferences_dict = {}	
+			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+			person_preferences_dict[person] = preferences_dict
+		gdn_input_dict["ComplementaryComboPreferences"] = person_preferences_dict
+		#
+		
+		#SupplementaryComboPreferences
+		person_preferences_dict = {}
+		var supplementary_combos:Array = _satisfaction_calculator_ref.get_supplementary_combos().keys()
+		for person in persons:
+			var preferences_at_0_dict = {}
+			var maximum_satisfaction_dict = {}
+			for suppl_combo in supplementary_combos:
+				var preference_at_0:float = _satisfaction_calculator_ref.get_supplementary_combo_preference_at_0(suppl_combo)
+				var max_satisf:float = _satisfaction_calculator_ref.get_supplementary_combo_max_satisfaction(suppl_combo)
+				preferences_at_0_dict[suppl_combo] = preference_at_0
+				maximum_satisfaction_dict[suppl_combo] = max_satisf
+			var preferences_dict = {}	
+			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+			person_preferences_dict[person] = preferences_dict
+		gdn_input_dict["SupplementaryComboPreferences"] = person_preferences_dict
+		#
+		
 #		var gdn_input_dict:Dictionary = {
 #			"Persons": ["Peter","George"], 
 #			"Products":["bill","chocolate","candy"], 
-#			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
+#Este lo elimino:			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
 #			"Owned": {
 #				"Peter":
 #						{"bill":1,"chocolate":2,"candy":3},
@@ -419,17 +452,38 @@ func _on_CalcNewPricesGDNatButton_pressed():
 #						},
 #				},
 #			"Currency":"bill"			
+#    //    "ComplementaryCombos":
+#    //                {"sweets_consumption":["chocolate_consumption","candy_consumption"]},
+#    //    "SupplementaryCombos":
+#    //              {"consumption", { {"candy consumption", 1.0},
+#    //                              {"chocolate consumption", 1.0},
+#    //                              {"nut consumption", 1.0} }
+#    //              },
+#    //              {"savings", { {"candy savings", 1.0},
+#    //                          {"chocolate savings", 1.0},
+#    //                          {"nut savings", 1.0} }
+#    //              }
+
 #		}
+
+		#var complementary_combos:Dictionary = _satisfaction_calculator_ref.get_complementary_combos()
+		gdn_input_dict["ComplementaryCombos"] = complementary_combos
+	
+		#var supplementary_combos:Dictionary = _satisfaction_calculator_ref.get_supplementary_combos()
+		gdn_input_dict["SupplementaryCombos"] = supplementary_combos
 		
 		#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 		var gdn_output_dict:Dictionary = {}
 		
 		#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
 	#	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
+
+	#	Paso una copia, para que no haya modificaciones del input
+		var gdn_input_dict_copy:Dictionary = Utils.deep_copy(gdn_input_dict)
 		
 		print( str(gdn_input_dict))
 		print("Calculando precios con: _priceCalculatorGDNBind.calc_info_from_price_calculator_dll")
-		var returnValue = _priceCalculatorGDNBind.adjust_price_with_price_calculator_dll(gdn_input_dict,gdn_output_dict)
+		var returnValue = _priceCalculatorGDNBind.adjust_price_with_price_calculator_dll(gdn_input_dict_copy,gdn_output_dict)
 		
 		print("Return value:")
 		print(returnValue)
@@ -442,7 +496,6 @@ func _on_CalcNewPricesGDNatButton_pressed():
 		var prices_dict = {}
 		if gdn_output_dict.has("Prices"):
 			prices_dict = gdn_output_dict.get("Prices")
-		
 		
 		$PricesItemList.clear()
 		for product in Prices.get_products():					

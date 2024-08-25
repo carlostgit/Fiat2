@@ -38,29 +38,29 @@ void CAdjustBestCombination::AddProduct(wchar_t wc_product[256], int n_size)
     m_setProducts.insert(sProduct);
 }
 
-void CAdjustBestCombination::AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size)
-{
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_consumption_option);
+//void CAdjustBestCombination::AddConsumptionOption(wchar_t wc_consumption_option[256], int n_size)
+//{
+//    // Convert wchar_t array to std::wstring
+//    std::wstring wide_str(wc_consumption_option);
+//
+//    // Convert std::wstring to std::string
+//    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+//    std::string sConsumptionOption = converter.to_bytes(wide_str);
+//
+//    m_setConsumptionOptions.insert(sConsumptionOption);
+//}
 
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sConsumptionOption = converter.to_bytes(wide_str);
-
-    m_setConsumptionOptions.insert(sConsumptionOption);
-}
-
-void CAdjustBestCombination::AddSavingOption(wchar_t wc_saving_option[256], int n_size)
-{
-    // Convert wchar_t array to std::wstring
-    std::wstring wide_str(wc_saving_option);
-
-    // Convert std::wstring to std::string
-    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-    std::string sSavingOption = converter.to_bytes(wide_str);
-
-    m_setSavingOptions.insert(sSavingOption);
-}
+//void CAdjustBestCombination::AddSavingOption(wchar_t wc_saving_option[256], int n_size)
+//{
+//    // Convert wchar_t array to std::wstring
+//    std::wstring wide_str(wc_saving_option);
+//
+//    // Convert std::wstring to std::string
+//    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+//    std::string sSavingOption = converter.to_bytes(wide_str);
+//
+//    m_setSavingOptions.insert(sSavingOption);
+//}
 
 //void CAdjustBestCombination::AddPersonOwned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount)
 //{
@@ -143,6 +143,48 @@ void CAdjustBestCombination::AddPreferences( wchar_t wc_option[256], double d_ma
 
 }
 
+void CAdjustBestCombination::AddComplementaryComboPreferences(wchar_t wc_complementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_option(wc_complementary_combo);
+
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sOption = converter.to_bytes(wide_str_option);
+
+
+    //strPreferencesCpp strPref;    
+    //strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    //strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
+
+
+    m_strComplementaryComboPreferencesCpp.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    m_strComplementaryComboPreferencesCpp.mapOptionPrefAt0[sOption] = d_preference_at_0;
+
+}
+
+void CAdjustBestCombination::AddSupplementaryComboPreferences(wchar_t wc_supplementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0)
+{
+    // Convert wchar_t array to std::wstring
+    std::wstring wide_str_option(wc_supplementary_combo);
+
+
+    // Convert std::wstring to std::string
+    std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+    std::string sOption = converter.to_bytes(wide_str_option);
+
+
+    //strPreferencesCpp strPref;    
+    //strPref.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    //strPref.mapOptionPrefAt0[sOption] = d_preference_at_0;
+
+
+    m_strSupplementaryComboPreferencesCpp.mapOptionMaxSatisf[sOption] = d_maximum_satisfaction;
+    m_strSupplementaryComboPreferencesCpp.mapOptionPrefAt0[sOption] = d_preference_at_0;
+
+}
+
 void CAdjustBestCombination::AddComplementaryCombo(wchar_t wc_compl_combo[256], int n_size_compl_combo)
 {
     // Convert wchar_t array to std::wstring
@@ -166,7 +208,7 @@ void CAdjustBestCombination::AddOptionToComplementaryCombo(wchar_t wc_compl_comb
     std::string sComplCombo = converter.to_bytes(wide_str_compl_combo);
     std::string sOption = converter.to_bytes(wide_str_option);
 
-    if (m_mapComplCombo_Options.end() != m_mapComplCombo_Options.find(sOption))
+    if (m_mapComplCombo_Options.end() != m_mapComplCombo_Options.find(sComplCombo))
     {
         m_mapComplCombo_Options[sComplCombo].insert(sOption);
     }
@@ -195,7 +237,7 @@ void CAdjustBestCombination::AddOptionToSupplementaryCombo(wchar_t wc_suppl_comb
     std::string sSupplCombo = converter.to_bytes(wide_str_suppl_combo);
     std::string sOption = converter.to_bytes(wide_str_option);
 
-    if (m_mapSupplCombo_mapOptionWeight.end() != m_mapSupplCombo_mapOptionWeight.find(sOption))
+    if (m_mapSupplCombo_mapOptionWeight.end() != m_mapSupplCombo_mapOptionWeight.find(sSupplCombo))
     {
         m_mapSupplCombo_mapOptionWeight[sSupplCombo].insert(std::make_pair(sOption, dWeight));
     }
@@ -206,13 +248,15 @@ void CAdjustBestCombination::ResetAdjustBestCombinationDataInput()
 {
     //g_setPersons.clear();
     m_setProducts.clear();
-    m_setConsumptionOptions.clear();
-    m_setSavingOptions.clear();
+    //m_setConsumptionOptions.clear();
+    //m_setSavingOptions.clear();
     //g_mapPerson_ProdAmount.clear();
     m_mapOptionProduct.clear();
     m_sCurrency.clear();
     //g_mapPerson_Preferences.clear();
     m_strPreferencesCpp.Clear();
+    m_strComplementaryComboPreferencesCpp.Clear();
+    m_strSupplementaryComboPreferencesCpp.Clear();
     m_mapComplCombo_Options.clear();
     m_mapSupplCombo_mapOptionWeight.clear();
     
@@ -310,7 +354,7 @@ void CAdjustBestCombination::LoadResultsFromPriceCalculatorToStruct(std::map<std
 
 
     ////            
-    ////TODO. Seguir aquí.
+    
     ////void add_traded_thing_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sProduct, double dAmount);
     ////void add_consumed_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
     ////void add_saved_option_to_adjust_price_results_cpp(struct strAdjustPriceResults* pstrAdjustPriceResults, int person_index, std::string sPerson, std::string sOption, double dAmount);
@@ -626,7 +670,7 @@ void CAdjustBestCombination::LoadResultsFromPriceCalculatorToStruct(std::map<std
 //
 std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalculatorAndAdjustBestCombination(pca::CTradeCalculatorScenario* pTradeCalculatorScenario)
 {
-    //TODO:
+   
 
     pTradeCalculatorScenario->CreateEmptyReality();    
 
@@ -643,38 +687,7 @@ std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalc
         pTradeCalculatorScenario->AddToProduct_CreateConsumptionOption(pairOptionProduct.second, pairOptionProduct.first);
     }
 
-    pTradeCalculatorScenario->CreateEmptyMarket();
-
-    pTradeCalculatorScenario->CreateTradeCalculator();
-
-    for (auto& pairProductPrice : m_mapProductPrice)
-    {
-        auto product = pairProductPrice.first;
-        double dPrice = pairProductPrice.second;
-        pTradeCalculatorScenario->SetPrice(product, dPrice);
-    }
-    //void pca::CTradeCalculatorScenario::SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue)
-
-    
-    for (auto pairOption_MaxSatisf: m_strPreferencesCpp.mapOptionMaxSatisf)
-    {
-        auto sOption = pairOption_MaxSatisf.first;
-        double dMaxValue = pairOption_MaxSatisf.second;
-
-        double dValueAt0 = m_strPreferencesCpp.mapOptionPrefAt0.at(sOption);
-         
-        pTradeCalculatorScenario->SetSatisfactionCurveForOption(sOption, dValueAt0, dMaxValue);
-    }
-
-
-    
-
-//    pPriceCalculator->CreateEmptyMarket();
-//
-//    //pPriceCalculator->SetCurrency(g_sCurrency);
-    pTradeCalculatorScenario->SetCurrency(this->GetCurrency());
-
-
+    //
     //Complementary combos
     for (auto& pairComplCombo_Options : m_mapComplCombo_Options)
     {
@@ -700,6 +713,57 @@ std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalc
             pTradeCalculatorScenario->AddOptionToSupplCombo(sSupplCombo, sOption, dWeight);
         }
     }
+    //
+
+    pTradeCalculatorScenario->CreateEmptyMarket();
+
+    pTradeCalculatorScenario->CreateTradeCalculator();
+
+    for (auto& pairProductPrice : m_mapProductPrice)
+    {
+        auto product = pairProductPrice.first;
+        double dPrice = pairProductPrice.second;
+        pTradeCalculatorScenario->SetPrice(product, dPrice);
+    }
+    //void pca::CTradeCalculatorScenario::SetSatisfactionCurveForOption(std::string sOption, double dValueAt0, double dMaxValue)
+
+    
+    for (auto pairOption_MaxSatisf: m_strPreferencesCpp.mapOptionMaxSatisf)
+    {
+        auto sOption = pairOption_MaxSatisf.first;
+        double dMaxValue = pairOption_MaxSatisf.second;
+
+        double dValueAt0 = m_strPreferencesCpp.mapOptionPrefAt0.at(sOption);
+         
+        pTradeCalculatorScenario->SetSatisfactionCurveForOption(sOption, dValueAt0, dMaxValue);
+    }
+
+    for (auto pairOption_MaxSatisf : m_strComplementaryComboPreferencesCpp.mapOptionMaxSatisf)
+    {
+        auto sOption = pairOption_MaxSatisf.first;
+        double dMaxValue = pairOption_MaxSatisf.second;
+
+        double dValueAt0 = m_strComplementaryComboPreferencesCpp.mapOptionPrefAt0.at(sOption);
+
+        pTradeCalculatorScenario->SetSatisfactionCurveForComplementaryCombo(sOption, dValueAt0, dMaxValue);
+    }
+    
+    for (auto pairOption_MaxSatisf : m_strSupplementaryComboPreferencesCpp.mapOptionMaxSatisf)
+    {
+        auto sOption = pairOption_MaxSatisf.first;
+        double dMaxValue = pairOption_MaxSatisf.second;
+
+        double dValueAt0 = m_strSupplementaryComboPreferencesCpp.mapOptionPrefAt0.at(sOption);
+
+        pTradeCalculatorScenario->SetSatisfactionCurveForSupplementaryCombo(sOption, dValueAt0, dMaxValue);
+    }
+
+//    pPriceCalculator->CreateEmptyMarket();
+//
+//    //pPriceCalculator->SetCurrency(g_sCurrency);
+    pTradeCalculatorScenario->SetCurrency(this->GetCurrency());
+
+
 
 
 
@@ -740,7 +804,7 @@ std::map<std::string, double> CAdjustBestCombination::LoadInputDataIntoPriceCalc
 //
 //    //    for (auto& option : setOptions)
 //    //    {
-//    //        //TODO: añadir la configuración de esto
+
 //    //        double dValueAt0 = 1;
 //    //        double dMaxValue = 10;
 //

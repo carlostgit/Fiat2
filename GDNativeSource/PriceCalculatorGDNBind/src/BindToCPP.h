@@ -99,7 +99,7 @@ struct strPreferences
 };
 
 
-struct strAdjustPriceResults //TODO: Cambiar el nombre a esto a a algo así como strAdjustPriceResults
+struct strAdjustPriceResults 
 {
     struct strName name_persons[25];
     int n_num_of_persons;
@@ -182,12 +182,16 @@ int AP_adjust_price_with_price_calculator(struct strAdjustPriceResults* pstrAdju
 //Métodos para cargar el escenario de ajuste de precios en AdjustPrices, para después poder cargarlo en PriceCalculator
 void AP_add_person(wchar_t wc_person[256], int n_size);
 void AP_add_product(wchar_t wc_product[256], int n_size);
-void AP_add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
-void AP_add_saving_option(wchar_t wc_saving_option[256], int n_size);
+//void AP_add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
+//void AP_add_saving_option(wchar_t wc_saving_option[256], int n_size);
 void AP_add_person_owned(wchar_t wc_person[256], int n_size_person, wchar_t wc_product[256], int n_size_product, double dAmount);
 void AP_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void AP_add_currency(wchar_t wc_currency[256], int n_size);
 void AP_add_preferences_for_person(wchar_t wc_person[256], wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+
+void AP_add_complementary_combo_preferences_for_person(wchar_t wc_person[256], wchar_t wc_complementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0);
+void AP_add_supplementary_combo_preferences_for_person(wchar_t wc_person[256], wchar_t wc_supplementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0);
+
 void AP_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo);
 void AP_add_option_to_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option);
 void AP_add_option_to_supplementary_combo(wchar_t wc_suppl_combo[256], int n_size_suppl_combo, wchar_t wc_option[256], int n_size_option, double dWeight);
@@ -200,17 +204,20 @@ void AP_reset_adjust_prices_data_input();
 //////////////////////////
 ///Adjust Best Combination methods:
 
-//TODO:
-//int ABC_adjust_best_combination_with_price_calculator(struct strAdjustBestCombinationResults* pstrAdjustPriceResultsOutput);
 
 void ABC_add_budget(double dBudget);
 void ABC_add_product(wchar_t wc_product[256], int n_size);
-void ABC_add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
-void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size);
+//void ABC_add_consumption_option(wchar_t wc_consumption_option[256], int n_size);
+//void ABC_add_saving_option(wchar_t wc_saving_option[256], int n_size);
 
 void ABC_add_option_product(wchar_t wc_option[256], int n_size_option, wchar_t wc_product[256], int n_size_product);
 void ABC_add_currency(wchar_t wc_currency[256], int n_size);
 void ABC_add_preferences(wchar_t wc_option[256], double d_maximum_satisfaction, double d_preference_at_0);
+
+
+void ABC_add_complementary_combo_preferences(wchar_t wc_complementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0);
+void ABC_add_supplementary_combo_preferences(wchar_t wc_supplementary_combo[256], double d_maximum_satisfaction, double d_preference_at_0);
+
 void ABC_add_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo);
 void ABC_add_option_to_complementary_combo(wchar_t wc_compl_combo[256], int n_size_compl_combo, wchar_t wc_option[256], int n_size_option);
 void ABC_add_product_price(wchar_t wc_product[256], int n_size_product, double dPrice);
