@@ -66,7 +66,8 @@ namespace pca
 
         double GetDesiredProdAmount(std::string sPerson, std::string sProductName);
         void PrintPersonOptionAdjustmentToFile(std::string sPerson);
-        void PrintPersonsOptionAdjustmentToFile();        
+        void PrintPersonsOptionAdjustmentToFile();    
+        void PrintScenarioInfoToFile();
         
        
     protected:

@@ -7,6 +7,8 @@
 #include <assert.h>
 #include <iostream>
 
+const bool PARAM_IMPRIMIR_INFORME_AJUSTE = true;
+
 void CAdjustPrices::AddPerson(wchar_t wc_person[256], int n_size)
 {
     // Convert wchar_t array to std::wstring
@@ -759,8 +761,18 @@ void CAdjustPrices::LoadInputDataIntoPriceCalculatorAndAdjustPrices(pca::CPriceC
         }
     }
 
+    //TODO: Imprimir en un fichero la información del escenario que se está calculando, para comparar con lo que se calcula dentro de godot
+    //Podría meter el método en la clase pca::CUtils
+    //Debería imprimirse toda la información que se usa para calcular
 
+    if (PARAM_IMPRIMIR_INFORME_AJUSTE)
+        pPriceCalculator->PrintScenarioInfoToFile();
+
+    
     pPriceCalculator->AdjustPrices();
+
+    if (PARAM_IMPRIMIR_INFORME_AJUSTE)
+        pPriceCalculator->PrintPersonsOptionAdjustmentToFile();
 
 }
 

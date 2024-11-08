@@ -1,0 +1,3 @@
+Scenario info
+Product bill,Product candy,Product chocolate,
+Person Person 1,Person Person 2,

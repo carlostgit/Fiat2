@@ -309,6 +309,12 @@ void pca::CPriceCalculator::PrintPersonOptionAdjustmentToFile(std::string sPerso
 void pca::CPriceCalculator::PrintPersonsOptionAdjustmentToFile()
 {
     if (m_upReality->GetLastMarketRef())
+        pca::CUtils::PrintScenarioInfoToFile(m_upReality->GetLastMarketRef());
+}
+
+void pca::CPriceCalculator::PrintScenarioInfoToFile()
+{
+    if (m_upReality->GetLastMarketRef())
         pca::CUtils::PrintPersonsOptionAdjustmentToFile(m_upReality->GetLastMarketRef());
 }
 

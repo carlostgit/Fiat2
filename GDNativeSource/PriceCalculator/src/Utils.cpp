@@ -190,6 +190,53 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
     csvFile.close();
 }
 
+void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
+{
+    std::string fileName = "scenario_info.txt";
+    // Open a CSV file for writing
+    std::ofstream csvFile(fileName);
+
+    // Check if the file is open
+    if (!csvFile.is_open()) {
+        std::cerr << "Failed to create the CSV file." << std::endl;
+        return;
+    }
+
+    auto vOptions = pMarket->GetOptions();
+
+    //todo: meter aquí los titulos de los precios de productos
+    auto vProducts = pMarket->GetProducts();
+
+    csvFile << "Scenario info" << std::endl;    
+
+    for (auto& pProduct : vProducts)
+    {
+        std::string sProductName = pProduct->GetName();
+        csvFile << "Product " + sProductName; // Writing header row
+        csvFile << ",";
+    }
+
+    csvFile << std::endl;
+
+    auto vPersons = pMarket->GetPersons();
+
+    for (int i1 = 0;i1 < vPersons.size();i1++)
+        //for (auto& pPerson : vPersons)
+    {
+        auto pPerson = vPersons[i1];
+
+        auto sPersonName = pPerson->GetName();
+
+        csvFile << "Person " + sPersonName; // Writing header row
+        csvFile << ",";
+        
+    }
+
+    csvFile << std::endl;
+
+    csvFile.close();
+}
+
 void pca::CUtils::PrintPersonOptionAdjustmentToFile(CPerson* pPerson)
 {
     CMarket* pMarketRef = pPerson->GetMarketRef();
