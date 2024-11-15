@@ -290,6 +290,71 @@ void pca::CSatisfactionCalculator::SetMaximumSatisf(pca::CSupplCombo* pSuppComb,
 	}
 }
 
+double pca::CSatisfactionCalculator::GetPreferenceAt0(COption* pOpt)
+{
+	if (m_Option_SatisfactionCurve.end() != m_Option_SatisfactionCurve.find(pOpt))
+	{
+		auto pSatisfCurve = m_Option_SatisfactionCurve.at(pOpt).get();
+		return pSatisfCurve->GetPreferenceAt0();
+	}
+
+	return 0.0;
+}
+
+double pca::CSatisfactionCalculator::GetMaximumSatisf(COption* pOpt)
+{
+	if (m_Option_SatisfactionCurve.end() != m_Option_SatisfactionCurve.find(pOpt))
+	{
+		auto pSatisfCurve = m_Option_SatisfactionCurve.at(pOpt).get();
+		return pSatisfCurve->GetMaximumSatisf();
+	}
+
+	return 0.0;
+}
+
+double pca::CSatisfactionCalculator::GetPreferenceAt0(CComplCombo* pCompComb)
+{
+	if (m_mapComplementaryCombo_pSatisfCurve.end() != m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
+	{
+		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(pCompComb).get();
+		return pSatisfCurve->GetPreferenceAt0();
+	}
+
+	return 0.0;
+}
+
+double pca::CSatisfactionCalculator::GetMaximumSatisf(CComplCombo* pCompComb)
+{
+	if (m_mapComplementaryCombo_pSatisfCurve.end() != m_mapComplementaryCombo_pSatisfCurve.find(pCompComb))
+	{
+		auto pSatisfCurve = m_mapComplementaryCombo_pSatisfCurve.at(pCompComb).get();
+		return pSatisfCurve->GetMaximumSatisf();
+	}
+
+	return 0.0;
+}
+
+double pca::CSatisfactionCalculator::GetPreferenceAt0(CSupplCombo* pSuppComb)
+{
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() != m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
+	{
+		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(pSuppComb).get();
+		return pSatisfCurve->GetPreferenceAt0();
+	}
+
+	return 0.0;
+}
+
+double pca::CSatisfactionCalculator::GetMaximumSatisf(CSupplCombo* pSuppComb)
+{
+	if (m_mapSupplementaryCombo_pSatisfCurve.end() != m_mapSupplementaryCombo_pSatisfCurve.find(pSuppComb))
+	{
+		auto pSatisfCurve = m_mapSupplementaryCombo_pSatisfCurve.at(pSuppComb).get();
+		return pSatisfCurve->GetMaximumSatisf();
+	}
+
+	return 0.0;
+}
 
 
 

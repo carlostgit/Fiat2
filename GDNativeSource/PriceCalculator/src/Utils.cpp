@@ -12,6 +12,7 @@
 #include "PricesLogInfo.h"
 #include "SatisfactionCalculator.h"
 
+#include <algorithm>
 
 pca::CUtils::CUtils()
 {
@@ -40,7 +41,6 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
 
     //todo: meter aquí los titulos de los precios de productos
     auto vProducts = pMarket->GetProducts();
-
     
     csvFile << "PriceChangeStep"; // Writing header row
     csvFile << ",";
@@ -202,12 +202,34 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
         return;
     }
 
-    auto vOptions = pMarket->GetOptions();
+    csvFile << std::endl;
 
+    csvFile << "Scenario info" << std::endl;
+    csvFile << std::endl;
+
+    std::vector<pca::COption*> vOptions = pMarket->GetOptions();
+    std::sort(vOptions.begin(), vOptions.end(), [](pca::COption* pOption1, pca::COption* pOption2)->bool{
+            return (pOption1->GetName() < pOption2->GetName());});
+
+    csvFile << "Options:" << std::endl;
+
+    for (int i = 0;i < vOptions.size();i++)
+    {
+        std::string optionName = vOptions[i]->GetName();
+
+        csvFile << "Option " + optionName; // Writing header row        
+        //csvFile << ",";
+        csvFile << std::endl;
+    }
+
+    csvFile << std::endl;
+    csvFile << std::endl;
     //todo: meter aquí los titulos de los precios de productos
     auto vProducts = pMarket->GetProducts();
+    std::sort(vProducts.begin(), vProducts.end(), [](pca::CProduct* pProduct1, pca::CProduct* pProduct2)->bool {
+        return (pProduct1->GetName() < pProduct2->GetName());});
 
-    csvFile << "Scenario info" << std::endl;    
+    csvFile << "Products:" << std::endl;
 
     for (auto& pProduct : vProducts)
     {
@@ -217,9 +239,14 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
     }
 
     csvFile << std::endl;
+    csvFile << std::endl;
 
     auto vPersons = pMarket->GetPersons();
+    std::sort(vPersons.begin(), vPersons.end(), [](pca::CPerson* pPerson1, pca::CPerson* pPerson2)->bool {
+        return (pPerson1->GetName() < pPerson2->GetName());});
 
+    csvFile << "Persons:" << std::endl;
+    
     for (int i1 = 0;i1 < vPersons.size();i1++)
         //for (auto& pPerson : vPersons)
     {
@@ -228,10 +255,33 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
         auto sPersonName = pPerson->GetName();
 
         csvFile << "Person " + sPersonName; // Writing header row
-        csvFile << ",";
+        auto pPersonRef = pMarket->GetPersonRef(sPersonName);
+        auto pSatisfCalcRef = pPersonRef->GetSatisfactionCalculatorRef();
+        
+        csvFile << std::endl;
+
+        for (int i = 0;i < vOptions.size();i++)
+        {
+            std::string optionName = vOptions[i]->GetName();
+
+            csvFile << "Option " + optionName; // Writing header row        
+            //csvFile << ",";
+            csvFile << std::endl;
+
+            //TODO. Meter los datos de preferenceat0 y maximumsatisf
+            double dMaximumSatisf = pSatisfCalcRef->GetMaximumSatisf(vOptions[i]);
+            csvFile << "dMaximumSatisf: " << dMaximumSatisf << std::endl;
+
+            double dPreferenceAt0 = pSatisfCalcRef->GetPreferenceAt0(vOptions[i]);
+            csvFile << "dPreferenceAt0: " << dPreferenceAt0 << std::endl;
+        }
+
+        //csvFile << ",";
+        csvFile << std::endl;
         
     }
 
+    csvFile << std::endl;
     csvFile << std::endl;
 
     csvFile.close();

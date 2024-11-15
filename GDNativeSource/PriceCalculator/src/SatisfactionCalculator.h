@@ -34,6 +34,13 @@ namespace pca
         void SetPreferenceAt0(CSupplCombo* pSuppComb, double dPrefAt0);
         void SetMaximumSatisf(CSupplCombo* pSuppComb, double dMaxSatisf);
 
+        double GetPreferenceAt0(COption* pOpt);
+        double GetMaximumSatisf(COption* pOpt);
+        double GetPreferenceAt0(CComplCombo* pCompComb);
+        double GetMaximumSatisf(CComplCombo* pCompComb);
+        double GetPreferenceAt0(CSupplCombo* pSuppComb);
+        double GetMaximumSatisf(CSupplCombo* pSuppComb);
+
     protected:
         double CalculateSatisfOfCombidictFromIndividualOptions(std::map<COption*, double> map_pOption_dAmount);
         double CalculateSatifactionOfOption(COption* pOption, double dQuantity);

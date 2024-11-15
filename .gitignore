@@ -1,6 +1,9 @@
 # ignore ALL .layout files
 *.layout
 
+# ignore ALL .bc files (intermediate bytecode files from emscripten compilation)
+*.bc
+
 # ignore ALL files in ANY directory named bin, obj
 bin/
 obj/
@@ -11,3 +14,4 @@ Release/
 .vs/
 .import/
 godot-headers/
+

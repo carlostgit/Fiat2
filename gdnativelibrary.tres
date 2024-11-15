@@ -1,7 +1,0 @@
-[gd_resource type="GDNativeLibrary" format=2]
-
-[resource]
-entry/Windows.64 = "res://GDNativeSource/simpleMods/VSProject/x64/Debug/Simple.dll"
-entry/Windows.32 = "res://GDNativeSource/simpleMods/bin/Debug/simple.dll"
-dependency/Windows.64 = [  ]
-dependency/Windows.32 = [ "res://GDNativeSource/Market/bin/Debug/Marketd.dll" ]

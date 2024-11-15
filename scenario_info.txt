@@ -1,3 +1,58 @@
+
 Scenario info
+
+Options:
+Option bill_consumption
+Option bill_savings
+Option candy_consumption
+Option candy_savings
+Option chocolate_consumption
+Option chocolate_savings
+
+
+Products:
 Product bill,Product candy,Product chocolate,
-Person Person 1,Person Person 2,
+
+Persons:
+Person Person 1
+Option bill_consumption
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option bill_savings
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option candy_consumption
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option candy_savings
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option chocolate_consumption
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option chocolate_savings
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+
+Person Person 2
+Option bill_consumption
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option bill_savings
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option candy_consumption
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option candy_savings
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option chocolate_consumption
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+Option chocolate_savings
+dMaximumSatisf: 10
+dPreferenceAt0: 1
+
+
+
