@@ -42,6 +42,21 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
     //                          {"chocolate savings", 1.0},
     //                          {"nut savings", 1.0} }
     //              }
+    //     //TODO: Falta por recibir esto desde GODOT, y por probarlo:           
+    //    "ComplementaryComboPreferences": {
+    //							"PreferenceAt0":
+    //									{"sweets_consumption":1.0},
+    //							"MaximumSatisfaction":
+    //									{"sweets_consumption":1.0},
+    //                  }
+    // 
+    //    //TODO: Falta por recibir esto desde GODOT, y por probarlo
+    //    "SupplementaryComboPreferences": {
+    //							"PreferenceAt0":
+    //									{"consumption":1.0,"savings":1.0},
+    //							"MaximumSatisfaction":
+    //									{"consumption":1.0,"savings":1.0},
+    //                  }
     //}
 
 
@@ -256,14 +271,14 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
 
     //
 
-    //TODO: Comprobar que se pasan bien las preferencias de complementary combos y supplementary combos
+    //TODO: Falta por recibir esto desde GODOT, y por probarlo
         //Preferences
 // #  "ComplementaryComboPreferences": {
 
 //#							"PreferenceAt0":
-//#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+//#									{"sweets_consumption":1.0},
 //#							"MaximumSatisfaction":
-//#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+//#									{"sweets_consumption":1.0},
 //#                  }
     {
         wchar_t wchar_preferences[256] = L"ComplementaryComboPreferences";
@@ -307,12 +322,14 @@ void load_data_from_godot_into_adjust_best_combidict_input_object(godot_dictiona
         }
 
     }
+
+    //TODO: Falta por recibir esto desde GODOT, y por probarlo
     // #  "SupplementaryComboPreferences": {
 
     //#							"PreferenceAt0":
-    //#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+    //#									{"consumption":1.0,"savings":1.0},
     //#							"MaximumSatisfaction":
-    //#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+    //#									{"consumption":1.0,"savings":1.0},
     //#                  }
     {
         wchar_t wchar_preferences[256] = L"SupplementaryComboPreferences";

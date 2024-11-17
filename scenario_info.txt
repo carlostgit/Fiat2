@@ -9,6 +9,9 @@ Option candy_savings
 Option chocolate_consumption
 Option chocolate_savings
 
+SupplCombos:
+
+ComplCombos:
 
 Products:
 Product bill,Product candy,Product chocolate,
@@ -34,6 +37,8 @@ Option chocolate_savings
 dMaximumSatisf: 10
 dPreferenceAt0: 1
 
+
+
 Person Person 2
 Option bill_consumption
 dMaximumSatisf: 10
@@ -53,6 +58,8 @@ dPreferenceAt0: 1
 Option chocolate_savings
 dMaximumSatisf: 10
 dPreferenceAt0: 1
+
+
 
 
 

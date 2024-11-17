@@ -625,9 +625,9 @@ __meta__ = {
 [node name="CalcNewPricesGDNatButton" type="Button" parent="MarketTesterScene"]
 margin_left = 392.0
 margin_top = 288.0
-margin_right = 552.0
+margin_right = 784.0
 margin_bottom = 312.0
-text = "Calc prices with GDNat (En construcción)"
+text = "Calc prices with GDNat (En construcción CalcNewPricesGDNatButton)"
 __meta__ = {
 "_edit_use_anchors_": false
 }

@@ -388,7 +388,7 @@ func _on_CalcNewPricesGDNatButton_pressed():
 			person_preferences_dict[person] = preferences_dict
 		
 		gdn_input_dict["Preferences"] = person_preferences_dict
-		
+				
 		#ComplementaryComboPreferences
 		person_preferences_dict = {}
 		var complementary_combos:Array = _satisfaction_calculator_ref.get_complementary_combos().keys()
@@ -463,14 +463,36 @@ func _on_CalcNewPricesGDNatButton_pressed():
 #    //                          {"chocolate savings", 1.0},
 #    //                          {"nut savings", 1.0} }
 #    //              }
-
+#	//    //TODO: Falta por recibir esto desde GODOT, y por probarlo
+#    //    "ComplementaryComboPreferences": {
+#    //							"PreferenceAt0":
+#    //									{"sweets_consumption":1.0},
+#    //							"MaximumSatisfaction":
+#    //									{"sweets_consumption":1.0},
+#    //                  }
+#    // 
+#    //    //TODO: Falta por recibir esto desde GODOT, y por probarlo
+#    //    "SupplementaryComboPreferences": {
+#    //							"PreferenceAt0":
+#    //									{"consumption":1.0,"savings":1.0},
+#    //							"MaximumSatisfaction":
+#    //									{"consumption":1.0,"savings":1.0},
+#    //                  }
 #		}
 
-		#var complementary_combos:Dictionary = _satisfaction_calculator_ref.get_complementary_combos()
-		gdn_input_dict["ComplementaryCombos"] = complementary_combos
-	
-		#var supplementary_combos:Dictionary = _satisfaction_calculator_ref.get_supplementary_combos()
-		gdn_input_dict["SupplementaryCombos"] = supplementary_combos
+		#var complementary_combos:Dictionary = _satisfaction_calculator_ref.get_complementary_combos()		
+		var compl_combo_options_dict = {}
+		for complementary_combo in complementary_combos:
+			var options_of_compl_combo = _satisfaction_calculator_ref.get_options_from_complementary_combo(complementary_combo)
+			compl_combo_options_dict[complementary_combo] = options_of_compl_combo
+		
+		gdn_input_dict["ComplementaryCombos"] = compl_combo_options_dict
+			
+		var suppl_combo_options_dict = {}
+		for supplementary_combo in supplementary_combos:
+			var options_weight = _satisfaction_calculator_ref.get_weighted_options_from_supplementary_combo(supplementary_combo)
+			suppl_combo_options_dict[supplementary_combo] = options_weight
+		gdn_input_dict["SupplementaryCombos"] = suppl_combo_options_dict
 		
 		#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 		var gdn_output_dict:Dictionary = {}

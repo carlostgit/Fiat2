@@ -5,6 +5,8 @@
 
 #include "Person.h"
 #include "Option.h"
+#include "SupplCombo.h"
+#include "ComplCombo.h"
 #include "Product.h"
 #include "Reality.h"
 #include "Prices.h"
@@ -223,6 +225,44 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
     }
 
     csvFile << std::endl;
+
+//TODO: Obtener también las supplementary options y las completmentary options!
+
+    auto pReality = pMarket->GetRealityRef();
+
+    std::vector<pca::CSupplCombo*> vSupplCombos = pReality->GetSupplCombos();
+    std::sort(vSupplCombos.begin(), vSupplCombos.end(), [](pca::CSupplCombo* pCombo1, pca::CSupplCombo* pCombo2)->bool {
+        return (pCombo1->GetName() < pCombo2->GetName());});
+
+    csvFile << "SupplCombos:" << std::endl;
+
+    for (int i = 0;i < vSupplCombos.size();i++)
+    {
+        std::string supplComboName = vSupplCombos[i]->GetName();
+
+        csvFile << "SupplCombo " + supplComboName; // Writing header row        
+        //csvFile << ",";
+        csvFile << std::endl;
+    }
+
+    csvFile << std::endl;
+
+    std::vector<pca::CComplCombo*> vComplCombos = pReality->GetComplCombos();
+    std::sort(vComplCombos.begin(), vComplCombos.end(), [](pca::CComplCombo* pCombo1, pca::CComplCombo* pCombo2)->bool {
+        return (pCombo1->GetName() < pCombo2->GetName());});
+
+    csvFile << "ComplCombos:" << std::endl;
+
+    for (int i = 0;i < vSupplCombos.size();i++)
+    {
+        std::string complComboName = vSupplCombos[i]->GetName();
+
+        csvFile << "ComplCombo " + complComboName; // Writing header row        
+        //csvFile << ",";
+        csvFile << std::endl;
+    }
+
+
     csvFile << std::endl;
     //todo: meter aquí los titulos de los precios de productos
     auto vProducts = pMarket->GetProducts();
@@ -267,13 +307,48 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
             csvFile << "Option " + optionName; // Writing header row        
             //csvFile << ",";
             csvFile << std::endl;
-
-            //TODO. Meter los datos de preferenceat0 y maximumsatisf
+            
             double dMaximumSatisf = pSatisfCalcRef->GetMaximumSatisf(vOptions[i]);
             csvFile << "dMaximumSatisf: " << dMaximumSatisf << std::endl;
 
             double dPreferenceAt0 = pSatisfCalcRef->GetPreferenceAt0(vOptions[i]);
             csvFile << "dPreferenceAt0: " << dPreferenceAt0 << std::endl;
+        }
+
+        csvFile << std::endl;
+
+        for (int i = 0;i < vSupplCombos.size();i++)
+        {
+            std::string supplComboName = vSupplCombos[i]->GetName();
+
+            csvFile << "SupplCombo " + supplComboName; // Writing header row        
+            //csvFile << ",";
+            csvFile << std::endl;
+
+            double dMaximumSatisf = pSatisfCalcRef->GetMaximumSatisf(vSupplCombos[i]);
+            csvFile << "dMaximumSatisf: " << dMaximumSatisf << std::endl;
+
+            double dPreferenceAt0 = pSatisfCalcRef->GetPreferenceAt0(vSupplCombos[i]);
+            csvFile << "dPreferenceAt0: " << dPreferenceAt0 << std::endl;
+
+        }
+
+        csvFile << std::endl;
+
+        for (int i = 0;i < vComplCombos.size();i++)
+        {
+            std::string complComboName = vComplCombos[i]->GetName();
+
+            csvFile << "ComplCombo " + complComboName; // Writing header row        
+            //csvFile << ",";
+            csvFile << std::endl;
+
+            double dMaximumSatisf = pSatisfCalcRef->GetMaximumSatisf(vComplCombos[i]);
+            csvFile << "dMaximumSatisf: " << dMaximumSatisf << std::endl;
+
+            double dPreferenceAt0 = pSatisfCalcRef->GetPreferenceAt0(vComplCombos[i]);
+            csvFile << "dPreferenceAt0: " << dPreferenceAt0 << std::endl;
+
         }
 
         //csvFile << ",";
