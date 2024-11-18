@@ -253,9 +253,9 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
     csvFile << "ComplCombos:" << std::endl;
 
-    for (int i = 0;i < vSupplCombos.size();i++)
+    for (int i = 0;i < vComplCombos.size();i++)
     {
-        std::string complComboName = vSupplCombos[i]->GetName();
+        std::string complComboName = vComplCombos[i]->GetName();
 
         csvFile << "ComplCombo " + complComboName; // Writing header row        
         //csvFile << ",";

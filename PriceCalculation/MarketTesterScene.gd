@@ -463,7 +463,6 @@ func _on_CalcNewPricesGDNatButton_pressed():
 #    //                          {"chocolate savings", 1.0},
 #    //                          {"nut savings", 1.0} }
 #    //              }
-#	//    //TODO: Falta por recibir esto desde GODOT, y por probarlo
 #    //    "ComplementaryComboPreferences": {
 #    //							"PreferenceAt0":
 #    //									{"sweets_consumption":1.0},
@@ -471,7 +470,6 @@ func _on_CalcNewPricesGDNatButton_pressed():
 #    //									{"sweets_consumption":1.0},
 #    //                  }
 #    // 
-#    //    //TODO: Falta por recibir esto desde GODOT, y por probarlo
 #    //    "SupplementaryComboPreferences": {
 #    //							"PreferenceAt0":
 #    //									{"consumption":1.0,"savings":1.0},

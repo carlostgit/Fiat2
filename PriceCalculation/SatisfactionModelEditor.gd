@@ -501,6 +501,7 @@ func _on_LoadFileDialog_file_selected(path):
 #	print(loaded_dict)
 	save_game_new.close()
 
+	#TODO: ver por qué se ha roto lo de guardar y cargar escenarios muy simples
 	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
 	satisfaction_calculator_new.from_dict(loaded_dict)
 	
