@@ -7,7 +7,7 @@ const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalcu
 const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 
 
-var name_satisf_calc_dic:Dictionary = {}	
+var _name_satisf_calc_dic:Dictionary = {}	
 
 
 
@@ -20,7 +20,7 @@ func _ready():
 	
 	var name_of_satisf = "prueba satisfaction model"
 	var satisfaction_calculator:SatisfactionCalculator = _create_default_satisfaction_model(name_of_satisf)
-	name_satisf_calc_dic[name_of_satisf] = satisfaction_calculator
+	_name_satisf_calc_dic[name_of_satisf] = satisfaction_calculator
 	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
 	$MarketTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
@@ -35,7 +35,7 @@ func _ready():
 func update_item_list():
 
 	$SatisfactionModelItemList.clear()
-	for name in name_satisf_calc_dic.keys():
+	for name in _name_satisf_calc_dic.keys():
 		$SatisfactionModelItemList.add_item(name)
 
 	
@@ -106,7 +106,7 @@ func _on_AddAcceptDialog_ok_pressed(text):
 	for i in range(0,$SatisfactionModelItemList.get_item_count()):
 		if text==$SatisfactionModelItemList.get_item_text(i):
 			return
-	name_satisf_calc_dic[text] = _create_default_satisfaction_model(text)
+	_name_satisf_calc_dic[text] = _create_default_satisfaction_model(text)
 	update_item_list()	
 
 
@@ -125,11 +125,11 @@ func _on_EditButton_pressed():
 		var old_satisf
 #		var old_name=""
 		old_satisf = $SatisfactionModelEditor.get_satisfaction_calculator_ref()
-		name_satisf_calc_dic[old_satisf.get_name()]=old_satisf
+		_name_satisf_calc_dic[old_satisf.get_name()]=old_satisf
 		
 		var first_select_index = selected_items[0]
 		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
-		var satisf_calc:SatisfactionCalculator = name_satisf_calc_dic[name]
+		var satisf_calc:SatisfactionCalculator = _name_satisf_calc_dic[name]
 		$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_calc)
 		
 	$SatisfactionModelEditor.show()
@@ -140,7 +140,7 @@ func _on_RemoveButton_pressed():
 	if (selected_items.size()):
 		var first_select_index = selected_items[0]
 		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
-		name_satisf_calc_dic.erase(name)
+		_name_satisf_calc_dic.erase(name)
 		self.update_item_list()
 
 func _on_SaveAsButton_pressed():
@@ -150,8 +150,8 @@ func _on_SaveAsButton_pressed():
 func _on_SaveAsFileDialog_file_selected(path):
 	
 	var name_satisf_mod_save_dict:Dictionary = {}
-	for name_of_model in name_satisf_calc_dic.keys():
-		var satisf_mod = name_satisf_calc_dic[name_of_model]
+	for name_of_model in _name_satisf_calc_dic.keys():
+		var satisf_mod = _name_satisf_calc_dic[name_of_model]
 		var stisf_mod_dict:Dictionary = satisf_mod.to_dict()
 		name_satisf_mod_save_dict[name_of_model] = stisf_mod_dict
 		
@@ -178,7 +178,7 @@ func _on_LoadFileDialog_file_selected(path):
 		var satisf_mod_dict:Dictionary = loaded_dict[name_model]
 		var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
 		satisfaction_calculator_new.from_dict(satisf_mod_dict)	
-		name_satisf_calc_dic[name_model] = satisfaction_calculator_new
+		_name_satisf_calc_dic[name_model] = satisfaction_calculator_new
 	
 	update_item_list()
 
@@ -195,7 +195,7 @@ func _on_TradeTesterButton_pressed():
 	if (selected_items.size()):
 		var first_select_index = selected_items[0]
 		var name = $SatisfactionModelItemList.get_item_text(first_select_index)
-		var satisf_calc:SatisfactionCalculator = name_satisf_calc_dic[name]
+		var satisf_calc:SatisfactionCalculator = _name_satisf_calc_dic[name]
 		$TradeTesterScene.set_satisfaction_calculator_ref(satisf_calc)
 	
 	$TradeTesterScene.show()

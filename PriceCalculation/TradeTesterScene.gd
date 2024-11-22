@@ -718,3 +718,8 @@ func _on_CalculateTest9Button_pressed():
 	_draw_test9_gdnative(max_to_draw,step,calc_step)
 
 	pass # Replace with function body.
+
+
+func _on_LoadModelButton_pressed():
+	#TODO: Cargar un Satisfaction Model desde fichero, con código como el de SatisfactionModelEditor
+	pass # Replace with function body.

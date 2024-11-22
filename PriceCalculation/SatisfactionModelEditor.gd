@@ -507,7 +507,7 @@ func _on_LoadFileDialog_file_selected(path):
 	
 
 
-	self._satisfaction_calculator_copy = satisfaction_calculator_new
+	self._satisfaction_calculator_ref = satisfaction_calculator_new
 	self._update_satisfaction_calculator_data()
 
 

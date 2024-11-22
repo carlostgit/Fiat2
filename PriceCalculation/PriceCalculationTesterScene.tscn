@@ -424,6 +424,13 @@ margin_right = 504.0
 margin_bottom = 238.0
 text = "MaxBudget"
 
+[node name="LoadModelButton" type="Button" parent="TradeTesterScene"]
+margin_left = 296.0
+margin_top = 153.0
+margin_right = 382.0
+margin_bottom = 173.0
+text = "TODO: Load Model"
+
 [node name="PricesEditor" type="WindowDialog" parent="."]
 modulate = Color( 1, 1, 0.847059, 1 )
 margin_top = 304.0
@@ -457,7 +464,6 @@ margin_bottom = 94.0
 text = "currency"
 
 [node name="MarketTesterScene" type="WindowDialog" parent="."]
-visible = true
 margin_left = 168.0
 margin_top = 96.0
 margin_right = 1016.0
@@ -693,6 +699,7 @@ script = ExtResource( 9 )
 [connection signal="pressed" from="TradeTesterScene/UpdateItemsButton" to="TradeTesterScene" method="_on_UpdateItemsButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]
+[connection signal="pressed" from="TradeTesterScene/LoadModelButton" to="TradeTesterScene" method="_on_LoadModelButton_pressed"]
 [connection signal="gui_input" from="PricesEditor" to="PricesEditor" method="_on_PricesEditor_gui_input"]
 [connection signal="item_selected" from="PricesEditor/ProductItemList" to="PricesEditor" method="_on_ProductItemList_item_selected"]
 [connection signal="value_changed" from="PricesEditor/PriceSpinBox" to="PricesEditor" method="_on_PriceSpinBox_value_changed"]
