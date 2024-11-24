@@ -721,5 +721,28 @@ func _on_CalculateTest9Button_pressed():
 
 
 func _on_LoadModelButton_pressed():
-	#TODO: Cargar un Satisfaction Model desde fichero, con código como el de SatisfactionModelEditor
-	pass # Replace with function body.
+	$LoadModelFileDialog.popup()
+	
+
+func _satisf_calculator_updated():
+	self.name_of_model = _satisfaction_calculator_ref.get_name()
+	$SatisfModelNameLabel.set_text(self.name_of_model)
+	_trade_calculator = TradeCalculator.new(_satisfaction_calculator_ref)
+
+func _on_LoadModelFileDialog_file_selected(path):	
+	#TODO: Cargar un Satisfaction Model desde fichero, con código como el de SatisfactionModelEditor	
+	var save_game_new = File.new()
+	if not save_game_new.file_exists(path):
+		return
+	save_game_new.open(path, File.READ)
+	var loaded_string:String = save_game_new.get_as_text()
+	var loaded_dict:Dictionary = parse_json(loaded_string)
+#	print("loaded_dict:")
+#	print(loaded_dict)
+	save_game_new.close()
+	
+	var satisfaction_calculator_new:SatisfactionCalculator = SatisfactionCalculator.new()
+	satisfaction_calculator_new.from_dict(loaded_dict)
+	
+	self._satisfaction_calculator_ref = satisfaction_calculator_new
+	_satisf_calculator_updated()	

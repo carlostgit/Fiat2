@@ -431,6 +431,16 @@ margin_right = 382.0
 margin_bottom = 173.0
 text = "TODO: Load Model"
 
+[node name="LoadModelFileDialog" type="FileDialog" parent="TradeTesterScene"]
+visible = true
+margin_left = -24.0
+margin_top = 81.0
+margin_right = 448.0
+margin_bottom = 289.0
+window_title = "Abrir un Archivo"
+mode = 0
+access = 1
+
 [node name="PricesEditor" type="WindowDialog" parent="."]
 modulate = Color( 1, 1, 0.847059, 1 )
 margin_top = 304.0
@@ -700,6 +710,7 @@ script = ExtResource( 9 )
 [connection signal="pressed" from="TradeTesterScene/DrawAllButton" to="TradeTesterScene" method="_on_DrawAllButton_pressed"]
 [connection signal="pressed" from="TradeTesterScene/DrawSelected" to="TradeTesterScene" method="_on_DrawSelected_pressed"]
 [connection signal="pressed" from="TradeTesterScene/LoadModelButton" to="TradeTesterScene" method="_on_LoadModelButton_pressed"]
+[connection signal="file_selected" from="TradeTesterScene/LoadModelFileDialog" to="TradeTesterScene" method="_on_LoadModelFileDialog_file_selected"]
 [connection signal="gui_input" from="PricesEditor" to="PricesEditor" method="_on_PricesEditor_gui_input"]
 [connection signal="item_selected" from="PricesEditor/ProductItemList" to="PricesEditor" method="_on_ProductItemList_item_selected"]
 [connection signal="value_changed" from="PricesEditor/PriceSpinBox" to="PricesEditor" method="_on_PriceSpinBox_value_changed"]
