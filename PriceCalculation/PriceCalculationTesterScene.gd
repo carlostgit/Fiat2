@@ -21,10 +21,11 @@ func _ready():
 	var name_of_satisf = "prueba satisfaction model"
 	var satisfaction_calculator:SatisfactionCalculator = _create_default_satisfaction_model(name_of_satisf)
 	_name_satisf_calc_dic[name_of_satisf] = satisfaction_calculator
-	$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
-	$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
-	$MarketTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
-	$MarketTesterScene.init_default_example(satisfaction_calculator)
+	#$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisfaction_calculator)
+	#$TradeTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
+	#$MarketTesterScene.set_satisfaction_calculator_ref(satisfaction_calculator)
+	#$MarketTesterScene.init_default_example(satisfaction_calculator)
+	_new_model_activated(name_of_satisf)
 	update_item_list()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -217,3 +218,21 @@ func _on_HideMarketTesterButton_pressed():
 	$MarketTesterScene.hide()
 
 
+func _new_model_activated(modelSelected):
+	if _name_satisf_calc_dic.has(modelSelected):
+		$ActiveModelLabel.text = modelSelected
+		var satisf_model = _name_satisf_calc_dic[modelSelected]
+		$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_model)
+		$TradeTesterScene.set_satisfaction_calculator_ref(satisf_model)
+		$MarketTesterScene.set_satisfaction_calculator_ref(satisf_model)
+		$MarketTesterScene.init_default_example(satisf_model)
+		
+	else:
+		$ActiveModelLabel.text = "Error. Not found model: " +modelSelected
+		
+
+func _on_SatisfactionModelItemList_item_activated(index):
+	var modelSelected = $SatisfactionModelItemList.get_item_text(index)	
+	$ActiveModelLabel.text = modelSelected
+	
+	pass # Replace with function body.
