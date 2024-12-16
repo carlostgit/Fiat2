@@ -224,6 +224,7 @@ func _new_model_activated(modelSelected):
 		var satisf_model = _name_satisf_calc_dic[modelSelected]
 		$SatisfactionModelEditor.set_satisfaction_calculator_ref(satisf_model)
 		$TradeTesterScene.set_satisfaction_calculator_ref(satisf_model)
+		#TODO: Hacer que se puedan guardar datos sobre la cantidad de personas y sus posesiones, en MarketTesterScene
 		$MarketTesterScene.set_satisfaction_calculator_ref(satisf_model)
 		$MarketTesterScene.init_default_example(satisf_model)
 		
@@ -232,7 +233,8 @@ func _new_model_activated(modelSelected):
 		
 
 func _on_SatisfactionModelItemList_item_activated(index):
-	var modelSelected = $SatisfactionModelItemList.get_item_text(index)	
-	$ActiveModelLabel.text = modelSelected
+	var model_selected = $SatisfactionModelItemList.get_item_text(index)	
+	$ActiveModelLabel.text = model_selected
+	_new_model_activated(model_selected)
 	
 	pass # Replace with function body.

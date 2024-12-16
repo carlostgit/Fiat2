@@ -7,6 +7,8 @@ extends Control
 
 const Market = preload("res://PriceCalculation/Market.gd")
 
+const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
+const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 const PriceCalculatorGDNBind = preload("res://PriceCalculatorGDNBind.gdns")
 var _priceCalculatorGDNBind:PriceCalculatorGDNBind = null
 
@@ -40,7 +42,6 @@ func update_person_list():
 	$PersonsItemList.clear()
 	for person in _market.get_persons():
 		$PersonsItemList.add_item(person)
-	
 
 func init_default_example(satisf_calc_arg:Node):
 	_market.init_default_example(satisf_calc_arg)
@@ -109,6 +110,170 @@ func get_selected_person_and_product():
 #			product_output_arg = product
 			person_product_dict["product"] = product
 	return person_product_dict
+
+func to_dict() -> Dictionary:
+	var gdn_input_dict:Dictionary = {}
+	
+#		Voy a ir rellenando gdn_input_dict
+#		Relleno Prsons
+	var persons:Array = _market.get_persons()
+	gdn_input_dict["Persons"] = persons
+	
+	var products = PriceCalculationGlobals._products
+	gdn_input_dict["Products"] = products
+			
+	#var options:Array =_satisfaction_calculator_ref.get_options_of_use("consumption")		
+#		gdn_input_dict["Consumption"] = options
+				
+	var person_owned:Dictionary = {}
+	for person in persons:
+		var product_amount:Dictionary = _market.get_owned_products(person)
+		person_owned[person] = product_amount
+	gdn_input_dict["Owned"] = person_owned
+	var option_product_dict = _satisfaction_calculator_ref.get_option_product_dict()
+	
+	var options:Array =_satisfaction_calculator_ref.get_options()
+	
+	var consumoption_product_dict = {}
+	for option in option_product_dict.keys():
+		if option in options:
+			consumoption_product_dict[option] = option_product_dict[option]				 
+	
+	gdn_input_dict["OptionProduct"] = consumoption_product_dict
+	gdn_input_dict["Currency"] = Prices.get_currency()
+	
+	
+	var person_preferences_dict = {}		
+	for person in persons:			
+		var preferences_at_0_dict = {}			
+		var maximum_satisfaction_dict = {}
+		for option in options:
+			
+			var preference_at_0:float = _satisfaction_calculator_ref.get_option_preference_at_0(option)
+			var max_satisf:float = _satisfaction_calculator_ref.get_option_max_satisfaction(option)				
+			preferences_at_0_dict[option] = preference_at_0
+			maximum_satisfaction_dict[option] = max_satisf
+			
+		var preferences_dict = {}	
+		preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+		preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+		person_preferences_dict[person] = preferences_dict
+	
+	gdn_input_dict["Preferences"] = person_preferences_dict
+			
+	#ComplementaryComboPreferences
+	person_preferences_dict = {}
+	var complementary_combos:Array = _satisfaction_calculator_ref.get_complementary_combos().keys()
+	for person in persons:
+		var preferences_at_0_dict = {}
+		var maximum_satisfaction_dict = {}
+		for compl_combo in complementary_combos:
+			var preference_at_0:float = _satisfaction_calculator_ref.get_complementary_combo_preference_at_0(compl_combo)
+			var max_satisf:float = _satisfaction_calculator_ref.get_complementary_combo_max_satisfaction(compl_combo)
+			preferences_at_0_dict[compl_combo] = preference_at_0
+			maximum_satisfaction_dict[compl_combo] = max_satisf
+		var preferences_dict = {}	
+		preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+		preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+		person_preferences_dict[person] = preferences_dict
+	gdn_input_dict["ComplementaryComboPreferences"] = person_preferences_dict
+	#
+	
+	#SupplementaryComboPreferences
+	person_preferences_dict = {}
+	var supplementary_combos:Array = _satisfaction_calculator_ref.get_supplementary_combos().keys()
+	for person in persons:
+		var preferences_at_0_dict = {}
+		var maximum_satisfaction_dict = {}
+		for suppl_combo in supplementary_combos:
+			var preference_at_0:float = _satisfaction_calculator_ref.get_supplementary_combo_preference_at_0(suppl_combo)
+			var max_satisf:float = _satisfaction_calculator_ref.get_supplementary_combo_max_satisfaction(suppl_combo)
+			preferences_at_0_dict[suppl_combo] = preference_at_0
+			maximum_satisfaction_dict[suppl_combo] = max_satisf
+		var preferences_dict = {}	
+		preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+		preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+		person_preferences_dict[person] = preferences_dict
+	gdn_input_dict["SupplementaryComboPreferences"] = person_preferences_dict
+	#
+	
+#		var gdn_input_dict:Dictionary = {
+#			"Persons": ["Peter","George"], 
+#			"Products":["bill","chocolate","candy"], 
+#Este lo elimino:			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
+#			"Owned": {
+#				"Peter":
+#						{"bill":1,"chocolate":2,"candy":3},
+#				"George":
+#						{"bill":4,"chocolate":5,"candy":6}
+#				},
+#			"Preferences": {
+#				"Peter":					
+#						{
+#							"PreferenceAt0":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#							"MaximumSatisfaction":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#						},
+#				"George":					
+#						{
+#							"PreferenceAt0":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#							"MaximumSatisfaction":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#						},
+#				},
+#			"Currency":"bill"			
+#    //    "ComplementaryCombos":
+#    //                {"sweets_consumption":["chocolate_consumption","candy_consumption"]},
+#    //    "SupplementaryCombos":
+#    //              {"consumption", { {"candy consumption", 1.0},
+#    //                              {"chocolate consumption", 1.0},
+#    //                              {"nut consumption", 1.0} }
+#    //              },
+#    //              {"savings", { {"candy savings", 1.0},
+#    //                          {"chocolate savings", 1.0},
+#    //                          {"nut savings", 1.0} }
+#    //              }
+#    //    "ComplementaryComboPreferences": {
+#    //							"PreferenceAt0":
+#    //									{"sweets_consumption":1.0},
+#    //							"MaximumSatisfaction":
+#    //									{"sweets_consumption":1.0},
+#    //                  }
+#    // 
+#    //    "SupplementaryComboPreferences": {
+#    //							"PreferenceAt0":
+#    //									{"consumption":1.0,"savings":1.0},
+#    //							"MaximumSatisfaction":
+#    //									{"consumption":1.0,"savings":1.0},
+#    //                  }
+#		}
+
+	#var complementary_combos:Dictionary = _satisfaction_calculator_ref.get_complementary_combos()		
+	var compl_combo_options_dict = {}
+	for complementary_combo in complementary_combos:
+		var options_of_compl_combo = _satisfaction_calculator_ref.get_options_from_complementary_combo(complementary_combo)
+		compl_combo_options_dict[complementary_combo] = options_of_compl_combo
+	
+	gdn_input_dict["ComplementaryCombos"] = compl_combo_options_dict
+		
+	var suppl_combo_options_dict = {}
+	for supplementary_combo in supplementary_combos:
+		var options_weight = _satisfaction_calculator_ref.get_weighted_options_from_supplementary_combo(supplementary_combo)
+		suppl_combo_options_dict[supplementary_combo] = options_weight
+	gdn_input_dict["SupplementaryCombos"] = suppl_combo_options_dict
+	
+	#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
+	var gdn_output_dict:Dictionary = {}
+	
+	#var text_dict_answ:Dictionary = data.get_and_set_dict(text_dict_arg)
+#	var text_dict_answ:Dictionary = data.calc_info_from_market_test()
+
+#	Paso una copia, para que no haya modificaciones del input
+	var gdn_input_dict_copy:Dictionary = Utils.deep_copy(gdn_input_dict)
+
+	return gdn_input_dict_copy
 
 func _on_AmountOwnedSpinBox_value_changed(value):
 	var person_product_dict:Dictionary = {}
@@ -332,7 +497,7 @@ func _on_YMinSpinBox_value_changed(value):
 
 func _on_CalcNewPricesGDNatButton_pressed():
 	#
-	assert(""!="_on_CalcNewPricesGDNatButton_pressed")
+	#assert(""!="_on_CalcNewPricesGDNatButton_pressed")
 
 	if (null==_priceCalculatorGDNBind):
 		_priceCalculatorGDNBind = PriceCalculatorGDNBind.new()	
@@ -342,156 +507,158 @@ func _on_CalcNewPricesGDNatButton_pressed():
 			
 		var gdn_input_dict:Dictionary = {}
 		
-#		Voy a ir rellenando gdn_input_dict
-#		Relleno Prsons
-		var persons:Array = _market.get_persons()
-		gdn_input_dict["Persons"] = persons
+		gdn_input_dict = to_dict()
 		
-		var products = PriceCalculationGlobals._products
-		gdn_input_dict["Products"] = products
-				
-		#var options:Array =_satisfaction_calculator_ref.get_options_of_use("consumption")		
-#		gdn_input_dict["Consumption"] = options
-					
-		var person_owned:Dictionary = {}
-		for person in persons:
-			var product_amount:Dictionary = _market.get_owned_products(person)
-			person_owned[person] = product_amount
-		gdn_input_dict["Owned"] = person_owned
-		var option_product_dict = _satisfaction_calculator_ref.get_option_product_dict()
-		
-		var options:Array =_satisfaction_calculator_ref.get_options()
-		
-		var consumoption_product_dict = {}
-		for option in option_product_dict.keys():
-			if option in options:
-				consumoption_product_dict[option] = option_product_dict[option]				 
-		
-		gdn_input_dict["OptionProduct"] = consumoption_product_dict
-		gdn_input_dict["Currency"] = Prices.get_currency()
-		
-		
-		var person_preferences_dict = {}		
-		for person in persons:			
-			var preferences_at_0_dict = {}			
-			var maximum_satisfaction_dict = {}
-			for option in options:
-				
-				var preference_at_0:float = _satisfaction_calculator_ref.get_option_preference_at_0(option)
-				var max_satisf:float = _satisfaction_calculator_ref.get_option_max_satisfaction(option)				
-				preferences_at_0_dict[option] = preference_at_0
-				maximum_satisfaction_dict[option] = max_satisf
-				
-			var preferences_dict = {}	
-			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
-			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
-			person_preferences_dict[person] = preferences_dict
-		
-		gdn_input_dict["Preferences"] = person_preferences_dict
-				
-		#ComplementaryComboPreferences
-		person_preferences_dict = {}
-		var complementary_combos:Array = _satisfaction_calculator_ref.get_complementary_combos().keys()
-		for person in persons:
-			var preferences_at_0_dict = {}
-			var maximum_satisfaction_dict = {}
-			for compl_combo in complementary_combos:
-				var preference_at_0:float = _satisfaction_calculator_ref.get_complementary_combo_preference_at_0(compl_combo)
-				var max_satisf:float = _satisfaction_calculator_ref.get_complementary_combo_max_satisfaction(compl_combo)
-				preferences_at_0_dict[compl_combo] = preference_at_0
-				maximum_satisfaction_dict[compl_combo] = max_satisf
-			var preferences_dict = {}	
-			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
-			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
-			person_preferences_dict[person] = preferences_dict
-		gdn_input_dict["ComplementaryComboPreferences"] = person_preferences_dict
-		#
-		
-		#SupplementaryComboPreferences
-		person_preferences_dict = {}
-		var supplementary_combos:Array = _satisfaction_calculator_ref.get_supplementary_combos().keys()
-		for person in persons:
-			var preferences_at_0_dict = {}
-			var maximum_satisfaction_dict = {}
-			for suppl_combo in supplementary_combos:
-				var preference_at_0:float = _satisfaction_calculator_ref.get_supplementary_combo_preference_at_0(suppl_combo)
-				var max_satisf:float = _satisfaction_calculator_ref.get_supplementary_combo_max_satisfaction(suppl_combo)
-				preferences_at_0_dict[suppl_combo] = preference_at_0
-				maximum_satisfaction_dict[suppl_combo] = max_satisf
-			var preferences_dict = {}	
-			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
-			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
-			person_preferences_dict[person] = preferences_dict
-		gdn_input_dict["SupplementaryComboPreferences"] = person_preferences_dict
-		#
-		
-#		var gdn_input_dict:Dictionary = {
-#			"Persons": ["Peter","George"], 
-#			"Products":["bill","chocolate","candy"], 
-#Este lo elimino:			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
-#			"Owned": {
-#				"Peter":
-#						{"bill":1,"chocolate":2,"candy":3},
-#				"George":
-#						{"bill":4,"chocolate":5,"candy":6}
-#				},
-#			"Preferences": {
-#				"Peter":					
-#						{
-#							"PreferenceAt0":
-#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
-#							"MaximumSatisfaction":
-#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
-#						},
-#				"George":					
-#						{
-#							"PreferenceAt0":
-#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
-#							"MaximumSatisfaction":
-#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
-#						},
-#				},
-#			"Currency":"bill"			
-#    //    "ComplementaryCombos":
-#    //                {"sweets_consumption":["chocolate_consumption","candy_consumption"]},
-#    //    "SupplementaryCombos":
-#    //              {"consumption", { {"candy consumption", 1.0},
-#    //                              {"chocolate consumption", 1.0},
-#    //                              {"nut consumption", 1.0} }
-#    //              },
-#    //              {"savings", { {"candy savings", 1.0},
-#    //                          {"chocolate savings", 1.0},
-#    //                          {"nut savings", 1.0} }
-#    //              }
-#    //    "ComplementaryComboPreferences": {
-#    //							"PreferenceAt0":
-#    //									{"sweets_consumption":1.0},
-#    //							"MaximumSatisfaction":
-#    //									{"sweets_consumption":1.0},
-#    //                  }
-#    // 
-#    //    "SupplementaryComboPreferences": {
-#    //							"PreferenceAt0":
-#    //									{"consumption":1.0,"savings":1.0},
-#    //							"MaximumSatisfaction":
-#    //									{"consumption":1.0,"savings":1.0},
-#    //                  }
-#		}
-
-		#var complementary_combos:Dictionary = _satisfaction_calculator_ref.get_complementary_combos()		
-		var compl_combo_options_dict = {}
-		for complementary_combo in complementary_combos:
-			var options_of_compl_combo = _satisfaction_calculator_ref.get_options_from_complementary_combo(complementary_combo)
-			compl_combo_options_dict[complementary_combo] = options_of_compl_combo
-		
-		gdn_input_dict["ComplementaryCombos"] = compl_combo_options_dict
-			
-		var suppl_combo_options_dict = {}
-		for supplementary_combo in supplementary_combos:
-			var options_weight = _satisfaction_calculator_ref.get_weighted_options_from_supplementary_combo(supplementary_combo)
-			suppl_combo_options_dict[supplementary_combo] = options_weight
-		gdn_input_dict["SupplementaryCombos"] = suppl_combo_options_dict
-		
+##		Voy a ir rellenando gdn_input_dict
+##		Relleno Prsons
+#		var persons:Array = _market.get_persons()
+#		gdn_input_dict["Persons"] = persons
+#
+#		var products = PriceCalculationGlobals._products
+#		gdn_input_dict["Products"] = products
+#
+#		#var options:Array =_satisfaction_calculator_ref.get_options_of_use("consumption")		
+##		gdn_input_dict["Consumption"] = options
+#
+#		var person_owned:Dictionary = {}
+#		for person in persons:
+#			var product_amount:Dictionary = _market.get_owned_products(person)
+#			person_owned[person] = product_amount
+#		gdn_input_dict["Owned"] = person_owned
+#		var option_product_dict = _satisfaction_calculator_ref.get_option_product_dict()
+#
+#		var options:Array =_satisfaction_calculator_ref.get_options()
+#
+#		var consumoption_product_dict = {}
+#		for option in option_product_dict.keys():
+#			if option in options:
+#				consumoption_product_dict[option] = option_product_dict[option]				 
+#
+#		gdn_input_dict["OptionProduct"] = consumoption_product_dict
+#		gdn_input_dict["Currency"] = Prices.get_currency()
+#
+#
+#		var person_preferences_dict = {}		
+#		for person in persons:			
+#			var preferences_at_0_dict = {}			
+#			var maximum_satisfaction_dict = {}
+#			for option in options:
+#
+#				var preference_at_0:float = _satisfaction_calculator_ref.get_option_preference_at_0(option)
+#				var max_satisf:float = _satisfaction_calculator_ref.get_option_max_satisfaction(option)				
+#				preferences_at_0_dict[option] = preference_at_0
+#				maximum_satisfaction_dict[option] = max_satisf
+#
+#			var preferences_dict = {}	
+#			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+#			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+#			person_preferences_dict[person] = preferences_dict
+#
+#		gdn_input_dict["Preferences"] = person_preferences_dict
+#
+#		#ComplementaryComboPreferences
+#		person_preferences_dict = {}
+#		var complementary_combos:Array = _satisfaction_calculator_ref.get_complementary_combos().keys()
+#		for person in persons:
+#			var preferences_at_0_dict = {}
+#			var maximum_satisfaction_dict = {}
+#			for compl_combo in complementary_combos:
+#				var preference_at_0:float = _satisfaction_calculator_ref.get_complementary_combo_preference_at_0(compl_combo)
+#				var max_satisf:float = _satisfaction_calculator_ref.get_complementary_combo_max_satisfaction(compl_combo)
+#				preferences_at_0_dict[compl_combo] = preference_at_0
+#				maximum_satisfaction_dict[compl_combo] = max_satisf
+#			var preferences_dict = {}	
+#			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+#			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+#			person_preferences_dict[person] = preferences_dict
+#		gdn_input_dict["ComplementaryComboPreferences"] = person_preferences_dict
+#		#
+#
+#		#SupplementaryComboPreferences
+#		person_preferences_dict = {}
+#		var supplementary_combos:Array = _satisfaction_calculator_ref.get_supplementary_combos().keys()
+#		for person in persons:
+#			var preferences_at_0_dict = {}
+#			var maximum_satisfaction_dict = {}
+#			for suppl_combo in supplementary_combos:
+#				var preference_at_0:float = _satisfaction_calculator_ref.get_supplementary_combo_preference_at_0(suppl_combo)
+#				var max_satisf:float = _satisfaction_calculator_ref.get_supplementary_combo_max_satisfaction(suppl_combo)
+#				preferences_at_0_dict[suppl_combo] = preference_at_0
+#				maximum_satisfaction_dict[suppl_combo] = max_satisf
+#			var preferences_dict = {}	
+#			preferences_dict["PreferenceAt0"]=preferences_at_0_dict;
+#			preferences_dict["MaximumSatisfaction"]=maximum_satisfaction_dict;
+#			person_preferences_dict[person] = preferences_dict
+#		gdn_input_dict["SupplementaryComboPreferences"] = person_preferences_dict
+#		#
+#
+##		var gdn_input_dict:Dictionary = {
+##			"Persons": ["Peter","George"], 
+##			"Products":["bill","chocolate","candy"], 
+##Este lo elimino:			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
+##			"Owned": {
+##				"Peter":
+##						{"bill":1,"chocolate":2,"candy":3},
+##				"George":
+##						{"bill":4,"chocolate":5,"candy":6}
+##				},
+##			"Preferences": {
+##				"Peter":					
+##						{
+##							"PreferenceAt0":
+##									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+##							"MaximumSatisfaction":
+##									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+##						},
+##				"George":					
+##						{
+##							"PreferenceAt0":
+##									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+##							"MaximumSatisfaction":
+##									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+##						},
+##				},
+##			"Currency":"bill"			
+##    //    "ComplementaryCombos":
+##    //                {"sweets_consumption":["chocolate_consumption","candy_consumption"]},
+##    //    "SupplementaryCombos":
+##    //              {"consumption", { {"candy consumption", 1.0},
+##    //                              {"chocolate consumption", 1.0},
+##    //                              {"nut consumption", 1.0} }
+##    //              },
+##    //              {"savings", { {"candy savings", 1.0},
+##    //                          {"chocolate savings", 1.0},
+##    //                          {"nut savings", 1.0} }
+##    //              }
+##    //    "ComplementaryComboPreferences": {
+##    //							"PreferenceAt0":
+##    //									{"sweets_consumption":1.0},
+##    //							"MaximumSatisfaction":
+##    //									{"sweets_consumption":1.0},
+##    //                  }
+##    // 
+##    //    "SupplementaryComboPreferences": {
+##    //							"PreferenceAt0":
+##    //									{"consumption":1.0,"savings":1.0},
+##    //							"MaximumSatisfaction":
+##    //									{"consumption":1.0,"savings":1.0},
+##    //                  }
+##		}
+#
+#		#var complementary_combos:Dictionary = _satisfaction_calculator_ref.get_complementary_combos()		
+#		var compl_combo_options_dict = {}
+#		for complementary_combo in complementary_combos:
+#			var options_of_compl_combo = _satisfaction_calculator_ref.get_options_from_complementary_combo(complementary_combo)
+#			compl_combo_options_dict[complementary_combo] = options_of_compl_combo
+#
+#		gdn_input_dict["ComplementaryCombos"] = compl_combo_options_dict
+#
+#		var suppl_combo_options_dict = {}
+#		for supplementary_combo in supplementary_combos:
+#			var options_weight = _satisfaction_calculator_ref.get_weighted_options_from_supplementary_combo(supplementary_combo)
+#			suppl_combo_options_dict[supplementary_combo] = options_weight
+#		gdn_input_dict["SupplementaryCombos"] = suppl_combo_options_dict
+#
 		#var input_dict:Dictionary = {"cucu": 5.0, "coco":"lulu", "caca":["a","b"]}
 		var gdn_output_dict:Dictionary = {}
 		
@@ -561,3 +728,127 @@ func _on_CalcNewPricesGDNatButton_pressed():
 ##	$CalcCostLabelExtraInfo.set_text("num calls:" +str(num_calls))
 
 
+
+
+func _on_SaveScenarioButton_pressed():
+	$SaveAsFileDialog.popup()
+
+func _on_SaveAsFileDialog_file_selected(path):
+	var market_tester_save_dict:Dictionary = {}
+	#TODO: guardar al menos personas y sus posesiones
+	#market_tester_save_dict = to_dict()
+	
+	var saved_dict = to_dict()
+	var save_game = File.new()
+#	var file_path = "user://"+file_name_arg
+	save_game.open(path, File.WRITE)
+#	var json:String = to_json(saved_dict_new)
+	var json:String = to_json(saved_dict)
+	save_game.store_line(json)
+	save_game.close()
+	
+	print(market_tester_save_dict)
+
+
+
+func _on_LoadScenarioButton_pressed():	
+	$LoadAsFileDialog.popup()
+	
+
+func _on_LoadAsFileDialog_file_selected(path):
+	var save_game_new = File.new()
+	if not save_game_new.file_exists(path):
+		return
+	save_game_new.open(path, File.READ)
+	var loaded_string:String = save_game_new.get_as_text()
+	var loaded_dict:Dictionary = parse_json(loaded_string)
+	print(loaded_dict)
+#	print(loaded_dict)
+	save_game_new.close()
+	
+#			"Persons": ["Peter","George"], 
+#			"Products":["bill","chocolate","candy"], 
+#Este lo elimino:			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
+#			"Owned": {
+#				"Peter":
+#						{"bill":1,"chocolate":2,"candy":3},
+#				"George":
+#						{"bill":4,"chocolate":5,"candy":6}
+#				},
+#			"Preferences": {
+#				"Peter":					
+#						{
+#							"PreferenceAt0":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#							"MaximumSatisfaction":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#						},
+#				"George":					
+#						{
+#							"PreferenceAt0":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#							"MaximumSatisfaction":
+#									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
+#						},
+#				},
+#			"Currency":"bill"			
+#    //    "ComplementaryCombos":
+#    //                {"sweets_consumption":["chocolate_consumption","candy_consumption"]},
+#    //    "SupplementaryCombos":
+#    //              {"consumption", { {"candy consumption", 1.0},
+#    //                              {"chocolate consumption", 1.0},
+#    //                              {"nut consumption", 1.0} }
+#    //              },
+#    //              {"savings", { {"candy savings", 1.0},
+#    //                          {"chocolate savings", 1.0},
+#    //                          {"nut savings", 1.0} }
+#    //              }
+#    //    "ComplementaryComboPreferences": {
+#    //							"PreferenceAt0":
+#    //									{"sweets_consumption":1.0},
+#    //							"MaximumSatisfaction":
+#    //									{"sweets_consumption":1.0},
+#    //                  }
+#    // 
+#    //    "SupplementaryComboPreferences": {
+#    //							"PreferenceAt0":
+#    //									{"consumption":1.0,"savings":1.0},
+#    //							"MaximumSatisfaction":
+#    //									{"consumption":1.0,"savings":1.0},
+#    //                  }
+#		}
+	
+	_market.clear_persons()
+	
+	var persons = []
+	if loaded_dict.has("Persons"):
+		persons = loaded_dict.get("Persons")
+	
+	
+	#Hay que obtener los SatisfactionCalculator. Y cargarlos con información como la siguiente			
+#	_options
+#	_option_product_dict
+#	_complementary_combos
+#	_supplementary_combos
+#	for option in option_satisf.keys():				
+#		_option_satisf_curve_dict[option] = satisf_curve
+#	for option in option_satisf.keys():
+#		_complementary_combo_satisf_curve_dict[option] = satisf_curve
+#	for option in option_satisf.keys():
+#		_supplementary_combo_satisf_curve_dict[option] = satisf_curve
+
+	var preferences = []
+	if loaded_dict.has("Preferences"):
+		preferences = loaded_dict.get("Preferences")
+
+	for person in preferences:
+		var satisfaction_calc = SatisfactionCalculator.new()
+		#satisfaction_calc_ref.clear_all()
+		#satisfaction_calc_ref.add_options(options)
+		#satisfaction_calc_ref.add_option_product_dict(option_product_dict)
+		#...
+		var trade_calc = TradeCalculator.new(satisfaction_calc)
+		_market.add_person(person,trade_calc)
+	
+	
+	pass # Replace with function body.

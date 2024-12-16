@@ -18,7 +18,6 @@ margin_bottom = 3.0
 script = ExtResource( 1 )
 
 [node name="SatisfactionModelEditor" parent="." instance=ExtResource( 2 )]
-visible = true
 modulate = Color( 0.839216, 0.839216, 1, 1 )
 margin_left = 296.0
 margin_top = 120.0
@@ -160,7 +159,6 @@ __meta__ = {
 }
 
 [node name="SaveAsFileDialog" type="FileDialog" parent="."]
-visible = true
 margin_left = 384.0
 margin_top = 80.0
 margin_right = 840.0
@@ -171,7 +169,6 @@ access = 1
 filters = PoolStringArray( "*.col" )
 
 [node name="LoadFileDialog" type="FileDialog" parent="."]
-visible = true
 margin_left = 376.0
 margin_top = 96.0
 margin_right = 832.0
@@ -183,12 +180,11 @@ access = 1
 filters = PoolStringArray( "*.col" )
 
 [node name="TradeTesterScene" type="WindowDialog" parent="."]
-visible = true
 modulate = Color( 0.803922, 1, 0.811765, 1 )
-margin_left = 104.0
-margin_top = 359.0
-margin_right = 1064.0
-margin_bottom = 743.0
+margin_left = -16.0
+margin_top = 272.0
+margin_right = 944.0
+margin_bottom = 656.0
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -436,10 +432,9 @@ margin_left = 296.0
 margin_top = 153.0
 margin_right = 382.0
 margin_bottom = 173.0
-text = "TODO: Load Model"
+text = "Load Model"
 
 [node name="LoadModelFileDialog" type="FileDialog" parent="TradeTesterScene"]
-visible = true
 margin_left = -24.0
 margin_top = 81.0
 margin_right = 448.0
@@ -481,6 +476,7 @@ margin_bottom = 94.0
 text = "currency"
 
 [node name="MarketTesterScene" type="WindowDialog" parent="."]
+visible = true
 margin_left = 168.0
 margin_top = 96.0
 margin_right = 1016.0
@@ -556,20 +552,20 @@ __meta__ = {
 }
 
 [node name="AmountSumOfTradeLabel" type="Label" parent="MarketTesterScene"]
-margin_left = 696.0
-margin_top = 176.0
-margin_right = 842.0
-margin_bottom = 190.0
+margin_left = 688.0
+margin_top = 80.0
+margin_right = 834.0
+margin_bottom = 94.0
 text = "Sum of Traded Amount"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="SumOfTradeItemList" type="ItemList" parent="MarketTesterScene"]
-margin_left = 560.0
-margin_top = 168.0
-margin_right = 672.0
-margin_bottom = 280.0
+margin_left = 568.0
+margin_top = 184.0
+margin_right = 680.0
+margin_bottom = 296.0
 
 [node name="CalculateTradeButton" type="Button" parent="MarketTesterScene"]
 margin_left = 416.0
@@ -647,9 +643,9 @@ __meta__ = {
 
 [node name="CalcNewPricesGDNatButton" type="Button" parent="MarketTesterScene"]
 margin_left = 392.0
-margin_top = 288.0
-margin_right = 784.0
-margin_bottom = 312.0
+margin_top = 296.0
+margin_right = 845.0
+margin_bottom = 320.0
 text = "Calc prices with GDNat (En construcción CalcNewPricesGDNatButton)"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -671,11 +667,50 @@ text = "Mouse pos"
 
 [node name="PricesItemList" type="ItemList" parent="MarketTesterScene"]
 margin_left = 408.0
-margin_top = 312.0
+margin_top = 320.0
 margin_right = 560.0
-margin_bottom = 376.0
+margin_bottom = 384.0
 
 [node name="Plotter" parent="MarketTesterScene" instance=ExtResource( 4 )]
+
+[node name="LoadSatisfModelButton" type="Button" parent="MarketTesterScene"]
+margin_left = 560.0
+margin_top = 104.0
+margin_right = 689.0
+margin_bottom = 124.0
+text = "Load satisf. model (TODO)"
+
+[node name="LoadScenarioButton" type="Button" parent="MarketTesterScene"]
+margin_left = 560.0
+margin_top = 128.0
+margin_right = 711.0
+margin_bottom = 148.0
+text = "Load scenario (TODO)"
+
+[node name="SaveScenarioButton" type="Button" parent="MarketTesterScene"]
+margin_left = 560.0
+margin_top = 152.0
+margin_right = 710.0
+margin_bottom = 172.0
+text = "Save scenario (Testandose)"
+
+[node name="SaveAsFileDialog" type="FileDialog" parent="MarketTesterScene"]
+margin_left = 56.0
+margin_top = 80.0
+margin_right = 456.0
+margin_bottom = 280.0
+window_title = "Guardar un Archivo"
+access = 1
+filters = PoolStringArray( "*.sce" )
+
+[node name="LoadAsFileDialog" type="FileDialog" parent="MarketTesterScene"]
+visible = true
+margin_right = 432.0
+margin_bottom = 256.0
+window_title = "Abrir un Archivo"
+mode = 0
+access = 1
+filters = PoolStringArray( "*.sce" )
 
 [node name="PruebaButton" type="Button" parent="."]
 margin_left = 224.0
@@ -751,4 +786,8 @@ text = "Active Model:"
 [connection signal="pressed" from="MarketTesterScene/NextStepButton" to="MarketTesterScene" method="_on_NextStepButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalculateNewPricesButton" to="MarketTesterScene" method="_on_CalculateNewPricesButton_pressed"]
 [connection signal="pressed" from="MarketTesterScene/CalcNewPricesGDNatButton" to="MarketTesterScene" method="_on_CalcNewPricesGDNatButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/LoadScenarioButton" to="MarketTesterScene" method="_on_LoadScenarioButton_pressed"]
+[connection signal="pressed" from="MarketTesterScene/SaveScenarioButton" to="MarketTesterScene" method="_on_SaveScenarioButton_pressed"]
+[connection signal="file_selected" from="MarketTesterScene/SaveAsFileDialog" to="MarketTesterScene" method="_on_SaveAsFileDialog_file_selected"]
+[connection signal="file_selected" from="MarketTesterScene/LoadAsFileDialog" to="MarketTesterScene" method="_on_LoadAsFileDialog_file_selected"]
 [connection signal="pressed" from="PruebaButton" to="PruebaButton" method="_on_PruebaButton_pressed"]

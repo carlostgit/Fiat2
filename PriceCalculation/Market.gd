@@ -283,6 +283,9 @@ func remove_person(person_arg:String):
 	if _persons.has(person_arg):
 		_persons.erase(person_arg)
 		
+func clear_persons():
+	_persons.clear()
+		
 func _calculate_best_combinations():
 	for person in _persons:
 		var best_combidict = self._calculate_best_combination_for_person(person)

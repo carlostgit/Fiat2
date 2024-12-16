@@ -729,8 +729,7 @@ func _satisf_calculator_updated():
 	$SatisfModelNameLabel.set_text(self.name_of_model)
 	_trade_calculator = TradeCalculator.new(_satisfaction_calculator_ref)
 
-func _on_LoadModelFileDialog_file_selected(path):	
-	#TODO: Cargar un Satisfaction Model desde fichero, con código como el de SatisfactionModelEditor	
+func _on_LoadModelFileDialog_file_selected(path):		
 	var save_game_new = File.new()
 	if not save_game_new.file_exists(path):
 		return
