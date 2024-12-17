@@ -768,7 +768,7 @@ func _on_LoadAsFileDialog_file_selected(path):
 	
 #			"Persons": ["Peter","George"], 
 #			"Products":["bill","chocolate","candy"], 
-#Este lo elimino:			"Consumption":["bill_consumption","chocolate_consumption","candy_consumption"],
+#			"OptionProduct":{"nut_consumption":"nut","chocolate_consumption" : "chocolate","candy_consumption" : "candy"},
 #			"Owned": {
 #				"Peter":
 #						{"bill":1,"chocolate":2,"candy":3},
@@ -776,14 +776,14 @@ func _on_LoadAsFileDialog_file_selected(path):
 #						{"bill":4,"chocolate":5,"candy":6}
 #				},
 #			"Preferences": {
-#				"Peter":					
+#				"Peter":
 #						{
 #							"PreferenceAt0":
 #									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
 #							"MaximumSatisfaction":
 #									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
 #						},
-#				"George":					
+#				"George":
 #						{
 #							"PreferenceAt0":
 #									{"bill_consumption":1.0,"chocolate_consumption":1.0,"candy_consumption":1.0},
@@ -841,14 +841,50 @@ func _on_LoadAsFileDialog_file_selected(path):
 	if loaded_dict.has("Preferences"):
 		preferences = loaded_dict.get("Preferences")
 
+	var option_product_dict = {}	
+	if loaded_dict.has("OptionProduct"):
+		option_product_dict = loaded_dict.get("OptionProduct")
+	
+	var options = []
+	for option in option_product_dict.keys():
+		options.append(option)
+		
+	var complementary_combos_dict = {}
+	if loaded_dict.has("ComplementaryCombos"):
+		complementary_combos_dict = loaded_dict.get("ComplementaryCombos")
+	
+	var supplementary_combos_dict = {}
+	if loaded_dict.has("SupplementaryCombos"):
+		supplementary_combos_dict = loaded_dict.get("SupplementaryCombos")
+	
+	var currency = ""
+	if loaded_dict.has("Currency"):
+		currency = loaded_dict.get("Currency")
+	
+	Prices.set_currency(currency)
+	
+	
+	
 	for person in preferences:
 		var satisfaction_calc = SatisfactionCalculator.new()
-		#satisfaction_calc_ref.clear_all()
+		satisfaction_calc.reset()
+		
+		satisfaction_calc.set_option_product_dict(option_product_dict)
+		satisfaction_calc.set_options(options)
+		
+		for combo in complementary_combos_dict.keys():
+			var options_in_combo = complementary_combos_dict[combo]
+			satisfaction_calc.set_complementary_combo(combo,options_in_combo)
+
+		for combo in supplementary_combos_dict.keys():
+			var options_in_combo = supplementary_combos_dict[combo]
+			satisfaction_calc.set_supplementary_combo(combo,options_in_combo)
+
 		#satisfaction_calc_ref.add_options(options)
 		#satisfaction_calc_ref.add_option_product_dict(option_product_dict)
 		#...
-		var trade_calc = TradeCalculator.new(satisfaction_calc)
-		_market.add_person(person,trade_calc)
+		#var trade_calc = TradeCalculator.new(satisfaction_calc)
+		#_market.add_person(person,trade_calc)
 	
 	
 	pass # Replace with function body.
