@@ -10,6 +10,7 @@ const Market = preload("res://PriceCalculation/Market.gd")
 const TradeCalculator = preload("res://PriceCalculation/TradeCalculator.gd")
 const SatisfactionCalculator = preload("res://PriceCalculation/SatisfactionCalculator.gd")
 const PriceCalculatorGDNBind = preload("res://PriceCalculatorGDNBind.gdns")
+const SatisfactionCurve = preload("res://PriceCalculation/SatisfactionCurve.gd")
 var _priceCalculatorGDNBind:PriceCalculatorGDNBind = null
 
 
@@ -803,19 +804,24 @@ func _on_LoadAsFileDialog_file_selected(path):
 #    //                          {"chocolate savings", 1.0},
 #    //                          {"nut savings", 1.0} }
 #    //              }
-#    //    "ComplementaryComboPreferences": {
-#    //							"PreferenceAt0":
-#    //									{"sweets_consumption":1.0},
-#    //							"MaximumSatisfaction":
-#    //									{"sweets_consumption":1.0},
-#    //                  }
+ #          "ComplementaryComboPreferences": {
+#				"Peter":					
+#						{
+#							"PreferenceAt0":
+#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+#							"MaximumSatisfaction":
+#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+#                  },
 #    // 
-#    //    "SupplementaryComboPreferences": {
-#    //							"PreferenceAt0":
-#    //									{"consumption":1.0,"savings":1.0},
-#    //							"MaximumSatisfaction":
-#    //									{"consumption":1.0,"savings":1.0},
-#    //                  }
+#           "SupplementaryComboPreferences": {
+#				"Peter":					
+#						{
+#							"PreferenceAt0":
+#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+#							"MaximumSatisfaction":
+#									{"sweets_consumption_group":1.0,"savings_group":1.0},
+#                  },
+
 #		}
 	
 	_market.clear_persons()
@@ -824,6 +830,13 @@ func _on_LoadAsFileDialog_file_selected(path):
 	if loaded_dict.has("Persons"):
 		persons = loaded_dict.get("Persons")
 	
+	var person_owned_dict = {}
+	if loaded_dict.has("Owned"):
+		person_owned_dict = loaded_dict.get("Owned")
+	
+	for person in person_owned_dict.keys():
+		var owned_dict = person_owned_dict[person]
+		_market.add_owned_products(person,owned_dict)
 	
 	#Hay que obtener los SatisfactionCalculator. Y cargarlos con información como la siguiente			
 #	_options
@@ -837,9 +850,17 @@ func _on_LoadAsFileDialog_file_selected(path):
 #	for option in option_satisf.keys():
 #		_supplementary_combo_satisf_curve_dict[option] = satisf_curve
 
-	var preferences = []
+	var person_preferences_dict = {}
 	if loaded_dict.has("Preferences"):
-		preferences = loaded_dict.get("Preferences")
+		person_preferences_dict = loaded_dict.get("Preferences")
+		
+	var person_compcombpreferences_dict = {}
+	if loaded_dict.has("ComplementaryComboPreferences"):
+		person_compcombpreferences_dict = loaded_dict.get("ComplementaryComboPreferences")
+
+	var person_supcombpreferences_dict = {}
+	if loaded_dict.has("SuplementaryComboPreferences"):
+		person_supcombpreferences_dict = loaded_dict.get("SuplementaryComboPreferences")
 
 	var option_product_dict = {}	
 	if loaded_dict.has("OptionProduct"):
@@ -863,23 +884,80 @@ func _on_LoadAsFileDialog_file_selected(path):
 	
 	Prices.set_currency(currency)
 	
-	
-	
-	for person in preferences:
-		var satisfaction_calc = SatisfactionCalculator.new()
-		satisfaction_calc.reset()
 		
+	
+	
+	for person in persons:
+		var satisfaction_calc = SatisfactionCalculator.new()
+		satisfaction_calc.reset()						
 		satisfaction_calc.set_option_product_dict(option_product_dict)
 		satisfaction_calc.set_options(options)
 		
+		if person_preferences_dict.has(person):
+			var preferences_dict = person_preferences_dict[person]
+			var option_preferenceAt0_dict = preferences_dict["PreferenceAt0"]
+			var option_MaximumSatisfaction_dict = preferences_dict["MaximumSatisfaction"]			
+			assert (option_preferenceAt0_dict.size()==option_MaximumSatisfaction_dict.size())
+			
+			for option in option_preferenceAt0_dict.keys():
+				var prefAt0 = option_preferenceAt0_dict[option]
+				assert(option_MaximumSatisfaction_dict.has(option))
+				
+				var max_satisf = 0.0
+				if option_MaximumSatisfaction_dict.has(option):
+					max_satisf = option_MaximumSatisfaction_dict[option]
+			
+				var satisf_curve:SatisfactionCurve = SatisfactionCurve.new()
+				satisf_curve.set_maximum_satisf(max_satisf)
+				satisf_curve.set_preference_at_0(prefAt0)
+				satisfaction_calc.set_satisfaction_curve(option, satisf_curve)
+			
 		for combo in complementary_combos_dict.keys():
 			var options_in_combo = complementary_combos_dict[combo]
 			satisfaction_calc.set_complementary_combo(combo,options_in_combo)
-
+		
+		if person_compcombpreferences_dict.has(person):
+			var compcombpreferences_dict = person_compcombpreferences_dict[person]
+			var option_compcombpreferenceAt0_dict = compcombpreferences_dict["PreferenceAt0"]
+			var option_compcombMaximumSatisfaction_dict = compcombpreferences_dict["MaximumSatisfaction"]			
+			assert (option_compcombpreferenceAt0_dict.size()==option_compcombMaximumSatisfaction_dict.size())
+		
+			for option in option_compcombpreferenceAt0_dict.keys():
+				var prefAt0 = option_compcombpreferenceAt0_dict[option]
+				assert(option_compcombMaximumSatisfaction_dict.has(option))
+				
+				var max_satisf = 0.0
+				if option_compcombMaximumSatisfaction_dict.has(option):
+					max_satisf = option_compcombMaximumSatisfaction_dict[option]
+			
+				var satisf_curve:SatisfactionCurve = SatisfactionCurve.new()
+				satisf_curve.set_maximum_satisf(max_satisf)
+				satisf_curve.set_preference_at_0(prefAt0)
+				satisfaction_calc.set_satisfaction_curve_for_complementary_combo(option, satisf_curve)
+			
 		for combo in supplementary_combos_dict.keys():
 			var options_in_combo = supplementary_combos_dict[combo]
 			satisfaction_calc.set_supplementary_combo(combo,options_in_combo)
 
+		if person_supcombpreferences_dict.has(person):
+			var supcombpreferences_dict = person_supcombpreferences_dict[person]
+			var option_supcombpreferenceAt0_dict = supcombpreferences_dict["PreferenceAt0"]
+			var option_supcombMaximumSatisfaction_dict = supcombpreferences_dict["MaximumSatisfaction"]			
+			assert (option_supcombpreferenceAt0_dict.size()==option_supcombMaximumSatisfaction_dict.size())
+		
+			for option in option_supcombpreferenceAt0_dict.keys():
+				var prefAt0 = option_supcombpreferenceAt0_dict[option]
+				assert(option_supcombMaximumSatisfaction_dict.has(option))
+				
+				var max_satisf = 0.0
+				if option_supcombMaximumSatisfaction_dict.has(option):
+					max_satisf = option_supcombMaximumSatisfaction_dict[option]
+			
+				var satisf_curve:SatisfactionCurve = SatisfactionCurve.new()
+				satisf_curve.set_maximum_satisf(max_satisf)
+				satisf_curve.set_preference_at_0(prefAt0)
+				satisfaction_calc.set_satisfaction_curve_for_supplementary_combo(option, satisf_curve)
+		
 		#satisfaction_calc_ref.add_options(options)
 		#satisfaction_calc_ref.add_option_product_dict(option_product_dict)
 		#...
