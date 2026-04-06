@@ -29,7 +29,7 @@ pca::CTradeCalculator::~CTradeCalculator()
 
 
 
-//Habrá que cambiar este método para que quede claro que la combinación que se ajusta es de opciones
+//HabrÃ¡ que cambiar este mÃ©todo para que quede claro que la combinaciÃ³n que se ajusta es de opciones
 std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(double dBudgetArg, std::map<COption*,double> mapCurrentCombidictArg, double dBudgetStepArg, int nMaxStepArg)
 {    
 
@@ -60,11 +60,11 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
     if (c_traces) std::cout << "Starting with dLeftMoney: " << dLeftMoney << std::endl;
     if (c_traces) std::cout << "Starting with Satisfaction: " << dBestPreviousSatisfaction << std::endl;
 
-    //Si el presupuesto no llega para la combinación actual, eliminamos elementos que sean relativamente caros y poco satisfactorios
+    //Si el presupuesto no llega para la combinaciÃ³n actual, eliminamos elementos que sean relativamente caros y poco satisfactorios
     while (dLeftMoney < 0.0)
     {
         bool bChangeMade = false;
-        //		Eliminaré productos en orden de menor reducción de satisfacción
+        //		EliminarÃ© productos en orden de menor reducciÃ³n de satisfacciÃ³n
         double dBestDecrementOfSatisfaction = dBestPreviousSatisfaction;
         std::map<COption*, double> mapBestTryingCombination = mapCombination;
 
@@ -77,7 +77,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
             double dRemoveProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(pOptionToRemove->GetProduct());
             if (mapTryingCombinationRemovingProduct.end() == mapTryingCombinationRemovingProduct.find(pOptionToRemove))
             {
-                //Igual habría que poner aquí un continue
+                //Igual habrÃ­a que poner aquÃ­ un continue
                 mapTryingCombinationRemovingProduct[pOptionToRemove] = 0.0;
             }
 
@@ -122,7 +122,7 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
 
     if (dLeftMoney >= 0)
     {
-//#		Si ya no se puede añadir ningún producto, puede que quede dinero para intercambiar productos
+//#		Si ya no se puede aÃ±adir ningÃºn producto, puede que quede dinero para intercambiar productos
         long nCount = 0;
         while (true)
         {
@@ -259,7 +259,7 @@ pca::CSatisfactionCalculator* pca::CTradeCalculator::GetSatisfactionCalculatorRe
 //  var budget : float = Prices.calculate_combidict_price(owned_combidict_arg)
 //  var init_budget_step = budget_step * 8
 //  var best_combidict : Dictionary = trade_calc_arg.adjust_best_combidict_changing_step(budget, current_best_combidict_arg, init_budget_step, budget_step, max_num_steps)
-//  #			El cálculo tendría que hacerse con pasos de precisión de decimales, y el metodo interpolaría para resultados intermedios
+//  #			El cÃ¡lculo tendrÃ­a que hacerse con pasos de precisiÃ³n de decimales, y el metodo interpolarÃ­a para resultados intermedios
 //  return best_combidict
 
 
@@ -278,7 +278,7 @@ pca::CSatisfactionCalculator* pca::CTradeCalculator::GetSatisfactionCalculatorRe
 
 
 //func adjust_best_combidict(budget_arg:float, current_combidict:Dictionary, budget_step_arg, max_step_arg:int):
-//#	TDOO: Hacer un método que llame a este método con pasos decrecientes en tamaño
+//#	TDOO: Hacer un mÃ©todo que llame a este mÃ©todo con pasos decrecientes en tamaÃ±o
 //#	var new_combidict:Dictionary = current_combidict
 //
 //#	var best_combination:Dictionary = {}
@@ -304,7 +304,7 @@ pca::CSatisfactionCalculator* pca::CTradeCalculator::GetSatisfactionCalculatorRe
 //	while left_money < 0:
 //
 //		var change_made:bool = false
-//#		eliminaré productos en orden de menor reducción de satisfacción
+//#		eliminarÃ© productos en orden de menor reducciÃ³n de satisfacciÃ³n
 //		var best_decrement_of_satisfaction = best_previous_satisfaction
 //		var best_trying_combination = combination.duplicate()
 //
@@ -339,7 +339,7 @@ pca::CSatisfactionCalculator* pca::CTradeCalculator::GetSatisfactionCalculatorRe
 //
 //
 //	if left_money >= 0:
-//#		Ya no se puede añadir ningún producto, pero puede que quede dinero para intercambiar productos
+//#		Ya no se puede aÃ±adir ningÃºn producto, pero puede que quede dinero para intercambiar productos
 //		var count:int = 0
 //		while true:
 //			count += 1

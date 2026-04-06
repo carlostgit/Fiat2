@@ -93,7 +93,7 @@ double pca::CSatisfactionCalculator::CalculateSatifactionOfOptSupplementaryCombo
 //_calculate_satisf_of_combidict_from_supplementary_combos
 double pca::CSatisfactionCalculator::CalculateSatisfOfCombidictFromSupplementaryCombos(std::map<COption*,double> mapOption_dAmount)
 {
-//#	Satisfacción de los supplementary combos
+//#	SatisfacciÃ³n de los supplementary combos
 //#var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1,
 //#															"chocolate_savings":1.0
 //#														}
@@ -399,7 +399,7 @@ func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictiona
 				product_dict[product] = option_dict_arg[option]
 
 		else:
-	#	No sé si está bien que pueda haber products entre las options
+	#	No sÃ© si estÃ¡ bien que pueda haber products entre las options
 			if PriceCalculationGlobals._products.has(option):
 				if (product_dict.has(option)):
 					product_dict[option] += option_dict_arg[option]
@@ -422,7 +422,7 @@ func calculate_productdict_from_optiondict(option_dict_arg:Dictionary)->Dictiona
 				product_dict[product] = option_dict_arg[option]
 
 		else:
-	#	No sé si está bien que pueda haber products entre las options
+	#	No sÃ© si estÃ¡ bien que pueda haber products entre las options
 			if PriceCalculationGlobals._products.has(option):
 				if (product_dict.has(option)):
 					product_dict[option] += option_dict_arg[option]
@@ -468,7 +468,7 @@ func _calculate_satisf_of_combidict_from_complementary_combos(combidict_arg:Dict
 
 
 func _calculate_satisf_of_combidict_from_supplementary_combos(combidict_arg:Dictionary) -> float:
-#	Satisfacción de los supplementary combos
+#	SatisfacciÃ³n de los supplementary combos
 #var _supplementary_combos:Dictionary = {	"savings":	{	"candy_savings":0.1,
 #															"chocolate_savings":1.0
 #														}

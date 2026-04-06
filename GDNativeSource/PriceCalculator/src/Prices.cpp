@@ -3,6 +3,7 @@
 #include "Reality.h"
 #include "Market.h"
 #include <assert.h>
+#include <algorithm>
 
 pca::CPrices::CPrices(pca::CMarket* pMarketRef)
 {

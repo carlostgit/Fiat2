@@ -12,7 +12,7 @@ pca::CPricesLogInfo::CPricesLogInfo(pca::CMarket* pMarketRef):m_pMarketRef(pMark
 	m_pPricesRef = pMarketRef->GetPricesRef();
 
 	std::cout << "Initializing CPricesLogInfo with CReality::GetProducts" << std::endl;
-	std::cout << "ATENCION! CREO QUE ESTO ES UN BUG. Cada vez que se cambian los Products en CReality habría que actualizar esto" << std::endl;	
+	std::cout << "ATENCION! CREO QUE ESTO ES UN BUG. Cada vez que se cambian los Products en CReality habrÃ­a que actualizar esto" << std::endl;	
 
 	for (auto& pProduct : pMarketRef->GetProducts())
 	{

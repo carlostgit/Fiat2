@@ -53,12 +53,12 @@ namespace pca
 
         //
         ///////////////
-        //TODO: Hacer mÈtodo que reciba el escenario en una sola estructura
+        //TODO: Hacer m√©todo que reciba el escenario en una sola estructura
 
         //
 
 
-        //MÈtodos para obtener informaciÛn del escenario
+        //M√©todos para obtener informaci√≥n del escenario
         bool IsProduct(std::string sProductName);
         bool IsPerson(std::string sPersonName);
         bool IsOption(std::string sOptionName);
@@ -76,7 +76,7 @@ namespace pca
         void PrintPersonsOptionAdjustmentToFile();        
 
         /////////////
-        //Para hacer c·lculos de TradeCalculator, sin generar un escenario con personas
+        //Para hacer c√°lculos de TradeCalculator, sin generar un escenario con personas
         //
         /*void CreateEmptyMarket();
         void CreateEmptyReality();
@@ -90,8 +90,8 @@ namespace pca
     protected:
 
     private:
-        //Usar unique_ptr aquÌ requiere que las clases se incluyan en el cpp
-        //para que el compilador sepa cÛmo destruir sus objetos
+        //Usar unique_ptr aqu√≠ requiere que las clases se incluyan en el cpp
+        //para que el compilador sepa c√≥mo destruir sus objetos
         
         std::unique_ptr<CReality> m_upReality;        
 

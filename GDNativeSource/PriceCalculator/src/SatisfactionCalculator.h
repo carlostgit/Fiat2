@@ -67,7 +67,7 @@ namespace pca
         CMarket* m_pMarketRef = nullptr;
 
         /*
-        //Combos suplementarios y complementarios con su ponderación
+        //Combos suplementarios y complementarios con su ponderaciÃ³n
         var _complementary_combos:Dictionary = {} #Hay que inicializarlo
         #var _complementary_combos:Dictionary = {"sweets_consumption":["chocolate_consumption","candy_consumption"]}
         var _supplementary_combos:Dictionary = {} #Hay que inicializarlo
@@ -77,7 +77,7 @@ namespace pca
         #														}
         #										}
 
-        //Todas las diferentes opciones. Tal vez debería ir en un fichero aparte?
+        //Todas las diferentes opciones. Tal vez deberÃ­a ir en un fichero aparte?
         var _options:Array = [] #Hay que inicializarlo a partir de los productos
         var _option_product_dict:Dictionary = {} #Hay que inicializarlo a partir de los productos
         #var _option_product_dict:Dictionary = { "candy_savings": "candy",

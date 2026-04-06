@@ -215,6 +215,7 @@ double pca::CPerson::GetTradedAmount(pca::CProduct* pProduct)
     {
         return m_mapCurrentTradProd_Amount.at(pProduct);
     }
+    return 0.0;
 }
 
 pca::CTradeCalculator* pca::CPerson::GetTradeCalculatorRef()
@@ -285,7 +286,7 @@ double pca::CPerson::GetDesiredProdAmount(pca::CProduct* pProduct)
 //#
 //                var best_combidict : Dictionary = improve_combination(trade_calc, _person_owned_dict[person_arg], current_best_combidict, budget_step, max_num_steps)
 //                _person_best_combination_dict[person_arg] = best_combidict
-//                #			El c·lculo tendrÌa que hacerse con pasos de precisiÛn de decimales, y el metodo interpolarÌa para resultados intermedios
+//                #			El c√°lculo tendr√≠a que hacerse con pasos de precisi√≥n de decimales, y el metodo interpolar√≠a para resultados intermedios
 //                return best_combidict
 //                var null_dictionary = {}
 //                _person_best_combination_dict[person_arg] = null_dictionary

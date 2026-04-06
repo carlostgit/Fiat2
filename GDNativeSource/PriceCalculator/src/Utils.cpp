@@ -41,7 +41,7 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
 
     auto vOptions = pMarket->GetOptions();
 
-    //todo: meter aquí los titulos de los precios de productos
+    //todo: meter aquÃ­ los titulos de los precios de productos
     auto vProducts = pMarket->GetProducts();
     
     csvFile << "PriceChangeStep"; // Writing header row
@@ -226,7 +226,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
     csvFile << std::endl;
 
-//TODO: Obtener también las supplementary options y las completmentary options!
+//TODO: Obtener tambiÃ©n las supplementary options y las completmentary options!
 
     auto pReality = pMarket->GetRealityRef();
 
@@ -264,7 +264,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
 
     csvFile << std::endl;
-    //todo: meter aquí los titulos de los precios de productos
+    //todo: meter aquÃ­ los titulos de los precios de productos
     auto vProducts = pMarket->GetProducts();
     std::sort(vProducts.begin(), vProducts.end(), [](pca::CProduct* pProduct1, pca::CProduct* pProduct2)->bool {
         return (pProduct1->GetName() < pProduct2->GetName());});

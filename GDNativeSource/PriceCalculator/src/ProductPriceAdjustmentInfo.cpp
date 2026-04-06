@@ -103,7 +103,7 @@ long pca::CProductPriceAdjustmentInfo::GetNumPriceBottoms()
 
 //func _calculate_num_price_tops()->int:
 //
-//#		EstarÌa bien registrar esto, para poder verlo gr·ficamente
+//#		Estar√≠a bien registrar esto, para poder verlo gr√°ficamente
 //var num_max_price_tops : int = 0
 //var last_price : float = 0.0
 //var last_price_going_up : bool = true
@@ -267,7 +267,7 @@ long pca::CProductPriceAdjustmentInfo::CalculateNumPriceBottoms()
 //
 //	func _calculate_num_price_tops()->int :
 //
-//	#		EstarÌa bien registrar esto, para poder verlo gr·ficamente
+//	#		Estar√≠a bien registrar esto, para poder verlo gr√°ficamente
 //	var num_max_price_tops : int = 0
 //	var last_price : float = 0.0
 //	var last_price_going_up : bool = true

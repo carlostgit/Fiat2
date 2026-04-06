@@ -70,7 +70,7 @@ namespace pca
     {eProdNut,{eOptNutSavings,eOptNutConsumption}},
     };
 
-    //Esto debería sacarse a partir de lo anterior
+    //Esto deberÃ­a sacarse a partir de lo anterior
     const std::map<pca::eOpt, pca::eProd > c_mapOption_Product = {
 
     {eOptCandySavings,eProdCandy},

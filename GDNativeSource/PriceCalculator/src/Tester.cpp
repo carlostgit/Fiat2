@@ -141,17 +141,17 @@ int pca::CTester::Test_SatisfactionCalculator()
                 
         CUtils::PrintPrices(oMarket.GetPricesRef());
 
-        //Voy a medir el tiempo de los siguientes c·lculos:
+        //Voy a medir el tiempo de los siguientes c√°lculos:
         auto start = std::chrono::high_resolution_clock::now();
 
         //double dStep = 1.0;
         //double dMaxNumSteps = 10;
-        //oMarket.AdjustBestCombinations(dStep, dMaxNumSteps); //Es mÈtodo protected, pero Tester es friend
+        //oMarket.AdjustBestCombinations(dStep, dMaxNumSteps); //Es m√©todo protected, pero Tester es friend
         oMarket.CalculateNewPrices();
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = end - start;
-        std::cout << "Tiempo de ejecuciÛn: " << elapsed.count() << " segundos" << std::endl;
+        std::cout << "Tiempo de ejecuci√≥n: " << elapsed.count() << " segundos" << std::endl;
 
         std::cout << "Person options after CalculateNewPrices:" << std::endl;
         CUtils::PrintPersonOptions(pPerson_1_Ref);

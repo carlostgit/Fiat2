@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <cmath>
 
 //Change prices algorithm params
 const long c_paramMaxStepsCalculatingNewPrices = 200;
@@ -245,7 +246,7 @@ std::map<pca::CProduct*, double>  pca::CMarket::CalculateNewPricesIncrement(doub
     
     double dParamMinProductExcessToChangePrice = 0.0;
 
-    //Este parámetro deberían pasarse por argumento al método calculate_new_prices_increment() :
+    //Este parÃ¡metro deberÃ­an pasarse por argumento al mÃ©todo calculate_new_prices_increment() :
     double dParamPriceChangeStep = dParamPriceChangeStepArg;
 
     if (dMaxAmountOfProductExcess > dParamMinProductExcessToChangePrice)

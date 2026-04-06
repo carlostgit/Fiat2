@@ -44,7 +44,7 @@ void pca::CTradeCalculatorScenario::CreateEmptyMarket()
     }
     else
     {
-        assert("" == "Falta una realidad donde añadir este nuevo Market");
+        assert("" == "Falta una realidad donde aÃ±adir este nuevo Market");
     }
 }
 

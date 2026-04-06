@@ -102,7 +102,7 @@ void pca::CReality::InitDefaultProductsAndOptions()
         }
         else
         {
-            assert("" == "error en CReality::InitDefaultProductsAndOptions, añadiendo Option");
+            assert("" == "error en CReality::InitDefaultProductsAndOptions, aÃ±adiendo Option");
         }
     }
 

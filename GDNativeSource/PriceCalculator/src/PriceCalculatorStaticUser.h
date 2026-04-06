@@ -57,8 +57,8 @@ namespace pca
     protected:
 
     private:
-        //Usar unique_ptr aquí requiere que las clases se incluyan en el cpp
-        //para que el compilador sepa cómo destruir sus objetos
+        //Usar unique_ptr aquÃ­ requiere que las clases se incluyan en el cpp
+        //para que el compilador sepa cÃ³mo destruir sus objetos
 
         static CPriceCalculator m_oPriceCalculator;
         

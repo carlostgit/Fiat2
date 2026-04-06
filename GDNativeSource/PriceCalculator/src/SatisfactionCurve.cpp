@@ -14,8 +14,8 @@ pca::CSatisfactionCurve::~CSatisfactionCurve()
 double pca::CSatisfactionCurve::GetDiminishingReturnsFactor(double dQuantity)
 {
     //#Voy a llamar al termino "1-(1/(x+1))" Diminishing Returns Factor
-    //#Esta ecuación tendría un máximo en 1, y tendría pendiente 1 en 0
-    //#Es como una ecuación y = x, pero que se va haciendo más y más horizontal hasta q ya no crece la y
+    //#Esta ecuaciÃ³n tendrÃ­a un mÃ¡ximo en 1, y tendrÃ­a pendiente 1 en 0
+    //#Es como una ecuaciÃ³n y = x, pero que se va haciendo mÃ¡s y mÃ¡s horizontal hasta q ya no crece la y
 
 	double dResult = 0.0;
 	double dDenominator = dQuantity+1.0;

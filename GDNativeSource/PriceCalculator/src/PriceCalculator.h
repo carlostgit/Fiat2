@@ -44,14 +44,14 @@ namespace pca
         void AddOptionToSupplCombo(std::string sSupplCombo, std::string sOption, double dWeight);
         //
         ///////////////
-        //TODO: Hacer método que reciba el escenario en una sola estructura
+        //TODO: Hacer mÃ©todo que reciba el escenario en una sola estructura
 
         //
 
-        //Método para ajustar precios. Requiere que se haya creado un mercado con personas productos opciones etc.
+        //MÃ©todo para ajustar precios. Requiere que se haya creado un mercado con personas productos opciones etc.
         void AdjustPrices();
 
-        //Métodos para obtener información del escenario
+        //MÃ©todos para obtener informaciÃ³n del escenario
         bool IsProduct(std::string sProductName);
         bool IsPerson(std::string sPersonName);
         bool IsOption(std::string sOptionName);
@@ -73,8 +73,8 @@ namespace pca
     protected:
 
     private:
-        //Usar unique_ptr aquí requiere que las clases se incluyan en el cpp
-        //para que el compilador sepa cómo destruir sus objetos
+        //Usar unique_ptr aquÃ­ requiere que las clases se incluyan en el cpp
+        //para que el compilador sepa cÃ³mo destruir sus objetos
         
         std::unique_ptr<CReality> m_upReality;        
 

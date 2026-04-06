@@ -10,3 +10,6 @@ release/
 Release/
 .vs/
 .import/
+
+# ignore executable
+PriceCalculator/PriceCalculator
