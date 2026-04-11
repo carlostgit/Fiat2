@@ -5,19 +5,52 @@
 #include "Market.h"
 
 #include "Product.h"
-#include <iostream>
+
 
 pca::CPricesLogInfo::CPricesLogInfo(pca::CMarket* pMarketRef):m_pMarketRef(pMarketRef)
 {
 	m_pPricesRef = pMarketRef->GetPricesRef();
 
-	std::cout << "Initializing CPricesLogInfo with CReality::GetProducts" << std::endl;
-	std::cout << "ATENCION! CREO QUE ESTO ES UN BUG. Cada vez que se cambian los Products en CReality habría que actualizar esto" << std::endl;	
+	//std::cout << "Initializing CPricesLogInfo with CReality::GetProducts" << std::endl;
+	//std::cout << "ATENCION! CREO QUE ESTO ES UN BUG. Cada vez que se cambian los Products en CReality habría que actualizar esto" << std::endl;	
 
-	for (auto& pProduct : pMarketRef->GetProducts())
+	SynchronizeProducts();
+}
+
+void pca::CPricesLogInfo::SynchronizeProducts()
+{
+	auto vProducts = m_pMarketRef->GetProducts();
+	for (auto& pProduct : vProducts)
 	{
-		std::unique_ptr<CProductPriceAdjustmentInfo> upProductPriceAdjustmentInfo(new CProductPriceAdjustmentInfo());
-		m_mapProduct_AdjustmentInfo[pProduct] = std::move(upProductPriceAdjustmentInfo);
+		if (m_mapProduct_AdjustmentInfo.find(pProduct) == m_mapProduct_AdjustmentInfo.end())
+		{
+			std::unique_ptr<CProductPriceAdjustmentInfo> upProductPriceAdjustmentInfo(new CProductPriceAdjustmentInfo());
+			m_mapProduct_AdjustmentInfo[pProduct] = std::move(upProductPriceAdjustmentInfo);
+		}
+	}
+
+	if (m_mapProduct_AdjustmentInfo.size() > vProducts.size())
+	{
+		for (auto it = m_mapProduct_AdjustmentInfo.begin(); it != m_mapProduct_AdjustmentInfo.end(); )
+		{
+			bool bFound = false;
+			for (auto& pProduct : vProducts)
+			{
+				if (it->first == pProduct)
+				{
+					bFound = true;
+					break;
+				}
+			}
+			if (!bFound)
+			{
+				it = m_mapProduct_AdjustmentInfo.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
 	}
 }
 
@@ -34,7 +67,7 @@ void pca::CPricesLogInfo::AddPriceChangeStepToVector(double dValueArg)
 
 void pca::CPricesLogInfo::ResetLastPrices()
 {
-
+	SynchronizeProducts();
 	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
@@ -45,6 +78,7 @@ void pca::CPricesLogInfo::ResetLastPrices()
 
 void pca::CPricesLogInfo::RegisterPrices()
 {
+	SynchronizeProducts();
 	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
 		//std::cout << "Adjusting product: " << pProduct->GetName() << std::endl;
@@ -66,6 +100,7 @@ void pca::CPricesLogInfo::RegisterPrices()
 
 bool pca::CPricesLogInfo::ArePricesEvolving()
 {
+	SynchronizeProducts();
 	bool bPricesEvolving = false;
 
 	for (auto& pProduct : m_pMarketRef->GetProducts())
@@ -97,6 +132,7 @@ bool pca::CPricesLogInfo::ArePricesEvolving()
 
 std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductPrices()
 {
+	SynchronizeProducts();
 	std::map<pca::CProduct*, std::vector<double> > mapProduct_vPrices;
 	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
@@ -109,6 +145,7 @@ std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductPr
 
 std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductAllPrices()
 {
+	SynchronizeProducts();
 	std::map<pca::CProduct*, std::vector<double> > mapProduct_vPrices;
 	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
@@ -127,6 +164,7 @@ std::vector<double> pca::CPricesLogInfo::GetAllPriceChangeStepsVector()
 
 std::map<pca::CProduct*, std::vector<long> > pca::CPricesLogInfo::GetProductPriceTops()
 {
+	SynchronizeProducts();
 	std::map<pca::CProduct*, std::vector<long> > mapProduct_vPrices;
 	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{
@@ -139,6 +177,7 @@ std::map<pca::CProduct*, std::vector<long> > pca::CPricesLogInfo::GetProductPric
 
 std::map<pca::CProduct*, std::vector<long> > pca::CPricesLogInfo::GetProductPriceBottoms()
 {
+	SynchronizeProducts();
 	std::map<pca::CProduct*, std::vector<long> > mapProduct_vPrices;
 	for (auto& pProduct : m_pMarketRef->GetProducts())
 	{

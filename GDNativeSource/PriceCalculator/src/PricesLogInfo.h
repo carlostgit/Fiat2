@@ -32,7 +32,10 @@ namespace pca
         
     private:
 
+        void SynchronizeProducts();
+        
         std::map<CProduct*, std::unique_ptr<CProductPriceAdjustmentInfo> > m_mapProduct_AdjustmentInfo;
+
         std::vector<double> m_vPriceChangeStepsVector;
 
         pca::CPrices* m_pPricesRef = nullptr;
