@@ -2,6 +2,8 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <cstdlib>
+
 
 #include "Person.h"
 #include "Option.h"
@@ -51,6 +53,8 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
     {
         std::string sProductName = pProduct->GetName();
         csvFile << "Price_" + sProductName; // Writing header row
+        csvFile << ",";
+        csvFile << "MarketTrade_" + sProductName; // Writing header row
         csvFile << ",";
     }
     
@@ -103,6 +107,8 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
     if (false == mapProd_vPriceAmount.empty())
         nNumPrices = mapProd_vPriceAmount.begin()->second.size();
 
+    std::map<CProduct*, std::vector<double> > mapProd_vTradeAmount = pMarket->GetPricesLogInfoRef()->GetProductAllTrades();
+
     for (int i1 = 0;i1 < nNumLog;i1++)
     {
         double dPriceChangeStep = 0.0;
@@ -127,7 +133,17 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
             }
 
             csvFile << dProductAmount; // Writing header row        
-            csvFile << ",";                     
+            csvFile << ",";
+
+            double dProductTrade = 0;
+            if (mapProd_vTradeAmount.end() != mapProd_vTradeAmount.find(pProduct))
+            {
+                std::vector<double> vProductTrade = mapProd_vTradeAmount.at(pProduct);
+                if (i1 < vProductTrade.size())
+                    dProductTrade = vProductTrade.at(i1);
+            }
+            csvFile << dProductTrade; // Writing header row        
+            csvFile << ",";
         }
 
         for (auto& pPerson : vPersons)
@@ -650,3 +666,11 @@ void pca::CUtils::PrintPricesEvolution(CMarket* pMarket)
     }
 }
 
+void pca::CUtils::ShowGraphics()
+{
+    std::cout << "Starting graphics display (plot_logs.py)..." << std::endl;
+    int result = system("python3 plot_logs.py");
+    if (result != 0) {
+        std::cerr << "Failed to execute plotter script. Make sure python3 and matplotlib are installed." << std::endl;
+    }
+}

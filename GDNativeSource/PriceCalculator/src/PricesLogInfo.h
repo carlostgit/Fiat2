@@ -21,9 +21,13 @@ namespace pca
         void AddPriceChangeStepToVector(double dValueArg);
         void ResetLastPrices();
         void RegisterPrices();
+        void RegisterTrade(std::map<CProduct*, double> mapTradeArg);
+
         bool ArePricesEvolving();
         std::map<pca::CProduct*, std::vector<double> > GetProductPrices();
         std::map<pca::CProduct*, std::vector<double> > GetProductAllPrices();        
+        std::map<pca::CProduct*, std::vector<double> > GetProductAllTrades();
+
         std::vector<double> GetAllPriceChangeStepsVector();
         std::map<pca::CProduct*, std::vector<long> > GetProductPriceTops();
         std::map<pca::CProduct*, std::vector<long> > GetProductPriceBottoms();

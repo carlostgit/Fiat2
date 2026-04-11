@@ -1,5 +1,7 @@
 #include "Tester.h"
 #include <iostream>
+#include <fstream>
+
 #include <chrono>
 //#include "PriceCalculationDefines.h"
 #include "Reality.h"
@@ -54,21 +56,30 @@ int pca::CTester::Test_SatisfactionCalculator()
 
         CSatisfactionCalculator oSatCalculator(&oMarket);
         std::map<COption*, double> map_nOption_dAmount;
-        //for (auto& nOption : c_setOptions)
-        for (auto& nOption : oReality.GetOptions())
-        {
-            map_nOption_dAmount[nOption] = 1.0;
-        }
 
-        std::cout << "Prueba..." << std::endl;
-        double dSatisfFormIndivOptions = oSatCalculator.CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
-        std::cout << "dSatisfFormIndivOptions: " << dSatisfFormIndivOptions << std::endl;
-        double dSatisfFormSuppCombos = oSatCalculator.CalculateSatisfOfCombidictFromSupplementaryCombos(map_nOption_dAmount);
-        std::cout << "dSatisfFormSuppCombos " << dSatisfFormSuppCombos << std::endl;
-        double dSatisfFormCompCombos = oSatCalculator.CalculateSatisfOfCombidictFromComplementaryCombos(map_nOption_dAmount);
-        std::cout << "dSatisfFormCompCombos " << dSatisfFormCompCombos << std::endl;
-        double dSatisfTotal = oSatCalculator.CalculateSatisfOfCombidict(map_nOption_dAmount);
-        std::cout << "dSatisfTotal " << dSatisfTotal << std::endl;
+        std::string fileName = "satisfaction_test.csv";
+        std::ofstream csvFile(fileName);
+        csvFile << "Amount,Individual,Supplementary,Complementary,Total" << std::endl;
+
+        std::cout << "Generando datos de satisfacción para el gráfico..." << std::endl;
+        for (double dAmount = 0.0; dAmount <= 10.0; dAmount += 0.5)
+        {
+            for (auto& nOption : oReality.GetOptions())
+            {
+                map_nOption_dAmount[nOption] = dAmount;
+            }
+
+            double dIndiv = oSatCalculator.CalculateSatisfOfCombidictFromIndividualOptions(map_nOption_dAmount);
+            double dSupp = oSatCalculator.CalculateSatisfOfCombidictFromSupplementaryCombos(map_nOption_dAmount);
+            double dComp = oSatCalculator.CalculateSatisfOfCombidictFromComplementaryCombos(map_nOption_dAmount);
+            double dTotal = oSatCalculator.CalculateSatisfOfCombidict(map_nOption_dAmount);
+
+            csvFile << dAmount << "," << dIndiv << "," << dSupp << "," << dComp << "," << dTotal << std::endl;
+        }
+        csvFile.close();
+
+        std::cout << "Datos guardados en " << fileName << std::endl;
+        CUtils::ShowGraphics();
     }
     std::cout << "Test_SatisfactionCalculator finished" << std::endl;
     
@@ -161,6 +172,9 @@ int pca::CTester::Test_SatisfactionCalculator()
         std::cout << "Prices after CalculateNewPrices:" << std::endl;
         CUtils::PrintPrices(oMarket.GetPricesRef());
 
+        // Generar log de ajuste de mercado y mostrar gráficas
+        CUtils::PrintPersonsOptionAdjustmentToFile(&oMarket);
+        CUtils::ShowGraphics();
     }    
     
     std::cout << "Test Market finished" << std::endl;

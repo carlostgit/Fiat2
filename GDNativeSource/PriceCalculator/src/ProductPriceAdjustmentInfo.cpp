@@ -81,6 +81,16 @@ void pca::CProductPriceAdjustmentInfo::AddPriceIteration(double dPriceArg)
     m_vNumLastPriceBottoms.push_back(CalculateNumPriceBottoms());
 }
 
+void pca::CProductPriceAdjustmentInfo::AddTradeIteration(double dTradeArg)
+{
+    m_vAllTrades.push_back(dTradeArg);
+}
+
+std::vector<double> pca::CProductPriceAdjustmentInfo::GetAllTrades()
+{
+    return m_vAllTrades;
+}
+
 std::vector<long>  pca::CProductPriceAdjustmentInfo::GetNumPriceTopsArray()
 {
     return m_vNumLastPriceTops;

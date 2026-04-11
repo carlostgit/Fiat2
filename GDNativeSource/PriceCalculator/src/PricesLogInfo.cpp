@@ -98,6 +98,20 @@ void pca::CPricesLogInfo::RegisterPrices()
 	}
 }
 
+void pca::CPricesLogInfo::RegisterTrade(std::map<CProduct*, double> mapTradeArg)
+{
+	SynchronizeProducts();
+	for (auto& pairProductTrade : mapTradeArg)
+	{
+		CProduct* pProduct = pairProductTrade.first;
+		double dTrade = pairProductTrade.second;
+		if (m_mapProduct_AdjustmentInfo.find(pProduct) != m_mapProduct_AdjustmentInfo.end())
+		{
+			m_mapProduct_AdjustmentInfo.at(pProduct)->AddTradeIteration(dTrade);
+		}
+	}
+}
+
 bool pca::CPricesLogInfo::ArePricesEvolving()
 {
 	SynchronizeProducts();
@@ -156,6 +170,19 @@ std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductAl
 	return mapProduct_vPrices;
 }
 
+
+std::map<pca::CProduct*, std::vector<double> > pca::CPricesLogInfo::GetProductAllTrades()
+{
+	SynchronizeProducts();
+	std::map<pca::CProduct*, std::vector<double> > mapProduct_vTrades;
+	for (auto& pProduct : m_pMarketRef->GetProducts())
+	{
+		CProductPriceAdjustmentInfo* pProductPriceAdjustmentInfo = m_mapProduct_AdjustmentInfo.at(pProduct).get();
+		std::vector<double> vTrades = pProductPriceAdjustmentInfo->GetAllTrades();
+		mapProduct_vTrades[pProduct] = vTrades;
+	}
+	return mapProduct_vTrades;
+}
 
 std::vector<double> pca::CPricesLogInfo::GetAllPriceChangeStepsVector()
 {

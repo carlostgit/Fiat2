@@ -169,6 +169,11 @@ bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
     AdjustBestCombinations(dInitBudgetStep, dTargetBudgetStep, nMaxNumSteps);
     CalculateTradesWithCurrentBestCombinations();
     CalculateSumOfTrade();
+    
+    // Registrar el trade total para las gráficas
+    std::map<CProduct*, double> mapSumOfTradeAndExcessTrade = CUtils::SumProducts(m_mapSumOfTrade, m_mapExcessProducts);
+    m_upPricesLogInfo->RegisterTrade(mapSumOfTradeAndExcessTrade);
+
     std::map<CProduct*,double> mapNewPricesIncrements = CalculateNewPricesIncrement(dParamPriceChangeStepArg);
 
     //

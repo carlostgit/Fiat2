@@ -19,6 +19,8 @@ namespace pca
         std::vector<double> GetAllPrices();
         void ResetLastPrices();
         void AddPriceIteration(double dPriceArg);
+        void AddTradeIteration(double dTradeArg);
+        std::vector<double> GetAllTrades();
         std::vector<long> GetNumPriceTopsArray();
         std::vector<long> GetNumPriceBottomsArray();
         long GetNumPriceTops();
@@ -37,6 +39,7 @@ namespace pca
         
         std::vector<double> m_vLastPrices;
         std::vector<double> m_vAllPrices;        
+        std::vector<double> m_vAllTrades;
 
         std::vector<long> m_vNumLastPriceTops;
         std::vector<long> m_vNumLastPriceBottoms;

@@ -26,6 +26,8 @@ namespace pca
         static void PrintPersonsOptionAdjustmentToFile(CMarket* pMarket);
         static void PrintScenarioInfoToFile(CMarket* pMarket);
         static void PrintPersonOptionAdjustmentToFile(CPerson* pPerson);
+        static void ShowGraphics();
+
 
         static std::map<pca::CProduct*, double> CalculateProductdictFromOptiondict(std::map<COption*, double> mapOptiondictArg);
 
