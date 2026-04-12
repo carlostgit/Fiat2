@@ -1,0 +1,13 @@
+# Binaries
+PriceCalculator
+obj/
+
+# Logs and Plots
+*.csv
+*.png
+
+# IDEs
+.vscode/
+.gemini/
+*.cbp
+*.depend

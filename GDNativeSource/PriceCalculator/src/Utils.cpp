@@ -374,6 +374,91 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
     csvFile.close();
 }
 
+void pca::CUtils::PrintInitialConditionsToFile(CMarket* pMarket)
+{
+    std::string fileName = "initial_conditions.csv";
+    std::ofstream csvFile(fileName);
+
+    if (!csvFile.is_open()) {
+        std::cerr << "Failed to create initial_conditions.csv" << std::endl;
+        return;
+    }
+
+    auto vPersons = pMarket->GetPersons();
+    auto vProducts = pMarket->GetRealityRef()->GetProducts();
+
+    // Sorting products by name to ensure consistent column order
+    std::sort(vProducts.begin(), vProducts.end(), [](pca::CProduct* p1, pca::CProduct* p2) {
+        return p1->GetName() < p2->GetName();
+    });
+
+    // Header: Person,Product1,Product2,...
+    csvFile << "Person";
+    for (auto* pProd : vProducts) {
+        csvFile << "," << pProd->GetName();
+    }
+    csvFile << std::endl;
+
+    // Data: Name,Amount1,Amount2,...
+    for (auto& pPerson : vPersons) {
+        csvFile << pPerson->GetName();
+        for (auto* pProd : vProducts) {
+            csvFile << "," << pPerson->GetOwnedProdAmount(pProd);
+        }
+        csvFile << std::endl;
+    }
+
+    csvFile.close();
+    std::cout << "Starting conditions saved to " << fileName << std::endl;
+}
+
+void pca::CUtils::PrintSatisfactionCurvesToFile(CMarket* pMarket)
+{
+    std::string fileName = "satisfaction_curves.csv";
+    std::ofstream csvFile(fileName);
+
+    if (!csvFile.is_open()) {
+        std::cerr << "Failed to create satisfaction_curves.csv" << std::endl;
+        return;
+    }
+
+    auto vPersons = pMarket->GetPersons();
+    auto vOptions = pMarket->GetOptions();
+    auto pReality = pMarket->GetRealityRef();
+    auto vSupplCombos = pReality->GetSupplCombos();
+    auto vComplCombos = pReality->GetComplCombos();
+
+    // Reusing include from Utils.h/cpp
+    // #include "Person.h"
+    // #include "SatisfactionCalculator.h"
+    // #include "Option.h"
+    // #include "SupplCombo.h"
+    // #include "ComplCombo.h"
+
+    csvFile << "Person,Subject,Type,PreferenceAt0,MaximumSatisf" << std::endl;
+
+    for (auto& pPerson : vPersons) {
+        auto* pSatCalc = pPerson->GetSatisfactionCalculatorRef();
+        if (!pSatCalc) continue;
+
+        for (auto* pOpt : vOptions) {
+            csvFile << pPerson->GetName() << "," << pOpt->GetName() << ",Option," 
+                    << pSatCalc->GetPreferenceAt0(pOpt) << "," << pSatCalc->GetMaximumSatisf(pOpt) << std::endl;
+        }
+        for (auto* pCombo : vSupplCombos) {
+            csvFile << pPerson->GetName() << "," << pCombo->GetName() << ",SupplCombo," 
+                    << pSatCalc->GetPreferenceAt0(pCombo) << "," << pSatCalc->GetMaximumSatisf(pCombo) << std::endl;
+        }
+        for (auto* pCombo : vComplCombos) {
+            csvFile << pPerson->GetName() << "," << pCombo->GetName() << ",ComplCombo," 
+                    << pSatCalc->GetPreferenceAt0(pCombo) << "," << pSatCalc->GetMaximumSatisf(pCombo) << std::endl;
+        }
+    }
+
+    csvFile.close();
+    std::cout << "Satisfaction curves saved to " << fileName << std::endl;
+}
+
 void pca::CUtils::PrintPersonOptionAdjustmentToFile(CPerson* pPerson)
 {
     CMarket* pMarketRef = pPerson->GetMarketRef();

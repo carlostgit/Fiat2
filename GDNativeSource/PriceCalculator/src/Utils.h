@@ -25,6 +25,8 @@ namespace pca
 
         static void PrintPersonsOptionAdjustmentToFile(CMarket* pMarket);
         static void PrintScenarioInfoToFile(CMarket* pMarket);
+        static void PrintInitialConditionsToFile(CMarket* pMarket);
+        static void PrintSatisfactionCurvesToFile(CMarket* pMarket);
         static void PrintPersonOptionAdjustmentToFile(CPerson* pPerson);
         static void ShowGraphics();
 

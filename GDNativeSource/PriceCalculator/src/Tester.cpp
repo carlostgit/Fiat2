@@ -152,6 +152,10 @@ int pca::CTester::Test_SatisfactionCalculator()
                 
         CUtils::PrintPrices(oMarket.GetPricesRef());
 
+        // Generar log de condiciones iniciales
+        CUtils::PrintInitialConditionsToFile(&oMarket);
+        CUtils::PrintSatisfactionCurvesToFile(&oMarket);
+
         //Voy a medir el tiempo de los siguientes cálculos:
         auto start = std::chrono::high_resolution_clock::now();
 
