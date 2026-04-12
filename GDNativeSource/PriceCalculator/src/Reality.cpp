@@ -47,7 +47,7 @@ void pca::CReality::InitEmpty()
     m_upOptions = std::move(upOptions);
 
     std::unique_ptr<pca::CComplCombos> upComplCombos(new pca::CComplCombos());
-    m_upComplCombos = move(upComplCombos);
+    m_upComplCombos = std::move(upComplCombos);
 
     std::unique_ptr<pca::CSupplCombos> upSupplCombos(new pca::CSupplCombos());
     m_upSupplCombos = std::move(upSupplCombos);
@@ -67,7 +67,7 @@ void pca::CReality::InitDefaultProductsAndOptions()
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
         
@@ -102,7 +102,7 @@ void pca::CReality::InitDefaultProductsAndOptions()
         }
         else
         {
-            assert("" == "error en CReality::InitDefaultProductsAndOptions, añadiendo Option");
+            assert(!"error en CReality::InitDefaultProductsAndOptions, añadiendo Option");
         }
     }
 
@@ -110,21 +110,21 @@ void pca::CReality::InitDefaultProductsAndOptions()
 
     //ComplCombos
     std::map<std::string, std::set<std::string>> mapComplComboName_OptionNames({
-        { "sweets_consumption" , { "candy_consumption", "chocolate_consumption"} }
+        { "sweets consumption" , { "candy consumption", "chocolate consumption"} }
         }
     );
 
     std::unique_ptr<pca::CComplCombos> upComplCombos(new pca::CComplCombos());
-    m_upComplCombos = move(upComplCombos);
+    m_upComplCombos = std::move(upComplCombos);
     for (auto& pairComplName_OptionNames : mapComplComboName_OptionNames)
     {
         std::string sComplComboName = pairComplName_OptionNames.first;
         std::unique_ptr<CComplCombo> upComplCombo(new CComplCombo(sComplComboName));
-        std::set<std::string> setOptionNames;
-        for (auto& optionName : setOptionNames)
+        for (auto& optionName : pairComplName_OptionNames.second)
         {
             COption* pOptionRef = m_upOptions->GetOption(optionName);
-            upComplCombo->AddOption(pOptionRef);
+            if (pOptionRef)
+                upComplCombo->AddOption(pOptionRef);
         }
         
         m_upComplCombos->AddComplCombo(std::move(upComplCombo));
@@ -148,13 +148,13 @@ void pca::CReality::InitDefaultProductsAndOptions()
     {
         std::string sSupplComboName = pairSupplName_mapOptionName_dWeight.first;
         std::unique_ptr<CSupplCombo> upSupplCombo(new CSupplCombo(sSupplComboName));
-        std::map<std::string, double> mapOptionName_dWeight;
-        for (auto& pairOptionName_dWeight: mapOptionName_dWeight)
+        for (auto& pairOptionName_dWeight: pairSupplName_mapOptionName_dWeight.second)
         {
             std::string optionName = pairOptionName_dWeight.first;
             double dWeight = pairOptionName_dWeight.second;
             COption* pOptionRef = m_upOptions->GetOption(optionName);
-            upSupplCombo->AddOptionAndWeight(pOptionRef, dWeight);
+            if (pOptionRef)
+                upSupplCombo->AddOptionAndWeight(pOptionRef, dWeight);
         }
 
         m_upSupplCombos->AddSupplCombo(std::move(upSupplCombo));
@@ -165,7 +165,7 @@ void pca::CReality::CreateProduct(std::string sProduct)
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -177,7 +177,7 @@ void pca::CReality::CreateOption(std::string sProduct, std::string sOption)
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -194,7 +194,7 @@ void pca::CReality::CreateOption(CProduct* pProduct, std::string sOption)
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -211,7 +211,7 @@ void pca::CReality::CreateComplCombo(std::string sComplCombo)
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -225,7 +225,7 @@ void pca::CReality::AddOptionToComplCombo(std::string sComplCombo, std::string s
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -243,7 +243,7 @@ void pca::CReality::AddOptionToComplCombo(CComplCombo* pComplCombo, COption* pOp
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -257,7 +257,7 @@ void pca::CReality::CreateSupplCombo(std::string sSupplCombo)
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -271,7 +271,7 @@ void pca::CReality::AddOptionToSupplCombo(std::string sSupplCombo, std::string s
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 
@@ -289,7 +289,7 @@ void pca::CReality::AddOptionToSupplCombo(CSupplCombo* pSupplCombo, COption* pOp
 {
     if (false == m_vupMerketRefs.empty())
     {
-        assert("" == "This Reality is already being used!!");
+        assert(!"This Reality is already being used!!");
         return;
     }
 

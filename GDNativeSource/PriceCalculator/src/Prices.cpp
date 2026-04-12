@@ -65,7 +65,7 @@ double pca::CPrices::CalculateCombidictPrice(std::map<CProduct*, double> mapProd
 
         if (m_mapProd_Price.end() == m_mapProd_Price.find(pProd))
         {
-            assert("" == "Producto sin precio en pca::CPrices::CalculateCombidictPrice");
+            assert(!"Producto sin precio en pca::CPrices::CalculateCombidictPrice");
         }
         else
         {
@@ -83,7 +83,7 @@ double pca::CPrices::GetPriceOfProduct(CProduct* pProdRef)
 {
     if (m_mapProd_Price.end() == m_mapProd_Price.find(pProdRef))
     {
-        assert("" == "Producto sin precio en pca::CPrices::CalculateCombidictPrice");
+        assert(!"Producto sin precio en pca::CPrices::CalculateCombidictPrice");
         return 0.0;
     }
     else
@@ -99,7 +99,7 @@ void pca::CPrices::SetPriceOfProduct(CProduct* pProduct, double dAmount)
     auto vProducts = m_pMarketRef->GetProducts();
     if (vProducts.end() == std::find(vProducts.begin(), vProducts.end(), pProduct))
     {
-        assert("" == "Este producto no existe!");
+        assert(!"Este producto no existe!");
     }
 
     m_mapProd_Price[pProduct] = dAmount;

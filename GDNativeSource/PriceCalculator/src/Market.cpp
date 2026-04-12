@@ -6,8 +6,8 @@
 #include "Reality.h"
 #include "Product.h"
 
+#include <algorithm>
 #include <iostream>
-#include <iomanip>
 #include <cmath>
 
 //Change prices algorithm params
@@ -46,7 +46,6 @@ pca::CMarket::~CMarket()
 
 pca::CPerson* pca::CMarket::CreatePerson(std::string sName)
 {
-    CPrices* pPricesRef = this->GetPricesRef();
     std::unique_ptr<CPerson> upPerson(new CPerson(sName,this));
     pca::CPerson* pPersonRef = upPerson.get();
     m_vPersons.push_back(std::move(upPerson));
@@ -209,6 +208,7 @@ bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
             {
                 double dCurrentPrice = m_upPrices->GetPriceOfProduct(pProduct);
                 double dNewPrice = dCurrentPrice + dCurrentPrice * dIncrement;
+                if (dNewPrice < 0.01) dNewPrice = 0.01;
                 m_upPrices->SetPriceOfProduct(pProduct, dNewPrice);
                 bPriceChanged = true;
             }

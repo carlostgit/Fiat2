@@ -44,7 +44,7 @@ void pca::CTradeCalculatorScenario::CreateEmptyMarket()
     }
     else
     {
-        assert("" == "Falta una realidad donde añadir este nuevo Market");
+        assert(!"Falta una realidad donde añadir este nuevo Market");
     }
 }
 
@@ -102,9 +102,9 @@ void pca::CTradeCalculatorScenario::SetPrice(std::string sProductName, double dP
     if (nullptr == m_upReality || nullptr == m_upReality->GetLastMarketRef())
     {
         if (nullptr == m_upReality)
-            std::cout << "pca::CPriceCalculator::SetCurrency needs a m_upReality before being called" << std::endl;
+            std::cout << "pca::CPriceCalculator::SetPrice needs a m_upReality before being called"<<std::endl;
         else if (nullptr == m_upReality->GetLastMarketRef())
-            std::cout << "pca::CPriceCalculator::SetCurrency needs a market inside m_upReality before being called" << std::endl;
+            std::cout << "pca::CPriceCalculator::SetPrice needs a market inside m_upReality before being called" << std::endl;
 
         return;
     }
@@ -211,11 +211,11 @@ void pca::CTradeCalculatorScenario::AddOptionToSupplCombo(std::string sSupplComb
         return;
     }
 
-    CSupplCombo* pComplComboRef = m_upReality->GetSupplCombo(sSupplCombo);
+    CSupplCombo* pSupplComboRef = m_upReality->GetSupplCombo(sSupplCombo);
 
-    if (nullptr == pComplComboRef)
+    if (nullptr == pSupplComboRef)
     {
-        std::cout << "error using pca::CPriceCalculator::AddOptionToSupplCombo. ComplCombo " << sSupplCombo << " not found" << std::endl;
+        std::cout << "error using pca::CPriceCalculator::AddOptionToSupplCombo. SupplCombo " << sSupplCombo << " not found" << std::endl;
         return;
     }
 
@@ -223,11 +223,11 @@ void pca::CTradeCalculatorScenario::AddOptionToSupplCombo(std::string sSupplComb
 
     if (nullptr == pOptionRef)
     {
-        std::cout << "error using pca::CPriceCalculator::AddOptionToComplCombo. Option " << sOption << " not found" << std::endl;
+        std::cout << "error using pca::CPriceCalculator::AddOptionToSupplCombo. Option " << sOption << " not found" << std::endl;
         return;
     }
 
-    m_upReality->AddOptionToComplCombo(sSupplCombo, sOption);
+    m_upReality->AddOptionToSupplCombo(sSupplCombo, sOption, dWeight);
 }
 
 //void pca::CTradeCalculatorScenario::AddToPerson_SetSatisfactionCurveForOption(std::string sPerson, std::string sOption, double dValueAt0, double dMaxValue)

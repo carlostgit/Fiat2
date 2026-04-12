@@ -40,8 +40,8 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
 
     if (nullptr == m_upSatisfactionCalculator || nullptr == m_pPricesRef)
     {
-        assert(""=="Falta m_pSatisfactionCalculatorRef");
-        assert(""=="Falta m_pPricesRef");
+        assert(!"Falta m_pSatisfactionCalculatorRef");
+        assert(!"Falta m_pPricesRef");
         return mapCurrentCombidictArg;
     }
 
@@ -64,20 +64,21 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
     while (dLeftMoney < 0.0)
     {
         bool bChangeMade = false;
-        //		Eliminaré productos en orden de menor reducción de satisfacción
-        double dBestDecrementOfSatisfaction = dBestPreviousSatisfaction;
+        double dMaxSatisfactionFound = -1e308; // Valor inicial muy pequeño
         std::map<COption*, double> mapBestTryingCombination = mapCombination;
 
-        //for (auto& nOptionToRemove : c_setOptions)
         for (auto & pOptionToRemove : vOptions)
         {
-            //CProduct* pProductToRemove = c_mapOption_Product.at(pOptionToRemove);
             CProduct* pProductToRemove = pOptionToRemove->GetProduct();
+            double dPrice = m_pPricesRef->GetPriceOfProduct(pProductToRemove);
+
+            if (dPrice <= 0.0) continue; // Protección contra división por cero o precios inválidos
+
             std::map<COption*, double> mapTryingCombinationRemovingProduct = mapCombination;
-            double dRemoveProductStep = dBudgetStepLength / m_pPricesRef->GetPriceOfProduct(pOptionToRemove->GetProduct());
-            if (mapTryingCombinationRemovingProduct.end() == mapTryingCombinationRemovingProduct.find(pOptionToRemove))
+            double dRemoveProductStep = dBudgetStepLength / dPrice;
+            
+            if (mapTryingCombinationRemovingProduct.find(pOptionToRemove) == mapTryingCombinationRemovingProduct.end())
             {
-                //Igual habría que poner aquí un continue
                 mapTryingCombinationRemovingProduct[pOptionToRemove] = 0.0;
             }
 
@@ -89,31 +90,26 @@ std::map<pca::COption* ,double> pca::CTradeCalculator::AdjustBestCombidict(doubl
             }
 
             double dSatisfactionOfTryingCombination = m_upSatisfactionCalculator->CalculateSatisfOfCombidict(mapTryingCombinationRemovingProduct);
-            double dCurentDecrementOfSatisfaction = dBestPreviousSatisfaction - dSatisfactionOfTryingCombination;
 
-            if (dCurentDecrementOfSatisfaction <= dBestDecrementOfSatisfaction)
+            if (dSatisfactionOfTryingCombination > dMaxSatisfactionFound)
             {
+                dMaxSatisfactionFound = dSatisfactionOfTryingCombination;
                 mapBestTryingCombination = mapTryingCombinationRemovingProduct;
                 bChangeMade = true;
-                dBestPreviousSatisfaction = dSatisfactionOfTryingCombination;
-
-                //Faltaba la siguiente linea
-                dBestDecrementOfSatisfaction = dCurentDecrementOfSatisfaction;
             }
         }
 
         if (true == bChangeMade)
         {
             mapCombination = mapBestTryingCombination;
-            double dCurrentLeftMoney = dLeftMoney + dBudgetStepLength;
-            dLeftMoney = dCurrentLeftMoney;
+            dBestPreviousSatisfaction = dMaxSatisfactionFound;
+            dLeftMoney += dBudgetStepLength;
 
             if (c_traces) std::cout << "Element eliminated. dLeftMoney: " << dLeftMoney << std::endl;
             if (c_traces) std::cout << "Best previous Satisfaction: " << dBestPreviousSatisfaction << std::endl;
             if (c_traces) CUtils::PrintOptions(mapCombination);
         }
-
-        if (false == bChangeMade)
+        else
         {
             if (c_traces) std::cout << "Exited adjust_best_combidict because no option to remove found" << std::endl;
             break;

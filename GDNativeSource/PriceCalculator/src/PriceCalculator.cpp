@@ -4,7 +4,6 @@
 #include "Product.h"
 #include "Market.h"
 #include "Reality.h"
-#include "SatisfactionCurve.h"
 #include "SatisfactionCalculator.h"
 #include "TradeCalculator.h"
 #include "Utils.h"
@@ -41,7 +40,7 @@ void pca::CPriceCalculator::CreateEmptyMarket()
     }
     else
     {
-        assert("" == "Falta una realidad donde añadir este nuevo Market");
+        assert(!"Falta una realidad donde añadir este nuevo Market");
     }
 }
 

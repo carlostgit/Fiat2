@@ -1,4 +1,5 @@
 #include "ProductPriceAdjustmentInfo.h"
+#include <cmath>
 
 
 pca::CProductPriceAdjustmentInfo::CProductPriceAdjustmentInfo()
@@ -28,7 +29,7 @@ bool pca::CProductPriceAdjustmentInfo::ArePricesChanging()
 {
     if (m_vAllPrices.size() > 1)
     {
-        if (0 == m_vAllPrices[m_vAllPrices.size() - 1] - m_vAllPrices[m_vAllPrices.size() - 2])
+        if (std::abs(m_vAllPrices[m_vAllPrices.size() - 1] - m_vAllPrices[m_vAllPrices.size() - 2]) < 1e-9)
         {
             return false;
         }
@@ -70,7 +71,7 @@ void pca::CProductPriceAdjustmentInfo::AddPriceIteration(double dPriceArg)
     {
         m_dMaxPrice = dPriceArg;
     }
-    if (m_vLastPrices.size() > m_nParamIterationsLog)
+    if (m_vLastPrices.size() > (size_t)m_nParamIterationsLog)
     {
         m_vLastPrices.erase(m_vLastPrices.begin());
     }

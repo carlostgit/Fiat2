@@ -60,7 +60,7 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
     
     auto vPersons = pMarket->GetPersons();
 
-    for (int i1=0;i1<vPersons.size();i1++)
+    for (size_t i1=0;i1<vPersons.size();i1++)
     //for (auto& pPerson : vPersons)
     {
         auto pPerson = vPersons[i1];
@@ -70,7 +70,7 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
         csvFile << "Satisfaction_" + sPersonName; // Writing header row
         csvFile << ",";
 
-        for (int i = 0;i < vOptions.size();i++)
+        for (size_t i = 0;i < vOptions.size();i++)
         {
             std::string optionName = vOptions[i]->GetName();
 
@@ -80,7 +80,7 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
             
         }
 
-        for (int i = 0;i < vProducts.size();i++)
+        for (size_t i = 0;i < vProducts.size();i++)
         {
             std::string productName = vProducts[i]->GetName();
 
@@ -103,13 +103,9 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
 
     
 
-    long nNumPrices = 0;
-    if (false == mapProd_vPriceAmount.empty())
-        nNumPrices = mapProd_vPriceAmount.begin()->second.size();
-
     std::map<CProduct*, std::vector<double> > mapProd_vTradeAmount = pMarket->GetPricesLogInfoRef()->GetProductAllTrades();
 
-    for (int i1 = 0;i1 < nNumLog;i1++)
+    for (size_t i1 = 0;i1 < (size_t)nNumLog;i1++)
     {
         double dPriceChangeStep = 0.0;
         if (i1 < vPriceChangeStepVector.size())
@@ -162,7 +158,7 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
             csvFile << dSatisfaction; // Writing header row        
             csvFile << ",";
 
-            for (int i = 0;i < vOptions.size();i++)
+            for (size_t i = 0;i < vOptions.size();i++)
             {
                 auto pOption = vOptions[i];
                 std::string optionName = pOption->GetName();
@@ -184,7 +180,7 @@ void pca::CUtils::PrintPersonsOptionAdjustmentToFile(CMarket* pMarket)
 
             std::map<CProduct*, double> mapProduct_Amount = vmapTradeLog[i1];
 
-            for (int i = 0;i < vProducts.size();i++)
+            for (size_t i = 0;i < vProducts.size();i++)
             {
                 auto pProduct = vProducts[i];
                 std::string productName = pProduct->GetName();
@@ -231,7 +227,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
     csvFile << "Options:" << std::endl;
 
-    for (int i = 0;i < vOptions.size();i++)
+    for (size_t i = 0;i < vOptions.size();i++)
     {
         std::string optionName = vOptions[i]->GetName();
 
@@ -252,7 +248,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
     csvFile << "SupplCombos:" << std::endl;
 
-    for (int i = 0;i < vSupplCombos.size();i++)
+    for (size_t i = 0;i < vSupplCombos.size();i++)
     {
         std::string supplComboName = vSupplCombos[i]->GetName();
 
@@ -269,7 +265,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
     csvFile << "ComplCombos:" << std::endl;
 
-    for (int i = 0;i < vComplCombos.size();i++)
+    for (size_t i = 0;i < vComplCombos.size();i++)
     {
         std::string complComboName = vComplCombos[i]->GetName();
 
@@ -303,7 +299,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
     csvFile << "Persons:" << std::endl;
     
-    for (int i1 = 0;i1 < vPersons.size();i1++)
+    for (size_t i1 = 0; i1 < vPersons.size(); i1++)
         //for (auto& pPerson : vPersons)
     {
         auto pPerson = vPersons[i1];
@@ -316,7 +312,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
         
         csvFile << std::endl;
 
-        for (int i = 0;i < vOptions.size();i++)
+        for (size_t i = 0;i < vOptions.size();i++)
         {
             std::string optionName = vOptions[i]->GetName();
 
@@ -333,7 +329,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
         csvFile << std::endl;
 
-        for (int i = 0;i < vSupplCombos.size();i++)
+        for (size_t i = 0;i < vSupplCombos.size();i++)
         {
             std::string supplComboName = vSupplCombos[i]->GetName();
 
@@ -351,7 +347,7 @@ void pca::CUtils::PrintScenarioInfoToFile(CMarket* pMarket)
 
         csvFile << std::endl;
 
-        for (int i = 0;i < vComplCombos.size();i++)
+        for (size_t i = 0;i < vComplCombos.size();i++)
         {
             std::string complComboName = vComplCombos[i]->GetName();
 
@@ -401,7 +397,7 @@ void pca::CUtils::PrintPersonOptionAdjustmentToFile(CPerson* pPerson)
     csvFile << "Satisfaction"; // Writing header row
     csvFile << ",";
 
-    for (int i=0;i< vOptions.size();i++)
+    for (size_t i=0;i< vOptions.size();i++)
     {
         std::string optionName = vOptions[i]->GetName();
 
@@ -422,7 +418,7 @@ void pca::CUtils::PrintPersonOptionAdjustmentToFile(CPerson* pPerson)
         csvFile << dSatisfaction; // Writing header row        
         csvFile << ",";
 
-        for (int i = 0;i < vOptions.size();i++)
+        for (size_t i = 0;i < vOptions.size();i++)
         {
             auto pOption = vOptions[i];
             std::string optionName = pOption->GetName();
