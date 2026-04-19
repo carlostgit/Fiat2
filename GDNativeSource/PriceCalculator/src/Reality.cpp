@@ -97,7 +97,8 @@ void pca::CReality::InitDefaultProductsAndOptions()
 
         if (pProduct)
         {
-            std::unique_ptr<COption> upOption(new COption(sOptionName, pProduct));
+            bool bIsSaving = (sOptionName.find("savings") != std::string::npos);
+            std::unique_ptr<COption> upOption(new COption(sOptionName, pProduct, bIsSaving));
             upOptions.get()->AddOption(std::move(upOption));
         }
         else

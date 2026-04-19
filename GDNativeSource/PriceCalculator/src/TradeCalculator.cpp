@@ -75,29 +75,27 @@ std::map<pca::COption *, double> pca::CTradeCalculator::AdjustBestCombidict(
     bool bChangeMade = false;
     double dMaxSatisfactionFound = -1e308; // Valor inicial muy pequeño
     std::map<COption *, double> mapBestTryingCombination = mapCombination;
+    double dActualBudgetFreed = 0.0;
 
     for (auto &pOptionToRemove : vOptions) {
+      if (mapCombination[pOptionToRemove] <= 0.0) continue;
+
       CProduct *pProductToRemove = pOptionToRemove->GetProduct();
       double dPrice = m_pPricesRef->GetPriceOfProduct(pProductToRemove);
 
       if (dPrice <= 0.0)
         continue; // Protección contra división por cero o precios inválidos
 
+      double dAmountToRemove = dBudgetStepLength / dPrice;
+      if (mapCombination[pOptionToRemove] < dAmountToRemove) {
+          dAmountToRemove = mapCombination[pOptionToRemove];
+      }
+
       std::map<COption *, double> mapTryingCombinationRemovingProduct =
           mapCombination;
-      double dRemoveProductStep = dBudgetStepLength / dPrice;
-
-      if (mapTryingCombinationRemovingProduct.find(pOptionToRemove) ==
-          mapTryingCombinationRemovingProduct.end()) {
-        mapTryingCombinationRemovingProduct[pOptionToRemove] = 0.0;
-      }
-
+      
       mapTryingCombinationRemovingProduct[pOptionToRemove] -=
-          dRemoveProductStep;
-
-      if (mapTryingCombinationRemovingProduct[pOptionToRemove] < 0.0) {
-        continue;
-      }
+          dAmountToRemove;
 
       double dSatisfactionOfTryingCombination =
           m_upSatisfactionCalculator->CalculateSatisfOfCombidict(
@@ -106,6 +104,7 @@ std::map<pca::COption *, double> pca::CTradeCalculator::AdjustBestCombidict(
       if (dSatisfactionOfTryingCombination > dMaxSatisfactionFound) {
         dMaxSatisfactionFound = dSatisfactionOfTryingCombination;
         mapBestTryingCombination = mapTryingCombinationRemovingProduct;
+        dActualBudgetFreed = dAmountToRemove * dPrice;
         bChangeMade = true;
       }
     }
@@ -113,7 +112,7 @@ std::map<pca::COption *, double> pca::CTradeCalculator::AdjustBestCombidict(
     if (true == bChangeMade) {
       mapCombination = mapBestTryingCombination;
       dBestPreviousSatisfaction = dMaxSatisfactionFound;
-      dLeftMoney += dBudgetStepLength;
+      dLeftMoney += dActualBudgetFreed;
 
       if (c_traces)
         std::cout << "Element eliminated. dLeftMoney: " << dLeftMoney

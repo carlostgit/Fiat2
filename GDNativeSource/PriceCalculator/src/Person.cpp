@@ -144,7 +144,7 @@ std::map<pca::CProduct*, double> pca::CPerson::GetSavedProductsFromOptions(const
             if (pProduct)
             {
                 double dAmount = pairOptionAmount.second;
-                mapsumProductAmount[pProduct] = dAmount;
+                mapsumProductAmount[pProduct] += dAmount;
             }                
         }
     }
@@ -165,7 +165,7 @@ std::map<pca::CProduct*, double> pca::CPerson::GetConsumedProductsFromOptions(co
             if (pProduct)
             {
                 double dAmount = pairOptionAmount.second;
-                mapsumProductAmount[pProduct] = dAmount;
+                mapsumProductAmount[pProduct] += dAmount;
             }
         }
     }

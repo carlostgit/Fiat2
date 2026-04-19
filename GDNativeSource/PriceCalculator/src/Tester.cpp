@@ -13,6 +13,7 @@
 #include "Option.h"
 #include "Utils.h"
 #include "Person.h"
+#include "Product.h"
 
 
 
@@ -175,6 +176,20 @@ int pca::CTester::Test_SatisfactionCalculator()
 
         std::cout << "Prices after CalculateNewPrices:" << std::endl;
         CUtils::PrintPrices(oMarket.GetPricesRef());
+
+        std::cout << std::endl << "--- VERIFICACION DE FIX: Ahorro vs Consumo (Person 1) ---" << std::endl;
+        auto mapOptions = pPerson_1_Ref->GetMapCurrentOpt_Amount();
+        auto mapSaved = pPerson_1_Ref->GetSavedProductsFromOptions(mapOptions);
+        auto mapConsumed = pPerson_1_Ref->GetConsumedProductsFromOptions(mapOptions);
+
+        std::cout << "Productos identificados como AHORRO:" << std::endl;
+        if (mapSaved.empty()) std::cout << "  (Ninguno)" << std::endl;
+        for (auto& pair : mapSaved) std::cout << "  - " << pair.first->GetName() << ": " << pair.second << std::endl;
+
+        std::cout << "Productos identificados como CONSUMO:" << std::endl;
+        if (mapConsumed.empty()) std::cout << "  (Ninguno)" << std::endl;
+        for (auto& pair : mapConsumed) std::cout << "  - " << pair.first->GetName() << ": " << pair.second << std::endl;
+        std::cout << "--------------------------------------------------------" << std::endl << std::endl;
 
         // Generar log de ajuste de mercado y mostrar gráficas
         CUtils::PrintPersonsOptionAdjustmentToFile(&oMarket);
