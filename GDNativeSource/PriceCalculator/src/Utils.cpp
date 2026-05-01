@@ -749,8 +749,8 @@ void pca::CUtils::PrintPricesEvolution(CMarket* pMarket)
 
 void pca::CUtils::ShowGraphics()
 {
-    std::cout << "Starting graphics display (plot_logs.py)..." << std::endl;
-    int result = system("python3 plot_logs.py");
+    std::cout << "Starting graphics display (plot_logs.py) in background..." << std::endl;
+    int result = system("python3 plot_logs.py &");
     if (result != 0) {
         std::cerr << "Failed to execute plotter script. Make sure python3 and matplotlib are installed." << std::endl;
     }
