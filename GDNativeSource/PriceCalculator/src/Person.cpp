@@ -98,6 +98,11 @@ void pca::CPerson::SubtractProducts(std::map<pca::CProduct*, double> mapProductA
     m_mapOwnedProd_Amount = CUtils::SubtractProducts(m_mapOwnedProd_Amount, mapProductAmount);
 }
 
+void pca::CPerson::SetOwnedProducts(std::map<pca::CProduct*, double> mapProductAmount)
+{
+    m_mapOwnedProd_Amount = mapProductAmount;
+}
+
 //void pca::CPerson::AdjustBestCombinationForPerson()
 //{
 //    double dTargetBudgetStep = c_paramTargetBudgetStep;

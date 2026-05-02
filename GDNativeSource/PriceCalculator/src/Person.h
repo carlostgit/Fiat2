@@ -29,6 +29,7 @@ namespace pca
 
         void AddProducts(std::map<pca::CProduct*, double> mapProductAmount);
         void SubtractProducts(std::map<pca::CProduct*, double> mapProductAmount);
+        void SetOwnedProducts(std::map<pca::CProduct*, double> mapProductAmount);
 
         std::map<pca::CProduct*, double> GetSavedProductsFromOptions(const std::map<pca::COption*, double> & mapOptionAmount);
         std::map<pca::CProduct*, double> GetConsumedProductsFromOptions(const std::map<pca::COption*, double>& mapOptionAmount);

@@ -164,6 +164,7 @@ int pca::CTester::Test_SatisfactionCalculator()
         //double dMaxNumSteps = 10;
         //oMarket.AdjustBestCombinations(dStep, dMaxNumSteps); //Es método protected, pero Tester es friend
         oMarket.CalculateNewPrices();
+        oMarket.ExecuteTrades();
 
         auto end = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> elapsed = end - start;

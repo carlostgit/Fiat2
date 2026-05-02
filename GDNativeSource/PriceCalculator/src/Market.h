@@ -38,6 +38,7 @@ namespace pca
         void RemovePerson(long nId);        
 
         void CalculateNewPrices();
+        void ExecuteTrades();
 
         CPricesLogInfo* GetPricesLogInfoRef();
 

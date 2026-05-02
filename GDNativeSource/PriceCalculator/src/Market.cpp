@@ -154,7 +154,7 @@ void pca::CMarket::CalculateNewPrices()
             break;
     }
 
-    SetExcessProducts(m_mapSumOfTrade);
+    // El exceso se gestionará ahora al llamar a ExecuteTrades()
 }
 
 bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
@@ -170,7 +170,8 @@ bool pca::CMarket::ChangePrices(double dParamPriceChangeStepArg)
     CalculateSumOfTrade();
     
     // Registrar el trade total para las gráficas
-    std::map<CProduct*, double> mapSumOfTradeAndExcessTrade = CUtils::SumProducts(m_mapSumOfTrade, m_mapExcessProducts);
+    // El desajuste real es lo que quieren los agentes menos lo que el mercado tiene en su almacén
+    std::map<CProduct*, double> mapSumOfTradeAndExcessTrade = CUtils::SubtractProducts(m_mapSumOfTrade, m_mapExcessProducts);
     m_upPricesLogInfo->RegisterTrade(mapSumOfTradeAndExcessTrade);
 
     std::map<CProduct*,double> mapNewPricesIncrements = CalculateNewPricesIncrement(dParamPriceChangeStepArg);
@@ -222,7 +223,12 @@ std::map<pca::CProduct*, double>  pca::CMarket::CalculateNewPricesIncrement(doub
 {
     //m_mapSumOfTrade
     std::map<CProduct*, double> mapNewPricesIncrements;
-    std::map<CProduct*, double> mapSumOfTradeAndExcessTrade = CUtils::SumProducts(m_mapSumOfTrade, m_mapExcessProducts);
+    
+    // El desajuste TOTAL que mueve el precio es:
+    // (Lo que los agentes quieren comprar/vender) - (Lo que el mercado tiene en su almacén central)
+    // Si el mercado tiene mucho inventario, esto forzará un desajuste negativo (exceso) y bajará los precios.
+    std::map<CProduct*, double> mapSumOfTradeAndExcessTrade = CUtils::SubtractProducts(m_mapSumOfTrade, m_mapExcessProducts);
+    
     double dAmountOfCurrencyExcess = 0.0;
 
     if (m_mapSumOfTrade.end() != m_mapSumOfTrade.find(m_upPrices->GetCurrency()))
@@ -281,3 +287,31 @@ std::vector<pca::CPerson*> pca::CMarket::GetPersons()
     }
     return vPersons;
 }
+
+void pca::CMarket::ExecuteTrades()
+{
+    // Los agentes actualizan sus inventarios a lo que deseaban tras la subasta teórica
+    for (auto& upPerson : m_vPersons)
+    {
+        std::map<pca::CProduct*, double> mapDesired = CUtils::CalculateProductdictFromOptiondict(upPerson->GetMapCurrentOpt_Amount());
+        upPerson->SetOwnedProducts(mapDesired);
+    }
+    
+    // El "Market Maker" (Mercado Central) absorbe el pequeño desajuste que haya podido quedar 
+    // debido a límites de precisión matemática o límite de iteraciones en CalculateNewPrices.
+    
+    // Como m_mapSumOfTrade es (Demanda - Oferta):
+    // Si es positivo, faltaron productos para cuadrar todo -> El mercado tuvo que ponerlos de su almacén.
+    // Si es negativo, sobraron productos -> El mercado se los queda en su almacén.
+    
+    // Para reflejar el inventario físico del mercado de forma correcta, 
+    // invertimos el signo: un m_mapSumOfTrade negativo (sobraron) se suma positivamente al almacén.
+    std::map<CProduct*, double> mapActualMarketExcess;
+    for (auto& pair : m_mapSumOfTrade) {
+        mapActualMarketExcess[pair.first] = -pair.second;
+    }
+    
+    // Añadimos/restamos el desajuste de hoy al almacén central del mercado
+    m_mapExcessProducts = CUtils::SumProducts(m_mapExcessProducts, mapActualMarketExcess);
+}
+
