@@ -202,3 +202,50 @@ int pca::CTester::Test_SatisfactionCalculator()
     return 0;
 }
 
+#include "MarketScenario.h"
+int pca::CTester::Test_MarketScenario()
+{
+    std::cout << "Starting Test_MarketScenario" << std::endl;
+    {
+        CReality oReality;
+        CMarket oMarket(&oReality);
+        
+        // 1. Configuración inicial del mercado original
+        pca::CPerson* pP1 = oMarket.CreatePerson("Person A");
+        CProduct* pChoc = oReality.GetProduct("chocolate");
+        pP1->AddProductAmount(pChoc, 10.0);
+        oMarket.GetPricesRef()->SetPriceOfProduct(pChoc, 12.5);
+        
+        // 2. Capturar el estado
+        CMarketScenario oScenario;
+        oScenario.Capture(&oMarket);
+        std::cout << "Escenario capturado (Person A tiene 10 choc, Precio choc: 12.5)" << std::endl;
+
+        // 3. Crear un mercado completamente nuevo (vacio) con la misma realidad
+        CMarket oNewMarket(&oReality);
+        std::cout << "Creado nuevo mercado vacío." << std::endl;
+
+        // 4. Aplicar el escenario al nuevo mercado
+        oScenario.Apply(&oNewMarket);
+        std::cout << "Escenario aplicado al nuevo mercado." << std::endl;
+
+        // 5. Verificar que el nuevo mercado tiene los datos del original
+        pca::CPerson* pP1_New = oNewMarket.GetPersonRef("Person A");
+        double dPrice_New = oNewMarket.GetPricesRef()->GetPriceOfProduct(pChoc);
+        double dAmount_New = pP1_New ? pP1_New->GetOwnedProdAmount(pChoc) : 0.0;
+
+        std::cout << "Resultados en Nuevo Mercado:" << std::endl;
+        std::cout << " - Person A existe: " << (pP1_New ? "SI" : "NO") << std::endl;
+        std::cout << " - Precio chocolate: " << dPrice_New << std::endl;
+        std::cout << " - Cantidad chocolate Person A: " << dAmount_New << std::endl;
+
+        if (pP1_New && dPrice_New == 12.5 && dAmount_New == 10.0) {
+            std::cout << "SUCCESS: El escenario se replicó correctamente en el nuevo mercado." << std::endl;
+        } else {
+            std::cout << "FAILURE: Los datos no coinciden." << std::endl;
+        }
+    }
+    std::cout << "Test_MarketScenario finished" << std::endl;
+    return 0;
+}
+

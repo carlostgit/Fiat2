@@ -54,6 +54,10 @@ namespace pca
         std::map<pca::CProduct*, double> GetExcessProducts() {
             return m_mapExcessProducts;
         }
+
+        void SetExcessProducts(std::map<pca::CProduct*, double> mapExcess) {
+            m_mapExcessProducts = mapExcess;
+        }
         
         std::vector<pca::CProduct*> GetProducts()
         {
@@ -67,9 +71,6 @@ namespace pca
     protected:
         std::map<pca::CProduct*, double> CalculateNewPricesIncrement(double dParamPriceChangeStepArg);
 
-        void SetExcessProducts(std::map<pca::CProduct*, double> mapExcessProducts) {
-            m_mapExcessProducts = mapExcessProducts;
-        }
 
         bool ChangePrices(double dParamPriceChangeStepArg);
         void AdjustBestCombinations(double dInitBudgetStep, double dTargetBudgetStep, int nMaxNumSteps);

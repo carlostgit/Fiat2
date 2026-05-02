@@ -10,6 +10,7 @@ int main()
     oTester.Test_SatisfactionCurve();
 
     oTester.Test_SatisfactionCalculator();
+    oTester.Test_MarketScenario();
 
     cout << "Hello world!" << endl;
     return 0;

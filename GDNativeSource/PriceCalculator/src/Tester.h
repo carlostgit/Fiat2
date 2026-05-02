@@ -11,6 +11,7 @@ namespace pca
 
         int Test_SatisfactionCurve();
         int Test_SatisfactionCalculator();
+        int Test_MarketScenario();
 
     protected:
 
