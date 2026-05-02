@@ -50,6 +50,10 @@ namespace pca
         pca::CReality* GetRealityRef() {
             return m_pRealityRef;
         }
+
+        std::map<pca::CProduct*, double> GetExcessProducts() {
+            return m_mapExcessProducts;
+        }
         
         std::vector<pca::CProduct*> GetProducts()
         {

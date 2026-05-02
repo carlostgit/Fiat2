@@ -3,6 +3,7 @@
 
 //#include "PriceCalculationDefines.h"
 #include <map>
+#include <string>
 
 namespace pca
 {
@@ -28,7 +29,7 @@ namespace pca
         static void PrintInitialConditionsToFile(CMarket* pMarket);
         static void PrintSatisfactionCurvesToFile(CMarket* pMarket);
         static void PrintPersonOptionAdjustmentToFile(CPerson* pPerson);
-        static void ShowGraphics();
+        static void ShowGraphics(std::string sArgs = "");
 
 
         static std::map<pca::CProduct*, double> CalculateProductdictFromOptiondict(std::map<COption*, double> mapOptiondictArg);

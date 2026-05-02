@@ -49,8 +49,8 @@ def plot_market_adjustment(file_path):
     num_persons = len(persons)
     products = get_product_names(headers)
     
-    # Filas: 1 para precios + 1 para trade + 1 por cada persona
-    total_rows = num_persons + 2
+    # Filas: 1 para precios + 1 para trade + 1 para warehouse + 1 por cada persona
+    total_rows = num_persons + 3
     fig, axes = plt.subplots(total_rows, 2, figsize=(15, 6 * total_rows), squeeze=False)
     
     # --- FILA 0: Evolución de Precios de Productos ---
@@ -86,10 +86,27 @@ def plot_market_adjustment(file_path):
     
     axes[1, 0].set_visible(False)
     axes[1, 1].set_visible(False)
+    
+    # --- FILA 2: Evolución del Inventario del Market Maker (Warehouse) ---
+    ax_warehouse = plt.subplot(total_rows, 1, 3)
+    warehouse_cols = [h for h in headers if h.startswith("MarketWarehouse_")]
+    if warehouse_cols:
+        for col in warehouse_cols:
+            y = [row.get(col, 0.0) for row in data]
+            label = col.replace("MarketWarehouse_", "")
+            ax_warehouse.plot(y, marker='^', markersize=3, label=label)
+        ax_warehouse.axhline(0, color='black', linestyle='-', alpha=0.5)
+        ax_warehouse.set_title("Inventario del Mercado (Market Maker Warehouse)", fontsize=16, fontweight='bold')
+        ax_warehouse.set_ylabel("Stock en Almacén")
+        ax_warehouse.grid(True, linestyle='--', alpha=0.7)
+        ax_warehouse.legend(loc='upper left')
+
+    axes[2, 0].set_visible(False)
+    axes[2, 1].set_visible(False)
 
     # --- FILAS RESTANTES: Una por persona ---
     for i, person in enumerate(persons):
-        row_idx = i + 2
+        row_idx = i + 3
         
         # 1. Gráfico de Satisfacción (Izquierda)
         sat_col = f"Satisfaction_{person}"
@@ -137,7 +154,9 @@ def plot_market_adjustment(file_path):
             axes[row_idx, 1].legend(loc='best', fontsize='x-small')
 
     plt.xlabel("Iteración")
-    fig.tight_layout()
+    # Ajustar márgenes para que la barra de título no tape el gráfico superior
+    fig.tight_layout(rect=[0, 0.03, 1, 0.95]) 
+    plt.subplots_adjust(hspace=0.5) # Más espacio entre subplots
     plt.savefig("market_complete_evolution.png")
     print("Gráfico completo con balance de mercado guardado en market_complete_evolution.png")
     
@@ -305,11 +324,24 @@ def enable_interactive_legend(fig):
     fig.canvas.mpl_connect('pick_event', on_pick)
 
 if __name__ == "__main__":
-    # Intentar graficar condiciones iniciales si existen (Dashboard Unificado)
-    plot_all_initial_conditions("initial_conditions.csv", "satisfaction_curves.csv")
-
-    if len(sys.argv) > 1:
-        plot_market_adjustment(sys.argv[1])
+    # Si no hay argumentos, intentamos ser inteligentes
+    if len(sys.argv) == 1:
+        # Prioridad 1: Ajuste de mercado (la gráfica principal)
+        if os.path.exists("log_market_adjustment.csv"):
+            plot_market_adjustment("log_market_adjustment.csv")
+        # Prioridad 2: Test de satisfacción (si no hay mercado)
+        elif os.path.exists("satisfaction_test.csv"):
+            plot_satisfaction_test("satisfaction_test.csv")
+        # Siempre podemos ver las condiciones iniciales si existen y no hay nada más
+        else:
+            plot_all_initial_conditions("initial_conditions.csv", "satisfaction_curves.csv")
+    
     else:
-        if not plot_market_adjustment("log_market_adjustment.csv"):
-            plot_market_adjustment("satisfaction_test.csv")
+        # Si hay argumentos, procesamos según lo que se pida
+        arg = sys.argv[1]
+        if arg == "--initial":
+            plot_all_initial_conditions("initial_conditions.csv", "satisfaction_curves.csv")
+        else:
+            # Asumimos que es un nombre de archivo
+            if not plot_market_adjustment(arg):
+                plot_satisfaction_test(arg)

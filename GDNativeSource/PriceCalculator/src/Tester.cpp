@@ -80,7 +80,6 @@ int pca::CTester::Test_SatisfactionCalculator()
         csvFile.close();
 
         std::cout << "Datos guardados en " << fileName << std::endl;
-        CUtils::ShowGraphics();
     }
     std::cout << "Test_SatisfactionCalculator finished" << std::endl;
     
@@ -156,6 +155,7 @@ int pca::CTester::Test_SatisfactionCalculator()
         // Generar log de condiciones iniciales
         CUtils::PrintInitialConditionsToFile(&oMarket);
         CUtils::PrintSatisfactionCurvesToFile(&oMarket);
+        CUtils::ShowGraphics("--initial");
 
         //Voy a medir el tiempo de los siguientes cálculos:
         auto start = std::chrono::high_resolution_clock::now();
