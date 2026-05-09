@@ -9,6 +9,7 @@ namespace pca {
     class CMarket;
     class CProduct;
     class COption;
+    class CReality;
 
     /**
      * @brief Clase para capturar, almacenar y aplicar un escenario completo de mercado.
@@ -23,6 +24,13 @@ namespace pca {
             std::map<std::string, std::pair<double, double>> mapOptionSatisfaction;
             std::map<std::string, std::pair<double, double>> mapSupplSatisfaction;
             std::map<std::string, std::pair<double, double>> mapComplSatisfaction;
+        };
+
+        struct RealityData {
+            std::vector<std::string> vProducts;
+            std::map<std::string, std::string> mapOptionToProduct;
+            std::map<std::string, std::vector<std::string>> mapComplCombos;
+            std::map<std::string, std::map<std::string, double>> mapSupplCombos;
         };
 
         CMarketScenario();
@@ -50,12 +58,14 @@ namespace pca {
         bool LoadFromFile(const std::string& sFilePath);
 
         // Datos del escenario
+        RealityData m_realityData;
         std::map<std::string, double> m_mapPrices;
         std::map<std::string, double> m_mapMarketWarehouse;
         std::vector<PersonData> m_vPersonsData;
 
     private:
-        // Métodos auxiliares para no repetir código
+        void CaptureReality(CReality* pReality);
+        void ApplyReality(CReality* pReality);
     };
 }
 

@@ -25,10 +25,12 @@ TEST_CASE("Market scenarios can be captured and applied to new markets", "[marke
     oScenario.Apply(&oNewMarket);
     
     // THEN: The new market must have the same state
+    CProduct* pChoc_New = oReality.GetProduct("chocolate");
     CPerson* pP1_New = oNewMarket.GetPersonRef("Person A");
     REQUIRE(pP1_New != nullptr);
-    CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(pChoc) == 12.5);
-    CHECK(pP1_New->GetOwnedProdAmount(pChoc) == 10.0);
+    REQUIRE(pChoc_New != nullptr);
+    CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(pChoc_New) == 12.5);
+    CHECK(pP1_New->GetOwnedProdAmount(pChoc_New) == 10.0);
 }
 
 TEST_CASE("Market scenarios can be saved to and loaded from JSON", "[market][scenario][json]") {
@@ -55,13 +57,53 @@ TEST_CASE("Market scenarios can be saved to and loaded from JSON", "[market][sce
     CMarket oNewMarket(&oReality);
     oScenarioLoad.Apply(&oNewMarket);
     
+    // IMPORTANTE: Después de ApplyReality, los punteros antiguos de oReality son INVÁLIDOS
+    CProduct* pChoc_New = oReality.GetProduct("chocolate");
     CPerson* pP1_New = oNewMarket.GetPersonRef("Person JSON");
+    
     REQUIRE(pP1_New != nullptr);
-    CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(pChoc) == 99.9);
-    CHECK(pP1_New->GetOwnedProdAmount(pChoc) == 50.0);
+    REQUIRE(pChoc_New != nullptr);
+    CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(pChoc_New) == 99.9);
+    CHECK(pP1_New->GetOwnedProdAmount(pChoc_New) == 50.0);
     
     // Clean up
     std::remove(sTestFile.c_str());
+}
+
+TEST_CASE("Market scenario captures and applies Reality structure", "[market][scenario][reality]") {
+    // 1. Crear una realidad personalizada
+    CReality oReality(false); // Vacía
+    oReality.InitEmpty();
+    oReality.CreateProduct("gold");
+    oReality.CreateOption("gold", "jewelry");
+    oReality.CreateComplCombo("luxury");
+    oReality.AddOptionToComplCombo("luxury", "jewelry");
+    
+    CMarket oMarket(&oReality);
+    oMarket.GetPricesRef()->SetPriceOfProduct(oReality.GetProduct("gold"), 1500.0);
+    
+    CMarketScenario oScenario;
+    oScenario.Capture(&oMarket);
+    
+    // 2. Guardar y cargar
+    std::string sFile = "test_reality.json";
+    REQUIRE(oScenario.SaveToFile(sFile));
+    
+    CMarketScenario oLoaded;
+    REQUIRE(oLoaded.LoadFromFile(sFile));
+    
+    // 3. Aplicar a una realidad nueva y vacía
+    CReality oNewReality(false);
+    CMarket oNewMarket(&oNewReality);
+    oLoaded.Apply(&oNewMarket);
+    
+    // 4. Verificar estructura
+    CHECK(oNewReality.GetProduct("gold") != nullptr);
+    CHECK(oNewReality.GetOption("jewelry") != nullptr);
+    CHECK(oNewReality.GetComplCombo("luxury") != nullptr);
+    CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(oNewReality.GetProduct("gold")) == 1500.0);
+    
+    std::remove(sFile.c_str());
 }
 
 TEST_CASE("Market warehouse inventory is correctly managed", "[market][warehouse]") {
@@ -79,6 +121,7 @@ TEST_CASE("Market warehouse inventory is correctly managed", "[market][warehouse
         oScenario.m_mapMarketWarehouse["chocolate"] = 50.0;
         oScenario.Apply(&oMarket);
         
-        CHECK(oMarket.GetExcessProducts()[pChoc] == 50.0);
+        CProduct* pChoc_New = oReality.GetProduct("chocolate");
+        CHECK(oMarket.GetExcessProducts()[pChoc_New] == 50.0);
     }
 }

@@ -35,11 +35,29 @@ void from_json(const json& j, CMarketScenario::PersonData& p) {
     j.at("compl_satisfaction").get_to(p.mapComplSatisfaction);
 }
 
+void to_json(json& j, const CMarketScenario::RealityData& r) {
+    j = json{
+        {"products", r.vProducts},
+        {"option_to_product", r.mapOptionToProduct},
+        {"compl_combos", r.mapComplCombos},
+        {"suppl_combos", r.mapSupplCombos}
+    };
+}
+
+void from_json(const json& j, CMarketScenario::RealityData& r) {
+    j.at("products").get_to(r.vProducts);
+    j.at("option_to_product").get_to(r.mapOptionToProduct);
+    j.at("compl_combos").get_to(r.mapComplCombos);
+    j.at("suppl_combos").get_to(r.mapSupplCombos);
+}
+
 CMarketScenario::CMarketScenario() {}
 CMarketScenario::~CMarketScenario() {}
 
 void CMarketScenario::Capture(CMarket* pMarket) {
     if (!pMarket) return;
+
+    CaptureReality(pMarket->GetRealityRef());
 
     m_vPersonsData.clear();
     m_mapPrices.clear();
@@ -102,6 +120,8 @@ void CMarketScenario::Capture(CMarket* pMarket) {
 
 void CMarketScenario::Apply(CMarket* pMarket) {
     if (!pMarket) return;
+
+    ApplyReality(pMarket->GetRealityRef());
 
     CReality* pReality = pMarket->GetRealityRef();
     CPrices* pPrices = pMarket->GetPricesRef();
@@ -172,6 +192,7 @@ void CMarketScenario::Apply(CMarket* pMarket) {
 bool CMarketScenario::SaveToFile(const std::string& sFilePath) {
     try {
         json j;
+        j["reality"] = m_realityData;
         j["prices"] = m_mapPrices;
         j["market_warehouse"] = m_mapMarketWarehouse;
         j["persons"] = m_vPersonsData;
@@ -193,6 +214,7 @@ bool CMarketScenario::LoadFromFile(const std::string& sFilePath) {
         if (file.is_open()) {
             json j;
             file >> j;
+            m_realityData = j.at("reality").get<RealityData>();
             m_mapPrices = j.at("prices").get<std::map<std::string, double>>();
             m_mapMarketWarehouse = j.at("market_warehouse").get<std::map<std::string, double>>();
             m_vPersonsData = j.at("persons").get<std::vector<PersonData>>();
@@ -202,6 +224,79 @@ bool CMarketScenario::LoadFromFile(const std::string& sFilePath) {
         std::cerr << "Error loading scenario from JSON: " << e.what() << std::endl;
     }
     return false;
+}
+
+void CMarketScenario::CaptureReality(CReality* pReality) {
+    if (!pReality) return;
+
+    m_realityData.vProducts.clear();
+    m_realityData.mapOptionToProduct.clear();
+    m_realityData.mapComplCombos.clear();
+    m_realityData.mapSupplCombos.clear();
+
+    // 1. Productos
+    for (auto* pProd : pReality->GetProducts()) {
+        m_realityData.vProducts.push_back(pProd->GetName());
+    }
+
+    // 2. Opciones
+    for (auto* pOpt : pReality->GetOptions()) {
+        if (pOpt->GetProduct()) {
+            m_realityData.mapOptionToProduct[pOpt->GetName()] = pOpt->GetProduct()->GetName();
+        }
+    }
+
+    // 3. ComplCombos
+    for (auto* pCC : pReality->GetComplCombos()) {
+        std::vector<std::string> vOpts;
+        for (auto* pO : pCC->GetOptions()) {
+            vOpts.push_back(pO->GetName());
+        }
+        m_realityData.mapComplCombos[pCC->GetName()] = vOpts;
+    }
+
+    // 4. SupplCombos
+    for (auto* pSC : pReality->GetSupplCombos()) {
+        std::map<std::string, double> mapWeights;
+        for (auto& pair : pSC->GetOptionsAndWeights()) {
+            mapWeights[pair.first->GetName()] = pair.second;
+        }
+        m_realityData.mapSupplCombos[pSC->GetName()] = mapWeights;
+    }
+}
+
+void CMarketScenario::ApplyReality(CReality* pReality) {
+    if (!pReality || m_realityData.vProducts.empty()) return;
+
+    // Limpiamos la realidad destino para que sea idéntica a la guardada
+    pReality->Clear();
+    pReality->InitEmpty();
+
+    // 1. Reconstruir Productos
+    for (const auto& sProd : m_realityData.vProducts) {
+        pReality->CreateProduct(sProd);
+    }
+
+    // 2. Reconstruir Opciones
+    for (const auto& pair : m_realityData.mapOptionToProduct) {
+        pReality->CreateOption(pair.second, pair.first);
+    }
+
+    // 3. Reconstruir ComplCombos
+    for (const auto& pair : m_realityData.mapComplCombos) {
+        pReality->CreateComplCombo(pair.first);
+        for (const auto& sOpt : pair.second) {
+            pReality->AddOptionToComplCombo(pair.first, sOpt);
+        }
+    }
+
+    // 4. Reconstruir SupplCombos
+    for (const auto& pair : m_realityData.mapSupplCombos) {
+        pReality->CreateSupplCombo(pair.first);
+        for (const auto& pairW : pair.second) {
+            pReality->AddOptionToSupplCombo(pair.first, pairW.first, pairW.second);
+        }
+    }
 }
 
 } // namespace pca
