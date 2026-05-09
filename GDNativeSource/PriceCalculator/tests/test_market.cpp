@@ -31,6 +31,39 @@ TEST_CASE("Market scenarios can be captured and applied to new markets", "[marke
     CHECK(pP1_New->GetOwnedProdAmount(pChoc) == 10.0);
 }
 
+TEST_CASE("Market scenarios can be saved to and loaded from JSON", "[market][scenario][json]") {
+    CReality oReality;
+    CMarket oMarket(&oReality);
+    
+    // GIVEN: A scenario with data
+    CPerson* pP1 = oMarket.CreatePerson("Person JSON");
+    CProduct* pChoc = oReality.GetProduct("chocolate");
+    pP1->AddProductAmount(pChoc, 50.0);
+    oMarket.GetPricesRef()->SetPriceOfProduct(pChoc, 99.9);
+    
+    CMarketScenario oScenarioSave;
+    oScenarioSave.Capture(&oMarket);
+    
+    // WHEN: We save to file and load into a new scenario object
+    std::string sTestFile = "test_scenario.json";
+    REQUIRE(oScenarioSave.SaveToFile(sTestFile));
+    
+    CMarketScenario oScenarioLoad;
+    REQUIRE(oScenarioLoad.LoadFromFile(sTestFile));
+    
+    // THEN: Applying the loaded scenario should yield the same results
+    CMarket oNewMarket(&oReality);
+    oScenarioLoad.Apply(&oNewMarket);
+    
+    CPerson* pP1_New = oNewMarket.GetPersonRef("Person JSON");
+    REQUIRE(pP1_New != nullptr);
+    CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(pChoc) == 99.9);
+    CHECK(pP1_New->GetOwnedProdAmount(pChoc) == 50.0);
+    
+    // Clean up
+    std::remove(sTestFile.c_str());
+}
+
 TEST_CASE("Market warehouse inventory is correctly managed", "[market][warehouse]") {
     CReality oReality;
     CMarket oMarket(&oReality);

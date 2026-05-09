@@ -39,6 +39,16 @@ namespace pca {
          */
         void Apply(CMarket* pMarket);
 
+        /**
+         * @brief Guarda el escenario en un archivo JSON.
+         */
+        bool SaveToFile(const std::string& sFilePath);
+
+        /**
+         * @brief Carga un escenario desde un archivo JSON.
+         */
+        bool LoadFromFile(const std::string& sFilePath);
+
         // Datos del escenario
         std::map<std::string, double> m_mapPrices;
         std::map<std::string, double> m_mapMarketWarehouse;

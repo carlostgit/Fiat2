@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O0 -g -Wall -Isrc -Itests
+CXXFLAGS = -O0 -g -Wall -Isrc -Itests -Iinclude
 LDFLAGS = 
 
 SRC_DIR = src

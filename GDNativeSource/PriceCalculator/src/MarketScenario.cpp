@@ -9,8 +9,31 @@
 #include "SupplCombo.h"
 #include "ComplCombo.h"
 #include <iostream>
+#include <fstream>
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
 
 namespace pca {
+
+// Helper functions for JSON serialization of PersonData
+void to_json(json& j, const CMarketScenario::PersonData& p) {
+    j = json{
+        {"name", p.sName},
+        {"owned_products", p.mapOwnedProducts},
+        {"option_satisfaction", p.mapOptionSatisfaction},
+        {"suppl_satisfaction", p.mapSupplSatisfaction},
+        {"compl_satisfaction", p.mapComplSatisfaction}
+    };
+}
+
+void from_json(const json& j, CMarketScenario::PersonData& p) {
+    j.at("name").get_to(p.sName);
+    j.at("owned_products").get_to(p.mapOwnedProducts);
+    j.at("option_satisfaction").get_to(p.mapOptionSatisfaction);
+    j.at("suppl_satisfaction").get_to(p.mapSupplSatisfaction);
+    j.at("compl_satisfaction").get_to(p.mapComplSatisfaction);
+}
 
 CMarketScenario::CMarketScenario() {}
 CMarketScenario::~CMarketScenario() {}
@@ -144,6 +167,41 @@ void CMarketScenario::Apply(CMarket* pMarket) {
             }
         }
     }
+}
+
+bool CMarketScenario::SaveToFile(const std::string& sFilePath) {
+    try {
+        json j;
+        j["prices"] = m_mapPrices;
+        j["market_warehouse"] = m_mapMarketWarehouse;
+        j["persons"] = m_vPersonsData;
+
+        std::ofstream file(sFilePath);
+        if (file.is_open()) {
+            file << j.dump(4);
+            return true;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error saving scenario to JSON: " << e.what() << std::endl;
+    }
+    return false;
+}
+
+bool CMarketScenario::LoadFromFile(const std::string& sFilePath) {
+    try {
+        std::ifstream file(sFilePath);
+        if (file.is_open()) {
+            json j;
+            file >> j;
+            m_mapPrices = j.at("prices").get<std::map<std::string, double>>();
+            m_mapMarketWarehouse = j.at("market_warehouse").get<std::map<std::string, double>>();
+            m_vPersonsData = j.at("persons").get<std::vector<PersonData>>();
+            return true;
+        }
+    } catch (const std::exception& e) {
+        std::cerr << "Error loading scenario from JSON: " << e.what() << std::endl;
+    }
+    return false;
 }
 
 } // namespace pca

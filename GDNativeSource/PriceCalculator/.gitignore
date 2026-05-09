@@ -1,5 +1,6 @@
 # Binaries
 PriceCalculator
+run_tests
 obj/
 
 # Logs and Plots
