@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Scenario Studio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code&display=swap" rel="stylesheet">
+</head>
+<body>
+    <aside>
+        <h1>Scenario Studio</h1>
+        <nav>
+            <div class="nav-item active" data-section="reality">
+                <span>🌍</span> Reality
+            </div>
+            <div class="nav-item" data-section="agents">
+                <span>👥</span> Agents
+            </div>
+            <div class="nav-item" data-section="market">
+                <span>📈</span> Market State
+            </div>
+        </nav>
+        
+        <div style="margin-top: auto;">
+            <button class="btn-primary" style="width: 100%; margin-bottom: 0.5rem;" onclick="downloadJSON()">
+                📥 Export JSON
+            </button>
+            <button class="btn-ghost" style="width: 100%;" onclick="document.getElementById('file-input').click()">
+                📂 Load Scenario
+            </button>
+            <input type="file" id="file-input" style="display: none;" onchange="loadJSON(event)">
+        </div>
+    </aside>
+
+    <main id="content">
+        <!-- Section: Reality -->
+        <section id="section-reality">
+            <h2>Market Reality</h2>
+            
+            <div class="card">
+                <h3>Products</h3>
+                <div class="input-group" style="display: flex; gap: 1rem; margin-top: 1rem;">
+                    <input type="text" id="new-product" placeholder="Enter product name (e.g., gold)">
+                    <button class="btn-primary" onclick="addProduct()">Add</button>
+                </div>
+                <div id="product-list" class="tag-container"></div>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Consumption Options</h3>
+                    <div class="input-group">
+                        <label>Option Name</label>
+                        <input type="text" id="new-option-name" placeholder="e.g., jewelry">
+                    </div>
+                    <div class="input-group">
+                        <label>Consumes Product</label>
+                        <select id="new-option-product"></select>
+                    </div>
+                    <button class="btn-primary" onclick="addOption()">Add Option</button>
+                    <div id="option-list" style="margin-top: 1.5rem;"></div>
+                </div>
+
+                <div class="card">
+                    <h3>Complementary Combos</h3>
+                    <div class="input-group">
+                        <label>Combo Name</label>
+                        <input type="text" id="new-compl-name" placeholder="e.g., luxury">
+                    </div>
+                    <div class="input-group">
+                        <label>Include Options</label>
+                        <div id="compl-option-checks" style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border); padding: 0.5rem; border-radius: 0.4rem;">
+                        </div>
+                    </div>
+                    <button class="btn-primary" onclick="addComplCombo()">Create Combo</button>
+                    <div id="compl-list" style="margin-top: 1.5rem;"></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Supplementary Combos</h3>
+                <div class="grid-2">
+                    <div>
+                        <div class="input-group">
+                            <label>Combo Name</label>
+                            <input type="text" id="new-suppl-name" placeholder="e.g., nutrition">
+                        </div>
+                        <button class="btn-primary" onclick="addSupplCombo()">Create Suppl Combo</button>
+                    </div>
+                    <div id="suppl-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Agents (Hidden initially) -->
+        <section id="section-agents" style="display: none;">
+            <h2>Agents & Persons</h2>
+            <div class="input-group" style="display: flex; gap: 1rem;">
+                <input type="text" id="new-agent-name" placeholder="Agent Name (e.g., Smith)">
+                <button class="btn-primary" onclick="addAgent()">Create Agent</button>
+            </div>
+            <div id="agents-grid" class="grid-auto" style="margin-top: 2rem;"></div>
+        </section>
+
+        <!-- Section: Market State (Hidden initially) -->
+        <section id="section-market" style="display: none;">
+            <h2>Market State</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Initial Prices</h3>
+                    <div id="price-inputs"></div>
+                </div>
+                <div class="card">
+                    <h3>Market Warehouse (Reserves)</h3>
+                    <div id="warehouse-inputs"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <pre id="json-preview"></pre>
+
+    <script src="editor.js"></script>
+</body>
+</html>
