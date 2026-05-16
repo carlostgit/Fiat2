@@ -10,6 +10,49 @@ let scenario = {
     persons: []
 };
 
+const DEFAULT_SCENARIO = {
+  "reality": {
+    "products": ["flour", "sugar", "egg"],
+    "option_to_product": {
+      "bread_base": "flour",
+      "sweetener": "sugar",
+      "protein": "egg"
+    },
+    "compl_combos": {
+      "basic_cake": ["bread_base", "sweetener", "protein"]
+    },
+    "suppl_combos": {
+      "pastry_mix": { "bread_base": 0.7, "sweetener": 0.3 }
+    }
+  },
+  "prices": { "flour": 1.5, "sugar": 2.0, "egg": 0.5 },
+  "market_warehouse": { "flour": 100, "sugar": 50, "egg": 200 },
+  "persons": [
+    {
+      "name": "Baker Joe",
+      "owned_products": { "flour": 10, "sugar": 5, "egg": 20 },
+      "option_satisfaction": {
+        "bread_base": [1.2, 50],
+        "sweetener": [0.8, 20],
+        "protein": [1.5, 30]
+      },
+      "suppl_satisfaction": { "pastry_mix": [1.1, 40] },
+      "compl_satisfaction": { "basic_cake": [2.5, 100] }
+    },
+    {
+      "name": "Customer Alice",
+      "owned_products": { "flour": 0, "sugar": 0, "egg": 0 },
+      "option_satisfaction": {
+        "bread_base": [2.0, 80],
+        "sweetener": [3.0, 60],
+        "protein": [1.0, 40]
+      },
+      "suppl_satisfaction": { "pastry_mix": [1.5, 50] },
+      "compl_satisfaction": { "basic_cake": [4.0, 200] }
+    }
+  ]
+};
+
 // --- Navigation ---
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', () => {
@@ -267,11 +310,39 @@ function updatePreview() {
     document.getElementById('json-preview').innerText = JSON.stringify(scenario, null, 2);
 }
 
-function downloadJSON() {
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(scenario, null, 2));
+async function downloadJSON() {
+    const json = JSON.stringify(scenario, null, 2);
+    
+    // Attempt to use File System Access API (allows choosing path and name)
+    if ('showSaveFilePicker' in window) {
+        try {
+            const handle = await window.showSaveFilePicker({
+                suggestedName: 'scenario.json',
+                types: [{
+                    description: 'JSON Files',
+                    accept: { 'application/json': ['.json'] },
+                }],
+            });
+            const writable = await handle.createWritable();
+            await writable.write(json);
+            await writable.close();
+            return;
+        } catch (err) {
+            // If user cancels or if it's not supported in this context (like file://)
+            if (err.name === 'AbortError') return;
+            console.warn("File System Access API not available or failed, using fallback.", err);
+        }
+    }
+
+    // Fallback: Prompt for filename and use the traditional download method
+    let filename = prompt("Choose a name for your scenario file:", "scenario.json");
+    if (!filename) return;
+    if (!filename.endsWith(".json")) filename += ".json";
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(json);
     const downloadAnchorNode = document.createElement('a');
-    downloadAnchorNode.setAttribute("href",     dataStr);
-    downloadAnchorNode.setAttribute("download", "scenario.json");
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", filename);
     document.body.appendChild(downloadAnchorNode);
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
@@ -291,6 +362,18 @@ function loadJSON(event) {
         }
     };
     reader.readAsText(file);
+}
+
+function loadDefaultScenario() {
+    try {
+        // Deep clone to avoid modifying the constant
+        scenario = JSON.parse(JSON.stringify(DEFAULT_SCENARIO));
+        renderReality();
+        updatePreview();
+    } catch (err) {
+        console.error(err);
+        alert("Error loading default scenario: " + err.message);
+    }
 }
 
 // Initial Render
