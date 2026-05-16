@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PriceCalculator - Simulation Runner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="logo">🚀 PriceCalculator <span>Runner</span></div>
+            <div class="controls">
+                <button id="btn-load-scenario" class="btn-secondary">📂 Load Scenario</button>
+                <input type="file" id="file-input" style="display: none;" accept=".json">
+                <button id="btn-run" class="btn-primary" disabled>▶ Run Simulation</button>
+                <button id="btn-step" class="btn-ghost" disabled>⏭ Step</button>
+            </div>
+        </header>
+
+        <main>
+            <aside id="sidebar">
+                <div class="card">
+                    <h3>Status</h3>
+                    <div id="status-badge" class="badge status-loading">WASM Loading...</div>
+                    <div class="info-row">
+                        <span>Steps:</span>
+                        <strong id="step-count">0</strong>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Current Prices</h3>
+                    <div id="price-list" class="data-list">
+                        <div class="empty-state">Load a scenario to see prices</div>
+                    </div>
+                </div>
+            </aside>
+
+            <section id="viz-area">
+                <div class="card viz-card">
+                    <div class="card-header">
+                        <h3>Simulation Progress</h3>
+                        <div class="actions">
+                            <button id="btn-clear-logs" class="btn-icon">🗑</button>
+                        </div>
+                    </div>
+                    <div id="log-container" class="log-area">
+                        <div class="log-entry system">Waiting for scenario...</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Emscripten generated JS -->
+    <script src="wasm/price_calculator.js"></script>
+    <script src="runner.js"></script>
+</body>
+</html>

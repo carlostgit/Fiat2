@@ -1,0 +1,46 @@
+# Makefile para compilar PriceCalculator a WebAssembly usando Emscripten
+
+EMCC = emcc
+CXXFLAGS = -O3 -std=c++17 -Isrc -Iinclude --bind
+LDFLAGS = -s WASM=1 -s ALLOW_MEMORY_GROWTH=1 -s EXPORTED_RUNTIME_METHODS='["ccall", "cwrap"]' -s MODULARIZE=0
+
+SRC_DIR = src
+OUT_DIR = tools/runner/wasm
+
+# Lista de fuentes (excluimos main.cpp porque tenemos nuestros propios bindings)
+SOURCES = $(SRC_DIR)/ComplCombo.cpp \
+          $(SRC_DIR)/ComplCombos.cpp \
+          $(SRC_DIR)/EmscriptenBindings.cpp \
+          $(SRC_DIR)/Market.cpp \
+          $(SRC_DIR)/MarketScenario.cpp \
+          $(SRC_DIR)/Option.cpp \
+          $(SRC_DIR)/Options.cpp \
+          $(SRC_DIR)/Person.cpp \
+          $(SRC_DIR)/PriceCalculator.cpp \
+          $(SRC_DIR)/PriceCalculatorStaticUser.cpp \
+          $(SRC_DIR)/Prices.cpp \
+          $(SRC_DIR)/PricesLogInfo.cpp \
+          $(SRC_DIR)/Product.cpp \
+          $(SRC_DIR)/ProductPriceAdjustmentInfo.cpp \
+          $(SRC_DIR)/Products.cpp \
+          $(SRC_DIR)/Reality.cpp \
+          $(SRC_DIR)/SatisfactionCalculator.cpp \
+          $(SRC_DIR)/SatisfactionCurve.cpp \
+          $(SRC_DIR)/SupplCombo.cpp \
+          $(SRC_DIR)/SupplCombos.cpp \
+          $(SRC_DIR)/TradeCalculator.cpp \
+          $(SRC_DIR)/TradeCalculatorScenario.cpp \
+          $(SRC_DIR)/Utils.cpp
+
+TARGET = $(OUT_DIR)/price_calculator.js
+
+all: $(TARGET)
+
+$(TARGET): $(SOURCES)
+	@mkdir -p $(OUT_DIR)
+	$(EMCC) $(CXXFLAGS) $(SOURCES) -o $(TARGET) $(LDFLAGS)
+
+clean:
+	rm -rf $(OUT_DIR)
+
+.PHONY: all clean

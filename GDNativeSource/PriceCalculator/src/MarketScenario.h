@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <vector>
+#include <nlohmann/json.hpp>
 
 namespace pca {
     class CMarket;
@@ -67,6 +68,12 @@ namespace pca {
         void CaptureReality(CReality* pReality);
         void ApplyReality(CReality* pReality);
     };
+
+    // Helper functions for JSON serialization (needed by nlohmann::json)
+    void to_json(nlohmann::json& j, const CMarketScenario::PersonData& p);
+    void from_json(const nlohmann::json& j, CMarketScenario::PersonData& p);
+    void to_json(nlohmann::json& j, const CMarketScenario::RealityData& r);
+    void from_json(const nlohmann::json& j, CMarketScenario::RealityData& r);
 }
 
 #endif // MARKETSCENARIO_H
