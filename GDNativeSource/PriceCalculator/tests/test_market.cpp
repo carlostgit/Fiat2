@@ -1,9 +1,9 @@
 #include "catch.hpp"
-#include "Market.h"
-#include "Reality.h"
-#include "Person.h"
-#include "Prices.h"
-#include "MarketScenario.h"
+#include "../src/Market.h"
+#include "../src/Reality.h"
+#include "../src/Person.h"
+#include "../src/Prices.h"
+#include "../src/MarketScenario.h"
 
 using namespace pca;
 
@@ -33,13 +33,14 @@ TEST_CASE("Market scenarios can be captured and applied to new markets", "[marke
     CHECK(pP1_New->GetOwnedProdAmount(pChoc_New) == 10.0);
 }
 
-TEST_CASE("Market scenarios can be saved to and loaded from JSON", "[market][scenario][json]") {
+TEST_CASE("Market scenarios can be saved to and loaded from JSON",
+          "[market][scenario][json]") {
     CReality oReality;
     CMarket oMarket(&oReality);
     
     // GIVEN: A scenario with data
-    CPerson* pP1 = oMarket.CreatePerson("Person JSON");
-    CProduct* pChoc = oReality.GetProduct("chocolate");
+  CPerson *pP1 = oMarket.CreatePerson("Person JSON");
+  CProduct *pChoc = oReality.GetProduct("chocolate");
     pP1->AddProductAmount(pChoc, 50.0);
     oMarket.GetPricesRef()->SetPriceOfProduct(pChoc, 99.9);
     
@@ -57,9 +58,10 @@ TEST_CASE("Market scenarios can be saved to and loaded from JSON", "[market][sce
     CMarket oNewMarket(&oReality);
     oScenarioLoad.Apply(&oNewMarket);
     
-    // IMPORTANTE: Después de ApplyReality, los punteros antiguos de oReality son INVÁLIDOS
-    CProduct* pChoc_New = oReality.GetProduct("chocolate");
-    CPerson* pP1_New = oNewMarket.GetPersonRef("Person JSON");
+  // IMPORTANTE: Después de ApplyReality, los punteros antiguos de oReality son
+  // INVÁLIDOS
+  CProduct *pChoc_New = oReality.GetProduct("chocolate");
+  CPerson *pP1_New = oNewMarket.GetPersonRef("Person JSON");
     
     REQUIRE(pP1_New != nullptr);
     REQUIRE(pChoc_New != nullptr);
@@ -70,7 +72,8 @@ TEST_CASE("Market scenarios can be saved to and loaded from JSON", "[market][sce
     std::remove(sTestFile.c_str());
 }
 
-TEST_CASE("Market scenario captures and applies Reality structure", "[market][scenario][reality]") {
+TEST_CASE("Market scenario captures and applies Reality structure",
+          "[market][scenario][reality]") {
     // 1. Crear una realidad personalizada
     CReality oReality(false); // Vacía
     oReality.InitEmpty();
@@ -80,7 +83,8 @@ TEST_CASE("Market scenario captures and applies Reality structure", "[market][sc
     oReality.AddOptionToComplCombo("luxury", "jewelry");
     
     CMarket oMarket(&oReality);
-    oMarket.GetPricesRef()->SetPriceOfProduct(oReality.GetProduct("gold"), 1500.0);
+  oMarket.GetPricesRef()->SetPriceOfProduct(oReality.GetProduct("gold"),
+                                            1500.0);
     
     CMarketScenario oScenario;
     oScenario.Capture(&oMarket);
@@ -101,15 +105,17 @@ TEST_CASE("Market scenario captures and applies Reality structure", "[market][sc
     CHECK(oNewReality.GetProduct("gold") != nullptr);
     CHECK(oNewReality.GetOption("jewelry") != nullptr);
     CHECK(oNewReality.GetComplCombo("luxury") != nullptr);
-    CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(oNewReality.GetProduct("gold")) == 1500.0);
+  CHECK(oNewMarket.GetPricesRef()->GetPriceOfProduct(
+            oNewReality.GetProduct("gold")) == 1500.0);
     
     std::remove(sFile.c_str());
 }
 
-TEST_CASE("Market warehouse inventory is correctly managed", "[market][warehouse]") {
+TEST_CASE("Market warehouse inventory is correctly managed",
+          "[market][warehouse]") {
     CReality oReality;
     CMarket oMarket(&oReality);
-    CProduct* pChoc = oReality.GetProduct("chocolate");
+  CProduct *pChoc = oReality.GetProduct("chocolate");
 
     SECTION("Initial warehouse should be empty") {
         auto mapExcess = oMarket.GetExcessProducts();
@@ -121,7 +127,7 @@ TEST_CASE("Market warehouse inventory is correctly managed", "[market][warehouse
         oScenario.m_mapMarketWarehouse["chocolate"] = 50.0;
         oScenario.Apply(&oMarket);
         
-        CProduct* pChoc_New = oReality.GetProduct("chocolate");
+    CProduct *pChoc_New = oReality.GetProduct("chocolate");
         CHECK(oMarket.GetExcessProducts()[pChoc_New] == 50.0);
     }
 }

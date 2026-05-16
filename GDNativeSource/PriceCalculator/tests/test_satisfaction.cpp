@@ -1,8 +1,8 @@
 #include "catch.hpp"
-#include "SatisfactionCurve.h"
-#include "SatisfactionCalculator.h"
-#include "Reality.h"
-#include "Market.h"
+#include "../src/SatisfactionCurve.h"
+#include "../src/SatisfactionCalculator.h"
+#include "../src/Reality.h"
+#include "../src/Market.h"
 
 using namespace pca;
 
