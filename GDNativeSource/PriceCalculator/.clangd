@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-Isrc, -Itests, -Iinclude, -std=c++17, -g, -Wall]
+  Add: [-isystem, /home/carlos/emsdk/upstream/emscripten/cache/sysroot/include/c++/v1, -Isrc, -Itests, -Iinclude, -I/home/carlos/emsdk/upstream/emscripten/system/include, -std=c++17, -g, -Wall, -fno-delayed-template-parsing]

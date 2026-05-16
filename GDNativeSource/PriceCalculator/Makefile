@@ -6,8 +6,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 TEST_DIR = tests
 
-# Fuentes del núcleo (todos los .cpp en src excepto main.cpp)
-CORE_SOURCES = $(filter-out $(SRC_DIR)/main.cpp, $(wildcard $(SRC_DIR)/*.cpp))
+# Fuentes del núcleo (todos los .cpp en src excepto main.cpp y los bindings de Emscripten)
+CORE_SOURCES = $(filter-out $(SRC_DIR)/main.cpp $(SRC_DIR)/EmscriptenBindings.cpp, $(wildcard $(SRC_DIR)/*.cpp))
 CORE_OBJECTS = $(CORE_SOURCES:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 # Fuentes de la aplicación principal
@@ -44,4 +44,10 @@ $(OBJ_DIR)/test_%.o: $(TEST_DIR)/%.cpp
 clean:
 	rm -rf $(OBJ_DIR) $(TARGET) $(TEST_TARGET)
 
-.PHONY: all clean test
+# Lanzar el servidor web para el Runner (WASM)
+serve-runner:
+	@echo "Lanzando servidor en http://localhost:8000..."
+	@echo "Cierra esta terminal o pulsa Ctrl+C para detener el servidor."
+	@python3 -m http.server 8000 & sleep 1 && xdg-open http://localhost:8000/tools/runner/index.html || open http://localhost:8000/tools/runner/index.html
+
+.PHONY: all clean test serve-runner

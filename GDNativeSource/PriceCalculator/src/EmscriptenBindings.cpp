@@ -1,4 +1,16 @@
+#ifdef __EMSCRIPTEN__
 #include <emscripten/bind.h>
+#else
+#define EMSCRIPTEN_BINDINGS(name) void emscripten_bindings_##name()
+namespace emscripten {
+    template<typename T> struct class_ {
+        class_(const char*) {}
+        template<typename... Args> class_& constructor() { return *this; }
+        template<typename F> class_& function(const char*, F) { return *this; }
+    };
+}
+#endif
+
 #include "Market.h"
 #include "Reality.h"
 #include "MarketScenario.h"
@@ -7,7 +19,9 @@
 #include <string>
 #include <nlohmann/json.hpp>
 
+#ifdef __EMSCRIPTEN__
 using namespace emscripten;
+#endif
 using namespace pca;
 using json = nlohmann::json;
 
